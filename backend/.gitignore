@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### secret
+src/main/resources/application-secret.yml
+
+### docker
+db
