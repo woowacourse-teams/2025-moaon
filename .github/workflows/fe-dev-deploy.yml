@@ -1,0 +1,38 @@
+name: FE-Dev-Deploy
+
+on:
+  push:
+    branches: ["develop"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: pandoc/latex
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install mustache (to update the date)
+        run: apk add ruby && gem install mustache
+        working-directory: ./frontend
+
+      - name: creates output
+        run: chmod +x ./build.sh && sh ./build.sh
+        working-directory: ./frontend
+
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GH_TOKEN }}
+        with:
+          source-directory: "frontend/output"
+          destination-github-username: wo-o29
+          destination-repository-name: 2025-moaon-fork
+          user-email: ${{ secrets.WOOHYEOK_EMAIL }}
+          commit-message: ${{ github.event.commits[0].message }}
+          target-branch: develop
+
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
+        working-directory: ./frontend
