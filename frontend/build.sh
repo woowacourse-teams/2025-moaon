@@ -1,3 +1,5 @@
+cd ../
+
 mkdir output
 
 cp -R ./2025-moaon/* ./output 
