@@ -6,6 +6,13 @@ on:
 
 jobs:
   build:
+    # 이벤트를 트리거한 사용자의 GitHub ID
+    # 프론트엔드 팀원이 merge or push 등 이벤트를 트리거하는 경우에만 워크플로우 실행
+    if: |
+      github.actor == 'wo-o29' || 
+      github.actor == 'eunoia-jaxson' ||
+      github.actor == 'jin123457' ||
+      github.actor == 'mlnwns'
     runs-on: ubuntu-latest
     container: pandoc/latex
 
