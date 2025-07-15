@@ -1,6 +1,7 @@
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +33,7 @@ export default {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
   devServer: {
     static: "./dist",
