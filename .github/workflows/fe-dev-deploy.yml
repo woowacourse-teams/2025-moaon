@@ -13,13 +13,14 @@ jobs:
       github.actor == 'eunoia-jaxson' ||
       github.actor == 'jin123457' ||
       github.actor == 'mlnwns'
+
     runs-on: ubuntu-latest
     container: pandoc/latex
 
     steps:
       # 레포지토리의 코드를 컨테이너(작업 환경)로 가져오기
       # 이 작업을 해야 이후 스크립트에서 소스 코드 사용 가능
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # rsync 설치
       # rsync: 리눅스/유닉스 환경에서 파일이나 디렉토리를 복사하고 동기화하는 데 특화된 명령어
