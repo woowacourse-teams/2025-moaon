@@ -1,8 +1,4 @@
 services:
-
-  # -------------------------
-  # MySQL 데이터베이스 서비스
-  # -------------------------
   db:
     image: mysql:8.0.28
     platform: linux/amd64
@@ -20,18 +16,12 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_bin
-    # healthcheck 추가: MySQL 서버가 준비되었는지 확인
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
-      interval: 10s # 10초 간격으로 확인
-      timeout: 5s   # 5초 이내에 응답이 없으면 실패
-      retries: 5    # 5번 재시도
-
-  # --------------------
-  # Spring Boot 애플리케이션 서비스
-  # --------------------
+      interval: 10s
+      timeout: 5s
+      retries: 5
   app:
-    # 현재 디렉터리의 Dockerfile을 이용해서 이미지 빌드
     build: .
     container_name: moaon-app
     platform: linux/amd64
