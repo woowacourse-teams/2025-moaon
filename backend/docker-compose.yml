@@ -19,7 +19,7 @@ services:
       - ./db/mysql/init:/docker-entrypoint-initdb.d
     command:
       - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
+      - --collation-server=utf8mb4_bin
     # healthcheck 추가: MySQL 서버가 준비되었는지 확인
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
