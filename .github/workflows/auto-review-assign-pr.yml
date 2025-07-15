@@ -9,6 +9,8 @@ permissions:
 
 jobs:
   assign:
+    # 포크 PR이 아닌 경우에만 실행
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: 코드 체크아웃
