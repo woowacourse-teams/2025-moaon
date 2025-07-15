@@ -5,6 +5,7 @@ services:
   # -------------------------
   db:
     image: mysql:8.0.28
+    platform: linux/amd64
     container_name: moaon-db
     restart: always
     ports:
@@ -32,6 +33,7 @@ services:
   app:
     # 현재 디렉터리의 Dockerfile을 이용해서 이미지 빌드
     build: .
+    platform: linux/amd64
     container_name: moaon-app
     depends_on:
       db:
