@@ -2,7 +2,6 @@
 # 1. Builder Stage
 # ==================================================
 # Java21 JDK를 기반 이미지로 사용하여 빌드 환경 구성
-#FROM openjdk:21-jdk AS builder
 FROM amazoncorretto:21 AS builder
 
 # 작업 디렉터리를 /app 으로 설정
