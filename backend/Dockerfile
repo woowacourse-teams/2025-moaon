@@ -25,6 +25,7 @@ RUN ./gradlew bootJar --no-daemon
 # ==================================================
 # 2. Final Stage
 # ==================================================
+#FROM alpine/java:21-jre
 FROM openjdk:21-jdk-slim
 
 # 작업 디렉터리를 /app 으로 설정
