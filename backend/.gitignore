@@ -41,3 +41,7 @@ src/main/resources/application-secret.yml
 
 ### docker
 db
+
+### secrets
+.env
+application-local.yml

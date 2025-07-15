@@ -1,12 +1,9 @@
 spring:
+  profiles:
+    default: local
+
   application:
     name: backend
-
-  datasource:
-    url: jdbc:mysql://localhost:13306/moaon?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: root
 
   jpa:
     database: mysql
@@ -15,7 +12,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
   logging:
     level:
