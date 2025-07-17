@@ -3,12 +3,14 @@ name: BE Dev CI
 on:
   pull_request:
     branches: [ "develop" ]
-    paths: 
-      - 'backend/**'
-
 
 jobs:
   build:
+    if: |
+      github.actor == 'yesjuhee' || 
+      github.actor == 'Minuring' ||
+      github.actor == 'eueo8259' ||
+      github.actor == 'minjae8563'
     runs-on: ubuntu-latest
 
     defaults:
@@ -33,6 +35,11 @@ jobs:
       run: ./gradlew build
 
   dependency-submission:
+    if: |
+      github.actor == 'yesjuhee' || 
+      github.actor == 'Minuring' ||
+      github.actor == 'eueo8259' ||
+      github.actor == 'minjae8563'
     needs: build
     
     runs-on: ubuntu-latest
