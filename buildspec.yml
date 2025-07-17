@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - cd frontend
+      - corepack enable
+      - corepack prepare pnpm@latest --activate
+      - pnpm install
+
+  build:
+    commands:
+      - cd frontend
+      - pnpm run build
+
+artifacts:
+  base-directory: frontend/dist
+  files:
+    - "**/*"
