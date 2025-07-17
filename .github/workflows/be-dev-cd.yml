@@ -3,6 +3,9 @@ name: BE Dev CD
 on:
   push:
     branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+  
 
 jobs:
   deploy:
@@ -19,6 +22,10 @@ jobs:
         working-directory: ./backend
 
     steps:
+      - name: change permission
+        run: |
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
+    
       - name: Checkout repository
         uses: actions/checkout@v4
 
