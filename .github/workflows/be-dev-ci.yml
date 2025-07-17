@@ -3,6 +3,9 @@ name: BE Dev CI
 on:
   pull_request:
     branches: [ "develop" ]
+    paths: 
+      - 'backend/**'
+
 
 jobs:
   build:
