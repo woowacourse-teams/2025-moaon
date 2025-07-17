@@ -5,6 +5,8 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
+      - pwd
+      - ls -al
       - cd frontend
       - npm install -g pnpm
       - pnpm install
