@@ -1,4 +1,4 @@
-name: BE 빌드 테스트
+name: BE Dev CI
 
 on:
   pull_request:
