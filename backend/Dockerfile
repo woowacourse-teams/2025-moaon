@@ -13,7 +13,7 @@ COPY src ./src
 
 RUN ./gradlew bootJar --no-daemon
 
-FROM alpine/java:21-jre
+FROM amazoncorretto:21-alpine
 
 WORKDIR /app
 

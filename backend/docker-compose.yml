@@ -1,7 +1,6 @@
 services:
   db:
-    image: mysql:8.0.28
-    platform: linux/amd64
+    image: mysql:8.4
     container_name: moaon-db
     restart: always
     ports:
@@ -24,12 +23,11 @@ services:
   app:
     build: .
     container_name: moaon-app
-    platform: linux/amd64
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "80:8080"
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL_DEV}
