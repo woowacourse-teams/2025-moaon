@@ -28,6 +28,13 @@ export default {
         use: "ts-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.(png|jpe?g|gif|svg|webp)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/[name][hash][ext]",
+        },
+      },
     ],
   },
   plugins: [
