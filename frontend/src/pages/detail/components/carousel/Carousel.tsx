@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import * as S from "./Carousel.styled";
+import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
 
 export const images = [
@@ -11,22 +11,10 @@ export const images = [
 ];
 
 function Carousel() {
-  const { currentImageIndex, handleSlideNext, handleSlidePrev } = useSlide({
+  const { currentImageIndex, handleSlidePrev, handleSlideNext } = useSlide({
     images,
   });
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") {
-        handleSlidePrev();
-      } else if (event.key === "ArrowRight") {
-        handleSlideNext();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleSlideNext, handleSlidePrev]);
+  useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
 
   return (
     <S.CarouselContainer>
