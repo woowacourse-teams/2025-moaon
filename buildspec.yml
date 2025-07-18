@@ -16,6 +16,9 @@ phases:
       - pnpm run build
       - pwd
       - ls -al
+      - cd dist
+      - pwd
+      - ls -al
 
 artifacts:
   base-directory: frontend/dist
