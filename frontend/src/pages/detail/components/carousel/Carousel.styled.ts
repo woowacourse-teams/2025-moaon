@@ -9,20 +9,26 @@ export const CarouselContainer = styled.div`
   position: relative;
 `;
 
-export const CurrentImage = styled.img`
-  width: 45rem;
-  height: 25rem;
+const CarouselImage = styled.img`
   border-radius: 25px;
   background-color: black;
   object-fit: contain;
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 `;
 
-export const NextImage = styled.img`
+export const CurrentImage = styled(CarouselImage)`
+  width: 45rem;
+  height: 25rem;
+
+`;
+
+export const NextImage = styled(CarouselImage)`
   width: 27.5rem;
   height: 15.5rem;
-  border-radius: 25px;
-  background-color: black;
-  object-fit: contain;
   opacity: 0.5;
 `;
 
