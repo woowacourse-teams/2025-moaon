@@ -8,14 +8,14 @@ function Header() {
   return (
     <S.Header>
       <S.HeaderBox>
-        <S.Flex>
+        <S.Wrap>
           <img src={Logo} alt="123" />
           <NavBar />
-        </S.Flex>
-        <S.Flex>
+        </S.Wrap>
+        <S.Wrap>
           <SearchBar />
           <RegisterProjectButton />
-        </S.Flex>
+        </S.Wrap>
       </S.HeaderBox>
     </S.Header>
   );

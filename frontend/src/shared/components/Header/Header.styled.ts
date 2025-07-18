@@ -18,7 +18,7 @@ export const HeaderBox = styled.div`
   
 `;
 
-export const Flex = styled.div`
+export const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
