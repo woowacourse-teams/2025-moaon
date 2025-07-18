@@ -21,6 +21,6 @@ phases:
       - ls -al
 
 artifacts:
-  base-directory: dist
+  base-directory: ./frontend/dist
   files:
     - "**/*"
