@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from "react-router";
+import DetailPage from "./pages/detail/DetailPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           </>
         }
       />
+      <Route path="/detail" element={<DetailPage />} />
     </Routes>
   );
 }
