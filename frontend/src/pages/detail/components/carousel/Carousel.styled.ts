@@ -5,7 +5,8 @@ export const CarouselContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem
+  gap: 1.5rem;
+  position: relative;
 `;
 
 export const CurrentImage = styled.img`
@@ -23,4 +24,27 @@ export const NextImage = styled.img`
   background-color: black;
   object-fit: contain;
   opacity: 0.5;
+`;
+
+const MoveButton = styled.button`
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  background-color: #6a6a6aff;
+  color: #fff;
+  
+  &:hover {
+    background-color: #1f1f1fff;
+  }
+`;
+
+export const NextButton = styled(MoveButton)`
+  right: 3.125rem;
+`;
+
+export const PrevButton = styled(MoveButton)`
+  left: 3.125rem;
 `;
