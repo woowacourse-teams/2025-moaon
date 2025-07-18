@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import * as S from "./Carousel.styled";
+import { useSlide } from "./hooks/useSlide";
 
-const images = [
+export const images = [
   "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
   "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop",
   "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&h=400&fit=crop",
@@ -10,15 +11,22 @@ const images = [
 ];
 
 function Carousel() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { currentImageIndex, handleSlideNext, handleSlidePrev } = useSlide({
+    images,
+  });
 
-  const handleSlideNext = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  };
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        handleSlidePrev();
+      } else if (event.key === "ArrowRight") {
+        handleSlideNext();
+      }
+    };
 
-  const handleSlidePrev = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleSlideNext, handleSlidePrev]);
 
   return (
     <S.CarouselContainer>
