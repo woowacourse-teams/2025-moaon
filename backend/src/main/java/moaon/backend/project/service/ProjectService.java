@@ -1,6 +1,8 @@
 package moaon.backend.project.service;
 
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.global.exception.custom.NotFoundException;
 import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
@@ -18,7 +20,7 @@ public class ProjectService {
 
     public ProjectDetailResponse getById(Long id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PROJECT_NOT_FOUND));
         int loves = loveRepository.countLoveByProjectId(id);
         return ProjectDetailResponse.from(project, loves);
     }
