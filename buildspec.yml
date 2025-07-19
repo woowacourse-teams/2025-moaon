@@ -16,6 +16,7 @@ phases:
       - pnpm run build
       - pwd
       - ls -al dist
+      - aws cloudfront create-invalidation --distribution-id E8QYNXURVPP9G --paths "/*"
 
 artifacts:
   base-directory: frontend/dist
