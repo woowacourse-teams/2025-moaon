@@ -88,4 +88,8 @@ public class Project extends BaseTimeEntity {
         this.categories = categories;
         this.platforms = platforms;
     }
+
+    public void addViewCount() {
+        views++;
+    }
 }

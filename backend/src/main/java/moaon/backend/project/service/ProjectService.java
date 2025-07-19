@@ -18,9 +18,11 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final LoveRepository loveRepository;
 
+    @Transactional
     public ProjectDetailResponse getById(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+        project.addViewCount();
         int loves = loveRepository.countLoveByProjectId(id);
         return ProjectDetailResponse.from(project, loves);
     }

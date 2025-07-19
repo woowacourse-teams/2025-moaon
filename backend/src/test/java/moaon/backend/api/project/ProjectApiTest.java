@@ -108,7 +108,8 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponse.techStacks()).contains("java", "javaScript", "springBoot", "mysql"),
                 () -> assertThat(actualResponse.organization()).isEqualTo("그룹명"),
                 () -> assertThat(actualResponse.platforms()).contains("web"),
-                () -> assertThat(actualResponse.loves()).isEqualTo(1)
+                () -> assertThat(actualResponse.loves()).isEqualTo(1),
+                () -> assertThat(actualResponse.views()).isEqualTo(1)
         );
     }
 }
