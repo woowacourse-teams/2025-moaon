@@ -7,7 +7,7 @@ phases:
     commands:
       - pwd
       - ls -al
-      - cd frontend
+      # - cd frontend
       - npm install -g pnpm
       - pnpm install
 
@@ -19,6 +19,7 @@ phases:
       #- aws cloudfront create-invalidation --distribution-id E8QYNXURVPP9G --paths "/*"
 
 artifacts:
-  base-directory: frontend/dist
+  # base-directory: frontend/dist
+  base-directory: dist
   files:
     - "**/*"
