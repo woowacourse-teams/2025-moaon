@@ -14,9 +14,7 @@ phases:
   build:
     commands:
       - pnpm run build
-      - cd dist
-      - pwd
-      - ls -al
+      - ls -al frontend/dist
 
 artifacts:
   base-directory: frontend/dist
