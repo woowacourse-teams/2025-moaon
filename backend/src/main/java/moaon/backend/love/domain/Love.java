@@ -29,4 +29,9 @@ public class Love {
 
     @ManyToOne
     private Member member;
+
+    public Love(Project project, Member member) {
+        this.project = project;
+        this.member = member;
+    }
 }

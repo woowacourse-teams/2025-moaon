@@ -26,7 +26,7 @@ public record ProjectDetailResponse(
         String productionUrl
 ) {
 
-    public static ProjectDetailResponse from(Project project) {
+    public static ProjectDetailResponse from(Project project, int loves) {
         return new ProjectDetailResponse(
                 project.getId(),
                 project.getAuthor().getId(),
@@ -45,7 +45,7 @@ public record ProjectDetailResponse(
                         .toList(),
                 project.getImageUrls().getUrls(),
                 false, // TODO 로그인 추가 시 수정
-                0, // TODO 조금 이따 수정
+                loves,
                 project.getViews(),
                 project.getCreatedAt(),
                 project.getGithubUrl(),

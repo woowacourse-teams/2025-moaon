@@ -7,6 +7,8 @@ import io.restassured.RestAssured;
 import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.category.repository.CategoryRepository;
+import moaon.backend.love.domain.Love;
+import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.organization.domain.Organization;
@@ -54,6 +56,9 @@ public class ProjectApiTest {
     @Autowired
     PlatformRepository platformRepository;
 
+    @Autowired
+    LoveRepository loveRepository;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
@@ -72,7 +77,7 @@ public class ProjectApiTest {
         Category category1 = categoryRepository.save(new Category("sports"));
         Category category2 = categoryRepository.save(new Category("book"));
         Platform platform = platformRepository.save(new Platform("web"));
-        projectRepository.save(new Project(
+        Project project = projectRepository.save(new Project(
                 "제목",
                 "한 줄 소개",
                 "상세 설명",
@@ -86,6 +91,7 @@ public class ProjectApiTest {
                 List.of(category1, category2),
                 List.of(platform)
         ));
+        loveRepository.save(new Love(project, member));
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
@@ -101,7 +107,8 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponse.description()).isEqualTo("상세 설명"),
                 () -> assertThat(actualResponse.techStacks()).contains("java", "javaScript", "springBoot", "mysql"),
                 () -> assertThat(actualResponse.organization()).isEqualTo("그룹명"),
-                () -> assertThat(actualResponse.platforms()).contains("web")
+                () -> assertThat(actualResponse.platforms()).contains("web"),
+                () -> assertThat(actualResponse.loves()).isEqualTo(1)
         );
     }
 }
