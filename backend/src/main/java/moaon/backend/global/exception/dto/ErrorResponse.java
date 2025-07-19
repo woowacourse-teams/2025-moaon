@@ -6,7 +6,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public record ErrorResponse(
         String errorId,
         String message,
-        LocalDateTime timeStamp
+        LocalDateTime timestamp
 ) {
 
     public static ErrorResponse from(ErrorCode errorCode) {
