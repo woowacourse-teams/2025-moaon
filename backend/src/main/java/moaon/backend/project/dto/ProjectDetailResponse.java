@@ -2,6 +2,10 @@ package moaon.backend.project.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import moaon.backend.category.domain.Category;
+import moaon.backend.platform.domain.Platform;
+import moaon.backend.project.domain.Project;
+import moaon.backend.techStack.domain.TechStack;
 
 public record ProjectDetailResponse(
         long id,
@@ -9,7 +13,7 @@ public record ProjectDetailResponse(
         String title,
         String summary,
         String description,
-        String group,
+        String organization,
         List<String> techStacks,
         List<String> platforms,
         List<String> categories,
@@ -21,4 +25,31 @@ public record ProjectDetailResponse(
         String githubUrl,
         String productionUrl
 ) {
+
+    public static ProjectDetailResponse from(Project project) {
+        return new ProjectDetailResponse(
+                project.getId(),
+                project.getAuthor().getId(),
+                project.getTitle(),
+                project.getSummary(),
+                project.getDescription(),
+                project.getOrganization().getName(),
+                project.getTechStacks().stream()
+                        .map(TechStack::getName)
+                        .toList(),
+                project.getPlatforms().stream()
+                        .map(Platform::getName)
+                        .toList(),
+                project.getCategories().stream()
+                        .map(Category::getName)
+                        .toList(),
+                project.getImageUrls().getUrls(),
+                false, // TODO 로그인 추가 시 수정
+                0, // TODO 조금 이따 수정
+                project.getViews(),
+                project.getCreatedAt(),
+                project.getGithubUrl(),
+                project.getProductionUrl()
+        );
+    }
 }

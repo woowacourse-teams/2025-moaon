@@ -1,8 +1,24 @@
 package moaon.backend.api.project;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import io.restassured.RestAssured;
+import java.util.List;
+import moaon.backend.category.domain.Category;
+import moaon.backend.category.repository.CategoryRepository;
+import moaon.backend.member.domain.Member;
+import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.organization.domain.Organization;
+import moaon.backend.organization.repository.OrganizationRepository;
+import moaon.backend.platform.domain.Platform;
+import moaon.backend.platform.repository.PlatformRepository;
+import moaon.backend.project.domain.Images;
+import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.repository.ProjectRepository;
+import moaon.backend.techStack.domain.TechStack;
+import moaon.backend.techStack.repository.TechStackRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +39,21 @@ public class ProjectApiTest {
     @Autowired
     ProjectRepository projectRepository;
 
+    @Autowired
+    OrganizationRepository organizationRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    TechStackRepository techStackRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    PlatformRepository platformRepository;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
@@ -32,8 +63,29 @@ public class ProjectApiTest {
     @Test
     void findProject() {
         // given
-//        Project project1 = projectRepository.save(new Project("제목", "썸네일", "설명"));
-//        Project project2 = projectRepository.save(new Project("제목", "썸네일", "설명"));
+        Organization organization = organizationRepository.save(new Organization("그룹명"));
+        Member member = memberRepository.save(new Member("글쓴이"));
+        TechStack techStack1 = techStackRepository.save(new TechStack("java"));
+        TechStack techStack2 = techStackRepository.save(new TechStack("javaScript"));
+        TechStack techStack3 = techStackRepository.save(new TechStack("springBoot"));
+        TechStack techStack4 = techStackRepository.save(new TechStack("mysql"));
+        Category category1 = categoryRepository.save(new Category("sports"));
+        Category category2 = categoryRepository.save(new Category("book"));
+        Platform platform = platformRepository.save(new Platform("web"));
+        projectRepository.save(new Project(
+                "제목",
+                "한 줄 소개",
+                "상세 설명",
+                "깃허브 URL",
+                "프로덕션 URL",
+                new Images(List.of("이미지 URL1", "이미지 URL2")),
+                0,
+                organization,
+                member,
+                List.of(techStack1, techStack2, techStack3, techStack4),
+                List.of(category1, category2),
+                List.of(platform)
+        ));
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
@@ -43,10 +95,13 @@ public class ProjectApiTest {
                 .extract().as(ProjectDetailResponse.class);
 
         // then
-//        assertAll(
-//                () -> assertThat(actualResponses).hasSize(2),
-//                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project1)),
-//                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2))
-//        );
+        assertAll(
+                () -> assertThat(actualResponse.title()).isEqualTo("제목"),
+                () -> assertThat(actualResponse.summary()).isEqualTo("한 줄 소개"),
+                () -> assertThat(actualResponse.description()).isEqualTo("상세 설명"),
+                () -> assertThat(actualResponse.techStacks()).contains("java", "javaScript", "springBoot", "mysql"),
+                () -> assertThat(actualResponse.organization()).isEqualTo("그룹명"),
+                () -> assertThat(actualResponse.platforms()).contains("web")
+        );
     }
 }
