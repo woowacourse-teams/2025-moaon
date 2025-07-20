@@ -5,7 +5,7 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={<h1>모아온 테스트 - 7월 20일 일요일 17:35</h1>}
+        element={<h1>모아온 테스트 - 7월 20일 일요일 17:44</h1>}
       />
       <Route
         path="*"
