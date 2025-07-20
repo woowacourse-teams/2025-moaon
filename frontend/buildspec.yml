@@ -20,6 +20,5 @@ phases:
 
 artifacts:
   base-directory: frontend/dist
-  # base-directory: dist
   files:
     - "**/*"
