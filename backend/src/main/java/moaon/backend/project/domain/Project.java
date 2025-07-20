@@ -48,7 +48,7 @@ public class Project extends BaseTimeEntity {
     private String productionUrl;
 
     @Embedded
-    private Images imageUrls;
+    private Images images;
 
     @Column
     private int views;
@@ -70,7 +70,7 @@ public class Project extends BaseTimeEntity {
 
     public Project(
             String title, String summary, String description,
-            String githubUrl, String productionUrl, Images imageUrls,
+            String githubUrl, String productionUrl, Images images,
             int views,
             Organization organization, Member author,
             List<TechStack> techStacks, List<Category> categories, List<Platform> platforms
@@ -80,7 +80,7 @@ public class Project extends BaseTimeEntity {
         this.description = description;
         this.githubUrl = githubUrl;
         this.productionUrl = productionUrl;
-        this.imageUrls = imageUrls;
+        this.images = images;
         this.views = views;
         this.organization = organization;
         this.author = author;

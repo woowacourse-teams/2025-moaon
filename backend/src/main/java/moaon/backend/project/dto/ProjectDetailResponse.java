@@ -43,7 +43,7 @@ public record ProjectDetailResponse(
                 project.getCategories().stream()
                         .map(Category::getName)
                         .toList(),
-                project.getImageUrls().getUrls(),
+                project.getImages().getUrls(),
                 false, // TODO 로그인 추가 시 수정
                 loves,
                 project.getViews(),
