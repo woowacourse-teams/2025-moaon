@@ -25,7 +25,7 @@ public class Platform {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public Platform(final String name) {
+    public Platform(String name) {
         this.name = name;
     }
 }
