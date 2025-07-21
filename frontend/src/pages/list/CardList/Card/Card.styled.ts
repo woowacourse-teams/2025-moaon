@@ -25,6 +25,7 @@ export const CardImageBox = styled.div`
   width: 100%;
   height: 10.9375rem;
   overflow: hidden;
+  position: relative;
 `;
 
 export const CardImage = styled.img`
@@ -48,6 +49,7 @@ export const CardTitle = styled.h2`
 
 export const CardSummary = styled.p`
   margin-bottom: 0.5rem;
+  height: 3rem;
   line-height: 1.5;
   ${textOverflowEllipsis(2)}
 `;

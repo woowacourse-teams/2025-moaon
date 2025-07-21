@@ -2,6 +2,7 @@ import fillHeart from "@assets/icons/fill-heart.svg";
 import view from "@assets/icons/view.svg";
 import ActivityBox from "./ActivityBox/ActivityBox";
 import * as S from "./Card.styled";
+import PlatformList from "./PlatformList/PlatformList";
 import TechStackList from "./TechStackList/TechStackList";
 
 function Card() {
@@ -11,16 +12,11 @@ function Card() {
       <S.CardLink to="/list">
         <S.CardImageBox>
           <S.CardImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxpHj-C91UtW23X_jH7TDSFaG9Q3GlsqB_sw&s" />
+          <PlatformList platforms={["1"]} />
         </S.CardImageBox>
         <S.CardInfo>
-          <S.CardTitle>
-            모아온모아온모아온모아온모아온모아온모아온모아온모아온모아온
-          </S.CardTitle>
-          <S.CardSummary>
-            프로젝트를 모아 모아 모아온 프로젝트를 모아 모아 모아온 프로젝트를
-            모아 모아 모프로젝트를 모아 모아 모아온 프로젝트를 모아 모아 모아온
-            프로젝트를 모아 모아 모
-          </S.CardSummary>
+          <S.CardTitle>모아온</S.CardTitle>
+          <S.CardSummary>프로젝트를 모아 모아 모아온</S.CardSummary>
           <TechStackList techStacks={["1", "2", "", "1", ""]} />
           <S.CardFooter>
             <S.GroupText>우아한테크코스</S.GroupText>
