@@ -41,7 +41,8 @@ export const CardInfo = styled.div`
 
 export const CardTitle = styled.h2`
   font-size: 1.25rem;
-  margin: 0.25rem 0 0.75rem;
+  margin: 0.25rem 0;
+  line-height: 1.5;
   ${textOverflowEllipsis(1)}
 `;
 
