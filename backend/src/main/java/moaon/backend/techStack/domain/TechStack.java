@@ -24,4 +24,8 @@ public class TechStack {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    public TechStack(String name) {
+        this.name = name;
+    }
 }

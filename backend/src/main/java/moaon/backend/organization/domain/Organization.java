@@ -1,4 +1,4 @@
-package moaon.backend.group.domain;
+package moaon.backend.organization.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,4 +25,8 @@ public class Organization extends BaseTimeEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    public Organization(String name) {
+        this.name = name;
+    }
 }

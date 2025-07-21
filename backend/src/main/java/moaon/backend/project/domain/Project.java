@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.category.domain.Category;
 import moaon.backend.global.domain.BaseTimeEntity;
-import moaon.backend.group.domain.Organization;
+import moaon.backend.member.domain.Member;
+import moaon.backend.organization.domain.Organization;
 import moaon.backend.platform.domain.Platform;
 import moaon.backend.techStack.domain.TechStack;
-import moaon.backend.user.domain.Member;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -48,7 +48,7 @@ public class Project extends BaseTimeEntity {
     private String productionUrl;
 
     @Embedded
-    private Images imageUrls;
+    private Images images;
 
     @Column
     private int views;
@@ -67,4 +67,35 @@ public class Project extends BaseTimeEntity {
 
     @ManyToMany
     private List<Platform> platforms;
+    
+    public Project(
+            String title,
+            String summary,
+            String description,
+            String githubUrl,
+            String productionUrl,
+            Images images,
+            Organization organization,
+            Member author,
+            List<TechStack> techStacks,
+            List<Category> categories,
+            List<Platform> platforms
+    ) {
+        this.title = title;
+        this.summary = summary;
+        this.description = description;
+        this.githubUrl = githubUrl;
+        this.productionUrl = productionUrl;
+        this.images = images;
+        this.views = 0;
+        this.organization = organization;
+        this.author = author;
+        this.techStacks = techStacks;
+        this.categories = categories;
+        this.platforms = platforms;
+    }
+
+    public void addViewCount() {
+        views++;
+    }
 }
