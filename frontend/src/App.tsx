@@ -1,12 +1,11 @@
 import { Route, Routes } from "react-router";
+import ListPage from "./pages/list/ListPage";
 
 function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<h1>모아온 테스트 - 2025년 07월 14일 10:08</h1>}
-      />
+      <Route path="/" element={<a href="/list">리스트 페이지 이동</a>} />
+      <Route path="/list" element={<ListPage />} />
     </Routes>
   );
 }
