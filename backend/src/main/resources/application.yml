@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    default: local
+
+  application:
+    name: backend
+
+  jpa:
+    database: mysql
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.hibernate.orm.jdbc.bind: trace

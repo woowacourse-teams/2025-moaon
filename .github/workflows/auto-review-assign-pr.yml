@@ -1,0 +1,67 @@
+name: 리뷰 설정 자동 지정
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  assign:
+    # 포크 PR이 아닌 경우에만 실행
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 리뷰어 및 라벨 설정
+        id: set_reviewers
+        run: |
+          FE_MEMBERS=("eunoia-jaxson" "jin123457" "mlnwns" "wo-o29")
+          BE_MEMBERS=("yesjuhee" "Minuring" "eueo8259" "minjae8563")
+          AUTHOR="${{ github.actor }}"
+
+          FE_REVIEWERS=()
+          BE_REVIEWERS=()
+          LABELS=""
+
+          for user in "${FE_MEMBERS[@]}"; do
+            if [[ "$user" != "$AUTHOR" ]]; then
+              FE_REVIEWERS+=("$user")
+            fi
+          done
+
+          for user in "${BE_MEMBERS[@]}"; do
+            if [[ "$user" != "$AUTHOR" ]]; then
+              BE_REVIEWERS+=("$user")
+            fi
+          done
+
+           if printf '%s\n' "${FE_MEMBERS[@]}" | grep -qx "$AUTHOR"; then
+             REVIEWERS="${FE_REVIEWERS[*]}"
+             LABELS="FE"
+           elif printf '%s\n' "${BE_MEMBERS[@]}" | grep -qx "$AUTHOR"; then
+             REVIEWERS="${BE_REVIEWERS[*]}"
+             LABELS="BE"
+           else
+             REVIEWERS=""
+             LABELS=""
+           fi
+
+           REVIEWERS_CSV=$(echo $REVIEWERS | tr ' ' ',')
+           echo "reviewers=$REVIEWERS_CSV" >> $GITHUB_OUTPUT
+           echo "labels=$LABELS" >> $GITHUB_OUTPUT
+
+      - name: 담당자 및 리뷰어 지정
+        uses: hkusu/review-assign-action@v1
+        with:
+          assignees: ${{ github.actor }}
+          reviewers: ${{ steps.set_reviewers.outputs.reviewers }}
+
+      - name: 라벨 자동 추가
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          labels: ${{ steps.set_reviewers.outputs.labels }}
