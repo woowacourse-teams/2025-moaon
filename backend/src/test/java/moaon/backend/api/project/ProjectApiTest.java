@@ -84,7 +84,6 @@ public class ProjectApiTest {
                 "깃허브 URL",
                 "프로덕션 URL",
                 new Images(List.of("이미지 URL1", "이미지 URL2")),
-                0,
                 organization,
                 member,
                 List.of(techStack1, techStack2, techStack3, techStack4),

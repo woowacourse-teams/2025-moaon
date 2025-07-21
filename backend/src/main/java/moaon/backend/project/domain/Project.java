@@ -67,7 +67,7 @@ public class Project extends BaseTimeEntity {
 
     @ManyToMany
     private List<Platform> platforms;
-
+    
     public Project(
             String title,
             String summary,
@@ -75,7 +75,6 @@ public class Project extends BaseTimeEntity {
             String githubUrl,
             String productionUrl,
             Images images,
-            int views,
             Organization organization,
             Member author,
             List<TechStack> techStacks,
@@ -88,7 +87,7 @@ public class Project extends BaseTimeEntity {
         this.githubUrl = githubUrl;
         this.productionUrl = productionUrl;
         this.images = images;
-        this.views = views;
+        this.views = 0;
         this.organization = organization;
         this.author = author;
         this.techStacks = techStacks;
