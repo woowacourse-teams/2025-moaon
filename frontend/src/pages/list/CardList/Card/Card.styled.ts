@@ -9,7 +9,7 @@ export const Card = styled.li`
   overflow: hidden;
 
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 123, 255, 0.3) 0px 10px 36px 0px, rgba(0, 123, 255, 0.3) 0px 0px 0px 1px;
     transition: 0.5s linear;
 
     & img {
