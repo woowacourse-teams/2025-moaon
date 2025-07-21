@@ -69,11 +69,18 @@ public class Project extends BaseTimeEntity {
     private List<Platform> platforms;
 
     public Project(
-            String title, String summary, String description,
-            String githubUrl, String productionUrl, Images images,
+            String title,
+            String summary,
+            String description,
+            String githubUrl,
+            String productionUrl,
+            Images images,
             int views,
-            Organization organization, Member author,
-            List<TechStack> techStacks, List<Category> categories, List<Platform> platforms
+            Organization organization,
+            Member author,
+            List<TechStack> techStacks,
+            List<Category> categories,
+            List<Platform> platforms
     ) {
         this.title = title;
         this.summary = summary;
