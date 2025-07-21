@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - pwd
+      - ls -al
+      - cd frontend
+      - npm install -g pnpm
+      - pnpm install
+
+  build:
+    commands:
+      - pnpm run build
+      - pwd
+      - ls -al dist
+
+artifacts:
+  base-directory: frontend/dist
+  files:
+    - "**/*"
