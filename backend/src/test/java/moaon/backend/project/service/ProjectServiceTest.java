@@ -3,8 +3,8 @@ package moaon.backend.project.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
-import moaon.backend.global.exception.custom.NotFoundException;
 import moaon.backend.project.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class ProjectServiceTest {
     @Test
     void getProjectById() {
         assertThatThrownBy(() -> projectService.getById(1L))
-                .isInstanceOf(NotFoundException.class)
+                .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
 }

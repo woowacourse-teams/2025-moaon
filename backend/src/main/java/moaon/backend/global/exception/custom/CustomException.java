@@ -1,8 +1,9 @@
 package moaon.backend.global.exception.custom;
 
-import org.springframework.http.HttpStatus;
+import lombok.Getter;
 
-public abstract class CustomException extends RuntimeException {
+@Getter
+public class CustomException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
@@ -10,10 +11,4 @@ public abstract class CustomException extends RuntimeException {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
-
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
-
-    public abstract HttpStatus getStatus();
 }
