@@ -63,4 +63,48 @@ public class RepositoryTestHelper {
                 List.of(platform)
         ));
     }
+
+    public Project saveProjectWithFilterConditions(
+            String title,
+            String summary,
+            String description
+    ) {
+        return saveProjectWithFilterConditions(
+                title,
+                summary,
+                description,
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
+        );
+    }
+
+    public Project saveProjectWithFilterConditions(
+            String title,
+            String summary,
+            String description,
+            List<TechStack> techStacks,
+            List<Category> categories,
+            List<Platform> platforms
+    ) {
+        Organization organization = organizationRepository.save(Fixture.anyOrganization());
+        Member member = memberRepository.save(Fixture.anyMember());
+        techStackRepository.saveAll(techStacks);
+        categoryRepository.saveAll(categories);
+        platformRepository.saveAll(platforms);
+
+        return projectRepository.save(new Project(
+                title,
+                summary,
+                description,
+                "깃허브 URL",
+                "프로덕션 URL",
+                new Images(List.of("이미지 URL1", "이미지 URL2")),
+                organization,
+                member,
+                techStacks,
+                categories,
+                platforms
+        ));
+    }
 }
