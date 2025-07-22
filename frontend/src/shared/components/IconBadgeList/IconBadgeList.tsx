@@ -1,3 +1,4 @@
+import { PLATFORM_ICON_MAP, TECH_ICON_MAP } from "./constants/iconMap";
 import IconBadge from "./IconBadge/IconBadge";
 import * as S from "./IconBadgeList.styled";
 
@@ -5,55 +6,18 @@ interface IconBadgeListProps {
   iconBadges: string[];
 }
 
-const techIconMap: Record<string, { label: string; imgUrl: string }> = {
-  react: {
-    label: "React",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/React.svg",
-  },
-  javascript: {
-    label: "JavaScript",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/JavaScript.svg",
-  },
-  typescript: {
-    label: "TypeScript",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  nextjs: {
-    label: "Next.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/NextJS.svg",
-  },
-};
-
-const platformIconMap: Record<string, { label: string; imgUrl: string }> = {
-  web: {
-    label: "Web",
-    imgUrl: "https://cdn-icons-png.flaticon.com/512/1006/1006771.png",
-  },
-  desktop: {
-    label: "Desktop",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  ios: {
-    label: "iOS",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/React.svg",
-  },
-  android: {
-    label: "Android",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/NextJS.svg",
-  },
-};
-
-const all = {
-  ...techIconMap,
-  ...platformIconMap,
+const iconBadgeMap: Record<string, { label: string; imgUrl: string }> = {
+  ...TECH_ICON_MAP,
+  ...PLATFORM_ICON_MAP,
 };
 
 function IconBadgeList({ iconBadges }: IconBadgeListProps) {
   return (
     <S.IconBadgeList>
-      {iconBadges.map((iconBadge) => {
-        const { label, imgUrl } = all[iconBadge];
-        return <IconBadge key={iconBadge} label={label} imgUrl={imgUrl} />;
+      {iconBadges.map((key) => {
+        const data = iconBadgeMap[key.toLowerCase()];
+        if (!data) return null;
+        return <IconBadge key={key} label={data.label} imgUrl={data.imgUrl} />;
       })}
     </S.IconBadgeList>
   );
