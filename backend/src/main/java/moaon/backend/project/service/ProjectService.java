@@ -2,21 +2,17 @@ package moaon.backend.project.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.category.domain.Category;
 import moaon.backend.category.repository.CategoryRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.love.repository.LoveRepository;
-import moaon.backend.organization.domain.Organization;
 import moaon.backend.organization.repository.OrganizationRepository;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.platform.repository.PlatformRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.repository.ProjectRepository;
-import moaon.backend.techStack.domain.TechStack;
 import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,17 +47,12 @@ public class ProjectService {
             List<String> organizationNames,
             List<String> techStackNames
     ) {
-        List<Platform> platforms = platformRepository.findAllByNameIn(platformNames);
-        List<Category> categories = categoryRepository.findAllByNameIn(categoryNames);
-        List<Organization> organizations = organizationRepository.findAllByNameIn(organizationNames);
-        List<TechStack> techStacks = techStackRepository.findAllByNameIn(techStackNames);
-
         ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(
                 search,
-                platforms,
-                categories,
-                organizations,
-                techStacks
+                platformNames,
+                categoryNames,
+                organizationNames,
+                techStackNames
         );
         List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
 

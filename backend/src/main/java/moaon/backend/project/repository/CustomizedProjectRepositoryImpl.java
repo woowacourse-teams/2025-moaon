@@ -6,12 +6,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.category.domain.Category;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.techStack.domain.TechStack;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -23,19 +19,13 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     @Override
     public List<Project> findWithSearchConditions(ProjectQueryCondition projectQueryCondition) {
-        String search = projectQueryCondition.search();
-        List<Platform> platforms = projectQueryCondition.platforms();
-        List<Category> categories = projectQueryCondition.categories();
-        List<Organization> organizations = projectQueryCondition.organizations();
-        List<TechStack> techStacks = projectQueryCondition.techStacks();
-
         return jpaQueryFactory.selectFrom(project)
                 .where(
-                        toContainsSearch(search),
-                        toContainsPlatform(platforms),
-                        toContainsCategory(categories),
-                        toContainsOrganization(organizations),
-                        toContainsTechStacks(techStacks)
+                        toContainsSearch(projectQueryCondition.search()),
+                        toContainsPlatform(projectQueryCondition.platformNames()),
+                        toContainsCategory(projectQueryCondition.categoryNames()),
+                        toContainsOrganization(projectQueryCondition.organizationNames()),
+                        toContainsTechStacks(projectQueryCondition.techStackNames())
                 )
                 .fetch();
     }
@@ -52,41 +42,41 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         return booleanBuilder;
     }
 
-    private BooleanBuilder toContainsPlatform(List<Platform> platforms) {
+    private BooleanBuilder toContainsPlatform(List<String> platformNames) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if (platforms != null && !platforms.isEmpty()) {
-            return booleanBuilder.and(project.platforms.any().in(platforms));
+        if (platformNames != null && !platformNames.isEmpty()) {
+            return booleanBuilder.and(project.platforms.any().name.in(platformNames));
         }
 
         return booleanBuilder;
     }
 
-    private BooleanBuilder toContainsCategory(List<Category> categories) {
+    private BooleanBuilder toContainsCategory(List<String> categoryNames) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if (categories != null && !categories.isEmpty()) {
-            return booleanBuilder.and(project.categories.any().in(categories));
+        if (categoryNames != null && !categoryNames.isEmpty()) {
+            return booleanBuilder.and(project.categories.any().name.in(categoryNames));
         }
 
         return booleanBuilder;
     }
 
-    private BooleanBuilder toContainsOrganization(List<Organization> organizations) {
+    private BooleanBuilder toContainsOrganization(List<String> organizationNames) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if (organizations != null && !organizations.isEmpty()) {
-            return booleanBuilder.and(project.organization.in(organizations));
+        if (organizationNames != null && !organizationNames.isEmpty()) {
+            return booleanBuilder.and(project.organization.name.in(organizationNames));
         }
 
         return booleanBuilder;
     }
 
-    private BooleanBuilder toContainsTechStacks(List<TechStack> techStacks) {
+    private BooleanBuilder toContainsTechStacks(List<String> techStackNames) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if (techStacks != null && !techStacks.isEmpty()) {
-            return booleanBuilder.and(project.techStacks.any().in(techStacks));
+        if (techStackNames != null && !techStackNames.isEmpty()) {
+            return booleanBuilder.and(project.techStacks.any().name.in(techStackNames));
         }
 
         return booleanBuilder;
