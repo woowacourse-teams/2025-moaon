@@ -1,4 +1,4 @@
-import Carousel from "./components/carousel/Carousel";
+import Carousel from "./components/Carousel/Carousel";
 
 function DetailPage() {
   return (

@@ -11,7 +11,7 @@ export const CarouselContainer = styled.div`
 `;
 
 const CarouselImage = styled.img`
-  border-radius: 25px;
+  border-radius: 25p;
   background-color: black;
   object-fit: contain;
 
@@ -87,5 +87,5 @@ export const NextButton = styled(MoveButton)`
 `;
 
 export const PrevButton = styled(MoveButton)`
-  left: -1.25rem;
+  left: -20px;
 `;
