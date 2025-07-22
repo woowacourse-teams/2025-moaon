@@ -39,15 +39,15 @@ public class RepositoryTestHelper {
     private ProjectRepository projectRepository;
 
     public Project saveAnyProject() {
-        Organization organization = organizationRepository.save(Fixture.anyOrganization());
-        Member member = memberRepository.save(Fixture.anyMember());
-        TechStack techStack1 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack2 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack3 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack4 = techStackRepository.save(Fixture.anyTechStack());
-        Category category1 = categoryRepository.save(Fixture.anyCategory());
-        Category category2 = categoryRepository.save(Fixture.anyCategory());
-        Platform platform = platformRepository.save(Fixture.anyPlatform());
+        Organization organization = organizationRepository.save(SequenceFixture.anyOrganization());
+        Member member = memberRepository.save(SequenceFixture.anyMember());
+        TechStack techStack1 = techStackRepository.save(SequenceFixture.anyTechStack());
+        TechStack techStack2 = techStackRepository.save(SequenceFixture.anyTechStack());
+        TechStack techStack3 = techStackRepository.save(SequenceFixture.anyTechStack());
+        TechStack techStack4 = techStackRepository.save(SequenceFixture.anyTechStack());
+        Category category1 = categoryRepository.save(SequenceFixture.anyCategory());
+        Category category2 = categoryRepository.save(SequenceFixture.anyCategory());
+        Platform platform = platformRepository.save(SequenceFixture.anyPlatform());
 
         return projectRepository.save(new Project(
                 "제목",
@@ -64,31 +64,51 @@ public class RepositoryTestHelper {
         ));
     }
 
-    public Project saveProjectWithFilterConditions(
+    public Project saveProjectWithSearchConditions(
             String title,
             String summary,
             String description
     ) {
-        return saveProjectWithFilterConditions(
+        return saveProjectWithRequiredFields(
                 title,
                 summary,
                 description,
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
+                SequenceFixture.anyOrganization(),
+                List.of(SequenceFixture.anyTechStack()),
+                List.of(SequenceFixture.anyCategory()),
+                List.of(SequenceFixture.anyPlatform())
         );
     }
 
     public Project saveProjectWithFilterConditions(
-            String title,
-            String summary,
-            String description,
+            Organization organization,
             List<TechStack> techStacks,
             List<Category> categories,
             List<Platform> platforms
     ) {
-        Organization organization = organizationRepository.save(Fixture.anyOrganization());
-        Member member = memberRepository.save(Fixture.anyMember());
+        return saveProjectWithRequiredFields(
+                "제목",
+                "요약",
+                "설명",
+                organization,
+                techStacks,
+                categories,
+                platforms
+        );
+    }
+
+
+    public Project saveProjectWithRequiredFields(
+            String title,
+            String summary,
+            String description,
+            Organization organization,
+            List<TechStack> techStacks,
+            List<Category> categories,
+            List<Platform> platforms
+    ) {
+        organizationRepository.save(organization);
+        Member member = memberRepository.save(SequenceFixture.anyMember());
         techStackRepository.saveAll(techStacks);
         categoryRepository.saveAll(categories);
         platformRepository.saveAll(platforms);

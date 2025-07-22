@@ -1,29 +1,28 @@
 package moaon.backend.api.project;
 
+import static moaon.backend.fixture.ConstantFixture.CATEGORY1;
+import static moaon.backend.fixture.ConstantFixture.CATEGORY2;
+import static moaon.backend.fixture.ConstantFixture.ORGANIZATION1;
+import static moaon.backend.fixture.ConstantFixture.ORGANIZATION2;
+import static moaon.backend.fixture.ConstantFixture.PLATFORM1;
+import static moaon.backend.fixture.ConstantFixture.PLATFORM2;
+import static moaon.backend.fixture.ConstantFixture.PLATFORM3;
+import static moaon.backend.fixture.ConstantFixture.TECH_STACK1;
+import static moaon.backend.fixture.ConstantFixture.TECH_STACK2;
+import static moaon.backend.fixture.ConstantFixture.TECH_STACK3;
+import static moaon.backend.fixture.ConstantFixture.TECH_STACK4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import java.util.List;
-import moaon.backend.category.domain.Category;
-import moaon.backend.category.repository.CategoryRepository;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.love.domain.Love;
-import moaon.backend.love.repository.LoveRepository;
-import moaon.backend.member.domain.Member;
-import moaon.backend.member.repository.MemberRepository;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.organization.repository.OrganizationRepository;
 import moaon.backend.platform.domain.Platform;
-import moaon.backend.platform.repository.PlatformRepository;
-import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectSummaryResponse;
-import moaon.backend.project.repository.ProjectRepository;
 import moaon.backend.techStack.domain.TechStack;
-import moaon.backend.techStack.repository.TechStackRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,29 +43,7 @@ public class ProjectApiTest {
     private int port;
 
     @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
-    private OrganizationRepository organizationRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private TechStackRepository techStackRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private PlatformRepository platformRepository;
-
-    @Autowired
-    private LoveRepository loveRepository;
-
-    @Autowired
     private RepositoryTestHelper repositoryTestHelper;
-
 
     @BeforeEach
     void setUp() {
@@ -77,29 +54,7 @@ public class ProjectApiTest {
     @Test
     void findProject() {
         // given
-        Organization organization = organizationRepository.save(new Organization("그룹명"));
-        Member member = memberRepository.save(new Member("글쓴이"));
-        TechStack techStack1 = techStackRepository.save(new TechStack("java"));
-        TechStack techStack2 = techStackRepository.save(new TechStack("javaScript"));
-        TechStack techStack3 = techStackRepository.save(new TechStack("springBoot"));
-        TechStack techStack4 = techStackRepository.save(new TechStack("mysql"));
-        Category category1 = categoryRepository.save(new Category("sports"));
-        Category category2 = categoryRepository.save(new Category("book"));
-        Platform platform = platformRepository.save(new Platform("web"));
-        Project project = projectRepository.save(new Project(
-                "제목",
-                "한 줄 소개",
-                "상세 설명",
-                "깃허브 URL",
-                "프로덕션 URL",
-                new Images(List.of("이미지 URL1", "이미지 URL2")),
-                organization,
-                member,
-                List.of(techStack1, techStack2, techStack3, techStack4),
-                List.of(category1, category2),
-                List.of(platform)
-        ));
-        loveRepository.save(new Love(project, member));
+        Project project = repositoryTestHelper.saveAnyProject();
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
@@ -110,13 +65,15 @@ public class ProjectApiTest {
 
         // then
         assertAll(
-                () -> assertThat(actualResponse.title()).isEqualTo("제목"),
-                () -> assertThat(actualResponse.summary()).isEqualTo("한 줄 소개"),
-                () -> assertThat(actualResponse.description()).isEqualTo("상세 설명"),
-                () -> assertThat(actualResponse.techStacks()).contains("java", "javaScript", "springBoot", "mysql"),
-                () -> assertThat(actualResponse.organization()).isEqualTo("그룹명"),
-                () -> assertThat(actualResponse.platforms()).contains("web"),
-                () -> assertThat(actualResponse.loves()).isEqualTo(1),
+                () -> assertThat(actualResponse.title()).isEqualTo(project.getTitle()),
+                () -> assertThat(actualResponse.summary()).isEqualTo(project.getSummary()),
+                () -> assertThat(actualResponse.description()).isEqualTo(project.getDescription()),
+                () -> assertThat(actualResponse.techStacks())
+                        .isEqualTo(project.getTechStacks().stream().map(TechStack::getName).toList()),
+                () -> assertThat(actualResponse.organization()).isEqualTo(project.getOrganization().getName()),
+                () -> assertThat(actualResponse.platforms())
+                        .isEqualTo(project.getPlatforms().stream().map(Platform::getName).toList()),
+                () -> assertThat(actualResponse.loves()).isEqualTo(0),
                 () -> assertThat(actualResponse.views()).isEqualTo(1)
         );
     }
@@ -142,6 +99,53 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project1, 0)),
                 () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2, 0)),
                 () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project3, 0))
+        );
+    }
+
+    @DisplayName("GET /projects : 모든 프로젝트 조회 API + 필터")
+    @Test
+    void getAllProjects2() {
+        // given
+        Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
+                ORGANIZATION1,
+                List.of(TECH_STACK1, TECH_STACK2, TECH_STACK3, TECH_STACK4),
+                List.of(CATEGORY1),
+                List.of(PLATFORM1)
+        );
+        Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
+                ORGANIZATION1,
+                List.of(TECH_STACK1, TECH_STACK2, TECH_STACK3, TECH_STACK4),
+                List.of(CATEGORY1, CATEGORY2),
+                List.of(PLATFORM3)
+        );
+        Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
+                ORGANIZATION1,
+                List.of(TECH_STACK3, TECH_STACK4),
+                List.of(CATEGORY1, CATEGORY2),
+                List.of(PLATFORM2)
+        );
+        Project project4 = repositoryTestHelper.saveProjectWithFilterConditions(
+                ORGANIZATION1,
+                List.of(TECH_STACK1, TECH_STACK2, TECH_STACK3, TECH_STACK4),
+                List.of(CATEGORY1),
+                List.of(PLATFORM2)
+        );
+
+        // when
+        ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
+                .queryParams("platforms", List.of(PLATFORM1.getName(), PLATFORM2.getName()))
+                .queryParams("categories", List.of(CATEGORY1.getName(), CATEGORY2.getName()))
+                .queryParams("organizations", List.of(ORGANIZATION1.getName(), ORGANIZATION2.getName()))
+                .queryParams("techStacks", List.of(TECH_STACK1.getName(), TECH_STACK2.getName()))
+                .when().get("/projects")
+                .then().log().all()
+                .statusCode(200)
+                .extract().as(ProjectSummaryResponse[].class);
+
+        // then
+        assertAll(
+                () -> assertThat(actualResponses[0].id()).isEqualTo(project1.getId()),
+                () -> assertThat(actualResponses[1].id()).isEqualTo(project4.getId())
         );
     }
 }

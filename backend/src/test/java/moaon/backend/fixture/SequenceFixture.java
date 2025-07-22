@@ -7,7 +7,7 @@ import moaon.backend.organization.domain.Organization;
 import moaon.backend.platform.domain.Platform;
 import moaon.backend.techStack.domain.TechStack;
 
-public class Fixture {
+public class SequenceFixture {
 
     private static final AtomicLong SEQUENCE = new AtomicLong(0L);
 
