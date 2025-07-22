@@ -2,15 +2,16 @@ import styled from "@emotion/styled";
 
 export const CarouselContainer = styled.div`
   width: 100%;
+  height: 31.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  gap: 24px;
   position: relative;
 `;
 
 const CarouselImage = styled.img`
-  border-radius: 25px;
+  border-radius: 1.5625rem;
   background-color: black;
   object-fit: contain;
 
@@ -20,37 +21,70 @@ const CarouselImage = styled.img`
   -o-user-drag: none;
 `;
 
-export const CurrentImage = styled(CarouselImage)`
-  width: 45rem;
-  height: 25rem;
+export const Image = styled(CarouselImage)<{
+  position: "current" | "next" | "prev" | "hidden";
+  noTransition?: boolean;
+}>`
+  position: absolute;
+  transition: ${({ noTransition }) =>
+    noTransition ? "none" : "all 0.5s ease-in-out"};
 
-`;
-
-export const NextImage = styled(CarouselImage)`
-  width: 27.5rem;
-  height: 15.5rem;
-  opacity: 0.5;
+  ${({ position }) => {
+    switch (position) {
+      case "current":
+        return `
+        width: 45rem;
+        height: 25rem;
+        opacity: 1;
+        transform: translateX(-12.5rem);
+        z-index: 1;
+      `;
+      case "next":
+        return `
+        width: 27.5rem;
+        height: 15.5rem;
+        opacity: 0.5;
+        transform: translateX(25rem);
+        z-index: 1;
+      `;
+      case "prev":
+        return `
+        width: 27.5rem;
+        height: 15.5rem;
+        opacity: 0.5;
+        transform: translateX(-12.5rem);
+        z-index: 0;
+      `;
+      case "hidden":
+        return `
+        width: 27.5rem;
+        height: 15.5rem;
+        opacity: 0;
+        transform: translateX(43.75rem);
+        z-index: -1;
+      `;
+    }
+  }}
 `;
 
 const MoveButton = styled.button`
   position: absolute;
-  top: 50%;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 1.5rem;
+  width: 3.125rem;
+  height: 3.125rem;
+  font-size: 24px;
   background-color: #6a6a6aff;
   color: #fff;
-  
+
   &:hover {
     background-color: #1f1f1fff;
   }
 `;
 
 export const NextButton = styled(MoveButton)`
-  right: 3.125rem;
+  right: 50px;
 `;
 
 export const PrevButton = styled(MoveButton)`
-  left: 3.125rem;
+  left: 50px;
 `;

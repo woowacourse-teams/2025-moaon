@@ -16,13 +16,31 @@ function Carousel() {
   });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
 
+  const getImagePosition = (index: number) => {
+    const nextIndex = (currentImageIndex + 1) % images.length;
+    const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
+
+    if (index === currentImageIndex) return "current";
+    if (index === nextIndex) return "next";
+    if (index === prevIndex) return "prev";
+    return "hidden";
+  };
+
   return (
     <S.CarouselContainer>
-      <S.CurrentImage src={images[currentImageIndex]} alt="img" />
-      <S.NextImage
-        src={images[(currentImageIndex + 1) % images.length]}
-        alt="img"
-      />
+      {images.map((image, index) => {
+        const imagePosition = getImagePosition(index);
+
+        return (
+          <S.Image
+            key={image}
+            src={image}
+            alt={`Slide ${index + 1}`}
+            position={imagePosition}
+            noTransition={imagePosition === "hidden"}
+          />
+        );
+      })}
       <S.PrevButton onClick={handleSlidePrev}>❮</S.PrevButton>
       <S.NextButton onClick={handleSlideNext}>❯</S.NextButton>
     </S.CarouselContainer>
