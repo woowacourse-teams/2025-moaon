@@ -28,12 +28,12 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
     private BooleanBuilder toContainsSearch(String search) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        if (!StringUtils.hasText(search)) {
-            return booleanBuilder;
+        if (StringUtils.hasText(search)) {
+            return booleanBuilder.or(project.title.contains(search)
+                    .or(project.summary.contains(search))
+                    .or(project.description.contains(search)));
         }
 
-        return booleanBuilder.or(project.title.contains(search)
-                .or(project.summary.contains(search))
-                .or(project.description.contains(search)));
+        return booleanBuilder;
     }
 }
