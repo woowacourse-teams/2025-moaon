@@ -11,7 +11,7 @@ export const CarouselContainer = styled.div`
 `;
 
 const CarouselImage = styled.img`
-  border-radius: 25p;
+  border-radius: 25px;
   background-color: black;
   object-fit: contain;
 
