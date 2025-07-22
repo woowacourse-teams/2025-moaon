@@ -1,7 +1,7 @@
 package moaon.backend.project.dto;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
@@ -39,15 +39,8 @@ public record ProjectSummaryResponse(
     }
 
     public static List<ProjectSummaryResponse> from(List<Project> projects, List<Integer> loves) {
-        List<ProjectSummaryResponse> responses = new ArrayList<>();
-
-        for (int i = 0; i < projects.size(); i++) {
-            Project project = projects.get(i);
-            Integer love = loves.get(i);
-            ProjectSummaryResponse projectSummaryResponse = from(project, love);
-            responses.add(projectSummaryResponse);
-        }
-
-        return responses;
+        return IntStream.range(0, projects.size())
+                .mapToObj(index -> from(projects.get(index), loves.get(index)))
+                .toList();
     }
 }
