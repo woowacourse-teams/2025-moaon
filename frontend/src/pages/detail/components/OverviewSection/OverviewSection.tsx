@@ -2,7 +2,7 @@ import SectionTitle from "../SectionTitle";
 import * as S from "./OverviewSection.styled";
 
 interface OverviewSectionProps {
-  overview: string;
+  overview?: string;
 }
 
 function OverviewSection({ overview }: OverviewSectionProps) {
@@ -10,7 +10,7 @@ function OverviewSection({ overview }: OverviewSectionProps) {
     <S.OverviewSectionContainer>
       <SectionTitle text="프로젝트 개요" />
       <S.OverviewContent>
-        {overview}
+        {overview || null}
         1. 프로젝트명
         <br />
         우리가 만들고자 하는 서비스의 이름과 한 줄 설명. 프로젝트의 정체성과
