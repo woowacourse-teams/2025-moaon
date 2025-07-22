@@ -1,7 +1,7 @@
-import Carousel from "./components/carousel/Carousel";
+import Carousel from "./components/Carousel/Carousel";
 import TitleSection from "./components/TitleSection/TitleSection";
 import OverviewSection from "./components/OverviewSection/OverviewSection";
-import Carousel from "./components/Carousel/Carousel";
+import PlatformSection from "./components/PlatformSection/PlatformSection";
 import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
 
 function DetailPage() {
@@ -10,26 +10,8 @@ function DetailPage() {
       <TitleSection />
       <Carousel />
       <OverviewSection />
-      <TechStacksSection
-        techStacks={[
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-          "1",
-          "2",
-          "3",
-          "4",
-        ]}
-      />
+      <TechStacksSection techStacks={["react"]} />
+      <PlatformSection platforms={["web"]} />
     </div>
   );
 }
