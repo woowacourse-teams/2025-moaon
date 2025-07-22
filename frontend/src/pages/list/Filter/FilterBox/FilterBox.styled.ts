@@ -1,0 +1,16 @@
+import styled from "@emotion/styled";
+
+export const Container = styled.div`
+  position: absolute;
+  top: 50px;
+  left: 0;
+  border: 1px solid #d2d2d2;
+  padding: 24px;
+  background: #fff;
+  z-index: 998;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 25rem;
+`;
