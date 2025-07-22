@@ -8,4 +8,5 @@ export const SectionTitle = styled.h2`
 
 export const Divider = styled.div`
   border: 1px solid #d2d2d2;
+  margin-bottom: 1.5rem;
 `;
