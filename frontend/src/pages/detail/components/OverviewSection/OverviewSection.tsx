@@ -1,11 +1,16 @@
 import SectionTitle from "../SectionTitle";
 import * as S from "./OverviewSection.styled";
 
-function OverviewSection() {
+interface OverviewSectionProps {
+  overview: string;
+}
+
+function OverviewSection({ overview }: OverviewSectionProps) {
   return (
     <S.OverviewSectionContainer>
       <SectionTitle text="프로젝트 개요" />
       <S.OverviewContent>
+        {overview}
         1. 프로젝트명
         <br />
         우리가 만들고자 하는 서비스의 이름과 한 줄 설명. 프로젝트의 정체성과
