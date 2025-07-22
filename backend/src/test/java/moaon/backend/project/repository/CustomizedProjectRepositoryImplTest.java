@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.love.domain.Love;
-import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.SortBy;
@@ -28,9 +26,6 @@ class CustomizedProjectRepositoryImplTest {
 
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;
-
-    @Autowired
-    private LoveRepository loveRepository;
 
     @DisplayName("조건 없이 모든 프로젝트를 조회한다.")
     @Test
@@ -135,19 +130,17 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByLove() {
         // given
-
         Project low = repositoryTestHelper.saveAnyProject();
         Project middle = repositoryTestHelper.saveAnyProject();
         Project high = repositoryTestHelper.saveAnyProject();
 
         Member author1 = low.getAuthor();
         Member author2 = middle.getAuthor();
-        Member author3 = high.getAuthor();
 
-        loveRepository.save(new Love(high, author1));
-        loveRepository.save(new Love(high, author2));
+        high.addLovedMember(author1);
+        high.addLovedMember(author2);
 
-        loveRepository.save(new Love(middle, author3));
+        middle.addLovedMember(author1);
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(

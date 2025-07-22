@@ -10,8 +10,6 @@ import moaon.backend.category.domain.Category;
 import moaon.backend.category.repository.CategoryRepository;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.love.domain.Love;
-import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.organization.domain.Organization;
@@ -63,11 +61,7 @@ public class ProjectApiTest {
     private PlatformRepository platformRepository;
 
     @Autowired
-    private LoveRepository loveRepository;
-
-    @Autowired
     private RepositoryTestHelper repositoryTestHelper;
-
 
     @BeforeEach
     void setUp() {
@@ -101,11 +95,10 @@ public class ProjectApiTest {
                 List.of(platform),
                 LocalDateTime.now()
         ));
-        loveRepository.save(new Love(project, member));
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
-                .when().get("/projects/1")
+                .when().get("/projects/" + project.getId())
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ProjectDetailResponse.class);
@@ -118,7 +111,7 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponse.techStacks()).contains("java", "javaScript", "springBoot", "mysql"),
                 () -> assertThat(actualResponse.organization()).isEqualTo("그룹명"),
                 () -> assertThat(actualResponse.platforms()).contains("web"),
-                () -> assertThat(actualResponse.loves()).isEqualTo(1),
+                () -> assertThat(actualResponse.loves()).isEqualTo(0),
                 () -> assertThat(actualResponse.views()).isEqualTo(1)
         );
     }
@@ -141,9 +134,9 @@ public class ProjectApiTest {
         // then
         assertAll(
                 () -> assertThat(actualResponses).hasSize(3),
-                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project3, 0)),
-                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2, 0)),
-                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project1, 0))
+                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project3)),
+                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2)),
+                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project1))
         );
     }
 }

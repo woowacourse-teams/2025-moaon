@@ -1,6 +1,5 @@
 package moaon.backend.project.repository;
 
-import static moaon.backend.love.domain.QLove.love;
 import static moaon.backend.project.domain.QProject.project;
 
 import com.querydsl.core.BooleanBuilder;
@@ -28,8 +27,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
         return jpaQueryFactory.selectFrom(project)
                 .where(toContainsSearch(search))
-                .leftJoin(love).on(love.project.eq(project))
-                .groupBy(project.id)
                 .orderBy(toOrderBy(sortBy))
                 .fetch();
     }
@@ -52,7 +49,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
 
         if (sortBy == SortBy.LOVES) {
-            return new OrderSpecifier<>(Order.DESC, love.count());
+            return new OrderSpecifier<>(Order.DESC, project.lovedMembers.size());
         }
 
         return new OrderSpecifier<>(Order.DESC, project.createdAt);

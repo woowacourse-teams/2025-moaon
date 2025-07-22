@@ -65,6 +65,9 @@ public class Project extends BaseTimeEntity {
     private Member author;
 
     @ManyToMany
+    private List<Member> lovedMembers;
+
+    @ManyToMany
     private List<TechStack> techStacks;
 
     @ManyToMany
@@ -96,6 +99,7 @@ public class Project extends BaseTimeEntity {
         this.views = 0;
         this.organization = organization;
         this.author = author;
+        this.lovedMembers = new ArrayList<>();
         this.techStacks = new ArrayList<>(techStacks);
         this.categories = new ArrayList<>(categories);
         this.platforms = new ArrayList<>(platforms);
@@ -104,6 +108,14 @@ public class Project extends BaseTimeEntity {
 
     public void addViewCount() {
         views++;
+    }
+
+    public int getLoveCount() {
+        return lovedMembers.size();
+    }
+
+    public void addLovedMember(Member member) {
+        lovedMembers.add(member);
     }
 
     public List<TechStack> getTechStacks() {

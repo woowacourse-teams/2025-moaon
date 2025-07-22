@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
-import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final LoveRepository loveRepository;
 
     @Transactional
     public ProjectDetailResponse getById(Long id) {
@@ -28,18 +26,12 @@ public class ProjectService {
 
         project.addViewCount();
 
-        int loves = loveRepository.countLoveByProjectId(id);
-        return ProjectDetailResponse.from(project, loves);
+        return ProjectDetailResponse.from(project);
     }
 
     public List<ProjectSummaryResponse> getAllProjects(ProjectQueryCondition projectQueryCondition) {
         List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
 
-        List<Integer> loves = projects.stream()
-                .map(Project::getId)
-                .map(loveRepository::countLoveByProjectId)
-                .toList();
-
-        return ProjectSummaryResponse.from(projects, loves);
+        return ProjectSummaryResponse.from(projects);
     }
 }
