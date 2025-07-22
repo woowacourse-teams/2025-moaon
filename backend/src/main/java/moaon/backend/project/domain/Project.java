@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -54,6 +55,9 @@ public class Project extends BaseTimeEntity {
     @Column
     private int views;
 
+    @Column
+    private LocalDateTime createdAt;
+
     @ManyToOne
     private Organization organization;
 
@@ -80,7 +84,8 @@ public class Project extends BaseTimeEntity {
             Member author,
             List<TechStack> techStacks,
             List<Category> categories,
-            List<Platform> platforms
+            List<Platform> platforms,
+            LocalDateTime createdAt
     ) {
         this.title = title;
         this.summary = summary;
@@ -94,6 +99,7 @@ public class Project extends BaseTimeEntity {
         this.techStacks = new ArrayList<>(techStacks);
         this.categories = new ArrayList<>(categories);
         this.platforms = new ArrayList<>(platforms);
+        this.createdAt = createdAt;
     }
 
     public void addViewCount() {

@@ -1,5 +1,6 @@
 package moaon.backend.fixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.category.repository.CategoryRepository;
@@ -60,7 +61,8 @@ public class RepositoryTestHelper {
                 member,
                 List.of(techStack1, techStack2, techStack3, techStack4),
                 List.of(category1, category2),
-                List.of(platform)
+                List.of(platform),
+                LocalDateTime.now()
         ));
     }
 
@@ -104,7 +106,8 @@ public class RepositoryTestHelper {
                 member,
                 techStacks,
                 categories,
-                platforms
+                platforms,
+                LocalDateTime.now()
         ));
     }
 }
