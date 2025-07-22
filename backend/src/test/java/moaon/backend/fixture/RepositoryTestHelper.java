@@ -39,15 +39,15 @@ public class RepositoryTestHelper {
     private ProjectRepository projectRepository;
 
     public Project saveAnyProject() {
-        Organization organization = organizationRepository.save(SequenceFixture.anyOrganization());
-        Member member = memberRepository.save(SequenceFixture.anyMember());
-        TechStack techStack1 = techStackRepository.save(SequenceFixture.anyTechStack());
-        TechStack techStack2 = techStackRepository.save(SequenceFixture.anyTechStack());
-        TechStack techStack3 = techStackRepository.save(SequenceFixture.anyTechStack());
-        TechStack techStack4 = techStackRepository.save(SequenceFixture.anyTechStack());
-        Category category1 = categoryRepository.save(SequenceFixture.anyCategory());
-        Category category2 = categoryRepository.save(SequenceFixture.anyCategory());
-        Platform platform = platformRepository.save(SequenceFixture.anyPlatform());
+        Organization organization = organizationRepository.save(Fixture.anyOrganization());
+        Member member = memberRepository.save(Fixture.anyMember());
+        TechStack techStack1 = techStackRepository.save(Fixture.anyTechStack());
+        TechStack techStack2 = techStackRepository.save(Fixture.anyTechStack());
+        TechStack techStack3 = techStackRepository.save(Fixture.anyTechStack());
+        TechStack techStack4 = techStackRepository.save(Fixture.anyTechStack());
+        Category category1 = categoryRepository.save(Fixture.anyCategory());
+        Category category2 = categoryRepository.save(Fixture.anyCategory());
+        Platform platform = platformRepository.save(Fixture.anyPlatform());
 
         return projectRepository.save(new Project(
                 "제목",
@@ -73,10 +73,10 @@ public class RepositoryTestHelper {
                 title,
                 summary,
                 description,
-                SequenceFixture.anyOrganization(),
-                List.of(SequenceFixture.anyTechStack()),
-                List.of(SequenceFixture.anyCategory()),
-                List.of(SequenceFixture.anyPlatform())
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
     }
 
@@ -97,7 +97,6 @@ public class RepositoryTestHelper {
         );
     }
 
-
     public Project saveProjectWithRequiredFields(
             String title,
             String summary,
@@ -108,7 +107,7 @@ public class RepositoryTestHelper {
             List<Platform> platforms
     ) {
         organizationRepository.save(organization);
-        Member member = memberRepository.save(SequenceFixture.anyMember());
+        Member member = memberRepository.save(Fixture.anyMember());
         techStackRepository.saveAll(techStacks);
         categoryRepository.saveAll(categories);
         platformRepository.saveAll(platforms);

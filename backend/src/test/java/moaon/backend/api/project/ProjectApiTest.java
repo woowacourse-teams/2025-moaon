@@ -1,23 +1,15 @@
 package moaon.backend.api.project;
 
-import static moaon.backend.fixture.ConstantFixture.CATEGORY1;
-import static moaon.backend.fixture.ConstantFixture.CATEGORY2;
-import static moaon.backend.fixture.ConstantFixture.ORGANIZATION1;
-import static moaon.backend.fixture.ConstantFixture.ORGANIZATION2;
-import static moaon.backend.fixture.ConstantFixture.PLATFORM1;
-import static moaon.backend.fixture.ConstantFixture.PLATFORM2;
-import static moaon.backend.fixture.ConstantFixture.PLATFORM3;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK1;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK2;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK3;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import java.util.List;
+import moaon.backend.category.domain.Category;
+import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.organization.domain.Organization;
 import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
@@ -106,37 +98,48 @@ public class ProjectApiTest {
     @Test
     void getAllProjects2() {
         // given
+        Organization organization1 = Fixture.anyOrganization();
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+        TechStack techStack3 = Fixture.anyTechStack();
+        TechStack techStack4 = Fixture.anyTechStack();
+        Category category1 = Fixture.anyCategory();
+        Category category2 = Fixture.anyCategory();
+        Platform platform1 = Fixture.anyPlatform();
+        Platform platform2 = Fixture.anyPlatform();
+        Platform platform3 = Fixture.anyPlatform();
+
         Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK2, TECH_STACK3, TECH_STACK4),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                organization1,
+                List.of(techStack1, techStack2, techStack3, techStack4),
+                List.of(category1),
+                List.of(platform1)
         );
         Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK2, TECH_STACK3, TECH_STACK4),
-                List.of(CATEGORY1, CATEGORY2),
-                List.of(PLATFORM3)
+                organization1,
+                List.of(techStack1, techStack2, techStack3, techStack4),
+                List.of(category1, category2),
+                List.of(platform3)
         );
         Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK3, TECH_STACK4),
-                List.of(CATEGORY1, CATEGORY2),
-                List.of(PLATFORM2)
+                organization1,
+                List.of(techStack3, techStack4),
+                List.of(category1, category2),
+                List.of(platform2)
         );
         Project project4 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK2, TECH_STACK3, TECH_STACK4),
-                List.of(CATEGORY1),
-                List.of(PLATFORM2)
+                organization1,
+                List.of(techStack1, techStack2, techStack3, techStack4),
+                List.of(category1),
+                List.of(platform2)
         );
 
         // when
         ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
-                .queryParams("platforms", List.of(PLATFORM1.getName(), PLATFORM2.getName()))
-                .queryParams("categories", List.of(CATEGORY1.getName(), CATEGORY2.getName()))
-                .queryParams("organizations", List.of(ORGANIZATION1.getName(), ORGANIZATION2.getName()))
-                .queryParams("techStacks", List.of(TECH_STACK1.getName(), TECH_STACK2.getName()))
+                .queryParams("platforms", List.of(platform1.getName(), platform2.getName()))
+                .queryParams("categories", List.of(category1.getName(), category2.getName()))
+                .queryParams("organizations", List.of(organization1.getName()))
+                .queryParams("techStacks", List.of(techStack1.getName(), techStack2.getName()))
                 .when().get("/projects")
                 .then().log().all()
                 .statusCode(200)

@@ -1,29 +1,18 @@
 package moaon.backend.project.repository;
 
-import static moaon.backend.fixture.ConstantFixture.CATEGORY1;
-import static moaon.backend.fixture.ConstantFixture.CATEGORY2;
-import static moaon.backend.fixture.ConstantFixture.CATEGORY3;
-import static moaon.backend.fixture.ConstantFixture.CATEGORY4;
-import static moaon.backend.fixture.ConstantFixture.CATEGORY5;
-import static moaon.backend.fixture.ConstantFixture.ORGANIZATION1;
-import static moaon.backend.fixture.ConstantFixture.ORGANIZATION2;
-import static moaon.backend.fixture.ConstantFixture.ORGANIZATION3;
-import static moaon.backend.fixture.ConstantFixture.PLATFORM1;
-import static moaon.backend.fixture.ConstantFixture.PLATFORM2;
-import static moaon.backend.fixture.ConstantFixture.PLATFORM3;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK1;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK2;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK3;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK4;
-import static moaon.backend.fixture.ConstantFixture.TECH_STACK5;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
+import moaon.backend.category.domain.Category;
+import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.organization.domain.Organization;
+import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectQueryCondition;
+import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,28 +88,38 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithOrganizationFilter() {
         // given
+        Organization organization1 = Fixture.anyOrganization();
+        Organization organization2 = Fixture.anyOrganization();
+        Organization organization3 = Fixture.anyOrganization();
         Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                organization1,
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
         Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION2,
-                List.of(TECH_STACK1),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                organization2,
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
         Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION3,
-                List.of(TECH_STACK1),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                organization3,
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(null, null, null, List.of(ORGANIZATION1, ORGANIZATION2), null));
+                new ProjectQueryCondition(
+                        null,
+                        null,
+                        null,
+                        List.of(organization1.getName(), organization2.getName()),
+                        null
+                )
+        );
 
         // then
         assertAll(
@@ -133,28 +132,40 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithCategoryFilter() {
         // given
+        Category category1 = Fixture.anyCategory();
+        Category category2 = Fixture.anyCategory();
+        Category category3 = Fixture.anyCategory();
+        Category category4 = Fixture.anyCategory();
+        Category category5 = Fixture.anyCategory();
         Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1),
-                List.of(CATEGORY1, CATEGORY2),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(category1, category2),
+                List.of(Fixture.anyPlatform())
         );
         Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1),
-                List.of(CATEGORY2, CATEGORY3),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(category2, category3),
+                List.of(Fixture.anyPlatform())
         );
         Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1),
-                List.of(CATEGORY4, CATEGORY5),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(category4, category5),
+                List.of(Fixture.anyPlatform())
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(null, null, List.of(CATEGORY4), null, null));
+                new ProjectQueryCondition(
+                        null,
+                        null,
+                        List.of(category4.getName()),
+                        null,
+                        null
+                )
+        );
 
         // then
         assertAll(
@@ -166,28 +177,40 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithTechStackFilter() {
         // given
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+        TechStack techStack3 = Fixture.anyTechStack();
+        TechStack techStack4 = Fixture.anyTechStack();
+        TechStack techStack5 = Fixture.anyTechStack();
         Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK2),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(techStack1, techStack2),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
         Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK3, TECH_STACK4),
-                List.of(CATEGORY2),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(techStack1, techStack3, techStack4),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
         Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK3, TECH_STACK4, TECH_STACK5),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(techStack3, techStack4, techStack5),
+                List.of(Fixture.anyCategory()),
+                List.of(Fixture.anyPlatform())
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(null, null, null, null, List.of(TECH_STACK3, TECH_STACK4)));
+                new ProjectQueryCondition(
+                        null,
+                        null,
+                        null,
+                        null,
+                        List.of(techStack3.getName(), techStack4.getName())
+                )
+        );
 
         // then
         assertAll(
@@ -200,34 +223,43 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithPlatformFilter() {
         // given
+        Platform platform1 = Fixture.anyPlatform();
+        Platform platform2 = Fixture.anyPlatform();
+        Platform platform3 = Fixture.anyPlatform();
         Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK2),
-                List.of(CATEGORY1),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(platform1)
         );
         Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK1, TECH_STACK3, TECH_STACK4),
-                List.of(CATEGORY2),
-                List.of(PLATFORM1)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(platform1)
         );
         Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK3, TECH_STACK4, TECH_STACK5),
-                List.of(CATEGORY1),
-                List.of(PLATFORM2)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(platform2)
         );
         Project project4 = repositoryTestHelper.saveProjectWithFilterConditions(
-                ORGANIZATION1,
-                List.of(TECH_STACK3, TECH_STACK4, TECH_STACK5),
-                List.of(CATEGORY1),
-                List.of(PLATFORM2, PLATFORM3)
+                Fixture.anyOrganization(),
+                List.of(Fixture.anyTechStack()),
+                List.of(Fixture.anyCategory()),
+                List.of(platform2, platform3)
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(null, List.of(PLATFORM2, PLATFORM3), null, null, null));
+                new ProjectQueryCondition(
+                        null,
+                        List.of(platform2.getName(), platform3.getName()),
+                        null,
+                        null,
+                        null)
+        );
 
         // then
         assertAll(
