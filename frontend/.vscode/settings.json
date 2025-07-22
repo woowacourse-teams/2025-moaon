@@ -1,9 +1,9 @@
 {
   "editor.defaultFormatter": "biomejs.biome",
   "files.associations": {
-    "*.styled.ts": "javascriptreact" // 해당 파일을 jsx 방식으로 인식
+    "*.styled.ts": "typescript" // 해당 파일을 jsx 방식으로 인식
   },
-  "[javascriptreact]": {
+  "[typescript]": {
     // jsx 방식은 prettier로 포맷팅
     // jsx 파일은 존재하지 않음, styled 포맷 목적
     "editor.defaultFormatter": "esbenp.prettier-vscode"

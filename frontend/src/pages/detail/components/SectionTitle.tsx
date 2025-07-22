@@ -3,6 +3,7 @@ import * as S from "./SectionTitle.styled";
 interface SectionTitleProps {
   text: string;
 }
+
 function SectionTitle({ text }: SectionTitleProps) {
   return (
     <>
@@ -11,4 +12,5 @@ function SectionTitle({ text }: SectionTitleProps) {
     </>
   );
 }
+
 export default SectionTitle;
