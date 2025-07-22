@@ -47,14 +47,20 @@ function TitleSection({
           <S.LoveCount>{loveCount}</S.LoveCount>
         </S.LoveButton>
         <S.ButtonBar>
-          <S.Button>
+          <S.NavLink
+            href="https://github.com/woowacourse-teams/2025-moaon"
+            target="_blank"
+          >
             <img src={githubIcon} alt="github 바로가기 아이콘" />
             바로가기
-          </S.Button>
-          <S.Button>
+          </S.NavLink>
+          <S.NavLink
+            href="https://d2ye9egv48bag1.cloudfront.net/"
+            target="_blank"
+          >
             <img src={linkIcon} alt="link 바로가기 아이콘" />
             바로가기
-          </S.Button>
+          </S.NavLink>
         </S.ButtonBar>
       </S.TitleSectionRight>
     </S.TitleSectionContainer>

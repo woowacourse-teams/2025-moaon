@@ -62,7 +62,7 @@ export const ButtonBar = styled.div`
   gap: 0.625rem;
 `;
 
-export const Button = styled.button`
+export const NavLink = styled.a`
   font-size: 1rem;
   font-weight: 700;
   display: flex;
@@ -70,5 +70,11 @@ export const Button = styled.button`
   align-items: center;
   padding: 0.5rem 0.75rem;
   border-radius: 25px;
-  border: 1px solid #000000;
+  border: 1px solid black;
+
+  &:hover {
+    background-color: gray;
+    border: 1px solid gray;
+    color: white;
+  }
 `;
