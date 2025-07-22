@@ -141,9 +141,9 @@ public class ProjectApiTest {
         // then
         assertAll(
                 () -> assertThat(actualResponses).hasSize(3),
-                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project1, 0)),
+                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project3, 0)),
                 () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2, 0)),
-                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project3, 0))
+                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project1, 0))
         );
     }
 }

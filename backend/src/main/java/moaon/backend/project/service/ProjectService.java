@@ -32,8 +32,7 @@ public class ProjectService {
         return ProjectDetailResponse.from(project, loves);
     }
 
-    public List<ProjectSummaryResponse> getAllProjects(String search) {
-        ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(search);
+    public List<ProjectSummaryResponse> getAllProjects(ProjectQueryCondition projectQueryCondition) {
         List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
 
         List<Integer> loves = projects.stream()

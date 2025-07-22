@@ -3,10 +3,15 @@ package moaon.backend.project.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.love.domain.Love;
+import moaon.backend.love.repository.LoveRepository;
+import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.SortBy;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +29,9 @@ class CustomizedProjectRepositoryImplTest {
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;
 
+    @Autowired
+    private LoveRepository loveRepository;
+
     @DisplayName("조건 없이 모든 프로젝트를 조회한다.")
     @Test
     void findWithSearchConditions() {
@@ -32,7 +40,7 @@ class CustomizedProjectRepositoryImplTest {
         repositoryTestHelper.saveAnyProject();
         repositoryTestHelper.saveAnyProject();
 
-        ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(null);
+        ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(null, null);
 
         //when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
@@ -65,11 +73,11 @@ class CustomizedProjectRepositoryImplTest {
 
         // when
         List<Project> projects1 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition("모아온"));
+                new ProjectQueryCondition("모아온", null));
         List<Project> projects2 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition("개발자"));
+                new ProjectQueryCondition("개발자", null));
         List<Project> projects3 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition("SNS"));
+                new ProjectQueryCondition("SNS", null));
 
         // then
         assertAll(
@@ -77,5 +85,76 @@ class CustomizedProjectRepositoryImplTest {
                 () -> assertThat(projects2).containsOnly(share),
                 () -> assertThat(projects3).containsOnly(hub)
         );
+    }
+
+    @DisplayName("프로젝트를 조회순을 기준으로 정렬한다.")
+    @Test
+    void toOrderByViews() {
+        // given
+        Project project1 = repositoryTestHelper.saveAnyProject();
+        Project project2 = repositoryTestHelper.saveAnyProject();
+        Project project3 = repositoryTestHelper.saveAnyProject();
+
+        project1.addViewCount();
+        project1.addViewCount();
+        project1.addViewCount();
+
+        project2.addViewCount();
+        project2.addViewCount();
+
+        // when
+        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryCondition(null, SortBy.VIEWS)
+        );
+
+        // then
+        assertThat(projects).containsSequence(project1, project2, project3);
+    }
+
+    @DisplayName("프로젝트를 생성일자 기준으로 정렬한다.")
+    @Test
+    void toOrderByCreatedAt() {
+        // given
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime tomorrow = today.plusDays(1);
+        LocalDateTime yesterday = today.minusDays(1);
+        Project todayProject = repositoryTestHelper.saveProjectWithCreatedAt(today);
+        Project tomorrowProject = repositoryTestHelper.saveProjectWithCreatedAt(tomorrow);
+        Project yesterdayProject = repositoryTestHelper.saveProjectWithCreatedAt(yesterday);
+
+        // when
+        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryCondition(null, SortBy.CREATED_AT)
+        );
+
+        // then
+        assertThat(projects).containsSequence(tomorrowProject, todayProject, yesterdayProject);
+    }
+
+    @DisplayName("프로젝트를 좋아요 순으로 정렬한다.")
+    @Test
+    void toOrderByLove() {
+        // given
+
+        Project low = repositoryTestHelper.saveAnyProject();
+        Project middle = repositoryTestHelper.saveAnyProject();
+        Project high = repositoryTestHelper.saveAnyProject();
+
+        Member author1 = low.getAuthor();
+        Member author2 = middle.getAuthor();
+        Member author3 = high.getAuthor();
+
+        loveRepository.save(new Love(high, author1));
+        loveRepository.save(new Love(high, author2));
+
+        loveRepository.save(new Love(middle, author3));
+
+        // when
+        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryCondition(null, SortBy.LOVES)
+        );
+
+        // then
+        assertThat(projects).containsSequence(high, middle, low);
     }
 }
