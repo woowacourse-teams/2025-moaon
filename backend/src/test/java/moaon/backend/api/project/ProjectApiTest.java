@@ -7,6 +7,8 @@ import io.restassured.RestAssured;
 import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.category.repository.CategoryRepository;
+import moaon.backend.fixture.RepositoryTestHelper;
+import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.love.domain.Love;
 import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.member.domain.Member;
@@ -18,6 +20,7 @@ import moaon.backend.platform.repository.PlatformRepository;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
+import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.repository.ProjectRepository;
 import moaon.backend.techStack.domain.TechStack;
 import moaon.backend.techStack.repository.TechStackRepository;
@@ -28,36 +31,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@Import({RepositoryTestHelper.class, QueryDslConfig.class})
 public class ProjectApiTest {
 
     @LocalServerPort
     private int port;
 
     @Autowired
-    ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
 
     @Autowired
-    OrganizationRepository organizationRepository;
+    private OrganizationRepository organizationRepository;
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    TechStackRepository techStackRepository;
+    private TechStackRepository techStackRepository;
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    PlatformRepository platformRepository;
+    private PlatformRepository platformRepository;
 
     @Autowired
-    LoveRepository loveRepository;
+    private LoveRepository loveRepository;
+
+    @Autowired
+    private RepositoryTestHelper repositoryTestHelper;
+
 
     @BeforeEach
     void setUp() {
@@ -109,6 +118,30 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponse.platforms()).contains("web"),
                 () -> assertThat(actualResponse.loves()).isEqualTo(1),
                 () -> assertThat(actualResponse.views()).isEqualTo(1)
+        );
+    }
+
+    @DisplayName("GET /projects : 모든 프로젝트 조회 API")
+    @Test
+    void getAllProjects() {
+        // given
+        Project project1 = repositoryTestHelper.saveAnyProject();
+        Project project2 = repositoryTestHelper.saveAnyProject();
+        Project project3 = repositoryTestHelper.saveAnyProject();
+
+        // when
+        ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
+                .when().get("/projects")
+                .then().log().all()
+                .statusCode(200)
+                .extract().as(ProjectSummaryResponse[].class);
+
+        // then
+        assertAll(
+                () -> assertThat(actualResponses).hasSize(3),
+                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project1, 0)),
+                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2, 0)),
+                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project3, 0))
         );
     }
 }
