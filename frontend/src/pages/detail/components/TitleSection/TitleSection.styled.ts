@@ -48,7 +48,7 @@ export const RegistrationDate = styled(Caption)``;
 
 export const ProductDescription = styled(Body)``;
 
-export const LikeCount = styled(Body)``;
+export const LoveCount = styled(Body)``;
 
 export const LoveButton = styled.button`
   display: flex;
