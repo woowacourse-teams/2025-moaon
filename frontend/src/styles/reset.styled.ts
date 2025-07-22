@@ -165,5 +165,6 @@ export const resetStyle = css`
 
   body {
     font-family: "Noto Sans", sans-serif;
+    overflow-x: hidden;
   }
 `;
