@@ -52,6 +52,14 @@ clean {
     delete file('src/main/generated')
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated/sources/annotationProcessor/java/main"
+        }
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
