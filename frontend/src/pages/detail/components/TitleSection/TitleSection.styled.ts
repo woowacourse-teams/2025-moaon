@@ -32,7 +32,7 @@ export const TitleSectionRight = styled.div`
 `;
 
 export const Subject = styled.p`
-  font-size: 12px;
+  font-size: 0.75rem;
 `;
 
 export const Organization = styled(Caption)`
