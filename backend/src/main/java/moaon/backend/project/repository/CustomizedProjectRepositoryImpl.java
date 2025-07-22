@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
-public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
+public class CustomizedProjectRepositoryImpl implements CustomizedProjectRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 

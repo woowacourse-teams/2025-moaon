@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import({RepositoryTestHelper.class, QueryDslConfig.class})
-class ProjectRepositoryImplTest {
+class CustomizedProjectRepositoryImplTest {
 
     @Autowired
-    private ProjectRepositoryImpl projectRepositoryImpl;
+    private CustomizedProjectRepositoryImpl customizedProjectRepositoryImpl;
 
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;
@@ -35,7 +35,7 @@ class ProjectRepositoryImplTest {
         ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(null);
 
         //when
-        List<Project> projects = projectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
+        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
 
         //then
         assertThat(projects.size()).isEqualTo(3);
@@ -64,9 +64,12 @@ class ProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects1 = projectRepositoryImpl.findWithSearchConditions(new ProjectQueryCondition("모아온"));
-        List<Project> projects2 = projectRepositoryImpl.findWithSearchConditions(new ProjectQueryCondition("개발자"));
-        List<Project> projects3 = projectRepositoryImpl.findWithSearchConditions(new ProjectQueryCondition("SNS"));
+        List<Project> projects1 = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryCondition("모아온"));
+        List<Project> projects2 = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryCondition("개발자"));
+        List<Project> projects3 = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryCondition("SNS"));
 
         // then
         assertAll(
