@@ -6,12 +6,12 @@ export const CarouselContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 1.5rem;
   position: relative;
 `;
 
 const CarouselImage = styled.img`
-  border-radius: 1.5625rem;
+  border-radius: 25px;
   background-color: black;
   object-fit: contain;
 
@@ -72,7 +72,7 @@ const MoveButton = styled.button`
   border-radius: 50%;
   width: 3.125rem;
   height: 3.125rem;
-  font-size: 24px;
+  font-size: 1.5rem;
   background-color: #6a6a6aff;
   color: #fff;
   z-index: 999;
@@ -83,9 +83,9 @@ const MoveButton = styled.button`
 `;
 
 export const NextButton = styled(MoveButton)`
-  right: -20px;
+  right: -1.25rem;
 `;
 
 export const PrevButton = styled(MoveButton)`
-  left: -20px;
+  left: -1.25rem;
 `;

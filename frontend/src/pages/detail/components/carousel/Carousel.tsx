@@ -35,7 +35,7 @@ function Carousel() {
           <S.Image
             key={image}
             src={image}
-            alt={`Slide ${index + 1}`}
+            alt={`슬라이드 ${index + 1}`}
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
           />
