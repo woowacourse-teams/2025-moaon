@@ -1,5 +1,6 @@
 package moaon.backend.fixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.category.repository.CategoryRepository;
@@ -60,7 +61,8 @@ public class RepositoryTestHelper {
                 member,
                 List.of(techStack1, techStack2, techStack3, techStack4),
                 List.of(category1, category2),
-                List.of(platform)
+                List.of(platform),
+                LocalDateTime.now()
         ));
     }
 
@@ -104,7 +106,35 @@ public class RepositoryTestHelper {
                 member,
                 techStacks,
                 categories,
-                platforms
+                platforms,
+                LocalDateTime.now()
+        ));
+    }
+
+    public Project saveProjectWithCreatedAt(LocalDateTime createdAt) {
+        Organization organization = organizationRepository.save(Fixture.anyOrganization());
+        Member member = memberRepository.save(Fixture.anyMember());
+        TechStack techStack1 = techStackRepository.save(Fixture.anyTechStack());
+        TechStack techStack2 = techStackRepository.save(Fixture.anyTechStack());
+        TechStack techStack3 = techStackRepository.save(Fixture.anyTechStack());
+        TechStack techStack4 = techStackRepository.save(Fixture.anyTechStack());
+        Category category1 = categoryRepository.save(Fixture.anyCategory());
+        Category category2 = categoryRepository.save(Fixture.anyCategory());
+        Platform platform = platformRepository.save(Fixture.anyPlatform());
+
+        return projectRepository.save(new Project(
+                "제목",
+                "한 줄 소개",
+                "상세 설명",
+                "깃허브 URL",
+                "프로덕션 URL",
+                new Images(List.of("이미지 URL1", "이미지 URL2")),
+                organization,
+                member,
+                List.of(techStack1, techStack2, techStack3, techStack4),
+                List.of(category1, category2),
+                List.of(platform),
+                createdAt
         ));
     }
 }

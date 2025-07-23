@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -51,14 +52,20 @@ public class Project extends BaseTimeEntity {
     @Embedded
     private Images images;
 
-    @Column
+    @Column(nullable = false)
     private int views;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne
     private Organization organization;
 
     @ManyToOne
     private Member author;
+
+    @ManyToMany
+    private List<Member> lovedMembers;
 
     @ManyToMany
     private List<TechStack> techStacks;
@@ -80,7 +87,8 @@ public class Project extends BaseTimeEntity {
             Member author,
             List<TechStack> techStacks,
             List<Category> categories,
-            List<Platform> platforms
+            List<Platform> platforms,
+            LocalDateTime createdAt
     ) {
         this.title = title;
         this.summary = summary;
@@ -91,13 +99,23 @@ public class Project extends BaseTimeEntity {
         this.views = 0;
         this.organization = organization;
         this.author = author;
+        this.lovedMembers = new ArrayList<>();
         this.techStacks = new ArrayList<>(techStacks);
         this.categories = new ArrayList<>(categories);
         this.platforms = new ArrayList<>(platforms);
+        this.createdAt = createdAt;
     }
 
     public void addViewCount() {
         views++;
+    }
+
+    public int getLoveCount() {
+        return lovedMembers.size();
+    }
+
+    public void addLovedMember(Member member) {
+        lovedMembers.add(member);
     }
 
     public List<TechStack> getTechStacks() {
@@ -110,5 +128,9 @@ public class Project extends BaseTimeEntity {
 
     public List<Platform> getPlatforms() {
         return List.copyOf(platforms);
+    }
+
+    public List<Member> getLovedMembers() {
+        return List.copyOf(lovedMembers);
     }
 }
