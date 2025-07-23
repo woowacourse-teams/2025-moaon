@@ -1,11 +1,14 @@
 package moaon.backend.project.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.love.repository.LoveRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
+import moaon.backend.project.dto.ProjectQueryCondition;
+import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +25,22 @@ public class ProjectService {
     public ProjectDetailResponse getById(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
         project.addViewCount();
+
         int loves = loveRepository.countLoveByProjectId(id);
         return ProjectDetailResponse.from(project, loves);
+    }
+
+    public List<ProjectSummaryResponse> getAllProjects(String search) {
+        ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(search);
+        List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
+
+        List<Integer> loves = projects.stream()
+                .map(Project::getId)
+                .map(loveRepository::countLoveByProjectId)
+                .toList();
+
+        return ProjectSummaryResponse.from(projects, loves);
     }
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -67,7 +68,7 @@ public class Project extends BaseTimeEntity {
 
     @ManyToMany
     private List<Platform> platforms;
-    
+
     public Project(
             String title,
             String summary,
@@ -90,12 +91,24 @@ public class Project extends BaseTimeEntity {
         this.views = 0;
         this.organization = organization;
         this.author = author;
-        this.techStacks = techStacks;
-        this.categories = categories;
-        this.platforms = platforms;
+        this.techStacks = new ArrayList<>(techStacks);
+        this.categories = new ArrayList<>(categories);
+        this.platforms = new ArrayList<>(platforms);
     }
 
     public void addViewCount() {
         views++;
+    }
+
+    public List<TechStack> getTechStacks() {
+        return List.copyOf(techStacks);
+    }
+
+    public List<Category> getCategories() {
+        return List.copyOf(categories);
+    }
+
+    public List<Platform> getPlatforms() {
+        return List.copyOf(platforms);
     }
 }
