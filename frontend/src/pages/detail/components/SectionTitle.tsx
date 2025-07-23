@@ -5,12 +5,7 @@ interface SectionTitleProps {
 }
 
 function SectionTitle({ text }: SectionTitleProps) {
-  return (
-    <>
-      <S.SectionTitle>{text}</S.SectionTitle>
-      <S.Divider />
-    </>
-  );
+  return <S.SectionTitle>{text}</S.SectionTitle>;
 }
 
 export default SectionTitle;
