@@ -14,14 +14,32 @@ export default {
     clean: true,
   },
   resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@shared": path.resolve(__dirname, "src/shared"),
+      "@assets": path.resolve(__dirname, "src/assets"),
+    },
     extensions: [".ts", ".tsx", ".js"],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@shared": path.resolve(__dirname, "src/shared"),
+      "@assets": path.resolve(__dirname, "src/assets"),
+    },
   },
+
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|webp)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/[name][hash][ext]",
+        },
       },
     ],
   },
