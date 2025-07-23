@@ -1,10 +1,14 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { configDotenv } from "dotenv";
+import Dotenv from "dotenv-webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+configDotenv({ path: ".env.local" });
 
 export default {
   entry: "./src/main.tsx",
@@ -44,6 +48,7 @@ export default {
       template: "./public/index.html",
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new Dotenv({ path: ".env.local" }),
   ],
   devServer: {
     static: "./dist",
@@ -51,6 +56,14 @@ export default {
     open: true,
     hot: true,
     historyApiFallback: true,
+    proxy: [
+      {
+        context: ["/projects"],
+        target: process.env.BASE_URL,
+        changeOrigin: true,
+        secure: false,
+      },
+    ],
   },
   mode: "development",
 };
