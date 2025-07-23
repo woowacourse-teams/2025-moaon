@@ -25,4 +25,11 @@ public class Images {
     public List<String> getUrls() {
         return List.copyOf(urls);
     }
+
+    public String getThumbnailUrl() {
+        if (urls.isEmpty()) {
+            return null;
+        }
+        return urls.getFirst();
+    }
 }
