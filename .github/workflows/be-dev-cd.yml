@@ -17,14 +17,27 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-
+        
     steps:
       - name: change permission
         run: |
           sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
-    
+          
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check seed data changes
+        run: |
+          echo "Checking db/mysql/init changes between HEAD^ and HEAD..."
+          if git diff --quiet HEAD^ HEAD -- db/mysql/init; then
+            echo "SEED_CHANGED=false" >> $GITHUB_ENV
+            echo "No changes in seed data detected."
+          else
+            echo "SEED_CHANGED=true" >> $GITHUB_ENV
+            echo "Seed data changes detected!"
+          fi
 
       - name: Create .env file from Secrets
         run: |
@@ -37,7 +50,16 @@ jobs:
           SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
           EOF
 
-      - name: Run Docker Compose
+      - name: Restart DB (volume reset) and App
+        if: env.SEED_CHANGED == 'true'
         run: |
+          echo "Seed changed! Restarting DB with volume reset and rebuilding..."
+          sudo docker compose down -v --rmi all
+          sudo docker compose up -d --build
+
+      - name: Restart App only
+        if: env.SEED_CHANGED == 'false'
+        run: |
+          echo "No seed change. Just restarting app containers..."
           sudo docker compose down --rmi all
-          sudo docker compose up --build -d
+          sudo docker compose up -d --build
