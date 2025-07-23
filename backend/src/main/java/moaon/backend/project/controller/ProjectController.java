@@ -3,6 +3,7 @@ package moaon.backend.project.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.project.dto.ProjectDetailResponse;
+import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.service.ProjectService;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,17 @@ public class ProjectController {
             @RequestParam(value = "platforms", required = false) List<String> platforms,
             @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "organizations", required = false) List<String> organizations,
-            @RequestParam(value = "techStacks", required = false) List<String> techStacks
+            @RequestParam(value = "techStacks", required = false) List<String> techStacks,
+            @RequestParam(value = "sort", required = false) String sortType
     ) {
-        return ResponseEntity.ok(projectService.getAllProjects(
+        ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
                 search,
                 platforms,
                 categories,
                 organizations,
-                techStacks
-        ));
+                techStacks,
+                sortType
+        );
+        return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
     }
 }

@@ -50,7 +50,8 @@ public class ProjectApiTest {
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
-                .when().get("/projects/1")
+                .pathParam("id", project.getId())
+                .when().get("/projects/{id}")
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ProjectDetailResponse.class);
@@ -88,9 +89,9 @@ public class ProjectApiTest {
         // then
         assertAll(
                 () -> assertThat(actualResponses).hasSize(3),
-                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project1, 0)),
-                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2, 0)),
-                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project3, 0))
+                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project3)),
+                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2)),
+                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project1))
         );
     }
 
@@ -147,8 +148,8 @@ public class ProjectApiTest {
 
         // then
         assertAll(
-                () -> assertThat(actualResponses[0].id()).isEqualTo(project1.getId()),
-                () -> assertThat(actualResponses[1].id()).isEqualTo(project4.getId())
+                () -> assertThat(actualResponses[0].id()).isEqualTo(project4.getId()),
+                () -> assertThat(actualResponses[1].id()).isEqualTo(project1.getId())
         );
     }
 }
