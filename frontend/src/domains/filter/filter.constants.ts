@@ -40,7 +40,3 @@ export const ICON_BADGE_MAP = {
   ...TECH_STACK_ICON_MAP,
   ...PLATFORM_ICON_MAP,
 } as const;
-
-export type PlatformKey = keyof typeof PLATFORM_ICON_MAP;
-export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;
-export type IconBadgeKeys = (PlatformKey | TechStackKey)[];
