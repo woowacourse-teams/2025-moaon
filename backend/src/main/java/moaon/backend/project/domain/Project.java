@@ -129,4 +129,8 @@ public class Project extends BaseTimeEntity {
     public List<Platform> getPlatforms() {
         return List.copyOf(platforms);
     }
+
+    public List<Member> getLovedMembers() {
+        return List.copyOf(lovedMembers);
+    }
 }
