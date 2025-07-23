@@ -56,13 +56,13 @@ jobs:
         if: env.SEED_CHANGED == 'true'
         run: |
           echo "🚀 Seed changed! Restarting DB with volume reset and rebuilding..."
-          docker compose down -v
-          docker compose up -d --build
+          sudo docker compose down -v
+          sudo docker compose up -d --build
 
       # 5️⃣ 변경 없을 때: 그냥 App 재배포만
       - name: Restart App only
         if: env.SEED_CHANGED == 'false'
         run: |
           echo "♻️ No seed change. Just restarting app containers..."
-          docker compose down
-          docker compose up -d --build
+          sudo docker compose down
+          sudo docker compose up -d --build
