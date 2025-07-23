@@ -1,5 +1,4 @@
 import useSearchParams from "@/shared/hooks/useSearchParams";
-import FilterItem from "./FilterItem/FilterItem";
 import * as S from "./FilterList.styled";
 
 function FilterList() {
@@ -8,15 +7,7 @@ function FilterList() {
     mode: "multi",
   });
 
-  return (
-    <S.List>
-      <FilterItem onClick={() => techStack.update("1")} />
-      <FilterItem onClick={() => techStack.update("2")} />
-      <FilterItem onClick={() => techStack.update("3")} />
-      <FilterItem onClick={() => techStack.update("4")} />
-      <FilterItem onClick={() => techStack.update("5")} />
-    </S.List>
-  );
+  return <S.List></S.List>;
 }
 
 export default FilterList;
