@@ -6,6 +6,12 @@ on:
 
 jobs:
   deploy:
+    if: |
+      github.actor == 'yesjuhee' || 
+      github.actor == 'Minuring' ||
+      github.actor == 'eueo8259' ||
+      github.actor == 'minjae8563'
+    name: Deploy to EC2
     runs-on: self-hosted
 
     defaults:
@@ -22,19 +28,41 @@ jobs:
         with:
           fetch-depth: 2
 
+      # 3️⃣ seed 폴더 변경 여부 확인
       - name: Check seed data changes
         run: |
-          echo "Comparing ${{ github.event.before }}..${{ github.sha }}"
-          if git diff --quiet ${{ github.event.before }} ${{ github.sha }} -- db/mysql/init; then
+          echo "🔍 Checking db/mysql/init changes between HEAD^ and HEAD..."
+          if git diff --quiet HEAD^ HEAD -- db/mysql/init; then
             echo "SEED_CHANGED=false" >> $GITHUB_ENV
-            echo "No changes in seed data detected. Failing the workflow intentionally."
-            exit 1
+            echo "❌ No changes in seed data detected."
           else
             echo "SEED_CHANGED=true" >> $GITHUB_ENV
+            echo "✅ Seed data changes detected!"
           fi
 
-      - name: Restart DB only if seed changed
+      - name: Create .env file from Secrets
+        run: |
+          echo "Creating .env file from GitHub Secrets"
+          cat <<EOF > .env
+          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+          SPRING_DATASOURCE_URL_DEV=${{ secrets.SPRING_DATASOURCE_URL_DEV }}
+          SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          EOF
+
+      # 4️⃣ 변경 있을 때: 볼륨까지 내려서 재배포
+      - name: Restart DB (volume reset) and App
         if: env.SEED_CHANGED == 'true'
         run: |
+          echo "🚀 Seed changed! Restarting DB with volume reset and rebuilding..."
           docker compose down -v
+          docker compose up -d --build
+
+      # 5️⃣ 변경 없을 때: 그냥 App 재배포만
+      - name: Restart App only
+        if: env.SEED_CHANGED == 'false'
+        run: |
+          echo "♻️ No seed change. Just restarting app containers..."
+          docker compose down
           docker compose up -d --build
