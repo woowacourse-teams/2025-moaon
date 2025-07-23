@@ -75,7 +75,7 @@ public class ProjectApiTest {
 
     @DisplayName("GET /projects : 모든 프로젝트 조회 API")
     @Test
-    void getAllProjects2() {
+    void getAllProjects() {
         // given
         Organization organization1 = Fixture.anyOrganization();
         TechStack techStack1 = Fixture.anyTechStack();
