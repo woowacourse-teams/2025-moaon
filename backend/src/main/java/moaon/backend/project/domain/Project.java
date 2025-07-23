@@ -52,10 +52,10 @@ public class Project extends BaseTimeEntity {
     @Embedded
     private Images images;
 
-    @Column
+    @Column(nullable = false)
     private int views;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne
