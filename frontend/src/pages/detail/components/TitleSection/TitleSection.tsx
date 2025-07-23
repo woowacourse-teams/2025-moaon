@@ -1,9 +1,9 @@
 import { useState } from "react";
 import * as S from "./TitleSection.styled";
-import emptyHeartIcon from "../../../../assets/icons/heart-outline.svg";
-import heartIcon from "../../../../assets/icons/heart.svg";
-import githubIcon from "../../../../assets/icons/logo-github.svg";
-import linkIcon from "../../../../assets/icons/home.svg";
+import emptyHeartIcon from "@assets/icons/heart-outline.svg";
+import heartIcon from "@assets/icons/heart.svg";
+import githubIcon from "@assets/icons/logo-github.svg";
+import linkIcon from "@assets/icons/home.svg";
 
 interface TitleSectionProps {
   subjects?: string[];

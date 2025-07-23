@@ -74,7 +74,6 @@ export const NavLink = styled.a`
 
   &:hover {
     background-color: gray;
-    border: 1px solid gray;
     color: white;
   }
 `;
