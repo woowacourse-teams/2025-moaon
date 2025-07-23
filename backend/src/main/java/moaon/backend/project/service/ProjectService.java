@@ -2,18 +2,14 @@ package moaon.backend.project.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.category.repository.CategoryRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.love.repository.LoveRepository;
-import moaon.backend.organization.repository.OrganizationRepository;
-import moaon.backend.platform.repository.PlatformRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.repository.ProjectRepository;
-import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +20,6 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final LoveRepository loveRepository;
-    private final PlatformRepository platformRepository;
-    private final CategoryRepository categoryRepository;
-    private final OrganizationRepository organizationRepository;
-    private final TechStackRepository techStackRepository;
 
     @Transactional
     public ProjectDetailResponse getById(Long id) {

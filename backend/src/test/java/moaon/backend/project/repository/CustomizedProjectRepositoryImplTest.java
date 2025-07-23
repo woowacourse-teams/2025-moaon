@@ -168,9 +168,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertAll(
-                () -> assertThat(projects).containsOnly(project3)
-        );
+        assertThat(projects).containsOnly(project3);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
