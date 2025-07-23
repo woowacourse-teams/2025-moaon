@@ -1,11 +1,11 @@
 import * as S from "./SectionTitle.styled";
 
 interface SectionTitleProps {
-  text: string;
+  title: string;
 }
 
-function SectionTitle({ text }: SectionTitleProps) {
-  return <S.SectionTitle>{text}</S.SectionTitle>;
+function SectionTitle({ title }: SectionTitleProps) {
+  return <S.SectionTitle>{title}</S.SectionTitle>;
 }
 
 export default SectionTitle;

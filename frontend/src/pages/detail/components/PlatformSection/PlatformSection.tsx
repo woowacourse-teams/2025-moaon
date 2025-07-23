@@ -9,7 +9,7 @@ interface PlatformSectionProps {
 function PlatformSection({ platforms }: PlatformSectionProps) {
   return (
     <S.PlatformSection>
-      <SectionTitle text="플랫폼" />
+      <SectionTitle title="플랫폼" />
       <IconBadgeList iconBadges={platforms} />
     </S.PlatformSection>
   );

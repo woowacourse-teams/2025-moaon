@@ -8,7 +8,7 @@ interface OverviewSectionProps {
 function OverviewSection({ overview }: OverviewSectionProps) {
   return (
     <S.OverviewSectionContainer>
-      <SectionTitle text="프로젝트 개요" />
+      <SectionTitle title="프로젝트 개요" />
       <S.OverviewContent>
         {overview || null}
         1. 프로젝트명
@@ -18,8 +18,7 @@ function OverviewSection({ overview }: OverviewSectionProps) {
         <br />
         <br />
         2. 비전과 목적
-        <br />
-        이 프로젝트는 어떤 문제에서 출발했으며, 궁극적으로 무엇을 해결하려
+        <br />이 프로젝트는 어떤 문제에서 출발했으며, 궁극적으로 무엇을 해결하려
         하는가에 대한 명확한 선언입니다.
         <br />
         <br />

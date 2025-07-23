@@ -9,7 +9,7 @@ interface TechStacksSectionProps {
 function TechStacksSection({ techStacks }: TechStacksSectionProps) {
   return (
     <S.TechStacksSection>
-      <SectionTitle text="기술 스택" />
+      <SectionTitle title="기술 스택" />
       <IconBadgeList iconBadges={techStacks} />
     </S.TechStacksSection>
   );
