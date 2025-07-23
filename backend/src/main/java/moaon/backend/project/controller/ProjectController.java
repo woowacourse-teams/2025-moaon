@@ -2,7 +2,6 @@ package moaon.backend.project.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.project.domain.SortBy;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
@@ -31,8 +30,7 @@ public class ProjectController {
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "sort", required = false) String sortType
     ) {
-        SortBy sortBy = SortBy.from(sortType);
-        ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(search, sortBy);
+        ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(search, sortType);
         return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
     }
 }

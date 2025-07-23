@@ -6,4 +6,8 @@ public record ProjectQueryCondition(
         String search,
         SortBy sortBy
 ) {
+
+    public static ProjectQueryCondition of(String search, String sortBy) {
+        return new ProjectQueryCondition(search, SortBy.from(sortBy));
+    }
 }
