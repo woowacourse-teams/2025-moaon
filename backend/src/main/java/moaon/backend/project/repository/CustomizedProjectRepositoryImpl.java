@@ -2,9 +2,9 @@ package moaon.backend.project.repository;
 
 import static moaon.backend.project.domain.QProject.project;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,61 +30,50 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                         toContainsOrganization(condition.organizationNames()),
                         toContainsTechStacks(condition.techStackNames())
                 )
-                .where(toContainsSearch(condition.search()))
                 .orderBy(toOrderBy(condition.sortBy()))
                 .fetch();
     }
 
-    private BooleanBuilder toContainsSearch(String search) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
+    private BooleanExpression toContainsSearch(String search) {
         if (StringUtils.hasText(search)) {
-            return booleanBuilder.or(project.title.contains(search)
+            return project.title.contains(search)
                     .or(project.summary.contains(search))
-                    .or(project.description.contains(search)));
+                    .or(project.description.contains(search));
         }
 
-        return booleanBuilder;
+        return null;
     }
 
-    private BooleanBuilder toContainsPlatform(List<String> platformNames) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        if (platformNames != null && !platformNames.isEmpty()) {
-            return booleanBuilder.and(project.platforms.any().name.in(platformNames));
+    private BooleanExpression toContainsPlatform(List<String> platformNames) {
+        if (platformNames == null || platformNames.isEmpty()) {
+            return null;
         }
 
-        return booleanBuilder;
+        return project.platforms.any().name.in(platformNames);
     }
 
-    private BooleanBuilder toContainsCategory(List<String> categoryNames) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        if (categoryNames != null && !categoryNames.isEmpty()) {
-            return booleanBuilder.and(project.categories.any().name.in(categoryNames));
+    private BooleanExpression toContainsCategory(List<String> categoryNames) {
+        if (categoryNames == null || categoryNames.isEmpty()) {
+            return null;
         }
 
-        return booleanBuilder;
+        return project.categories.any().name.in(categoryNames);
     }
 
-    private BooleanBuilder toContainsOrganization(List<String> organizationNames) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        if (organizationNames != null && !organizationNames.isEmpty()) {
-            return booleanBuilder.and(project.organization.name.in(organizationNames));
+    private BooleanExpression toContainsOrganization(List<String> organizationNames) {
+        if (organizationNames == null || organizationNames.isEmpty()) {
+            return null;
         }
 
-        return booleanBuilder;
+        return project.organization.name.in(organizationNames);
     }
 
-    private BooleanBuilder toContainsTechStacks(List<String> techStackNames) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        if (techStackNames != null && !techStackNames.isEmpty()) {
-            return booleanBuilder.and(project.techStacks.any().name.in(techStackNames));
+    private BooleanExpression toContainsTechStacks(List<String> techStackNames) {
+        if (techStackNames == null || techStackNames.isEmpty()) {
+            return null;
         }
 
-        return booleanBuilder;
+        return project.techStacks.any().name.in(techStackNames);
     }
 
     private OrderSpecifier<?> toOrderBy(SortBy sortBy) {
