@@ -98,7 +98,8 @@ public class ProjectApiTest {
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
-                .when().get("/projects/" + project.getId())
+                .pathParam("id", project.getId())
+                .when().get("/projects/{id}")
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ProjectDetailResponse.class);
