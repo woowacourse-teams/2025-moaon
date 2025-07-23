@@ -1,8 +1,8 @@
 import Carousel from "./components/Carousel/Carousel";
-import TitleSection from "./components/TitleSection/TitleSection";
 import OverviewSection from "./components/OverviewSection/OverviewSection";
 import PlatformSection from "./components/PlatformSection/PlatformSection";
 import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
+import TitleSection from "./components/TitleSection/TitleSection";
 
 function DetailPage() {
   return (

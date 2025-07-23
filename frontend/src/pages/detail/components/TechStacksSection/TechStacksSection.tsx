@@ -1,9 +1,10 @@
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
+import type { TechStackKey } from "@/shared/components/IconBadgeList/constants/iconMap";
 import SectionTitle from "../SectionTitle";
 import * as S from "./TechStacksSection.styled";
 
 interface TechStacksSectionProps {
-  techStacks: string[];
+  techStacks: TechStackKey[];
 }
 
 function TechStacksSection({ techStacks }: TechStacksSectionProps) {

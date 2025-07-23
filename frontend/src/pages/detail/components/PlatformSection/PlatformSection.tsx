@@ -1,9 +1,10 @@
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
+import type { PlatformKey } from "@/shared/components/IconBadgeList/constants/iconMap";
 import SectionTitle from "../SectionTitle";
 import * as S from "./PlatformSection.styled";
 
 interface PlatformSectionProps {
-  platforms: string[];
+  platforms: PlatformKey[];
 }
 
 function PlatformSection({ platforms }: PlatformSectionProps) {
