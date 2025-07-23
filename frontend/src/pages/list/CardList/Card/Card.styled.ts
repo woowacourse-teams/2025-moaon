@@ -36,7 +36,7 @@ export const CardImage = styled.img`
 `;
 
 export const CardInfo = styled.div`
-  padding: 1rem .75rem;
+  padding: 1rem 0.75rem;
   height: 12.5rem;
 `;
 
@@ -62,7 +62,7 @@ export const CardFooter = styled.div`
 `;
 
 export const GroupText = styled.span`
-  font-size: .875rem;
+  font-size: 0.875rem;
   color: #999c9f;
 `;
 
@@ -80,5 +80,5 @@ export const ActivityBox = styled.div`
 `;
 
 export const ActivityIcon = styled.img`
-  width:.875rem;
+  width: 0.875rem;
 `;

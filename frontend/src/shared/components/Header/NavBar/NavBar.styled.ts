@@ -3,7 +3,7 @@ import { Link as ReactRouterLink } from "react-router";
 
 export const NavBar = styled.nav``;
 
-export const NavLinkList = styled.ul`  
+export const NavLinkList = styled.ul`
   display: flex;
   gap: 1rem;
 `;
@@ -18,8 +18,8 @@ export const Link = styled(ReactRouterLink)`
     position: absolute;
     width: 100%;
     transform: scaleX(0);
-    height: 1px;
-    bottom: -3px;
+    height: 0.0625rem;
+    bottom: -0.1875rem;
     left: 0;
     background-color: #000;
     transition: transform 0.25s ease-out;

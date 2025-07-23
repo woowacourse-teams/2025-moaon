@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const TechStackList = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  padding: .25rem 0 0;
+  padding: 0.25rem 0 0;
   gap: 0.75rem;
 `;
 
