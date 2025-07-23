@@ -7,7 +7,15 @@ function FilterList() {
     mode: "multi",
   });
 
-  return <S.List></S.List>;
+  return (
+    <S.List>
+      {/* <FilterItem onClick={() => techStack.update("1")} />
+      <FilterItem onClick={() => techStack.update("2")} />
+      <FilterItem onClick={() => techStack.update("3")} />
+      <FilterItem onClick={() => techStack.update("4")} />
+      <FilterItem onClick={() => techStack.update("5")} /> */}
+    </S.List>
+  );
 }
 
 export default FilterList;
