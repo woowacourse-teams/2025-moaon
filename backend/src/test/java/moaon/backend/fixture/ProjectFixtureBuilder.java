@@ -71,11 +71,6 @@ public class ProjectFixtureBuilder {
         return this;
     }
 
-    public ProjectFixtureBuilder images(Images images) {
-        this.images = images;
-        return this;
-    }
-
     public ProjectFixtureBuilder images(String... imageUrls) {
         this.images = new Images(Arrays.asList(imageUrls));
         return this;
@@ -100,7 +95,7 @@ public class ProjectFixtureBuilder {
         this.categories = new ArrayList<>(Arrays.asList(categories));
         return this;
     }
-    
+
     public ProjectFixtureBuilder platforms(Platform... platforms) {
         this.platforms = new ArrayList<>(Arrays.asList(platforms));
         return this;
