@@ -26,15 +26,18 @@ jobs:
 
       - name: Get Vercel Environment Variables
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
 
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
 
       - name: Deploy Project Artifacts to Vercel
         id: deploy
         run: |
           vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > vercel-output.txt
           echo "preview_url=$(cat vercel-output.txt)" >> $GITHUB_OUTPUT
+        working-directory: ./frontend
 
       - name: Comment PR with Preview URL
         uses: thollander/actions-comment-pull-request@v2
