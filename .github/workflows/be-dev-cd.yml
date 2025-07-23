@@ -28,5 +28,5 @@ jobs:
       - name: Restart DB only if seed changed
         if: env.SEED_CHANGED == 'true'
         run: |
-          docker-compose down -v
-          docker-compose up -d --build
+          docker compose down -v
+          docker compose up -d --build
