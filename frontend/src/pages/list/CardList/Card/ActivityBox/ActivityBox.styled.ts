@@ -6,9 +6,9 @@ export const ActivityBox = styled.div`
   align-items: center;
   gap: 0.25rem;
   font-size: 0.875rem;
-  width:50px;
+  width: 3.125rem;
 `;
 
 export const ActivityIcon = styled.img`
-  width:.875rem;
+  width: 0.875rem;
 `;
