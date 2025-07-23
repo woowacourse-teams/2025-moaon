@@ -6,7 +6,7 @@ function App() {
   return (
     <GlobalLayout>
       <Routes>
-        <Route path="/" element={<h1>모아온 프로덕션 배포</h1>} />
+        <Route path="/" element={<h1>모아온 프로덕션 배포 ㅇ_ㅇ</h1>} />
         <Route
           path="*"
           element={
