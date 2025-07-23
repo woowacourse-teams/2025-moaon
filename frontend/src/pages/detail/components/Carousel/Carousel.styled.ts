@@ -87,5 +87,5 @@ export const NextButton = styled(MoveButton)`
 `;
 
 export const PrevButton = styled(MoveButton)`
-  left: -20px;
+  left: -1.25rem;
 `;
