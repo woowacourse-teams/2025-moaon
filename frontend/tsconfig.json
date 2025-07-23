@@ -13,7 +13,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@shared/*": ["src/shared/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@domains/*": ["src/domains/*"]
     }
   },
   "include": ["src"]
