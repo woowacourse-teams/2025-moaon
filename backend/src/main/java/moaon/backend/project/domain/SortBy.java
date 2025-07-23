@@ -3,6 +3,7 @@ package moaon.backend.project.domain;
 import java.util.Arrays;
 
 public enum SortBy {
+
     CREATED_AT("createdAt"),
     VIEWS("views"),
     LOVES("loves");

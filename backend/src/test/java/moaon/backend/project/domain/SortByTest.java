@@ -18,5 +18,4 @@ class SortByTest {
         //then
         assertThat(actual).isEqualTo(expected);
     }
-
 }
