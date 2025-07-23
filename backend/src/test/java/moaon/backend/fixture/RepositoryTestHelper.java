@@ -39,48 +39,28 @@ public class RepositoryTestHelper {
     @Autowired
     private ProjectRepository projectRepository;
 
+    public Project save(Project project) {
+        organizationRepository.save(project.getOrganization());
+        memberRepository.save(project.getAuthor());
+        techStackRepository.saveAll(project.getTechStacks());
+        categoryRepository.saveAll(project.getCategories());
+        platformRepository.saveAll(project.getPlatforms());
+
+        return projectRepository.save(project);
+    }
+
     public Project saveAnyProject() {
-        Organization organization = organizationRepository.save(Fixture.anyOrganization());
-        Member member = memberRepository.save(Fixture.anyMember());
-        TechStack techStack1 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack2 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack3 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack4 = techStackRepository.save(Fixture.anyTechStack());
-        Category category1 = categoryRepository.save(Fixture.anyCategory());
-        Category category2 = categoryRepository.save(Fixture.anyCategory());
-        Platform platform = platformRepository.save(Fixture.anyPlatform());
+        Project project = ProjectFixtureBuilder.anyProject().build();
 
-        return projectRepository.save(new Project(
-                "제목",
-                "한 줄 소개",
-                "상세 설명",
-                "깃허브 URL",
-                "프로덕션 URL",
-                new Images(List.of("이미지 URL1", "이미지 URL2")),
-                organization,
-                member,
-                List.of(techStack1, techStack2, techStack3, techStack4),
-                List.of(category1, category2),
-                List.of(platform),
-                LocalDateTime.now()
-        ));
+        organizationRepository.save(project.getOrganization());
+        memberRepository.save(project.getAuthor());
+        techStackRepository.saveAll(project.getTechStacks());
+        categoryRepository.saveAll(project.getCategories());
+        platformRepository.saveAll(project.getPlatforms());
+
+        return projectRepository.save(project);
     }
 
-    public Project saveProjectWithSearchConditions(
-            String title,
-            String summary,
-            String description
-    ) {
-        return saveProjectWithRequiredFields(
-                title,
-                summary,
-                description,
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
-        );
-    }
 
     public Project saveProjectWithFilterConditions(
             Organization organization,
@@ -127,33 +107,6 @@ public class RepositoryTestHelper {
                 categories,
                 platforms,
                 LocalDateTime.now()
-        ));
-    }
-
-    public Project saveProjectWithCreatedAt(LocalDateTime createdAt) {
-        Organization organization = organizationRepository.save(Fixture.anyOrganization());
-        Member member = memberRepository.save(Fixture.anyMember());
-        TechStack techStack1 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack2 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack3 = techStackRepository.save(Fixture.anyTechStack());
-        TechStack techStack4 = techStackRepository.save(Fixture.anyTechStack());
-        Category category1 = categoryRepository.save(Fixture.anyCategory());
-        Category category2 = categoryRepository.save(Fixture.anyCategory());
-        Platform platform = platformRepository.save(Fixture.anyPlatform());
-
-        return projectRepository.save(new Project(
-                "제목",
-                "한 줄 소개",
-                "상세 설명",
-                "깃허브 URL",
-                "프로덕션 URL",
-                new Images(List.of("이미지 URL1", "이미지 URL2")),
-                organization,
-                member,
-                List.of(techStack1, techStack2, techStack3, techStack4),
-                List.of(category1, category2),
-                List.of(platform),
-                createdAt
         ));
     }
 }

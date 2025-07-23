@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
+import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryTestHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
@@ -36,11 +38,11 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithSearchConditions() {
         // given
-        repositoryTestHelper.saveAnyProject();
-        repositoryTestHelper.saveAnyProject();
-        repositoryTestHelper.saveAnyProject();
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
 
-        ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(null, null, null, null, null, null);
+        ProjectQueryCondition projectQueryCondition = ProjectQueryConditionFixtureBuilder.builder().build();
 
         //when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
@@ -53,31 +55,41 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithSearch() {
         // given
-        Project moaon = repositoryTestHelper.saveProjectWithSearchConditions(
-                "모아온",
-                "여러 플랫폼에 흩어진 포트폴리오를 한 곳에 정리할 수 있는 서비스입니다.",
-                "GitHub, Notion, Velog 등 다양한 출처의 링크들을 카드 형태로 시각화하여 보여줍니다."
+        Project moaon = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .title("모아온")
+                .summary("여러 플랫폼에 흩어진 포트폴리오를 한 곳에 정리할 수 있는 서비스입니다.")
+                .description("GitHub, Notion, Velog 등 다양한 출처의 링크들을 카드 형태로 시각화하여 보여줍니다.")
+                .build()
         );
-
-        Project share = repositoryTestHelper.saveProjectWithSearchConditions(
-                "공유공유",
-                "개발자와 디자이너의 작업물을 쉽게 공유하고 검색할 수 있도록 도와줍니다.",
-                "사용자 맞춤 검색 기능과 태그 필터링을 통해 필요한 작업물을 빠르게 찾을 수 있습니다."
+        Project share = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .title("공유공유")
+                .summary("개발자와 디자이너의 작업물을 쉽게 공유하고 검색할 수 있도록 도와줍니다.")
+                .description("사용자 맞춤 검색 기능과 태그 필터링을 통해 필요한 작업물을 빠르게 찾을 수 있습니다.")
+                .build()
         );
-
-        Project hub = repositoryTestHelper.saveProjectWithSearchConditions(
-                "허브허브",
-                "링크 하나로 모든 프로젝트를 소개할 수 있는 포트폴리오 허브 플랫폼입니다.",
-                "SNS 공유 최적화 및 모바일 반응형 UI를 제공하여 접근성과 확장성을 높였습니다."
+        Project hub = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .title("허브허브")
+                .summary("링크 하나로 모든 프로젝트를 소개할 수 있는 포트폴리오 허브 플랫폼입니다.")
+                .description("SNS 공유 최적화 및 모바일 반응형 UI를 제공하여 접근성과 확장성을 높였습니다.")
+                .build()
         );
 
         // when
         List<Project> projects1 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition("모아온", null, null, null, null, null));
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .search("모아온")
+                        .build()
+        );
         List<Project> projects2 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition("개발자", null, null, null, null, null));
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .search("개발자")
+                        .build()
+        );
         List<Project> projects3 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition("SNS", null, null, null, null, null));
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .search("SNS")
+                        .build()
+        );
 
         // then
         assertAll(
@@ -94,41 +106,30 @@ class CustomizedProjectRepositoryImplTest {
         Organization organization1 = Fixture.anyOrganization();
         Organization organization2 = Fixture.anyOrganization();
         Organization organization3 = Fixture.anyOrganization();
-        Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                organization1,
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
+        Project projectWithOrganization1 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .organization(organization1)
+                .build()
         );
-        Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                organization2,
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
+        Project projectWithOrganization2 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .organization(organization2)
+                .build()
         );
-        Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                organization3,
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .organization(organization3)
+                .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        null,
-                        null,
-                        List.of(organization1.getName(), organization2.getName()),
-                        null,
-                        null
-                )
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .organizationNames(organization1.getName(), organization2.getName())
+                        .build()
         );
 
         // then
         assertAll(
                 () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(project1, project2)
+                () -> assertThat(projects).contains(projectWithOrganization1, projectWithOrganization2)
         );
     }
 
@@ -141,39 +142,29 @@ class CustomizedProjectRepositoryImplTest {
         Category category3 = Fixture.anyCategory();
         Category category4 = Fixture.anyCategory();
         Category category5 = Fixture.anyCategory();
-        Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(category1, category2),
-                List.of(Fixture.anyPlatform())
+
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .categories(category1, category2)
+                .build()
         );
-        Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(category2, category3),
-                List.of(Fixture.anyPlatform())
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .categories(category2, category3)
+                .build()
         );
-        Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(category4, category5),
-                List.of(Fixture.anyPlatform())
+        Project projectWithCategory4 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .categories(category4, category5)
+                .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        null,
-                        List.of(category4.getName()),
-                        null,
-                        null,
-                        null
-                )
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .categoryNames(category4.getName())
+                        .build()
         );
 
         // then
-        assertThat(projects).containsOnly(project3);
+        assertThat(projects).containsOnly(projectWithCategory4);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
@@ -185,41 +176,31 @@ class CustomizedProjectRepositoryImplTest {
         TechStack techStack3 = Fixture.anyTechStack();
         TechStack techStack4 = Fixture.anyTechStack();
         TechStack techStack5 = Fixture.anyTechStack();
-        Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(techStack1, techStack2),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
+
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .techStacks(techStack1, techStack2)
+                .build());
+
+        Project projectWithTechStack3 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .techStacks(techStack3, techStack5)
+                .build()
         );
-        Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(techStack1, techStack3, techStack4),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
-        );
-        Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(techStack3, techStack4, techStack5),
-                List.of(Fixture.anyCategory()),
-                List.of(Fixture.anyPlatform())
+        Project projectWithTechStack4 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .techStacks(techStack1, techStack4)
+                .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        null,
-                        null,
-                        null,
-                        List.of(techStack3.getName(), techStack4.getName()),
-                        null
-                )
+                ProjectQueryConditionFixtureBuilder.builder().
+                        techStackNames(techStack3.getName(), techStack4.getName())
+                        .build()
         );
 
         // then
         assertAll(
                 () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(project3, project2)
+                () -> assertThat(projects).contains(projectWithTechStack3, projectWithTechStack4)
         );
     }
 
@@ -230,47 +211,31 @@ class CustomizedProjectRepositoryImplTest {
         Platform platform1 = Fixture.anyPlatform();
         Platform platform2 = Fixture.anyPlatform();
         Platform platform3 = Fixture.anyPlatform();
-        Project project1 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(platform1)
+
+        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .platforms(platform1)
+                .build()
         );
-        Project project2 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(platform1)
+        Project projectWithPlatform2 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .platforms(platform2)
+                .build()
         );
-        Project project3 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(platform2)
-        );
-        Project project4 = repositoryTestHelper.saveProjectWithFilterConditions(
-                Fixture.anyOrganization(),
-                List.of(Fixture.anyTechStack()),
-                List.of(Fixture.anyCategory()),
-                List.of(platform2, platform3)
+        Project projectWithPlatform3 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .platforms(platform3)
+                .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        List.of(platform2.getName(), platform3.getName()),
-                        null,
-                        null,
-                        null,
-                        null
-                )
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .platformNames(platform2.getName(), platform3.getName())
+                        .build()
         );
 
         // then
         assertAll(
                 () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(project3, project4)
+                () -> assertThat(projects).contains(projectWithPlatform2, projectWithPlatform3)
         );
     }
 
@@ -278,9 +243,9 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByViews() {
         // given
-        Project project1 = repositoryTestHelper.saveAnyProject();
-        Project project2 = repositoryTestHelper.saveAnyProject();
-        Project project3 = repositoryTestHelper.saveAnyProject();
+        Project project1 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project project2 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project project3 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
 
         project1.addViewCount();
         project1.addViewCount();
@@ -291,14 +256,9 @@ class CustomizedProjectRepositoryImplTest {
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        SortBy.VIEWS
-                )
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .sortBy(SortBy.VIEWS)
+                        .build()
         );
 
         // then
@@ -312,20 +272,24 @@ class CustomizedProjectRepositoryImplTest {
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime tomorrow = today.plusDays(1);
         LocalDateTime yesterday = today.minusDays(1);
-        Project todayProject = repositoryTestHelper.saveProjectWithCreatedAt(today);
-        Project tomorrowProject = repositoryTestHelper.saveProjectWithCreatedAt(tomorrow);
-        Project yesterdayProject = repositoryTestHelper.saveProjectWithCreatedAt(yesterday);
+        Project todayProject = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .createdAt(today)
+                .build()
+        );
+        Project tomorrowProject = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .createdAt(tomorrow)
+                .build()
+        );
+        Project yesterdayProject = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+                .createdAt(yesterday)
+                .build()
+        );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        SortBy.CREATED_AT
-                )
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .sortBy(SortBy.CREATED_AT)
+                        .build()
         );
 
         // then
@@ -336,9 +300,9 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByLove() {
         // given
-        Project low = repositoryTestHelper.saveAnyProject();
-        Project middle = repositoryTestHelper.saveAnyProject();
-        Project high = repositoryTestHelper.saveAnyProject();
+        Project low = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project middle = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project high = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
 
         Member author1 = low.getAuthor();
         Member author2 = middle.getAuthor();
@@ -350,14 +314,9 @@ class CustomizedProjectRepositoryImplTest {
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryCondition(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        SortBy.LOVES
-                )
+                ProjectQueryConditionFixtureBuilder.builder()
+                        .sortBy(SortBy.LOVES)
+                        .build()
         );
 
         // then

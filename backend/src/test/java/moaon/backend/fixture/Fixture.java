@@ -31,7 +31,7 @@ public class Fixture {
         return new Platform(nameWithSequence("플랫폼"));
     }
 
-    private static String nameWithSequence(String name) {
+    protected static String nameWithSequence(String name) {
         return name + SEQUENCE.incrementAndGet();
     }
 }
