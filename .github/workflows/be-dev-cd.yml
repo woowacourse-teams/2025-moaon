@@ -17,10 +17,11 @@ jobs:
 
       - name: Check seed data changes
         run: |
-          if git diff --quiet origin/test-deploy HEAD -- db/mysql/init; then
+          echo "Comparing ${{ github.event.before }}..${{ github.sha }}"
+          if git diff --quiet ${{ github.event.before }} ${{ github.sha }} -- db/mysql/init; then
             echo "SEED_CHANGED=false" >> $GITHUB_ENV
             echo "No changes in seed data detected. Failing the workflow intentionally."
-            exit 1  # 변경 없으면 실패
+            exit 1
           else
             echo "SEED_CHANGED=true" >> $GITHUB_ENV
           fi
