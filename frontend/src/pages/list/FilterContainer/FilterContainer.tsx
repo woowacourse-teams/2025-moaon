@@ -2,8 +2,8 @@ import { CATEGORY_ENTRY } from "@domains/filter/category";
 import { ORGANIZATION_ENTRY } from "@domains/filter/organization";
 import { PLATFORM_ENTRY } from "@domains/filter/platform";
 import { TECH_STACK_ENTRY } from "@domains/filter/techStack";
-import Filter from "./Filter/Filter";
 import * as S from "./FilterContainer.styled";
+import Filter from "./FilterTrigger/FilterTrigger";
 
 const FILTER_INFO_LIST = [
   {

@@ -2,8 +2,8 @@ import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import { useState } from "react";
 import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
 import type { FilterKind } from "../FilterContainer";
-import * as S from "./Filter.styled";
 import FilterBox from "./FilterBox/FilterBox";
+import * as S from "./FilterTrigger.styled";
 
 interface FilterProps {
   kind: FilterKind;
