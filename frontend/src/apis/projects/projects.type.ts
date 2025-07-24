@@ -1,4 +1,5 @@
-import type { PlatformKey, TechStackKey } from "@domains/filter/filter.type";
+import type { PlatformKey } from "@domains/filter/platform";
+import type { TechStackKey } from "@domains/filter/techStack";
 
 export interface ProjectCard {
   id: number;

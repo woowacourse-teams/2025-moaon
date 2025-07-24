@@ -1,4 +1,4 @@
-import type { TechStackKey } from "@domains/filter/filter.type";
+import type { TechStackKey } from "@domains/filter/techStack";
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
 import SectionTitle from "../SectionTitle";
 import * as S from "./TechStacksSection.styled";

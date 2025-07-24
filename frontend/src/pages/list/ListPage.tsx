@@ -1,10 +1,10 @@
 import CardList from "./CardList/CardList";
-import Filter from "./Filter/Filter";
+import FilterContainer from "./FilterContainer/FilterContainer";
 
 function ListPage() {
   return (
     <>
-      <Filter />
+      <FilterContainer />
       <CardList />
       <div style={{ height: "2000px", backgroundColor: "#fff" }} />
     </>

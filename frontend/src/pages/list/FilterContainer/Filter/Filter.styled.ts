@@ -14,3 +14,5 @@ export const FilterButton = styled.button`
   font-size: 1.125rem;
   color: #474747ff;
 `;
+
+export const FilterTitle = styled.span``;

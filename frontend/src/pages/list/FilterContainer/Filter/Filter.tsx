@@ -1,10 +1,15 @@
 import { useState } from "react";
 import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
-
+import type { FilterKind } from "../FilterContainer";
 import * as S from "./Filter.styled";
 import FilterBox from "./FilterBox/FilterBox";
 
-function Filter() {
+interface FilterProps {
+  kind: FilterKind;
+}
+
+function Filter({ kind }: FilterProps) {
+  const { label, value } = kind;
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleFilter = () => {
@@ -18,10 +23,10 @@ function Filter() {
   return (
     <S.Container>
       <S.FilterButton type="button" onClick={toggleFilter}>
-        <span>단체</span>
+        <S.FilterTitle>{label}</S.FilterTitle>
         <ArrowIcon direction="up" />
       </S.FilterButton>
-      {isOpen && <FilterBox onClose={closeFilter} />}
+      {isOpen && <FilterBox onClose={closeFilter} value={value} />}
     </S.Container>
   );
 }
