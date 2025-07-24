@@ -133,35 +133,33 @@ public class ProjectApiTest {
                         .build()
         );
 
-        Project projectViewCount1 = new ProjectFixtureBuilder()
+        Project projectViewRankThird = repositoryHelper.save(new ProjectFixtureBuilder()
                 .description(filteredSearch)
                 .platforms(filteredPlatform)
                 .categories(filteredCategory)
                 .organization(filteredOrganization)
                 .techStacks(filteredTechStack)
                 .views(1)
-                .build();
-        Project projectViewRankThird = repositoryHelper.save(projectViewCount1);
-
-        Project projectViewCount2 = new ProjectFixtureBuilder()
+                .build()
+        );
+        Project projectViewRankSecond = repositoryHelper.save(new ProjectFixtureBuilder()
                 .summary(filteredSearch)
                 .platforms(filteredPlatform)
                 .categories(filteredCategory)
                 .organization(filteredOrganization)
                 .techStacks(filteredTechStack)
                 .views(2)
-                .build();
-        Project projectViewRankSecond = repositoryHelper.save(projectViewCount2);
-
-        Project projectViewCount3 = new ProjectFixtureBuilder()
+                .build()
+        );
+        Project projectViewRankFirst = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title(filteredSearch)
                 .platforms(filteredPlatform)
                 .categories(filteredCategory)
                 .organization(filteredOrganization)
                 .techStacks(filteredTechStack)
                 .views(3)
-                .build();
-        Project projectViewRankFirst = repositoryHelper.save(projectViewCount3);
+                .build()
+        );
 
         // when
         ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
