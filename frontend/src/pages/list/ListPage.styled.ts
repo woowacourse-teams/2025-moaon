@@ -10,3 +10,27 @@ export const Box = styled.div`
   align-items: center;
   width: 100%;
 `;
+
+export const Wrap = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+export const ResetButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #d2d2d2;
+  border-radius: 16px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #474747ff;
+
+  &:hover {
+    background-color: #f5f5f5;
+    transition: background-color 0.5s ease;
+  }
+`;
+export const ResetIcon = styled.img`
+  width: 1.25rem;
+`;

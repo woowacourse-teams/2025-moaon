@@ -10,9 +10,9 @@ const FILTER_INFO_LIST = [
     kind: { label: "단체", param: "organizations" },
     entry: ORGANIZATION_ENTRY,
   },
-  { kind: { label: "주제", param: "category" }, entry: CATEGORY_ENTRY },
-  { kind: { label: "기술스택", param: "techStack" }, entry: TECH_STACK_ENTRY },
-  { kind: { label: "플랫폼", param: "platform" }, entry: PLATFORM_ENTRY },
+  { kind: { label: "주제", param: "categories" }, entry: CATEGORY_ENTRY },
+  { kind: { label: "기술스택", param: "techStacks" }, entry: TECH_STACK_ENTRY },
+  { kind: { label: "플랫폼", param: "platforms" }, entry: PLATFORM_ENTRY },
 ] as const;
 
 export type FilterKind = (typeof FILTER_INFO_LIST)[number]["kind"];

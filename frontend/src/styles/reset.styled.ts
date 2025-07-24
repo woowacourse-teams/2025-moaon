@@ -1,6 +1,14 @@
 import { css } from "@emotion/react";
 
 export const resetStyle = css`
+  @font-face {
+    font-family: "Pretendard";
+    src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+      format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+
   html,
   body,
   div,
@@ -150,6 +158,7 @@ export const resetStyle = css`
 
   * {
     box-sizing: border-box;
+    font-family: "Pretendard";
   }
 
   input::-webkit-outer-spin-button,

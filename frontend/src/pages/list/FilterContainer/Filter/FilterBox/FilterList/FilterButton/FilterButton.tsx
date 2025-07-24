@@ -2,6 +2,7 @@ import IconBadge from "@shared/components/IconBadgeList/IconBadge/IconBadge";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useState } from "react";
 import type { FilterKindParam } from "@/pages/list/FilterContainer/FilterContainer";
+import useProjectList from "@/pages/list/hooks/useProjectList";
 import * as S from "./FilterButton.styled";
 
 interface FilterButtonProps {
@@ -16,6 +17,7 @@ function FilterButton({ value, label, imgUrl, param }: FilterButtonProps) {
     key: param,
     mode: "multi",
   });
+  const { refetch } = useProjectList();
   const [isSelected, setIsSelected] = useState(params.get().includes(value));
 
   const toggle = () => {
@@ -25,6 +27,7 @@ function FilterButton({ value, label, imgUrl, param }: FilterButtonProps) {
   const handleFilterButtonClick = (value: string) => {
     toggle();
     params.update(value);
+    refetch();
   };
 
   return (
