@@ -75,17 +75,17 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects1 = customizedProjectRepositoryImpl.findWithSearchConditions(
+        List<Project> projectsWithMoaon = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
                         .search("모아온")
                         .build()
         );
-        List<Project> projects2 = customizedProjectRepositoryImpl.findWithSearchConditions(
+        List<Project> projectsWithShare = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
                         .search("개발자")
                         .build()
         );
-        List<Project> projects3 = customizedProjectRepositoryImpl.findWithSearchConditions(
+        List<Project> projectsWithHub = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
                         .search("SNS")
                         .build()
@@ -93,9 +93,9 @@ class CustomizedProjectRepositoryImplTest {
 
         // then
         assertAll(
-                () -> assertThat(projects1).containsOnly(moaon),
-                () -> assertThat(projects2).containsOnly(share),
-                () -> assertThat(projects3).containsOnly(hub)
+                () -> assertThat(projectsWithMoaon).containsOnly(moaon),
+                () -> assertThat(projectsWithShare).containsOnly(share),
+                () -> assertThat(projectsWithHub).containsOnly(hub)
         );
     }
 
@@ -243,16 +243,16 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByViews() {
         // given
-        Project project1 = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Project project2 = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Project project3 = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project middle = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
-        project1.addViewCount();
-        project1.addViewCount();
-        project1.addViewCount();
+        high.addViewCount();
+        high.addViewCount();
+        high.addViewCount();
 
-        project2.addViewCount();
-        project2.addViewCount();
+        middle.addViewCount();
+        middle.addViewCount();
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
@@ -262,7 +262,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertThat(projects).containsSequence(project1, project2, project3);
+        assertThat(projects).containsSequence(high, middle, low);
     }
 
     @DisplayName("프로젝트를 생성일자 기준으로 정렬한다.")

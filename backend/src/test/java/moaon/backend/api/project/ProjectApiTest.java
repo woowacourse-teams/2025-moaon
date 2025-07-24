@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
-import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
@@ -77,63 +76,90 @@ public class ProjectApiTest {
     @Test
     void getAllProjects() {
         // given
-        Organization organization1 = Fixture.anyOrganization();
-        TechStack techStack1 = Fixture.anyTechStack();
-        Category category1 = Fixture.anyCategory();
-        Platform platform1 = Fixture.anyPlatform();
-        Platform platform2 = Fixture.anyPlatform();
+        String filteredSearch = "모아온";
+        String unfilteredSearch = "모모온";
+        Platform filteredPlatform = Fixture.anyPlatform();
+        Platform unfilteredPlatform = Fixture.anyPlatform();
+        Category filteredCategory = Fixture.anyCategory();
+        Category unfilteredCategory = Fixture.anyCategory();
+        Organization filteredOrganization = Fixture.anyOrganization();
+        Organization unfilteredOrganization = Fixture.anyOrganization();
+        TechStack filteredTechStack = Fixture.anyTechStack();
+        TechStack unfilteredTechStack = Fixture.anyTechStack();
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .description("모모온")
-                        .platforms(platform1)
-                        .categories(category1)
-                        .organization(organization1)
-                        .techStacks(techStack1)
-                        .createdAt(LocalDateTime.now())
+                        .description(unfilteredSearch)
+                        .platforms(filteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .description("모모온")
-                        .platforms(platform2)
-                        .categories(category1)
-                        .organization(organization1)
-                        .techStacks(techStack1)
-                        .createdAt(LocalDateTime.now())
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(unfilteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(unfilteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(unfilteredTechStack)
                         .build()
         );
 
         Project projectViewCount1 = new ProjectFixtureBuilder()
-                .description("모아온")
-                .platforms(platform1)
-                .categories(category1)
-                .organization(organization1)
-                .techStacks(techStack1)
-                .createdAt(LocalDateTime.now())
+                .description(filteredSearch)
+                .platforms(filteredPlatform)
+                .categories(filteredCategory)
+                .organization(filteredOrganization)
+                .techStacks(filteredTechStack)
                 .build();
         projectViewCount1.addViewCount();
         Project projectViewRankThird = repositoryHelper.save(projectViewCount1);
 
         Project projectViewCount2 = new ProjectFixtureBuilder()
-                .summary("모아온")
-                .platforms(platform1)
-                .categories(category1)
-                .organization(organization1)
-                .techStacks(techStack1)
-                .createdAt(LocalDateTime.now().minusDays(1))
+                .summary(filteredSearch)
+                .platforms(filteredPlatform)
+                .categories(filteredCategory)
+                .organization(filteredOrganization)
+                .techStacks(filteredTechStack)
                 .build();
         projectViewCount2.addViewCount();
         projectViewCount2.addViewCount();
         Project projectViewRankSecond = repositoryHelper.save(projectViewCount2);
 
         Project projectViewCount3 = new ProjectFixtureBuilder()
-                .title("모아온")
-                .platforms(platform1)
-                .categories(category1)
-                .organization(organization1)
-                .techStacks(techStack1)
-                .createdAt(LocalDateTime.now().minusDays(1))
+                .title(filteredSearch)
+                .platforms(filteredPlatform)
+                .categories(filteredCategory)
+                .organization(filteredOrganization)
+                .techStacks(filteredTechStack)
                 .build();
         projectViewCount3.addViewCount();
         projectViewCount3.addViewCount();
@@ -142,12 +168,12 @@ public class ProjectApiTest {
 
         // when
         ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
-                .queryParams("search", "모아온")
+                .queryParams("search", filteredSearch)
                 .queryParams("sort", "views")
-                .queryParams("platforms", List.of(platform1.getName()))
-                .queryParams("categories", List.of(category1.getName()))
-                .queryParams("organizations", List.of(organization1.getName()))
-                .queryParams("techStacks", List.of(techStack1.getName()))
+                .queryParams("platforms", List.of(filteredPlatform.getName()))
+                .queryParams("categories", List.of(filteredCategory.getName()))
+                .queryParams("organizations", List.of(filteredOrganization.getName()))
+                .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .when().get("/projects")
                 .then().log().all()
                 .statusCode(200)
