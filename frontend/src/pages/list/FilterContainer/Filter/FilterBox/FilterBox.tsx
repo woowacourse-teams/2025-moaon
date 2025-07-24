@@ -9,12 +9,16 @@ interface FilterBoxProps {
 }
 
 function FilterBox({ param }: FilterBoxProps) {
-  const [filterList, setFilterList] = useState(FILTER_MAP[param]);
+  const [filterList, setFilterList] = useState(
+    FILTER_MAP[param].sort((a, b) => a[1].label.localeCompare(b[1].label)),
+  );
 
   const changeFilterList = (keyword: string) => {
-    const filteredList = FILTER_MAP[param].filter(([_, { label }]) =>
-      label.toLowerCase().includes(keyword.toLowerCase()),
-    );
+    const filteredList = FILTER_MAP[param]
+      .filter(([_, { label }]) =>
+        label.toLowerCase().startsWith(keyword.toLowerCase()),
+      )
+      .sort((a, b) => a[1].label.localeCompare(b[1].label));
     setFilterList(filteredList);
   };
 
