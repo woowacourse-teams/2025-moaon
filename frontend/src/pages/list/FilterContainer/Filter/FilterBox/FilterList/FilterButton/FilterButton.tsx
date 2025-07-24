@@ -12,11 +12,11 @@ interface FilterButtonProps {
 }
 
 function FilterButton({ value, label, imgUrl, param }: FilterButtonProps) {
-  const [isSelected, setIsSelected] = useState(false);
   const params = useSearchParams({
     key: param,
     mode: "multi",
   });
+  const [isSelected, setIsSelected] = useState(params.get().includes(value));
 
   const toggle = () => {
     setIsSelected((prev) => !prev);
