@@ -11,6 +11,18 @@ export const TECH_STACK_ICON_MAP = {
     label: "TypeScript",
     imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
+  angular: {
+    label: "TypeScript",
+    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  },
+  nextjs: {
+    label: "TypeScript",
+    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  },
+  zustand: {
+    label: "TypeScript",
+    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  },
 } as const;
 
 export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;
