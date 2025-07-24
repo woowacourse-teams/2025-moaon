@@ -14,11 +14,6 @@ export default {
     clean: true,
   },
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-      "@shared": path.resolve(__dirname, "src/shared"),
-      "@assets": path.resolve(__dirname, "src/assets"),
-    },
     extensions: [".ts", ".tsx", ".js"],
     alias: {
       "@": path.resolve(__dirname, "src"),
