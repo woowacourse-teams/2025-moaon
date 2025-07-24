@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 
+export const SearchForm = styled.form``;
+
 export const SearchBox = styled.label<{
   position: "left" | "right";
   shape: "default" | "rounded";
@@ -29,6 +31,8 @@ export const SearchInput = styled.input`
     color: #8b95a1;
   }
 `;
+
+export const Button = styled.button``;
 
 export const SearchIcon = styled.img<{ size: number }>`
   width: ${({ size }) => size}px;

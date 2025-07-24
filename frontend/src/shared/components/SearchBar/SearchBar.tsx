@@ -1,5 +1,7 @@
 import SearchIcon from "@assets/icons/search.svg";
-import { type ChangeEvent, useState } from "react";
+import useSearchParams from "@shared/hooks/useSearchParams";
+import { type ChangeEvent, type FormEvent, useState } from "react";
+import useProjectList from "@/pages/list/hooks/useProjectList";
 import * as S from "./SearchBar.styled";
 
 interface SearchBarProps {
@@ -19,6 +21,8 @@ function SearchBar({
   onChange,
 }: SearchBarProps) {
   const [value, setValue] = useState("");
+  const params = useSearchParams({ key: "search", mode: "single" });
+  const { refetch } = useProjectList();
 
   const handleSearchValueChange = (event: ChangeEvent) => {
     const target = event.target as HTMLInputElement;
@@ -26,16 +30,26 @@ function SearchBar({
     onChange?.(target.value);
   };
 
+  const handleSearchFormSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    params.update(value);
+    refetch();
+  };
+
   return (
-    <S.SearchBox position={icon.position} shape={shape} width={width}>
-      <S.SearchIcon src={SearchIcon} alt="검색" size={icon.size} />
-      <S.SearchInput
-        type="text"
-        placeholder="검색어를 입력해 주세요"
-        value={value}
-        onChange={handleSearchValueChange}
-      />
-    </S.SearchBox>
+    <S.SearchForm onSubmit={handleSearchFormSubmit}>
+      <S.SearchBox position={icon.position} shape={shape} width={width}>
+        <S.SearchInput
+          type="text"
+          placeholder="검색어를 입력해 주세요"
+          value={value}
+          onChange={handleSearchValueChange}
+        />
+        <S.Button type="submit">
+          <S.SearchIcon src={SearchIcon} alt="검색" size={icon.size} />
+        </S.Button>
+      </S.SearchBox>
+    </S.SearchForm>
   );
 }
 
