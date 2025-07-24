@@ -4,25 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
-import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.category.domain.Category;
-import moaon.backend.category.repository.CategoryRepository;
-import moaon.backend.fixture.RepositoryTestHelper;
+import moaon.backend.fixture.Fixture;
+import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.member.domain.Member;
-import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.organization.domain.Organization;
-import moaon.backend.organization.repository.OrganizationRepository;
 import moaon.backend.platform.domain.Platform;
-import moaon.backend.platform.repository.PlatformRepository;
-import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectSummaryResponse;
-import moaon.backend.project.repository.ProjectRepository;
 import moaon.backend.techStack.domain.TechStack;
-import moaon.backend.techStack.repository.TechStackRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,32 +29,14 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Import({RepositoryTestHelper.class, QueryDslConfig.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ProjectApiTest {
 
     @LocalServerPort
     private int port;
 
     @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
-    private OrganizationRepository organizationRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private TechStackRepository techStackRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private PlatformRepository platformRepository;
-
-    @Autowired
-    private RepositoryTestHelper repositoryTestHelper;
+    private RepositoryHelper repositoryHelper;
 
     @BeforeEach
     void setUp() {
@@ -72,29 +47,7 @@ public class ProjectApiTest {
     @Test
     void findProject() {
         // given
-        Organization organization = organizationRepository.save(new Organization("그룹명"));
-        Member member = memberRepository.save(new Member("글쓴이"));
-        TechStack techStack1 = techStackRepository.save(new TechStack("java"));
-        TechStack techStack2 = techStackRepository.save(new TechStack("javaScript"));
-        TechStack techStack3 = techStackRepository.save(new TechStack("springBoot"));
-        TechStack techStack4 = techStackRepository.save(new TechStack("mysql"));
-        Category category1 = categoryRepository.save(new Category("sports"));
-        Category category2 = categoryRepository.save(new Category("book"));
-        Platform platform = platformRepository.save(new Platform("web"));
-        Project project = projectRepository.save(new Project(
-                "제목",
-                "한 줄 소개",
-                "상세 설명",
-                "깃허브 URL",
-                "프로덕션 URL",
-                new Images(List.of("이미지 URL1", "이미지 URL2")),
-                organization,
-                member,
-                List.of(techStack1, techStack2, techStack3, techStack4),
-                List.of(category1, category2),
-                List.of(platform),
-                LocalDateTime.now()
-        ));
+        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
@@ -106,12 +59,14 @@ public class ProjectApiTest {
 
         // then
         assertAll(
-                () -> assertThat(actualResponse.title()).isEqualTo("제목"),
-                () -> assertThat(actualResponse.summary()).isEqualTo("한 줄 소개"),
-                () -> assertThat(actualResponse.description()).isEqualTo("상세 설명"),
-                () -> assertThat(actualResponse.techStacks()).contains("java", "javaScript", "springBoot", "mysql"),
-                () -> assertThat(actualResponse.organization()).isEqualTo("그룹명"),
-                () -> assertThat(actualResponse.platforms()).contains("web"),
+                () -> assertThat(actualResponse.title()).isEqualTo(project.getTitle()),
+                () -> assertThat(actualResponse.summary()).isEqualTo(project.getSummary()),
+                () -> assertThat(actualResponse.description()).isEqualTo(project.getDescription()),
+                () -> assertThat(actualResponse.techStacks())
+                        .isEqualTo(project.getTechStacks().stream().map(TechStack::getName).toList()),
+                () -> assertThat(actualResponse.organization()).isEqualTo(project.getOrganization().getName()),
+                () -> assertThat(actualResponse.platforms())
+                        .isEqualTo(project.getPlatforms().stream().map(Platform::getName).toList()),
                 () -> assertThat(actualResponse.loves()).isEqualTo(0),
                 () -> assertThat(actualResponse.views()).isEqualTo(1)
         );
@@ -121,12 +76,99 @@ public class ProjectApiTest {
     @Test
     void getAllProjects() {
         // given
-        Project project1 = repositoryTestHelper.saveAnyProject();
-        Project project2 = repositoryTestHelper.saveAnyProject();
-        Project project3 = repositoryTestHelper.saveAnyProject();
+        String filteredSearch = "모아온";
+        String unfilteredSearch = "모모온";
+        Platform filteredPlatform = Fixture.anyPlatform();
+        Platform unfilteredPlatform = Fixture.anyPlatform();
+        Category filteredCategory = Fixture.anyCategory();
+        Category unfilteredCategory = Fixture.anyCategory();
+        Organization filteredOrganization = Fixture.anyOrganization();
+        Organization unfilteredOrganization = Fixture.anyOrganization();
+        TechStack filteredTechStack = Fixture.anyTechStack();
+        TechStack unfilteredTechStack = Fixture.anyTechStack();
+
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(unfilteredSearch)
+                        .platforms(filteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(unfilteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(unfilteredOrganization)
+                        .techStacks(filteredTechStack)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .description(filteredSearch)
+                        .platforms(unfilteredPlatform)
+                        .categories(filteredCategory)
+                        .organization(filteredOrganization)
+                        .techStacks(unfilteredTechStack)
+                        .build()
+        );
+
+        Project projectViewRankThird = repositoryHelper.save(new ProjectFixtureBuilder()
+                .description(filteredSearch)
+                .platforms(filteredPlatform)
+                .categories(filteredCategory)
+                .organization(filteredOrganization)
+                .techStacks(filteredTechStack)
+                .views(1)
+                .build()
+        );
+        Project projectViewRankSecond = repositoryHelper.save(new ProjectFixtureBuilder()
+                .summary(filteredSearch)
+                .platforms(filteredPlatform)
+                .categories(filteredCategory)
+                .organization(filteredOrganization)
+                .techStacks(filteredTechStack)
+                .views(2)
+                .build()
+        );
+        Project projectViewRankFirst = repositoryHelper.save(new ProjectFixtureBuilder()
+                .title(filteredSearch)
+                .platforms(filteredPlatform)
+                .categories(filteredCategory)
+                .organization(filteredOrganization)
+                .techStacks(filteredTechStack)
+                .views(3)
+                .build()
+        );
 
         // when
         ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
+                .queryParams("search", filteredSearch)
+                .queryParams("sort", "views")
+                .queryParams("platforms", List.of(filteredPlatform.getName()))
+                .queryParams("categories", List.of(filteredCategory.getName()))
+                .queryParams("organizations", List.of(filteredOrganization.getName()))
+                .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .when().get("/projects")
                 .then().log().all()
                 .statusCode(200)
@@ -135,9 +177,9 @@ public class ProjectApiTest {
         // then
         assertAll(
                 () -> assertThat(actualResponses).hasSize(3),
-                () -> assertThat(actualResponses[0]).isEqualTo(ProjectSummaryResponse.from(project3)),
-                () -> assertThat(actualResponses[1]).isEqualTo(ProjectSummaryResponse.from(project2)),
-                () -> assertThat(actualResponses[2]).isEqualTo(ProjectSummaryResponse.from(project1))
+                () -> assertThat(actualResponses[0].id()).isEqualTo(projectViewRankFirst.getId()),
+                () -> assertThat(actualResponses[1].id()).isEqualTo(projectViewRankSecond.getId()),
+                () -> assertThat(actualResponses[2].id()).isEqualTo(projectViewRankThird.getId())
         );
     }
 }

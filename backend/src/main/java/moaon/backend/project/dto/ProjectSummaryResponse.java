@@ -30,7 +30,7 @@ public record ProjectSummaryResponse(
                 project.getPlatforms().stream()
                         .map(Platform::getName)
                         .toList(),
-                project.getImages().getUrls().getFirst(),
+                project.getImages().getThumbnailUrl(),
                 false,
                 project.getLoveCount(),
                 project.getViews()
