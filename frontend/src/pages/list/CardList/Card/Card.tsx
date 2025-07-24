@@ -1,7 +1,9 @@
 import heartIcon from "@assets/icons/heart.svg";
 import heartOutlineIcon from "@assets/icons/heart-outline.svg";
 import view from "@assets/icons/view.svg";
+import cardDefaultImage from "@assets/images/default-thumbnail.webp";
 import { ORGANIZATION_MAP } from "@domains/filter/organization";
+import type { SyntheticEvent } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import ActivityBox from "./ActivityBox/ActivityBox";
 import * as S from "./Card.styled";
@@ -26,11 +28,16 @@ function Card({ project }: CardProps) {
     views,
   } = project;
 
+  const imageLoadError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.src = cardDefaultImage;
+  };
+
   return (
     <S.Card>
       <S.CardLink to={`/detail/${id}`}>
         <S.CardImageBox>
-          <S.CardImage src={thumbnailUrl} />
+          <S.CardImage src={thumbnailUrl} onError={imageLoadError} />
           <PlatformList platforms={platforms} />
         </S.CardImageBox>
         <S.CardInfo>

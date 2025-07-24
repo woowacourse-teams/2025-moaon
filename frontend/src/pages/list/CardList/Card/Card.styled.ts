@@ -27,6 +27,7 @@ export const CardImageBox = styled.div`
   height: 10.9375rem;
   overflow: hidden;
   position: relative;
+  border-bottom: 1px solid #e9e9e9;
 `;
 
 export const CardImage = styled.img`
