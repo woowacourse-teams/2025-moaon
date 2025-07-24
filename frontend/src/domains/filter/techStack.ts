@@ -39,40 +39,8 @@ export const TECH_STACK_ICON_MAP = {
     label: "TailwindCSS",
     imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
-  styledComponents: {
-    label: "Styled-Components",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  emotion: {
-    label: "Emotion",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  cssModule: {
-    label: "CSS Module",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  recoil: {
-    label: "Recoil",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  zustand: {
-    label: "Zustand",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  jotai: {
-    label: "Jotai",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  tanstackQuery: {
-    label: "Tanstack-Query",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
   redux: {
     label: "Redux",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  reactNative: {
-    label: "React Native",
     imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
   nodejs: {
@@ -99,16 +67,8 @@ export const TECH_STACK_ICON_MAP = {
     label: "Spring",
     imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
-  springboot: {
-    label: "Spring Boot",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
   rubyonrails: {
     label: "Ruby on Rails",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  },
-  supabase: {
-    label: "Supabase",
     imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
   aws: {
@@ -171,6 +131,46 @@ export const TECH_STACK_ICON_MAP = {
     label: "Flutter",
     imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
+  // styledComponents: {
+  //   label: "Styled-Components",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // emotion: {
+  //   label: "Emotion",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // cssModule: {
+  //   label: "CSS Module",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // recoil: {
+  //   label: "Recoil",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // zustand: {
+  //   label: "Zustand",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // jotai: {
+  //   label: "Jotai",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // tanstackQuery: {
+  //   label: "Tanstack-Query",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // reactNative: {
+  //   label: "React Native",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // springboot: {
+  //   label: "Spring Boot",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
+  // supabase: {
+  //   label: "Supabase",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
 } as const;
 
 export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;
