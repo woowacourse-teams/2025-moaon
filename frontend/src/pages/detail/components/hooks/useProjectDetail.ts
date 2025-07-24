@@ -2,11 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { projectDetailQueries } from "@/apis/projectDetail/projectDetail.queries";
 
 const useProjectDetail = (id: number) => {
-  const { data: projectDetail } = useQuery(
-    projectDetailQueries.fetchDetail(id)
-  );
+  const {
+    data: projectDetail,
+    isLoading,
+    error,
+  } = useQuery(projectDetailQueries.fetchDetail(id));
 
-  return projectDetail;
+  return { projectDetail, isLoading, error };
 };
 
 export default useProjectDetail;
