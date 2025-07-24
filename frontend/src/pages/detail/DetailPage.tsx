@@ -17,7 +17,7 @@ function DetailPage() {
       {/* <Carousel imageUrls={projectDetail.imageUrls} /> */}
       <OverviewSection overview={projectDetail.description} />
       <TechStacksSection techStacks={projectDetail.techStacks} />
-      <PlatformSection platforms={["web"]} />
+      <PlatformSection platforms={projectDetail.platforms} />
     </div>
   );
 }
