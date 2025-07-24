@@ -1,33 +1,57 @@
-import fillHeart from "@assets/icons/fill-heart.svg";
+import heartIcon from "@assets/icons/heart.svg";
+import heartOutlineIcon from "@assets/icons/heart-outline.svg";
 import view from "@assets/icons/view.svg";
+import { ORGANIZATION_MAP } from "@domains/filter/organization";
+import type { ProjectCard } from "@/apis/projects/projects.type";
 import ActivityBox from "./ActivityBox/ActivityBox";
 import * as S from "./Card.styled";
 import PlatformList from "./PlatformList/PlatformList";
 import TechStackList from "./TechStackList/TechStackList";
 
-function Card() {
+interface CardProps {
+  project: ProjectCard;
+}
+
+function Card({ project }: CardProps) {
+  const {
+    id,
+    title,
+    summary,
+    organization,
+    techStacks,
+    platforms,
+    thumbnailUrl,
+    isLoved,
+    loves,
+    views,
+  } = project;
+
   return (
     <S.Card>
-      {/* 상세 페이지 url 나오면 바꿔야함 */}
-      <S.CardLink to="/list">
+      <S.CardLink to={`/detail/${id}`}>
         <S.CardImageBox>
-          <S.CardImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxpHj-C91UtW23X_jH7TDSFaG9Q3GlsqB_sw&s" />
-          <PlatformList platforms={["1"]} />
+          <S.CardImage src={thumbnailUrl} />
+          <PlatformList platforms={platforms} />
         </S.CardImageBox>
         <S.CardInfo>
-          <S.CardTitle>모아온</S.CardTitle>
-          <S.CardSummary>프로젝트를 모아 모아 모아온</S.CardSummary>
-          <TechStackList techStacks={["1", "2", "", "1", ""]} />
+          <S.CardTitle>{title}</S.CardTitle>
+          <S.CardSummary>{summary}</S.CardSummary>
+          <TechStackList techStacks={techStacks} />
           <S.CardFooter>
-            <S.GroupText>우아한테크코스</S.GroupText>
+            <S.GroupText>{ORGANIZATION_MAP[organization].label}</S.GroupText>
             <S.Wrap>
               <ActivityBox
-                icon={<S.ActivityIcon src={fillHeart} alt="좋아요 아이콘" />}
-                count={5000}
+                icon={
+                  <S.ActivityIcon
+                    src={isLoved ? heartIcon : heartOutlineIcon}
+                    alt="좋아요 아이콘"
+                  />
+                }
+                count={loves}
               />
               <ActivityBox
                 icon={<S.ActivityIcon src={view} alt="조회수 아이콘" />}
-                count={300}
+                count={views}
               />
             </S.Wrap>
           </S.CardFooter>

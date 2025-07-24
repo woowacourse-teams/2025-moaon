@@ -5,14 +5,13 @@ import Sort from "./Sort/Sort";
 
 function ListPage() {
   return (
-    <>
+    <S.Main>
       <S.Box>
         <FilterContainer />
         <Sort />
       </S.Box>
       <CardList />
-      <div style={{ height: "2000px", backgroundColor: "#fff" }} />
-    </>
+    </S.Main>
   );
 }
 
