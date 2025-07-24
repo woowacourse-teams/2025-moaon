@@ -31,6 +31,14 @@ public class RepositoryTestHelper {
     @Autowired
     private ProjectRepository projectRepository;
 
+    /**
+     * Persists a project and all its associated entities to their respective repositories.
+     *
+     * Saves the project's organization, author, tech stacks, categories, and platforms before saving the project itself.
+     *
+     * @param project the project entity to be saved along with its related entities
+     * @return the saved project entity
+     */
     public Project save(Project project) {
         organizationRepository.save(project.getOrganization());
         memberRepository.save(project.getAuthor());

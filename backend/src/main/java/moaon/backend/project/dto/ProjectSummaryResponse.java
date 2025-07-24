@@ -18,6 +18,14 @@ public record ProjectSummaryResponse(
         int views
 ) {
 
+    /**
+     * Creates a {@code ProjectSummaryResponse} from a given {@code Project} domain object.
+     *
+     * Extracts key project details including ID, title, summary, organization name, technology stacks, platforms, thumbnail URL, love count, and view count. The {@code isLoved} field is set to {@code false} by default.
+     *
+     * @param project the project domain object to convert
+     * @return a summary response representing the provided project
+     */
     public static ProjectSummaryResponse from(Project project) {
         return new ProjectSummaryResponse(
                 project.getId(),

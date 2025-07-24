@@ -25,6 +25,19 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getById(id));
     }
 
+    /**
+     * Retrieves a list of project summaries filtered and sorted according to the provided query parameters.
+     *
+     * Optional filters include search keyword, platforms, categories, organizations, tech stacks, and sort type.
+     *
+     * @param search      optional keyword to search for in project data
+     * @param platforms   optional list of platform names to filter projects
+     * @param categories  optional list of category names to filter projects
+     * @param organizations optional list of organization names to filter projects
+     * @param techStacks  optional list of technology stack names to filter projects
+     * @param sortType    optional sort type for ordering the results
+     * @return a ResponseEntity containing a list of project summaries matching the criteria
+     */
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getAllProjects(
             @RequestParam(value = "search", required = false) String search,
