@@ -1,3 +1,4 @@
+import { CATEGORY_ENTRY } from "@domains/filter/category";
 import { PLATFORM_ENTRY } from "@domains/filter/platform";
 import { TECH_STACK_ENTRY } from "@domains/filter/techStack";
 import Filter from "./Filter/Filter";
@@ -7,7 +8,7 @@ const FILTER_INFO_LIST = [
   { kind: { label: "기술스택", value: "techStack" }, entry: TECH_STACK_ENTRY },
   { kind: { label: "플랫폼", value: "platform" }, entry: PLATFORM_ENTRY },
   { kind: { label: "단체", value: "organizations" }, entry: PLATFORM_ENTRY },
-  { kind: { label: "주제", value: "category" }, entry: PLATFORM_ENTRY },
+  { kind: { label: "주제", value: "category" }, entry: CATEGORY_ENTRY },
 ] as const;
 export type FilterKind = (typeof FILTER_INFO_LIST)[number]["kind"];
 export type FilterKindValue =

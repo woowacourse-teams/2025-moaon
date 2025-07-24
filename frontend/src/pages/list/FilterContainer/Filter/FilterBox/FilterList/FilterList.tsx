@@ -1,3 +1,4 @@
+import type { CategoryEntry } from "@domains/filter/category";
 import type { PlatformEntry } from "@domains/filter/platform";
 import type { TechStackEntry } from "@domains/filter/techStack";
 import IconBadge from "@shared/components/IconBadgeList/IconBadge/IconBadge";
@@ -6,7 +7,7 @@ import type { FilterKindValue } from "../../../FilterContainer";
 import * as S from "./FilterList.styled";
 
 interface FilterListProps {
-  items: (TechStackEntry | PlatformEntry)[];
+  items: (TechStackEntry | PlatformEntry | CategoryEntry)[];
   value: FilterKindValue;
 }
 
@@ -26,11 +27,6 @@ function FilterList({ items, value }: FilterListProps) {
           </div>
         );
       })}
-      {/* <FilterItem onClick={() => techStack.update("1")} />
-      <FilterItem onClick={() => techStack.update("2")} />
-      <FilterItem onClick={() => techStack.update("3")} />
-      <FilterItem onClick={() => techStack.update("4")} />
-      <FilterItem onClick={() => techStack.update("5")} /> */}
     </S.List>
   );
 }

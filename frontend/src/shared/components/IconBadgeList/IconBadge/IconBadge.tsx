@@ -8,7 +8,7 @@ interface IconBadgeProps {
 function IconBadge({ label, imgUrl }: IconBadgeProps) {
   return (
     <S.IconBadge>
-      <S.Icon src={imgUrl} alt={label} />
+      {imgUrl && <S.Icon src={imgUrl} alt={label} />}
       {label}
     </S.IconBadge>
   );
