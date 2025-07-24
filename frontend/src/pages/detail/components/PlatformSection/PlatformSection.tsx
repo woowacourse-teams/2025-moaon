@@ -1,5 +1,5 @@
+import type { PlatformKey } from "@domains/filter/platform";
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
-import type { PlatformKey } from "@/shared/components/IconBadgeList/constants/iconMap";
 import SectionTitle from "../SectionTitle";
 import * as S from "./PlatformSection.styled";
 

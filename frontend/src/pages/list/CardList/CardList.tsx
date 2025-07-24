@@ -1,7 +1,11 @@
 import Card from "./Card/Card";
 import * as S from "./CardList.styled";
+import useProjectList from "./hooks/useProjectList";
 
 function CardList() {
+  const { projects } = useProjectList();
+  console.log(projects);
+
   return (
     <S.CardList>
       <Card />

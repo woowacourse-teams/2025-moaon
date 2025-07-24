@@ -1,4 +1,4 @@
-import { ICON_BADGE_MAP, type IconBadgeKeys } from "./constants/iconMap";
+import { ICON_BADGE_MAP, type IconBadgeKeys } from "@domains/filter/iconBadge";
 import IconBadge from "./IconBadge/IconBadge";
 import * as S from "./IconBadgeList.styled";
 
