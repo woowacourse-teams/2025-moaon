@@ -10,7 +10,7 @@ interface FilterProps {
 }
 
 function Filter({ kind }: FilterProps) {
-  const { label, value } = kind;
+  const { label, param } = kind;
   const [isOpen, setIsOpen] = useState(false);
   const addToSafeZone = useOutsideClick(() => setIsOpen(false));
 
@@ -24,7 +24,7 @@ function Filter({ kind }: FilterProps) {
         <S.FilterTitle>{label}</S.FilterTitle>
         <ArrowIcon direction="up" />
       </S.FilterButton>
-      {isOpen && <FilterBox value={value} />}
+      {isOpen && <FilterBox param={param} />}
     </S.Container>
   );
 }

@@ -12,5 +12,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 25rem;
+  min-width: 34.375rem;
+  max-height: 29.15rem;
+  overflow-y: auto;
 `;

@@ -1,30 +1,29 @@
 import type { CategoryEntry } from "@domains/filter/category";
+import type { OrganizationEntry } from "@domains/filter/organization";
 import type { PlatformEntry } from "@domains/filter/platform";
 import type { TechStackEntry } from "@domains/filter/techStack";
-import IconBadge from "@shared/components/IconBadgeList/IconBadge/IconBadge";
-import useSearchParams from "@/shared/hooks/useSearchParams";
-import type { FilterKindValue } from "../../../FilterContainer";
+import type { FilterKindParam } from "../../../FilterContainer";
+import FilterButton from "./FilterButton/FilterButton";
 import * as S from "./FilterList.styled";
 
 interface FilterListProps {
-  items: (TechStackEntry | PlatformEntry | CategoryEntry)[];
-  value: FilterKindValue;
+  list: (TechStackEntry | PlatformEntry | CategoryEntry | OrganizationEntry)[];
+  param: FilterKindParam;
 }
 
-function FilterList({ items, value }: FilterListProps) {
-  const techStack = useSearchParams({
-    key: value,
-    mode: "multi",
-  });
-
+function FilterList({ list, param }: FilterListProps) {
   return (
     <S.List>
-      {items.map(([key, value]) => {
-        const { label, imgUrl } = value;
+      {list.map(([key, entryValue]) => {
+        const { label, imgUrl } = entryValue;
         return (
-          <div key={key}>
-            <IconBadge label={label} imgUrl={imgUrl} />
-          </div>
+          <FilterButton
+            key={key}
+            label={label}
+            imgUrl={imgUrl}
+            param={param}
+            value={key}
+          />
         );
       })}
     </S.List>

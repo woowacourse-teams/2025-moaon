@@ -1,17 +1,30 @@
+import { useState } from "react";
 import SearchBar from "@/shared/components/SearchBar/SearchBar";
-import { FILTER_MAP, type FilterKindValue } from "../../FilterContainer";
+import { FILTER_MAP, type FilterKindParam } from "../../FilterContainer";
 import * as S from "./FilterBox.styled";
 import FilterList from "./FilterList/FilterList";
 
 interface FilterBoxProps {
-  value: FilterKindValue;
+  param: FilterKindParam;
 }
 
-function FilterBox({ value }: FilterBoxProps) {
+function FilterBox({ param }: FilterBoxProps) {
+  const [filterList, setFilterList] = useState(FILTER_MAP[param]);
+
+  const changeFilterList = (keyword: string) => {
+    const filteredList = FILTER_MAP[param].filter(([_, { label }]) =>
+      label.toLowerCase().includes(keyword.toLowerCase()),
+    );
+    setFilterList(filteredList);
+  };
+
   return (
     <S.Container>
-      <SearchBar icon={{ size: 24, position: "right" }} />
-      <FilterList items={FILTER_MAP[value]} value={value} />
+      <SearchBar
+        icon={{ size: 24, position: "right" }}
+        onChange={changeFilterList}
+      />
+      <FilterList list={filterList} param={param} />
     </S.Container>
   );
 }
