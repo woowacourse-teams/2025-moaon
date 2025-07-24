@@ -1,3 +1,4 @@
+import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import { useState } from "react";
 import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
 import type { FilterKind } from "../FilterContainer";
@@ -11,22 +12,19 @@ interface FilterProps {
 function Filter({ kind }: FilterProps) {
   const { label, value } = kind;
   const [isOpen, setIsOpen] = useState(false);
+  const addToSafeZone = useOutsideClick(() => setIsOpen(false));
 
   const toggleFilter = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const closeFilter = () => {
-    setIsOpen(false);
-  };
-
   return (
-    <S.Container>
+    <S.Container ref={addToSafeZone}>
       <S.FilterButton type="button" onClick={toggleFilter}>
         <S.FilterTitle>{label}</S.FilterTitle>
         <ArrowIcon direction="up" />
       </S.FilterButton>
-      {isOpen && <FilterBox onClose={closeFilter} value={value} />}
+      {isOpen && <FilterBox value={value} />}
     </S.Container>
   );
 }
