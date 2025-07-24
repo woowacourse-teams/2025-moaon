@@ -243,16 +243,15 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByViews() {
         // given
-        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Project middle = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project high = repositoryHelper.save(new ProjectFixtureBuilder()
+                .views(3)
+                .build()
+        );
+        Project middle = repositoryHelper.save(new ProjectFixtureBuilder()
+                .views(2)
+                .build()
+        );
         Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
-
-        high.addViewCount();
-        high.addViewCount();
-        high.addViewCount();
-
-        middle.addViewCount();
-        middle.addViewCount();
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(

@@ -26,6 +26,7 @@ public class ProjectFixtureBuilder {
     private List<Category> categories;
     private List<Platform> platforms;
     private LocalDateTime createdAt;
+    private int views = 0;
 
     public ProjectFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 프로젝트 제목");
@@ -102,8 +103,13 @@ public class ProjectFixtureBuilder {
         return this;
     }
 
+    public ProjectFixtureBuilder views(int views) {
+        this.views = views;
+        return this;
+    }
+
     public Project build() {
-        return new Project(
+        Project project = new Project(
                 this.title,
                 this.summary,
                 this.description,
@@ -117,5 +123,9 @@ public class ProjectFixtureBuilder {
                 this.platforms,
                 this.createdAt
         );
+        for (int i = 0; i < views; i++) {
+            project.addViewCount();
+        }
+        return project;
     }
 }

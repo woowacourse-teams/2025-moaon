@@ -139,8 +139,8 @@ public class ProjectApiTest {
                 .categories(filteredCategory)
                 .organization(filteredOrganization)
                 .techStacks(filteredTechStack)
+                .views(1)
                 .build();
-        projectViewCount1.addViewCount();
         Project projectViewRankThird = repositoryHelper.save(projectViewCount1);
 
         Project projectViewCount2 = new ProjectFixtureBuilder()
@@ -149,9 +149,8 @@ public class ProjectApiTest {
                 .categories(filteredCategory)
                 .organization(filteredOrganization)
                 .techStacks(filteredTechStack)
+                .views(2)
                 .build();
-        projectViewCount2.addViewCount();
-        projectViewCount2.addViewCount();
         Project projectViewRankSecond = repositoryHelper.save(projectViewCount2);
 
         Project projectViewCount3 = new ProjectFixtureBuilder()
@@ -160,10 +159,8 @@ public class ProjectApiTest {
                 .categories(filteredCategory)
                 .organization(filteredOrganization)
                 .techStacks(filteredTechStack)
+                .views(3)
                 .build();
-        projectViewCount3.addViewCount();
-        projectViewCount3.addViewCount();
-        projectViewCount3.addViewCount();
         Project projectViewRankFirst = repositoryHelper.save(projectViewCount3);
 
         // when
