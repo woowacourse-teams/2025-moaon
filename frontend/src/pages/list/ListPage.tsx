@@ -13,13 +13,12 @@ function ListPage() {
   const [isFilterRender, setIsFilterRender] = useState(true);
   const { refetch } = useProjectList();
 
-  const reRender = () => {
-    const sortParams = searchParams.get("sort");
-    if (sortParams) {
-      setSearchParams({ sort: sortParams });
-    }
-
+  const handleFilterResetButtonClick = () => {
     flushSync(() => setIsFilterRender(false));
+
+    const sortParams = searchParams.get("sort");
+    sortParams ? setSearchParams({ sort: sortParams }) : setSearchParams({});
+
     setIsFilterRender(true);
     refetch();
   };
@@ -29,7 +28,7 @@ function ListPage() {
       <S.Box>
         <S.Wrap>
           {isFilterRender && <FilterContainer />}
-          <S.ResetButton type="button" onClick={reRender}>
+          <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
             <S.ResetIcon src={ResetIcon} alt="필터 초기화 아이콘" />
             필터 초기화
           </S.ResetButton>

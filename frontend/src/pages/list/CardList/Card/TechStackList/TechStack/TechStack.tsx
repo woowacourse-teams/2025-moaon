@@ -6,7 +6,6 @@ interface TechStackProps {
 }
 
 function TechStack({ imgUrl, techStackName }: TechStackProps) {
-  console.log(imgUrl, techStackName);
   return (
     <S.TechStack>
       <S.TechStackIcon src={imgUrl} alt={techStackName} />
