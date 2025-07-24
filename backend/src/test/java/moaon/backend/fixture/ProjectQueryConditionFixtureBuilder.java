@@ -15,17 +15,13 @@ public class ProjectQueryConditionFixtureBuilder {
     private List<String> techStackNames;
     private SortBy sortBy;
 
-    private ProjectQueryConditionFixtureBuilder() {
+    public ProjectQueryConditionFixtureBuilder() {
         this.search = null;
         this.platformNames = new ArrayList<>();
         this.categoryNames = new ArrayList<>();
         this.organizationNames = new ArrayList<>();
         this.techStackNames = new ArrayList<>();
         this.sortBy = null;
-    }
-
-    public static ProjectQueryConditionFixtureBuilder builder() {
-        return new ProjectQueryConditionFixtureBuilder();
     }
 
     public ProjectQueryConditionFixtureBuilder search(String search) {

@@ -9,7 +9,7 @@ import java.util.List;
 import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.fixture.RepositoryTestHelper;
+import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.organization.domain.Organization;
 import moaon.backend.platform.domain.Platform;
@@ -30,14 +30,14 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Import({RepositoryTestHelper.class, QueryDslConfig.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ProjectApiTest {
 
     @LocalServerPort
     private int port;
 
     @Autowired
-    private RepositoryTestHelper repositoryTestHelper;
+    private RepositoryHelper repositoryHelper;
 
     @BeforeEach
     void setUp() {
@@ -48,7 +48,7 @@ public class ProjectApiTest {
     @Test
     void findProject() {
         // given
-        Project project = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         // when
         ProjectDetailResponse actualResponse = RestAssured.given().log().all()
@@ -83,8 +83,8 @@ public class ProjectApiTest {
         Platform platform1 = Fixture.anyPlatform();
         Platform platform2 = Fixture.anyPlatform();
 
-        repositoryTestHelper.save(
-                ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
                         .description("모모온")
                         .platforms(platform1)
                         .categories(category1)
@@ -93,8 +93,8 @@ public class ProjectApiTest {
                         .createdAt(LocalDateTime.now())
                         .build()
         );
-        repositoryTestHelper.save(
-                ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
                         .description("모모온")
                         .platforms(platform2)
                         .categories(category1)
@@ -104,7 +104,7 @@ public class ProjectApiTest {
                         .build()
         );
 
-        Project projectViewCount1 = ProjectFixtureBuilder.anyProject()
+        Project projectViewCount1 = new ProjectFixtureBuilder()
                 .description("모아온")
                 .platforms(platform1)
                 .categories(category1)
@@ -113,9 +113,9 @@ public class ProjectApiTest {
                 .createdAt(LocalDateTime.now())
                 .build();
         projectViewCount1.addViewCount();
-        Project projectViewRankThird = repositoryTestHelper.save(projectViewCount1);
+        Project projectViewRankThird = repositoryHelper.save(projectViewCount1);
 
-        Project projectViewCount2 = ProjectFixtureBuilder.anyProject()
+        Project projectViewCount2 = new ProjectFixtureBuilder()
                 .summary("모아온")
                 .platforms(platform1)
                 .categories(category1)
@@ -125,9 +125,9 @@ public class ProjectApiTest {
                 .build();
         projectViewCount2.addViewCount();
         projectViewCount2.addViewCount();
-        Project projectViewRankSecond = repositoryTestHelper.save(projectViewCount2);
+        Project projectViewRankSecond = repositoryHelper.save(projectViewCount2);
 
-        Project projectViewCount3 = ProjectFixtureBuilder.anyProject()
+        Project projectViewCount3 = new ProjectFixtureBuilder()
                 .title("모아온")
                 .platforms(platform1)
                 .categories(category1)
@@ -138,7 +138,7 @@ public class ProjectApiTest {
         projectViewCount3.addViewCount();
         projectViewCount3.addViewCount();
         projectViewCount3.addViewCount();
-        Project projectViewRankFirst = repositoryTestHelper.save(projectViewCount3);
+        Project projectViewRankFirst = repositoryHelper.save(projectViewCount3);
 
         // when
         ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()

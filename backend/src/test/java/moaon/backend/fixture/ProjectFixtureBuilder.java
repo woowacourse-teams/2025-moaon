@@ -27,7 +27,7 @@ public class ProjectFixtureBuilder {
     private List<Platform> platforms;
     private LocalDateTime createdAt;
 
-    private ProjectFixtureBuilder() {
+    public ProjectFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 프로젝트 제목");
         this.summary = Fixture.nameWithSequence("테스트 프로젝트 요약");
         this.description = Fixture.nameWithSequence("테스트 프로젝트 상세 설명");
@@ -40,10 +40,6 @@ public class ProjectFixtureBuilder {
         this.categories = new ArrayList<>(List.of(Fixture.anyCategory()));
         this.platforms = new ArrayList<>(List.of(Fixture.anyPlatform()));
         this.createdAt = LocalDateTime.now();
-    }
-
-    public static ProjectFixtureBuilder anyProject() {
-        return new ProjectFixtureBuilder();
     }
 
     public ProjectFixtureBuilder title(String title) {

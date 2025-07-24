@@ -9,7 +9,7 @@ import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
-import moaon.backend.fixture.RepositoryTestHelper;
+import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.organization.domain.Organization;
@@ -25,24 +25,24 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({RepositoryTestHelper.class, QueryDslConfig.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class})
 class CustomizedProjectRepositoryImplTest {
 
     @Autowired
     private CustomizedProjectRepositoryImpl customizedProjectRepositoryImpl;
 
     @Autowired
-    private RepositoryTestHelper repositoryTestHelper;
+    private RepositoryHelper repositoryHelper;
 
     @DisplayName("조건 없이 모든 프로젝트를 조회한다.")
     @Test
     void findWithSearchConditions() {
         // given
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ProjectFixtureBuilder().build());
 
-        ProjectQueryCondition projectQueryCondition = ProjectQueryConditionFixtureBuilder.builder().build();
+        ProjectQueryCondition projectQueryCondition = new ProjectQueryConditionFixtureBuilder().build();
 
         //when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
@@ -55,19 +55,19 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithSearch() {
         // given
-        Project moaon = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project moaon = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title("모아온")
                 .summary("여러 플랫폼에 흩어진 포트폴리오를 한 곳에 정리할 수 있는 서비스입니다.")
                 .description("GitHub, Notion, Velog 등 다양한 출처의 링크들을 카드 형태로 시각화하여 보여줍니다.")
                 .build()
         );
-        Project share = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project share = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title("공유공유")
                 .summary("개발자와 디자이너의 작업물을 쉽게 공유하고 검색할 수 있도록 도와줍니다.")
                 .description("사용자 맞춤 검색 기능과 태그 필터링을 통해 필요한 작업물을 빠르게 찾을 수 있습니다.")
                 .build()
         );
-        Project hub = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project hub = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title("허브허브")
                 .summary("링크 하나로 모든 프로젝트를 소개할 수 있는 포트폴리오 허브 플랫폼입니다.")
                 .description("SNS 공유 최적화 및 모바일 반응형 UI를 제공하여 접근성과 확장성을 높였습니다.")
@@ -76,17 +76,17 @@ class CustomizedProjectRepositoryImplTest {
 
         // when
         List<Project> projects1 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .search("모아온")
                         .build()
         );
         List<Project> projects2 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .search("개발자")
                         .build()
         );
         List<Project> projects3 = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .search("SNS")
                         .build()
         );
@@ -106,22 +106,22 @@ class CustomizedProjectRepositoryImplTest {
         Organization organization1 = Fixture.anyOrganization();
         Organization organization2 = Fixture.anyOrganization();
         Organization organization3 = Fixture.anyOrganization();
-        Project projectWithOrganization1 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithOrganization1 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .organization(organization1)
                 .build()
         );
-        Project projectWithOrganization2 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithOrganization2 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .organization(organization2)
                 .build()
         );
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(new ProjectFixtureBuilder()
                 .organization(organization3)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .organizationNames(organization1.getName(), organization2.getName())
                         .build()
         );
@@ -143,22 +143,22 @@ class CustomizedProjectRepositoryImplTest {
         Category category4 = Fixture.anyCategory();
         Category category5 = Fixture.anyCategory();
 
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(new ProjectFixtureBuilder()
                 .categories(category1, category2)
                 .build()
         );
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(new ProjectFixtureBuilder()
                 .categories(category2, category3)
                 .build()
         );
-        Project projectWithCategory4 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithCategory4 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .categories(category4, category5)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .categoryNames(category4.getName())
                         .build()
         );
@@ -177,22 +177,22 @@ class CustomizedProjectRepositoryImplTest {
         TechStack techStack4 = Fixture.anyTechStack();
         TechStack techStack5 = Fixture.anyTechStack();
 
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(new ProjectFixtureBuilder()
                 .techStacks(techStack1, techStack2)
                 .build());
 
-        Project projectWithTechStack3 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithTechStack3 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .techStacks(techStack3, techStack5)
                 .build()
         );
-        Project projectWithTechStack4 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithTechStack4 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .techStacks(techStack1, techStack4)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder().
+                new ProjectQueryConditionFixtureBuilder().
                         techStackNames(techStack3.getName(), techStack4.getName())
                         .build()
         );
@@ -212,22 +212,22 @@ class CustomizedProjectRepositoryImplTest {
         Platform platform2 = Fixture.anyPlatform();
         Platform platform3 = Fixture.anyPlatform();
 
-        repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        repositoryHelper.save(new ProjectFixtureBuilder()
                 .platforms(platform1)
                 .build()
         );
-        Project projectWithPlatform2 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithPlatform2 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .platforms(platform2)
                 .build()
         );
-        Project projectWithPlatform3 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project projectWithPlatform3 = repositoryHelper.save(new ProjectFixtureBuilder()
                 .platforms(platform3)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .platformNames(platform2.getName(), platform3.getName())
                         .build()
         );
@@ -243,9 +243,9 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByViews() {
         // given
-        Project project1 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
-        Project project2 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
-        Project project3 = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project project1 = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project project2 = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project project3 = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         project1.addViewCount();
         project1.addViewCount();
@@ -256,7 +256,7 @@ class CustomizedProjectRepositoryImplTest {
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .sortBy(SortBy.VIEWS)
                         .build()
         );
@@ -272,22 +272,22 @@ class CustomizedProjectRepositoryImplTest {
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime tomorrow = today.plusDays(1);
         LocalDateTime yesterday = today.minusDays(1);
-        Project todayProject = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project todayProject = repositoryHelper.save(new ProjectFixtureBuilder()
                 .createdAt(today)
                 .build()
         );
-        Project tomorrowProject = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project tomorrowProject = repositoryHelper.save(new ProjectFixtureBuilder()
                 .createdAt(tomorrow)
                 .build()
         );
-        Project yesterdayProject = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject()
+        Project yesterdayProject = repositoryHelper.save(new ProjectFixtureBuilder()
                 .createdAt(yesterday)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .sortBy(SortBy.CREATED_AT)
                         .build()
         );
@@ -300,9 +300,9 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByLove() {
         // given
-        Project low = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
-        Project middle = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
-        Project high = repositoryTestHelper.save(ProjectFixtureBuilder.anyProject().build());
+        Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project middle = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         Member author1 = low.getAuthor();
         Member author2 = middle.getAuthor();
@@ -314,7 +314,7 @@ class CustomizedProjectRepositoryImplTest {
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                ProjectQueryConditionFixtureBuilder.builder()
+                new ProjectQueryConditionFixtureBuilder()
                         .sortBy(SortBy.LOVES)
                         .build()
         );
