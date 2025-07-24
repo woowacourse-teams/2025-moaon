@@ -6,7 +6,7 @@ const useProjectDetail = (id: number) => {
     projectDetailQueries.fetchDetail(id)
   );
 
-  return { projectDetail };
+  return projectDetail;
 };
 
 export default useProjectDetail;

@@ -8,9 +8,11 @@ import TitleSection from "./components/TitleSection/TitleSection";
 function DetailPage() {
   const projectDetail = useProjectDetail(1);
 
+  if (!projectDetail) return <div>로딩 중...</div>;
+
   return (
     <div>
-      <TitleSection />
+      <TitleSection projectDetail={projectDetail} />
       <Carousel />
       <OverviewSection />
       <TechStacksSection techStacks={["react"]} />
