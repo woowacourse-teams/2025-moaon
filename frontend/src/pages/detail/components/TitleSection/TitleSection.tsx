@@ -5,8 +5,8 @@ import githubIcon from "@assets/icons/logo-github.svg";
 import { ORGANIZATION_MAP } from "@domains/filter/organization";
 import { useState } from "react";
 import type { ProjectDetail } from "@/apis/projectDetail/getProjectDetail.type";
-import { CATEGORY_MAP } from "../../../../domains/filter/category";
-import formatDateToYMD from "../../../../shared/utils/formatDateToYMD";
+import { CATEGORY_MAP } from "@domains/filter/category";
+import formatDateToYMD from "@shared/utils/formatDateToYMD";
 import * as S from "./TitleSection.styled";
 
 interface TitleSectionProps {
@@ -27,7 +27,7 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
       <S.TitleSectionLeft>
         <S.Subject>
           {projectDetail.categories
-            .map((category) => `#${CATEGORY_MAP[category]}`)
+            .map((category) => `#${CATEGORY_MAP[category].label}`)
             .join(" ")}
         </S.Subject>
         <S.Organization>
