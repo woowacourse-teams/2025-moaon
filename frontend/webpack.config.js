@@ -46,7 +46,7 @@ export default {
       template: "./public/index.html",
     }),
     new ForkTsCheckerWebpackPlugin(),
-    new Dotenv({ path: ".env.local" }),
+    new Dotenv({ path: ".env.local", systemvars: true }),
   ],
   devServer: {
     static: "./dist",
