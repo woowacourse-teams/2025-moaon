@@ -1,15 +1,18 @@
 export const TECH_STACK_ICON_MAP = {
   react: {
     label: "React",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/React.svg",
   },
   nextjs: {
     label: "Next.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Next.js.svg",
   },
   vuejs: {
     label: "Vue.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Vue.js.svg",
   },
   nuxtjs: {
     label: "Nuxt.js",
@@ -17,119 +20,148 @@ export const TECH_STACK_ICON_MAP = {
   },
   angular: {
     label: "Angular",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Angular.svg",
   },
   svelte: {
     label: "Svelte",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Svelte.svg",
   },
   jquery: {
     label: "JQuery",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/jQuery.svg",
   },
   typescript: {
     label: "TypeScript",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/TypeScript.svg",
   },
   javascript: {
     label: "JavaScript",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/JavaScript.svg",
   },
   tailwind: {
     label: "TailwindCSS",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Tailwind+CSS.svg",
   },
   redux: {
     label: "Redux",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Redux.svg",
   },
   nodejs: {
     label: "Node.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Node.js.svg",
   },
   express: {
     label: "Express.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Express.svg",
   },
   nestjs: {
     label: "NestJS",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Next.js.svg",
   },
   django: {
     label: "Django",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Django.svg",
   },
   fastapi: {
     label: "FastAPI",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
   },
   spring: {
     label: "Spring",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Spring.svg",
   },
   rubyonrails: {
     label: "Ruby on Rails",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Ruby+on+Rails.svg",
   },
   aws: {
     label: "AWS",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/AWS.svg",
   },
   mongodb: {
     label: "MongoDB",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/MongoDB.svg",
   },
   postgresql: {
     label: "PostgreSQL",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/PostgresSQL.svg",
   },
   mysql: {
     label: "MySQL",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/MySQL.svg",
   },
   redis: {
     label: "Redis",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Redis.svg",
   },
   kafka: {
     label: "Apache Kafka",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
   },
   docker: {
     label: "Docker",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
   },
   kubernetes: {
     label: "Kubernetes",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
   },
   java: {
     label: "Java",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Java.svg",
   },
   python: {
     label: "Python",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Python.svg",
   },
   c: {
     label: "C",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/C.svg",
   },
   cpp: {
     label: "C++",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/C%2B%2B+(CPlusPlus).svg",
   },
   kotlin: {
     label: "Kotlin",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Kotlin.svg",
   },
   swift: {
     label: "Swift",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Swift.svg",
   },
   flutter: {
     label: "Flutter",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Flutter.svg",
   },
   // styledComponents: {
   //   label: "Styled-Components",
