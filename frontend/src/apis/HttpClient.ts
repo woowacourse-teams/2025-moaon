@@ -62,5 +62,5 @@ class HTTPClient {
   }
 }
 
-const BASE_URL = process.env.BASE_URL!;
+const BASE_URL = process.env.BASE_URL || "";
 export const httpClient = new HTTPClient(BASE_URL);
