@@ -1,8 +1,15 @@
 {
   "editor.defaultFormatter": "biomejs.biome",
+  "files.associations": {
+    "*.styled.ts": "typescript"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.organizeImports.biome": "explicit"
-  }
+  },
+  "externalFormatters.languages": {}
 }
