@@ -9,7 +9,8 @@ export const Card = styled.li`
   overflow: hidden;
 
   &:hover {
-    box-shadow: rgba(0, 123, 255, 0.3) 0px 10px 36px 0px, rgba(0, 123, 255, 0.3) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 123, 255, 0.3) 0px 10px 36px 0px,
+      rgba(0, 123, 255, 0.3) 0px 0px 0px 1px;
     transition: 0.5s linear;
 
     & img {
@@ -26,6 +27,7 @@ export const CardImageBox = styled.div`
   height: 10.9375rem;
   overflow: hidden;
   position: relative;
+  border-bottom: 1px solid #e9e9e9;
 `;
 
 export const CardImage = styled.img`
@@ -62,7 +64,7 @@ export const CardFooter = styled.div`
 `;
 
 export const GroupText = styled.span`
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #999c9f;
 `;
 

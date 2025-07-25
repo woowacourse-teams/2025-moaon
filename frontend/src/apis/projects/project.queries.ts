@@ -6,6 +6,6 @@ export const projectQueries = {
   fetchList: () =>
     queryOptions({
       queryKey: projectQueries.all,
-      queryFn: () => getProjects(),
+      queryFn: getProjects,
     }),
 };
