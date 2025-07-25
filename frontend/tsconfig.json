@@ -11,9 +11,10 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["src/*"],
       "@shared/*": ["src/shared/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@domains/*": ["src/domains/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"]

@@ -1,5 +1,5 @@
+import type { TechStackKey } from "@domains/filter/techStack";
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
-import type { TechStackKey } from "@/shared/components/IconBadgeList/constants/iconMap";
 import SectionTitle from "../SectionTitle";
 import * as S from "./TechStacksSection.styled";
 

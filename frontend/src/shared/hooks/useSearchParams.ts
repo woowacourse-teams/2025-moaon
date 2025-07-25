@@ -9,6 +9,10 @@ type SearchParamOptions = {
 const useSearchParams = ({ key, mode }: SearchParamOptions) => {
   const [searchParams, setSearchParams] = useReactRouterSearchParams();
 
+  const getAllSearchParams = useCallback(() => {
+    return Object.fromEntries(searchParams.entries());
+  }, [searchParams]);
+
   const getSearchParams = useCallback(() => {
     const currentValues = searchParams.get(key);
 
@@ -50,7 +54,11 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
     updateSearchParams(newValues);
   };
 
-  return { get: getSearchParams, update: updateParamValue };
+  return {
+    get: getSearchParams,
+    getAll: getAllSearchParams,
+    update: updateParamValue,
+  };
 };
 
 export default useSearchParams;
