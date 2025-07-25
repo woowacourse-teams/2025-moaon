@@ -14,6 +14,7 @@ export default {
   entry: "./src/main.tsx",
   output: {
     filename: "bundle.js",
+    publicPath: "/",
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },

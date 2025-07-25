@@ -75,7 +75,7 @@ const MoveButton = styled.button`
   font-size: 1.5rem;
   background-color: #6a6a6aff;
   color: #fff;
-  z-index: 999;
+  z-index: 5;
 
   &:hover {
     background-color: #1f1f1fff;
