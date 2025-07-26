@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-    
+
     permissions:
       contents: read
 
@@ -28,22 +28,61 @@ jobs:
         java-version: '21'
         distribution: 'corretto'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+    - name: Cache Gradle
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./gradlew
+
+    - name: Build with Gradle Wrapper using cache
+      run: ./gradlew build --build-cache
+
+  check-dependencies-changed:
+    needs: build
+
+    outputs:
+      dependencies-changed: ${{ steps.filter.outputs.dependencies }}
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check if dependency files changed
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            dependencies:
+              - 'build.gradle'
+              - 'settings.gradle'
+              - '**/build.gradle'
+              - '**/settings.gradle'
 
   dependency-submission:
+    needs: check-dependencies-changed
     if: |
-      github.actor == 'yesjuhee' || 
-      github.actor == 'Minuring' ||
-      github.actor == 'eueo8259' ||
-      github.actor == 'minjae8563'
-    needs: build
-    
+      needs.check-dependencies-changed.outputs.dependencies-changed == 'true' &&
+      (
+        github.actor == 'yesjuhee' || 
+        github.actor == 'Minuring' ||
+        github.actor == 'eueo8259' ||
+        github.actor == 'minjae8563'
+      )
+
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./backend
