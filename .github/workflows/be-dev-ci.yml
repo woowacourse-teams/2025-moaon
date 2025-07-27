@@ -33,7 +33,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle Wrapper using cache
-        run: ./gradlew build --build-cache
+        run: ./gradlew build --build-cache --no-daemon
 
   check-dependencies-changed:
     needs: build
