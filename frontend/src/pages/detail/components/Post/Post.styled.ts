@@ -8,6 +8,8 @@ export const PostBox = styled.li`
   border: 1px solid #bbbbbb;
   background-color: #ffffffff;
   margin-bottom: 1.25rem;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 export const PostLink = styled(Link)`
