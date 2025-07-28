@@ -1,12 +1,13 @@
-import { textOverflowEllipsis } from "@/styles/global.styled";
 import styled from "@emotion/styled";
 import { Link } from "react-router";
+import { textOverflowEllipsis } from "@/styles/global.styled";
 
 export const PostBox = styled.li`
   width: 100%;
   height: 10rem;
   border: 1px solid #bbbbbb;
-  background-color: #f7f8fa;
+  background-color: #ffffffff;
+  margin-bottom: 1.25rem;
 `;
 
 export const PostLink = styled(Link)`
@@ -15,12 +16,12 @@ export const PostLink = styled(Link)`
   transition: all 0.5s;
 
   &:hover {
-    color: #ffffff;
-    background-color: #0f1010;
+    color: #ffffffff;
+    background-color: #3999ffae;
   }
 
   &:hover > div > p {
-    color: #eeeff1;
+    color: #ffffffff;
   }
 `;
 

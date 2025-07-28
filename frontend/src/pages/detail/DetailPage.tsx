@@ -4,6 +4,7 @@ import useProjectDetail from "./components/hooks/useProjectDetail";
 import OverviewSection from "./components/OverviewSection/OverviewSection";
 import PlatformSection from "./components/PlatformSection/PlatformSection";
 import Post from "./components/Post/Post";
+import SectionTitle from "./components/SectionTitle";
 import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
 import TitleSection from "./components/TitleSection/TitleSection";
 
@@ -59,6 +60,8 @@ function DetailPage() {
       <OverviewSection overview={projectDetail.description} />
       <TechStacksSection techStacks={projectDetail.techStacks} />
       <PlatformSection platforms={projectDetail.platforms} />
+      <SectionTitle title="트러블 슈팅" />
+
       {MOCK_DATA.map(({ title, description, linkUrl, imageUrl }) => (
         <Post
           key={title}

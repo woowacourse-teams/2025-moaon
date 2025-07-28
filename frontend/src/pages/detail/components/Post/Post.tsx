@@ -1,4 +1,4 @@
-import * as S from "./styled";
+import * as S from "./Post.styled";
 
 interface PostProps {
   title: string;
@@ -24,7 +24,17 @@ function Post({ title, description, linkUrl, imageUrl }: PostProps) {
             <S.PostLinkText>{linkUrl}</S.PostLinkText>
           </S.PostLinkBox>
         </S.TextBox>
-        <img src={imageUrl} width={350} height={158} alt="포스트 썸네일" />
+        <img
+          src={imageUrl}
+          width={350}
+          height={158}
+          alt="포스트 썸네일"
+          style={{
+            borderLeft: "1px solid black",
+            display: "block",
+            objectFit: "cover",
+          }}
+        />
       </S.PostLink>
     </S.PostBox>
   );
