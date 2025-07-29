@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Link } from "react-router";
 import { textOverflowEllipsis } from "@/styles/global.styled";
 
 export const PostBox = styled.li`
@@ -12,7 +11,7 @@ export const PostBox = styled.li`
   overflow: hidden;
 `;
 
-export const PostLink = styled(Link)`
+export const PostLink = styled.a`
   display: flex;
   justify-content: space-between;
   transition: all 0.5s;

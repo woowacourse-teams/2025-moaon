@@ -10,7 +10,7 @@ interface PostProps {
 function Post({ title, description, linkUrl, imageUrl }: PostProps) {
   return (
     <S.PostBox>
-      <S.PostLink to={linkUrl}>
+      <S.PostLink href={linkUrl} target="blank" rel="noopener noreferrer">
         <S.TextBox>
           <S.PostTitle>{title}</S.PostTitle>
           <S.PostContent>{description}</S.PostContent>
