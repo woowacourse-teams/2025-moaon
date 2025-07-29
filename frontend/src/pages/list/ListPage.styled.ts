@@ -34,3 +34,33 @@ export const ResetButton = styled.button`
 export const ResetIcon = styled.img`
   width: 1.25rem;
 `;
+
+export const SelectedBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0.25rem 0;
+  min-height: 68px;
+`;
+
+export const SelectedList = styled.ul`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+`;
+
+export const SelectedItem = styled.li`
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  background-color: #f0f0f0;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+
+  &:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+`;
