@@ -34,8 +34,12 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
           />
         );
       })}
-      <S.PrevButton onClick={handleSlidePrev}>❮</S.PrevButton>
-      <S.NextButton onClick={handleSlideNext}>❯</S.NextButton>
+      {imageUrls.length > 1 && (
+        <>
+          <S.PrevButton onClick={handleSlidePrev}>❮</S.PrevButton>
+          <S.NextButton onClick={handleSlideNext}>❯</S.NextButton>
+        </>
+      )}
     </S.CarouselContainer>
   );
 }
