@@ -8,8 +8,12 @@ interface FilterBoxProps {
   param: FilterKindParam;
 }
 
+type FilterListType = Array<
+  [string, { readonly label: string; readonly imgUrl: string }]
+>;
+
 function FilterBox({ param }: FilterBoxProps) {
-  const [filterList, setFilterList] = useState(
+  const [filterList, setFilterList] = useState<FilterListType>(
     FILTER_MAP[param].sort((a, b) => a[1].label.localeCompare(b[1].label)),
   );
 

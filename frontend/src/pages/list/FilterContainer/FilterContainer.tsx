@@ -1,15 +1,10 @@
 import { CATEGORY_ENTRY } from "@domains/filter/category";
-import { ORGANIZATION_ENTRY } from "@domains/filter/organization";
 import { PLATFORM_ENTRY } from "@domains/filter/platform";
 import { TECH_STACK_ENTRY } from "@domains/filter/techStack";
 import * as S from "./FilterContainer.styled";
 import Filter from "./FilterTrigger/FilterTrigger";
 
 const FILTER_INFO_LIST = [
-  {
-    kind: { label: "단체", param: "organizations" },
-    entry: ORGANIZATION_ENTRY,
-  },
   { kind: { label: "주제", param: "categories" }, entry: CATEGORY_ENTRY },
   { kind: { label: "기술스택", param: "techStacks" }, entry: TECH_STACK_ENTRY },
   { kind: { label: "플랫폼", param: "platforms" }, entry: PLATFORM_ENTRY },
