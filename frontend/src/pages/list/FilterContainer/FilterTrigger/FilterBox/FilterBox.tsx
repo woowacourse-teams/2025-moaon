@@ -12,15 +12,14 @@ type FilterListType = Array<(typeof FILTER_MAP)[FilterKindParam][number]>;
 
 function FilterBox({ param }: FilterBoxProps) {
   const [filterList, setFilterList] = useState<FilterListType>(
-    FILTER_MAP[param].sort((a, b) => a[1].label.localeCompare(b[1].label)),
+    FILTER_MAP[param],
   );
 
   const changeFilterList = (keyword: string) => {
-    const filteredList = FILTER_MAP[param]
-      .filter(([_, { label }]) =>
-        label.toLowerCase().startsWith(keyword.toLowerCase()),
-      )
-      .sort((a, b) => a[1].label.localeCompare(b[1].label));
+    const filteredList = FILTER_MAP[param].filter(([_, { label }]) =>
+      label.toLowerCase().startsWith(keyword.toLowerCase()),
+    );
+
     setFilterList(filteredList);
   };
 
