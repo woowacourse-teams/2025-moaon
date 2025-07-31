@@ -8,9 +8,7 @@ interface FilterBoxProps {
   param: FilterKindParam;
 }
 
-type FilterListType = Array<
-  [string, { readonly label: string; readonly imgUrl: string }]
->;
+type FilterListType = Array<(typeof FILTER_MAP)[FilterKindParam][number]>;
 
 function FilterBox({ param }: FilterBoxProps) {
   const [filterList, setFilterList] = useState<FilterListType>(

@@ -1,13 +1,11 @@
 import type { CategoryEntry } from "@domains/filter/category";
-import type { OrganizationEntry } from "@domains/filter/organization";
-import type { PlatformEntry } from "@domains/filter/platform";
 import type { TechStackEntry } from "@domains/filter/techStack";
 import type { FilterKindParam } from "../../../FilterContainer";
 import FilterButton from "./FilterButton/FilterButton";
 import * as S from "./FilterList.styled";
 
 interface FilterListProps {
-  list: (TechStackEntry | PlatformEntry | CategoryEntry | OrganizationEntry)[];
+  list: (TechStackEntry | CategoryEntry)[];
   param: FilterKindParam;
 }
 
