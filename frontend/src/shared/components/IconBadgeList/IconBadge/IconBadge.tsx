@@ -11,7 +11,7 @@ interface IconBadgeProps {
 function IconBadge({
   label,
   imgUrl,
-  color = "black",
+  color = "#000000",
   fontSize = 20.8,
   iconsSize = 24,
 }: IconBadgeProps) {
