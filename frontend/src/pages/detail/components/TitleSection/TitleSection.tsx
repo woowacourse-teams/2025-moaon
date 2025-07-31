@@ -1,6 +1,5 @@
 import heartIcon from "@assets/icons/heart.svg";
 import emptyHeartIcon from "@assets/icons/heart-outline.svg";
-// import linkIcon from "@assets/icons/home.svg";
 import githubIcon from "@assets/icons/logo-github.svg";
 import { CATEGORY_MAP } from "@domains/filter/category";
 import formatDateToYMD from "@shared/utils/formatDateToYMD";

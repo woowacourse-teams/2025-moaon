@@ -2,7 +2,6 @@ import { useParams } from "react-router";
 import Carousel from "./components/Carousel/Carousel";
 import useProjectDetail from "./components/hooks/useProjectDetail";
 import OverviewSection from "./components/OverviewSection/OverviewSection";
-// import PlatformSection from "./components/PlatformSection/PlatformSection";
 import Post from "./components/Post/Post";
 import SectionTitle from "./components/SectionTitle";
 import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
@@ -59,7 +58,6 @@ function DetailPage() {
       <Carousel imageUrls={projectDetail.imageUrls} />
       <OverviewSection overview={projectDetail.description} />
       <TechStacksSection techStacks={projectDetail.techStacks} />
-      {/* <PlatformSection platforms={projectDetail.platforms} /> */}
       <SectionTitle title="기술 문서" />
 
       {MOCK_DATA.map(({ title, description, linkUrl, imageUrl }) => (
