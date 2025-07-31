@@ -58,14 +58,9 @@ export const CardSummary = styled.p`
 
 export const CardFooter = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   align-items: center;
   margin-top: 0.75rem;
-`;
-
-export const GroupText = styled.span`
-  font-size: 0.75rem;
-  color: #999c9f;
 `;
 
 export const Wrap = styled.div`
