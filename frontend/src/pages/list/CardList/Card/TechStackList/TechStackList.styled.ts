@@ -5,6 +5,7 @@ export const TechStackList = styled.ul`
   grid-template-columns: repeat(5, 1fr);
   padding: 0.25rem 0 0;
   gap: 0.75rem;
+  min-height: 2.625rem;
 `;
 
 export const AdditionalCount = styled.div`
