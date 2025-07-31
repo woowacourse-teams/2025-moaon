@@ -10,8 +10,10 @@ function IconBadgeList({ iconBadges }: IconBadgeListProps) {
   return (
     <S.IconBadgeList>
       {iconBadges.map((key) => {
-        const { label, imgUrl } = ICON_BADGE_MAP[key];
-        return <IconBadge key={key} label={label} imgUrl={imgUrl} />;
+        const { label, imgUrl, color } = ICON_BADGE_MAP[key];
+        return (
+          <IconBadge key={key} label={label} imgUrl={imgUrl} color={color} />
+        );
       })}
     </S.IconBadgeList>
   );
