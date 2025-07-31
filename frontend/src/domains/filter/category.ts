@@ -44,6 +44,14 @@ export const CATEGORY_MAP = {
     label: "쇼핑/커머스",
     imgUrl: "",
   },
+  web: {
+    label: "웹",
+    imgUrl: "",
+  },
+  app: {
+    label: "앱",
+    imgUrl: "",
+  },
   etc: {
     label: "기타",
     imgUrl: "",
