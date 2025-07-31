@@ -6,11 +6,12 @@ import FilterList from "./FilterList/FilterList";
 
 interface FilterBoxProps {
   param: FilterKindParam;
+  hasSearchBar: boolean;
 }
 
 type FilterListType = Array<(typeof FILTER_MAP)[FilterKindParam][number]>;
 
-function FilterBox({ param }: FilterBoxProps) {
+function FilterBox({ param, hasSearchBar }: FilterBoxProps) {
   const [filterList, setFilterList] = useState<FilterListType>(
     FILTER_MAP[param],
   );
@@ -25,10 +26,12 @@ function FilterBox({ param }: FilterBoxProps) {
 
   return (
     <S.Container>
-      <SearchBar
-        icon={{ size: 24, position: "right" }}
-        onChange={changeFilterList}
-      />
+      {hasSearchBar && (
+        <SearchBar
+          icon={{ size: 24, position: "right" }}
+          onChange={changeFilterList}
+        />
+      )}
       <FilterList list={filterList} param={param} />
     </S.Container>
   );

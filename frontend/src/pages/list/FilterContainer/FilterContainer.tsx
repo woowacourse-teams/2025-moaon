@@ -4,8 +4,14 @@ import * as S from "./FilterContainer.styled";
 import Filter from "./FilterTrigger/FilterTrigger";
 
 const FILTER_INFO_LIST = [
-  { kind: { label: "주제", param: "categories" }, entry: CATEGORY_ENTRY },
-  { kind: { label: "기술스택", param: "techStacks" }, entry: TECH_STACK_ENTRY },
+  {
+    kind: { label: "주제", param: "categories", hasSearchBar: false },
+    entry: CATEGORY_ENTRY,
+  },
+  {
+    kind: { label: "기술스택", param: "techStacks", hasSearchBar: true },
+    entry: TECH_STACK_ENTRY,
+  },
 ] as const;
 
 export type FilterKind = (typeof FILTER_INFO_LIST)[number]["kind"];
