@@ -1,12 +1,11 @@
 import heartIcon from "@assets/icons/heart.svg";
 import emptyHeartIcon from "@assets/icons/heart-outline.svg";
-import linkIcon from "@assets/icons/home.svg";
+// import linkIcon from "@assets/icons/home.svg";
 import githubIcon from "@assets/icons/logo-github.svg";
-import { ORGANIZATION_MAP } from "@domains/filter/organization";
-import { useState } from "react";
-import type { ProjectDetail } from "@/apis/projectDetail/getProjectDetail.type";
 import { CATEGORY_MAP } from "@domains/filter/category";
 import formatDateToYMD from "@shared/utils/formatDateToYMD";
+import { useState } from "react";
+import type { ProjectDetail } from "@/apis/projectDetail/getProjectDetail.type";
 import * as S from "./TitleSection.styled";
 
 interface TitleSectionProps {
@@ -14,8 +13,17 @@ interface TitleSectionProps {
 }
 
 function TitleSection({ projectDetail }: TitleSectionProps) {
+  const {
+    categories,
+    title,
+    summary,
+    createdAt,
+    loves,
+    githubUrl,
+    productionUrl,
+  } = projectDetail;
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [loveCount, setLoveCount] = useState<number>(projectDetail.loves);
+  const [loveCount, setLoveCount] = useState<number>(loves);
 
   const handleLikeToggle = () => {
     setIsLiked(!isLiked);
@@ -26,28 +34,23 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
     <S.TitleSectionContainer>
       <S.TitleSectionLeft>
         <S.Subject>
-          {projectDetail.categories
+          {categories
             .map((category) => `#${CATEGORY_MAP[category].label}`)
             .join(" ")}
         </S.Subject>
-        <S.Organization>
-          {ORGANIZATION_MAP[projectDetail.organization].label}
-        </S.Organization>
-        <S.ProductName>{projectDetail.title}</S.ProductName>
-        <S.ProductDescription>{projectDetail.summary}</S.ProductDescription>
+        <S.ProductName>{title}</S.ProductName>
+        <S.ProductDescription>{summary}</S.ProductDescription>
       </S.TitleSectionLeft>
       <S.TitleSectionRight>
-        <S.RegistrationDate>
-          {formatDateToYMD(projectDetail.createdAt)}
-        </S.RegistrationDate>
+        <S.RegistrationDate>{formatDateToYMD(createdAt)}</S.RegistrationDate>
         <S.LoveButton onClick={handleLikeToggle}>
           <img src={isLiked ? heartIcon : emptyHeartIcon} alt="좋아요 버튼" />
           <S.LoveCount>{loveCount}</S.LoveCount>
         </S.LoveButton>
         <S.ButtonBar>
-          {projectDetail.githubUrl && (
+          {githubUrl && (
             <S.NavLink
-              href={projectDetail.githubUrl}
+              href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -55,14 +58,13 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
               바로가기
             </S.NavLink>
           )}
-          {projectDetail.productionUrl && (
+          {productionUrl && (
             <S.NavLink
-              href={projectDetail.productionUrl}
+              href={productionUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={linkIcon} alt="link 바로가기 아이콘" />
-              바로가기
+              서비스 바로가기
             </S.NavLink>
           )}
         </S.ButtonBar>
