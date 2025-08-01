@@ -53,7 +53,7 @@ export const CardTitle = styled.h2`
 export const CardSummary = styled.p`
   margin: 0.75rem 0 0.3125rem;
   height: 3rem;
-  line-height: 1.3;
+  line-height: 1.5;
   color: #555;
   font-size: 0.9375rem;
   ${textOverflowEllipsis(2)}
