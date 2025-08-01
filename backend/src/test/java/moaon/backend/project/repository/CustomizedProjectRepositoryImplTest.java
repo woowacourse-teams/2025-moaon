@@ -5,16 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.SortBy;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
@@ -99,64 +97,33 @@ class CustomizedProjectRepositoryImplTest {
         );
     }
 
-    @DisplayName("조직 필터를 이용해 프로젝트를 조회한다.")
-    @Test
-    void findWithOrganizationFilter() {
-        // given
-        Organization organization1 = Fixture.anyOrganization();
-        Organization organization2 = Fixture.anyOrganization();
-        Organization organization3 = Fixture.anyOrganization();
-        Project projectWithOrganization1 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .organization(organization1)
-                .build()
-        );
-        Project projectWithOrganization2 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .organization(organization2)
-                .build()
-        );
-        repositoryHelper.save(new ProjectFixtureBuilder()
-                .organization(organization3)
-                .build()
-        );
-
-        // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .organizationNames(organization1.getName(), organization2.getName())
-                        .build()
-        );
-
-        // then
-        assertThat(projects).containsExactlyInAnyOrder(projectWithOrganization1, projectWithOrganization2);
-    }
-
     @DisplayName("카테고리 필터를 이용해 프로젝트를 조회한다.")
     @Test
     void findWithCategoryFilter() {
         // given
-        Category category1 = Fixture.anyCategory();
-        Category category2 = Fixture.anyCategory();
-        Category category3 = Fixture.anyCategory();
-        Category category4 = Fixture.anyCategory();
-        Category category5 = Fixture.anyCategory();
+        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory4 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory5 = Fixture.anyProjectCategory();
 
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(category1, category2)
+                .categories(projectCategory1, projectCategory2)
                 .build()
         );
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(category2, category3)
+                .categories(projectCategory2, projectCategory3)
                 .build()
         );
         Project projectWithCategory4 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(category4, category5)
+                .categories(projectCategory4, projectCategory5)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .categoryNames(category4.getName())
+                        .categoryNames(projectCategory4.getName())
                         .build()
         );
 
@@ -196,38 +163,6 @@ class CustomizedProjectRepositoryImplTest {
 
         // then
         assertThat(projects).containsExactlyInAnyOrder(projectWithTechStack3, projectWithTechStack4);
-    }
-
-    @DisplayName("플랫폼 필터를 이용해 프로젝트를 조회한다.")
-    @Test
-    void findWithPlatformFilter() {
-        // given
-        Platform platform1 = Fixture.anyPlatform();
-        Platform platform2 = Fixture.anyPlatform();
-        Platform platform3 = Fixture.anyPlatform();
-
-        repositoryHelper.save(new ProjectFixtureBuilder()
-                .platforms(platform1)
-                .build()
-        );
-        Project projectWithPlatform2 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .platforms(platform2)
-                .build()
-        );
-        Project projectWithPlatform3 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .platforms(platform3)
-                .build()
-        );
-
-        // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .platformNames(platform2.getName(), platform3.getName())
-                        .build()
-        );
-
-        // then
-        assertThat(projects).containsExactlyInAnyOrder(projectWithPlatform2, projectWithPlatform3);
     }
 
     @DisplayName("프로젝트를 조회순을 기준으로 정렬한다.")

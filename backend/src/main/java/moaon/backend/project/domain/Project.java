@@ -16,11 +16,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.category.domain.Category;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.member.domain.Member;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.techStack.domain.TechStack;
 
 @Entity
@@ -59,9 +56,6 @@ public class Project extends BaseTimeEntity {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    private Organization organization;
-
-    @ManyToOne
     private Member author;
 
     @ManyToMany
@@ -71,10 +65,7 @@ public class Project extends BaseTimeEntity {
     private List<TechStack> techStacks;
 
     @ManyToMany
-    private List<Category> categories;
-
-    @ManyToMany
-    private List<Platform> platforms;
+    private List<ProjectCategory> categories;
 
     public Project(
             String title,
@@ -83,11 +74,9 @@ public class Project extends BaseTimeEntity {
             String githubUrl,
             String productionUrl,
             Images images,
-            Organization organization,
             Member author,
             List<TechStack> techStacks,
-            List<Category> categories,
-            List<Platform> platforms,
+            List<ProjectCategory> categories,
             LocalDateTime createdAt
     ) {
         this.title = title;
@@ -97,12 +86,10 @@ public class Project extends BaseTimeEntity {
         this.productionUrl = productionUrl;
         this.images = images;
         this.views = 0;
-        this.organization = organization;
         this.author = author;
         this.lovedMembers = new ArrayList<>();
         this.techStacks = new ArrayList<>(techStacks);
         this.categories = new ArrayList<>(categories);
-        this.platforms = new ArrayList<>(platforms);
         this.createdAt = createdAt;
     }
 
@@ -122,12 +109,8 @@ public class Project extends BaseTimeEntity {
         return List.copyOf(techStacks);
     }
 
-    public List<Category> getCategories() {
+    public List<ProjectCategory> getCategories() {
         return List.copyOf(categories);
-    }
-
-    public List<Platform> getPlatforms() {
-        return List.copyOf(platforms);
     }
 
     public List<Member> getLovedMembers() {

@@ -55,5 +55,5 @@ public class Article extends BaseTimeEntity {
     private ArticleCategory category;
 
     @ManyToMany
-    private List<TechStack> techStacks;
+    private List<TechStack> techStacks; // TODO 방어적 복사 getter
 }

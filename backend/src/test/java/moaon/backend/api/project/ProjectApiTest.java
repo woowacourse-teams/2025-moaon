@@ -5,14 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import java.util.List;
-import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.techStack.domain.TechStack;
@@ -64,9 +62,6 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponse.description()).isEqualTo(project.getDescription()),
                 () -> assertThat(actualResponse.techStacks())
                         .isEqualTo(project.getTechStacks().stream().map(TechStack::getName).toList()),
-                () -> assertThat(actualResponse.organization()).isEqualTo(project.getOrganization().getName()),
-                () -> assertThat(actualResponse.platforms())
-                        .isEqualTo(project.getPlatforms().stream().map(Platform::getName).toList()),
                 () -> assertThat(actualResponse.loves()).isEqualTo(0),
                 () -> assertThat(actualResponse.views()).isEqualTo(1)
         );
@@ -78,84 +73,50 @@ public class ProjectApiTest {
         // given
         String filteredSearch = "모아온";
         String unfilteredSearch = "모모온";
-        Platform filteredPlatform = Fixture.anyPlatform();
-        Platform unfilteredPlatform = Fixture.anyPlatform();
-        Category filteredCategory = Fixture.anyCategory();
-        Category unfilteredCategory = Fixture.anyCategory();
-        Organization filteredOrganization = Fixture.anyOrganization();
-        Organization unfilteredOrganization = Fixture.anyOrganization();
+        ProjectCategory filteredProjectCategory = Fixture.anyProjectCategory();
+        ProjectCategory unfilteredProjectCategory = Fixture.anyProjectCategory();
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(unfilteredSearch)
-                        .platforms(filteredPlatform)
-                        .categories(filteredCategory)
-                        .organization(filteredOrganization)
+                        .categories(filteredProjectCategory)
                         .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(filteredSearch)
-                        .platforms(unfilteredPlatform)
-                        .categories(filteredCategory)
-                        .organization(filteredOrganization)
+                        .categories(unfilteredProjectCategory)
                         .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(filteredSearch)
-                        .platforms(unfilteredPlatform)
-                        .categories(unfilteredCategory)
-                        .organization(filteredOrganization)
-                        .techStacks(filteredTechStack)
-                        .build()
-        );
-        repositoryHelper.save(
-                new ProjectFixtureBuilder()
-                        .description(filteredSearch)
-                        .platforms(unfilteredPlatform)
-                        .categories(filteredCategory)
-                        .organization(unfilteredOrganization)
-                        .techStacks(filteredTechStack)
-                        .build()
-        );
-        repositoryHelper.save(
-                new ProjectFixtureBuilder()
-                        .description(filteredSearch)
-                        .platforms(unfilteredPlatform)
-                        .categories(filteredCategory)
-                        .organization(filteredOrganization)
+                        .categories(filteredProjectCategory)
                         .techStacks(unfilteredTechStack)
                         .build()
         );
 
         Project projectViewRankThird = repositoryHelper.save(new ProjectFixtureBuilder()
                 .description(filteredSearch)
-                .platforms(filteredPlatform)
-                .categories(filteredCategory)
-                .organization(filteredOrganization)
+                .categories(filteredProjectCategory)
                 .techStacks(filteredTechStack)
                 .views(1)
                 .build()
         );
         Project projectViewRankSecond = repositoryHelper.save(new ProjectFixtureBuilder()
                 .summary(filteredSearch)
-                .platforms(filteredPlatform)
-                .categories(filteredCategory)
-                .organization(filteredOrganization)
+                .categories(filteredProjectCategory)
                 .techStacks(filteredTechStack)
                 .views(2)
                 .build()
         );
         Project projectViewRankFirst = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title(filteredSearch)
-                .platforms(filteredPlatform)
-                .categories(filteredCategory)
-                .organization(filteredOrganization)
+                .categories(filteredProjectCategory)
                 .techStacks(filteredTechStack)
                 .views(3)
                 .build()
@@ -165,9 +126,7 @@ public class ProjectApiTest {
         ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
                 .queryParams("search", filteredSearch)
                 .queryParams("sort", "views")
-                .queryParams("platforms", List.of(filteredPlatform.getName()))
-                .queryParams("categories", List.of(filteredCategory.getName()))
-                .queryParams("organizations", List.of(filteredOrganization.getName()))
+                .queryParams("categories", List.of(filteredProjectCategory.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .when().get("/projects")
                 .then().log().all()

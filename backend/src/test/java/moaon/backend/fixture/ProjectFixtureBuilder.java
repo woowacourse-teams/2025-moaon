@@ -4,12 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import moaon.backend.category.domain.Category;
 import moaon.backend.member.domain.Member;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
 
 public class ProjectFixtureBuilder {
@@ -20,11 +18,9 @@ public class ProjectFixtureBuilder {
     private String githubUrl;
     private String productionUrl;
     private Images images;
-    private Organization organization;
     private Member author;
     private List<TechStack> techStacks;
-    private List<Category> categories;
-    private List<Platform> platforms;
+    private List<ProjectCategory> categories;
     private LocalDateTime createdAt;
     private int views = 0;
 
@@ -35,11 +31,9 @@ public class ProjectFixtureBuilder {
         this.githubUrl = "https://github.com/test-repo";
         this.productionUrl = "https://test-product.com";
         this.images = new Images(List.of("https://test.com/image1.png", "https://test.com/image2.png"));
-        this.organization = Fixture.anyOrganization();
         this.author = Fixture.anyMember();
         this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
-        this.categories = new ArrayList<>(List.of(Fixture.anyCategory()));
-        this.platforms = new ArrayList<>(List.of(Fixture.anyPlatform()));
+        this.categories = new ArrayList<>(List.of(Fixture.anyProjectCategory()));
         this.createdAt = LocalDateTime.now();
     }
 
@@ -73,11 +67,6 @@ public class ProjectFixtureBuilder {
         return this;
     }
 
-    public ProjectFixtureBuilder organization(Organization organization) {
-        this.organization = organization;
-        return this;
-    }
-
     public ProjectFixtureBuilder author(Member author) {
         this.author = author;
         return this;
@@ -88,13 +77,8 @@ public class ProjectFixtureBuilder {
         return this;
     }
 
-    public ProjectFixtureBuilder categories(Category... categories) {
+    public ProjectFixtureBuilder categories(ProjectCategory... categories) {
         this.categories = new ArrayList<>(Arrays.asList(categories));
-        return this;
-    }
-
-    public ProjectFixtureBuilder platforms(Platform... platforms) {
-        this.platforms = new ArrayList<>(Arrays.asList(platforms));
         return this;
     }
 
@@ -116,11 +100,9 @@ public class ProjectFixtureBuilder {
                 this.githubUrl,
                 this.productionUrl,
                 this.images,
-                this.organization,
                 this.author,
                 this.techStacks,
                 this.categories,
-                this.platforms,
                 this.createdAt
         );
         for (int i = 0; i < views; i++) {
