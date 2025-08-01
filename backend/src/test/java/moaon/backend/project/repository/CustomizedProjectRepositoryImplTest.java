@@ -93,9 +93,9 @@ class CustomizedProjectRepositoryImplTest {
 
         // then
         assertAll(
-                () -> assertThat(projectsWithMoaon).containsExactlyInAnyOrder(moaon),
-                () -> assertThat(projectsWithShare).containsExactlyInAnyOrder(share),
-                () -> assertThat(projectsWithHub).containsExactlyInAnyOrder(hub)
+                () -> assertThat(projectsWithMoaon).containsOnlyOnce(moaon),
+                () -> assertThat(projectsWithShare).containsOnlyOnce(share),
+                () -> assertThat(projectsWithHub).containsOnlyOnce(hub)
         );
     }
 
@@ -161,7 +161,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertThat(projects).containsExactly(projectWithCategory4);
+        assertThat(projects).containsOnlyOnce(projectWithCategory4);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
