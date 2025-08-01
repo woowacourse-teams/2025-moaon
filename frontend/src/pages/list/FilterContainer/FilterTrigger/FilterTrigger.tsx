@@ -9,7 +9,7 @@ interface FilterProps {
   kind: FilterKind;
 }
 
-function Filter({ kind }: FilterProps) {
+function FilterTrigger({ kind }: FilterProps) {
   const { label, param, hasSearchBar } = kind;
   const [isOpen, setIsOpen] = useState(false);
   const addToSafeZone = useOutsideClick(() => setIsOpen(false));
@@ -29,4 +29,4 @@ function Filter({ kind }: FilterProps) {
   );
 }
 
-export default Filter;
+export default FilterTrigger;

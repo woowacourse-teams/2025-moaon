@@ -1,7 +1,7 @@
 import { CATEGORY_ENTRY } from "@domains/filter/category";
 import { TECH_STACK_ENTRY } from "@domains/filter/techStack";
 import * as S from "./FilterContainer.styled";
-import Filter from "./FilterTrigger/FilterTrigger";
+import FilterTrigger from "./FilterTrigger/FilterTrigger";
 
 const FILTER_INFO_LIST = [
   {
@@ -32,7 +32,7 @@ function FilterContainer() {
   return (
     <S.Container>
       {FILTER_INFO_LIST.map(({ kind }) => (
-        <Filter key={kind.label} kind={kind} />
+        <FilterTrigger key={kind.label} kind={kind} />
       ))}
     </S.Container>
   );
