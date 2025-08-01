@@ -18,7 +18,6 @@ function Card({ project }: CardProps) {
     title,
     summary,
     techStacks,
-    platforms,
     thumbnailUrl,
     isLoved,
     loves,
