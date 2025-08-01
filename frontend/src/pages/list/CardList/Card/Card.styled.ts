@@ -4,18 +4,20 @@ import { textOverflowEllipsis } from "@/styles/global.styled";
 
 export const Card = styled.li`
   width: 100%;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 12px;
   overflow: hidden;
 
   &:hover {
-    box-shadow: rgba(0, 123, 255, 0.3) 0px 10px 36px 0px,
-      rgba(0, 123, 255, 0.3) 0px 0px 0px 1px;
-    transition: 0.5s linear;
+    transition: 0.25s linear;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
-    & img {
-      transform: scale(1.05);
+    & > a > div > img {
+      transform: scale(1.2);
       transition: 0.25s linear;
+    }
+
+    & h2 {
+      text-decoration: underline;
+      text-underline-offset: 0.125rem;
     }
   }
 `;
@@ -27,7 +29,7 @@ export const CardImageBox = styled.div`
   height: 10.9375rem;
   overflow: hidden;
   position: relative;
-  border-bottom: 1px solid #e9e9e9;
+  border: 1px solid #e9e9e9;
 `;
 
 export const CardImage = styled.img`
@@ -38,44 +40,36 @@ export const CardImage = styled.img`
 `;
 
 export const CardInfo = styled.div`
-  padding: 1rem 0.75rem;
-  height: 12.5rem;
+  padding: 0.875rem 1.25rem 0.75rem;
 `;
 
 export const CardTitle = styled.h2`
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   margin: 0.25rem 0;
-  line-height: 1.5;
+  font-weight: 700;
   ${textOverflowEllipsis(1)}
 `;
 
 export const CardSummary = styled.p`
-  margin-bottom: 0.5rem;
+  margin: 0.75rem 0 0.3125rem;
   height: 3rem;
-  line-height: 1.5;
+  line-height: 1.3;
+  color: #555;
+  font-size: 0.9375rem;
   ${textOverflowEllipsis(2)}
 `;
 
 export const CardFooter = styled.div`
   display: flex;
-  justify-content: right;
   align-items: center;
   margin-top: 0.75rem;
+  gap: 0.875rem;
 `;
 
-export const Wrap = styled.div`
-  display: flex;
-  gap: 0.75rem;
-`;
-
-export const ActivityBox = styled.div`
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-`;
-
-export const ActivityIcon = styled.img`
+export const HeartIcon = styled.img`
   width: 0.875rem;
+`;
+
+export const EyeIcon = styled.img`
+  width: 1.125rem;
 `;

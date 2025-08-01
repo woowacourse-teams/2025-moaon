@@ -4,6 +4,6 @@ export const CardList = styled.ul`
   margin: 0 auto;
   width: 80rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+  gap: 1.5rem;
 `;
