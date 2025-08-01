@@ -93,9 +93,9 @@ class CustomizedProjectRepositoryImplTest {
 
         // then
         assertAll(
-                () -> assertThat(projectsWithMoaon).containsOnly(moaon),
-                () -> assertThat(projectsWithShare).containsOnly(share),
-                () -> assertThat(projectsWithHub).containsOnly(hub)
+                () -> assertThat(projectsWithMoaon).containsOnlyOnce(moaon),
+                () -> assertThat(projectsWithShare).containsOnlyOnce(share),
+                () -> assertThat(projectsWithHub).containsOnlyOnce(hub)
         );
     }
 
@@ -127,10 +127,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertAll(
-                () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(projectWithOrganization1, projectWithOrganization2)
-        );
+        assertThat(projects).containsExactlyInAnyOrder(projectWithOrganization1, projectWithOrganization2);
     }
 
     @DisplayName("카테고리 필터를 이용해 프로젝트를 조회한다.")
@@ -164,7 +161,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertThat(projects).containsOnly(projectWithCategory4);
+        assertThat(projects).containsOnlyOnce(projectWithCategory4);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
@@ -198,10 +195,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertAll(
-                () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(projectWithTechStack3, projectWithTechStack4)
-        );
+        assertThat(projects).containsExactlyInAnyOrder(projectWithTechStack3, projectWithTechStack4);
     }
 
     @DisplayName("플랫폼 필터를 이용해 프로젝트를 조회한다.")
@@ -233,10 +227,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertAll(
-                () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(projectWithPlatform2, projectWithPlatform3)
-        );
+        assertThat(projects).containsExactlyInAnyOrder(projectWithPlatform2, projectWithPlatform3);
     }
 
     @DisplayName("프로젝트를 조회순을 기준으로 정렬한다.")
@@ -261,7 +252,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertThat(projects).containsSequence(high, middle, low);
+        assertThat(projects).containsExactly(high, middle, low);
     }
 
     @DisplayName("프로젝트를 생성일자 기준으로 정렬한다.")
@@ -292,7 +283,7 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertThat(projects).containsSequence(tomorrowProject, todayProject, yesterdayProject);
+        assertThat(projects).containsExactly(tomorrowProject, todayProject, yesterdayProject);
     }
 
     @DisplayName("프로젝트를 좋아요 순으로 정렬한다.")
@@ -319,6 +310,6 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // then
-        assertThat(projects).containsSequence(high, middle, low);
+        assertThat(projects).containsExactly(high, middle, low);
     }
 }
