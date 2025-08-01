@@ -2,9 +2,8 @@ package moaon.backend.project.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import moaon.backend.category.domain.Category;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
 
 public record ProjectDetailResponse(
@@ -13,9 +12,7 @@ public record ProjectDetailResponse(
         String title,
         String summary,
         String description,
-        String organization,
         List<String> techStacks,
-        List<String> platforms,
         List<String> categories,
         List<String> imageUrls,
         boolean isLoved,
@@ -33,15 +30,11 @@ public record ProjectDetailResponse(
                 project.getTitle(),
                 project.getSummary(),
                 project.getDescription(),
-                project.getOrganization().getName(),
                 project.getTechStacks().stream()
                         .map(TechStack::getName)
                         .toList(),
-                project.getPlatforms().stream()
-                        .map(Platform::getName)
-                        .toList(),
                 project.getCategories().stream()
-                        .map(Category::getName)
+                        .map(ProjectCategory::getName)
                         .toList(),
                 project.getImages().getUrls(),
                 false, // TODO 로그인 추가 시 수정

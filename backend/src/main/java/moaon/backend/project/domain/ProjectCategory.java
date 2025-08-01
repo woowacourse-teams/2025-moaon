@@ -1,4 +1,4 @@
-package moaon.backend.platform.domain;
+package moaon.backend.project.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Platform {
+public class ProjectCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Platform {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public Platform(String name) {
+    public ProjectCategory(String name) {
         this.name = name;
     }
 }
