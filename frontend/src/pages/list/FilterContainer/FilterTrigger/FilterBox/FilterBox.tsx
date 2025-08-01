@@ -30,6 +30,8 @@ function FilterBox({ param, hasSearchBar }: FilterBoxProps) {
         <SearchBar
           icon={{ size: 24, position: "right" }}
           onChange={changeFilterList}
+          placeholder="찾으시는 기술스택을 입력해 주세요"
+          disableSubmit
         />
       )}
       <FilterList list={filterList} param={param} />

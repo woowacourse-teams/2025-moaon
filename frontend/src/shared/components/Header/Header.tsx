@@ -20,6 +20,7 @@ function Header() {
             width="fixed"
             shape="rounded"
             icon={{ size: 16, position: "left" }}
+            placeholder="프로젝트를 검색해 보세요"
           />
           <RegisterProjectButton />
         </S.Wrap>

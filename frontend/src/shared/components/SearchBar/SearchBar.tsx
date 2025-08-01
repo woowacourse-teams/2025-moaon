@@ -11,6 +11,8 @@ interface SearchBarProps {
     size: number;
     position: "left" | "right";
   };
+  placeholder: string;
+  disableSubmit?: boolean;
   onChange?: (keyword: string) => void;
 }
 
@@ -18,6 +20,8 @@ function SearchBar({
   width = "full",
   shape = "default",
   icon,
+  placeholder,
+  disableSubmit = false,
   onChange,
 }: SearchBarProps) {
   const [value, setValue] = useState("");
@@ -32,6 +36,11 @@ function SearchBar({
 
   const handleSearchFormSubmit = (event: FormEvent) => {
     event.preventDefault();
+
+    if (disableSubmit) {
+      return;
+    }
+
     params.update(value);
     refetch();
   };
@@ -41,7 +50,7 @@ function SearchBar({
       <S.SearchBox position={icon.position} shape={shape} width={width}>
         <S.SearchInput
           type="text"
-          placeholder="검색어를 입력해 주세요"
+          placeholder={placeholder}
           value={value}
           onChange={handleSearchValueChange}
         />
