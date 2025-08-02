@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
             userAgent = request.getHeader(HttpHeaders.USER_AGENT);
         }
 
-        log.warn("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, Client IP: {}, User-Agent: {}",
+        log.warn("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, IP: {}, UA: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 httpMethod,
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
             userAgent = request.getHeader(HttpHeaders.USER_AGENT);
         }
 
-        log.warn("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, Client IP: {}, User-Agent: {}",
+        log.warn("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, IP: {}, UA: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 httpMethod,
@@ -101,11 +101,12 @@ public class GlobalExceptionHandler {
             userAgent = request.getHeader(HttpHeaders.USER_AGENT);
         }
 
-        log.error("[{}] Error ID: {}, Method: {}, Path: {}, Client IP: {}, User-Agent: {}",
+        log.error("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, IP: {}, UA: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 httpMethod,
                 requestURI,
+                e.getMessage(),
                 clientIP,
                 userAgent,
                 e
