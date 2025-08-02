@@ -1,4 +1,4 @@
-package moaon.backend.organization.domain;
+package moaon.backend.article.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,14 +10,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.global.domain.BaseTimeEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EqualsAndHashCode(of = "id", callSuper = false)
+@EqualsAndHashCode(of = "id")
 @ToString
-public class Organization extends BaseTimeEntity {
+public class ArticleCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +24,4 @@ public class Organization extends BaseTimeEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    public Organization(String name) {
-        this.name = name;
-    }
 }

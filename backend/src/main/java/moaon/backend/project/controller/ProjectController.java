@@ -28,17 +28,13 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getAllProjects(
             @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "platforms", required = false) List<String> platforms,
             @RequestParam(value = "categories", required = false) List<String> categories,
-            @RequestParam(value = "organizations", required = false) List<String> organizations,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
             @RequestParam(value = "sort", required = false) String sortType
     ) {
         ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
                 search,
-                platforms,
                 categories,
-                organizations,
                 techStacks,
                 sortType
         );
