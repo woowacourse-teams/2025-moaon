@@ -9,7 +9,7 @@ function Header() {
     <S.Header>
       <S.HeaderBox>
         <S.Wrap>
-          <Link to="/list" reloadDocument>
+          <Link to="/">
             <img src={Logo} alt="로고" />
           </Link>
           <NavBar />
