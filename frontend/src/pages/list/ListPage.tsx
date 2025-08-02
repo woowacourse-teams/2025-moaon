@@ -4,6 +4,7 @@ import FilterContainer from "./FilterContainer/FilterContainer";
 import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
 import * as S from "./ListPage.styled";
+import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 import SortList from "./SortList/SortList";
 
 function ListPage() {
@@ -17,6 +18,15 @@ function ListPage() {
 
   return (
     <S.Main>
+      <S.MainBox>
+        <S.TitleBox>
+          <S.MainTitle>프로젝트 탐색</S.MainTitle>
+          <S.MainDescription>
+            다양한 개발자들의 프로젝트를 탐색하고 학습하세요
+          </S.MainDescription>
+        </S.TitleBox>
+        <ProjectSearchBar />
+      </S.MainBox>
       <S.Box>
         <S.Wrap>
           <FilterContainer />
