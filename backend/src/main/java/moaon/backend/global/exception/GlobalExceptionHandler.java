@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handelUncaughtException(Exception e) {
-        log.error(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleUncaughtException(Exception e) {
+        log.error("[Unhandled Exception]: {}", e.getMessage(), e);
         ErrorCode unknownError = ErrorCode.UNKNOWN;
         return ResponseEntity
                 .status(unknownError.getHttpStatus())
