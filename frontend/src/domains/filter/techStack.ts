@@ -19,11 +19,6 @@ export const TECH_STACK_ICON_MAP = {
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Vue.js.svg",
     primaryColor: "#4FC08D",
   },
-  nuxtjs: {
-    label: "Nuxt.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-    primaryColor: "#00DC82",
-  },
   angular: {
     label: "Angular",
     imgUrl:
@@ -201,6 +196,7 @@ export const TECH_STACK_ICON_MAP = {
   // nuxtjs: {
   //   label: "Nuxt.js",
   //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  //   primaryColor: "#00DC82",
   // },
   // styledComponents: {
   //   label: "Styled-Components",
