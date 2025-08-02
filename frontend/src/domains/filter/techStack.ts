@@ -1,3 +1,5 @@
+import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
+
 export const TECH_STACK_ICON_MAP = {
   react: {
     label: "React",
@@ -13,10 +15,6 @@ export const TECH_STACK_ICON_MAP = {
     label: "Vue.js",
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Vue.js.svg",
-  },
-  nuxtjs: {
-    label: "Nuxt.js",
-    imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
   },
   angular: {
     label: "Angular",
@@ -163,6 +161,10 @@ export const TECH_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Flutter.svg",
   },
+  // nuxtjs: {
+  //   label: "Nuxt.js",
+  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
+  // },
   // styledComponents: {
   //   label: "Styled-Components",
   //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
@@ -206,5 +208,4 @@ export const TECH_STACK_ICON_MAP = {
 } as const;
 
 export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;
-export const TECH_STACK_ENTRY = Object.entries(TECH_STACK_ICON_MAP);
-export type TechStackEntry = (typeof TECH_STACK_ENTRY)[number];
+export const TECH_STACK_ENTRY = typeSafeObjectEntries(TECH_STACK_ICON_MAP);

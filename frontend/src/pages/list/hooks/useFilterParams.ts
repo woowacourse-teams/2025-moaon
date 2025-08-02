@@ -8,19 +8,6 @@ export const useFilterParams = () => {
   const techStackParams = useSearchParams({ key: "techStacks", mode: "multi" });
   const categoryParams = useSearchParams({ key: "categories", mode: "multi" });
 
-  const deleteFilter = (key: string, value: string) => {
-    switch (key) {
-      case "techStacks":
-        techStackParams.update(value);
-        break;
-      case "categories":
-        categoryParams.update(value);
-        break;
-      default:
-        throw new Error(`Unknown filter key: ${key}`);
-    }
-  };
-
   const resetFilter = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("categories");
@@ -31,7 +18,6 @@ export const useFilterParams = () => {
   return {
     techStacks: techStackParams.get() as TechStackKey[],
     categories: categoryParams.get() as CategoryKey[],
-    deleteFilter,
     resetFilter,
   };
 };

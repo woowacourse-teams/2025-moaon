@@ -1,20 +1,17 @@
-import IconBadge from "@shared/components/IconBadgeList/IconBadge/IconBadge";
+import type { CategoryKey, CategoryLabel } from "@domains/filter/category";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useState } from "react";
-import type { FilterKindParam } from "@/pages/list/FilterContainer/FilterContainer";
 import useProjectList from "@/pages/list/hooks/useProjectList";
-import * as S from "./FilterButton.styled";
+import * as S from "./CategoryFilterButton.styled";
 
-interface FilterButtonProps {
-  value: string;
-  label: string;
-  imgUrl: string;
-  param: FilterKindParam;
+interface CategoryFilterButtonProps {
+  value: CategoryKey;
+  label: CategoryLabel;
 }
 
-function FilterButton({ value, label, imgUrl, param }: FilterButtonProps) {
+function CategoryFilterButton({ value, label }: CategoryFilterButtonProps) {
   const params = useSearchParams({
-    key: param,
+    key: "categories",
     mode: "multi",
   });
   const { refetch } = useProjectList();
@@ -36,9 +33,9 @@ function FilterButton({ value, label, imgUrl, param }: FilterButtonProps) {
       onClick={() => handleFilterButtonClick(value)}
       isSelected={isSelected}
     >
-      <IconBadge label={label} imgUrl={imgUrl} fontSize={18} iconsSize={18} />
+      {label}
     </S.Button>
   );
 }
 
-export default FilterButton;
+export default CategoryFilterButton;
