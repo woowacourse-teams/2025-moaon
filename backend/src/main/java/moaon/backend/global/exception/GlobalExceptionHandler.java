@@ -19,9 +19,35 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        ErrorCode errorCode = e.getErrorCode();
+
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        String httpMethod = "unknown";
+        String requestURI = "unknown";
+        String clientIP = "unknown";
+        String userAgent = "unknown";
+
+        if (requestAttributes != null) {
+            HttpServletRequest request = requestAttributes.getRequest();
+            httpMethod = request.getMethod();
+            requestURI = request.getRequestURI();
+            clientIP = request.getRemoteAddr();
+            userAgent = request.getHeader(HttpHeaders.USER_AGENT);
+        }
+
+        log.warn("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, Client IP: {}, User-Agent: {}",
+                errorCode.name(),
+                errorCode.getId(),
+                httpMethod,
+                requestURI,
+                e.getMessage(),
+                clientIP,
+                userAgent
+        );
+
         return ResponseEntity
-                .status(e.getErrorCode().getHttpStatus())
-                .body(ErrorResponse.from(e.getErrorCode()));
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.from(errorCode));
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
@@ -43,7 +69,7 @@ public class GlobalExceptionHandler {
         }
 
         log.warn("[{}] Error ID: {}, Method: {}, Path: {}, Detail: {}, Client IP: {}, User-Agent: {}",
-                errorCode.getName(),
+                errorCode.name(),
                 errorCode.getId(),
                 httpMethod,
                 requestURI,
@@ -76,7 +102,7 @@ public class GlobalExceptionHandler {
         }
 
         log.error("[{}] Error ID: {}, Method: {}, Path: {}, Client IP: {}, User-Agent: {}",
-                errorCode.getName(),
+                errorCode.name(),
                 errorCode.getId(),
                 httpMethod,
                 requestURI,

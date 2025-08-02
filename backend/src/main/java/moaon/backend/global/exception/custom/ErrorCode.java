@@ -6,19 +6,17 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    UNKNOWN("GLOBAL-001", "Unknown", "예기치 못한 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-    RESOURCE_NOT_FOUND("GLOBAL-002", "Resource Not Found", "요청한 리소스를 찾을 수 없습니다", HttpStatus.NOT_FOUND),
+    UNKNOWN("GLOBAL-001", "예기치 못한 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    RESOURCE_NOT_FOUND("GLOBAL-002", "요청한 리소스를 찾을 수 없습니다", HttpStatus.NOT_FOUND),
 
-    PROJECT_NOT_FOUND("PROJECT-001", "Project Not Found", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    PROJECT_NOT_FOUND("PROJECT-001", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
 
     private final String id;
-    private final String name;
     private final String message;
     private final HttpStatus httpStatus;
 
-    ErrorCode(String id, String name, String message, HttpStatus httpStatus) {
+    ErrorCode(String id, String message, HttpStatus httpStatus) {
         this.id = id;
-        this.name = name;
         this.message = message;
         this.httpStatus = httpStatus;
     }
