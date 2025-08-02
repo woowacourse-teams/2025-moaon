@@ -1,6 +1,6 @@
 import type { CategoryKey, CategoryLabel } from "@domains/filter/category";
 import useSearchParams from "@shared/hooks/useSearchParams";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useProjectList from "@/pages/list/hooks/useProjectList";
 import * as S from "./CategoryFilterButton.styled";
 
@@ -15,7 +15,14 @@ function CategoryFilterButton({ value, label }: CategoryFilterButtonProps) {
     mode: "multi",
   });
   const { refetch } = useProjectList();
-  const [isSelected, setIsSelected] = useState(params.get().includes(value));
+  const selectedCategories = params.get();
+  const [isSelected, setIsSelected] = useState(
+    selectedCategories.includes(value),
+  );
+
+  useEffect(() => {
+    setIsSelected(selectedCategories.includes(value));
+  }, [selectedCategories, value]);
 
   const toggle = () => {
     setIsSelected((prev) => !prev);

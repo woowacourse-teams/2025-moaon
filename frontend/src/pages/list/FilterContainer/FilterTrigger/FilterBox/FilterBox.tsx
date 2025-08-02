@@ -1,5 +1,6 @@
 import useSearchParams from "@shared/hooks/useSearchParams";
 import type { PropsWithChildren } from "react";
+import useProjectList from "@/pages/list/hooks/useProjectList";
 import type { FilterParam } from "../../FilterContainer";
 import * as S from "./FilterBox.styled";
 
@@ -9,9 +10,11 @@ interface FilterBoxProps {
 
 function FilterBox({ children, param }: PropsWithChildren<FilterBoxProps>) {
   const params = useSearchParams({ key: param, mode: "multi" });
+  const { refetch } = useProjectList();
 
   const handelFilterResetButtonClick = () => {
     params.deleteAll();
+    refetch();
   };
 
   return (
