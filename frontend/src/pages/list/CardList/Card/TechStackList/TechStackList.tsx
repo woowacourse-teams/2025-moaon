@@ -1,30 +1,21 @@
-import {
-  TECH_STACK_ICON_MAP,
-  type TechStackKey,
-} from "@domains/filter/techStack";
-import TechStack from "./TechStack/TechStack";
+import { TECH_STACK_ENTRY, type TechStackKey } from "@domains/filter/techStack";
 import * as S from "./TechStackList.styled";
 
 interface TechStackListProps {
   techStacks: TechStackKey[];
 }
 
-const MAX_RENDER_COUNT = 4;
 function TechStackList({ techStacks }: TechStackListProps) {
+  const shownTechStacks = TECH_STACK_ENTRY.filter(([key]) =>
+    techStacks.includes(key as TechStackKey),
+  );
+
   return (
     <S.TechStackList>
-      {techStacks.slice(0, MAX_RENDER_COUNT).map((techStack) => (
-        <TechStack
-          key={techStack}
-          imgUrl={TECH_STACK_ICON_MAP[techStack]?.imgUrl}
-          techStackName={TECH_STACK_ICON_MAP[techStack]?.label}
-        />
-      ))}
-      {techStacks.length > MAX_RENDER_COUNT && (
-        <S.AdditionalCount>
-          + {techStacks.length - MAX_RENDER_COUNT}
-        </S.AdditionalCount>
-      )}
+      {shownTechStacks.map(([key, { label }], idx) => {
+        const techStack = idx === 0 ? label : `· ${label}`;
+        return <S.TechStack key={key}>{techStack}</S.TechStack>;
+      })}
     </S.TechStackList>
   );
 }

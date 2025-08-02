@@ -19,7 +19,9 @@ function NavBar() {
       <S.NavLinkList>
         {NAV_LIST.map(({ id, href, text }) => (
           <S.NavLink key={id}>
-            <S.Link to={href}>{text}</S.Link>
+            <S.Link to={href} reloadDocument>
+              {text}
+            </S.Link>
           </S.NavLink>
         ))}
       </S.NavLinkList>
