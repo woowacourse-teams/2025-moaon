@@ -4,7 +4,7 @@ import CategoryFilterList from "./CategoryFilterList/CategoryFilterList";
 
 function CategoryFilterBox() {
   return (
-    <FilterBox>
+    <FilterBox param="categories">
       <S.Title>주제 선택</S.Title>
       <CategoryFilterList />
     </FilterBox>

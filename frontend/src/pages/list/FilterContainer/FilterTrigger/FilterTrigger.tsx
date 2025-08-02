@@ -6,6 +6,7 @@ import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
 import type { FilterLabel, FilterParam } from "../FilterContainer";
 import CategoryFilterBox from "./CategoryFilterBox/CategoryFilterBox";
 import * as S from "./FilterTrigger.styled";
+import TechStackFilterBox from "./TechStackFilterBox/TechStackFilterBox";
 
 interface FilterProps {
   label: FilterLabel;
@@ -38,7 +39,7 @@ function FilterTrigger({ label, param }: FilterProps) {
           value={label}
           caseBy={{
             주제: () => <CategoryFilterBox />,
-            "기술 스택": () => <div>b</div>,
+            "기술 스택": () => <TechStackFilterBox />,
           }}
         />
       )}

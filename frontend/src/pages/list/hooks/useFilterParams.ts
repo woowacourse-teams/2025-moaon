@@ -15,9 +15,19 @@ export const useFilterParams = () => {
     setSearchParams(params);
   };
 
+  const updateTechStackParam = (techStack: string) => {
+    techStackParams.update(techStack);
+  };
+
+  const updateCategoryParam = (category: string) => {
+    categoryParams.update(category);
+  };
+
   return {
     techStacks: techStackParams.get() as TechStackKey[],
     categories: categoryParams.get() as CategoryKey[],
+    updateTechStackParam,
+    updateCategoryParam,
     resetFilter,
   };
 };
