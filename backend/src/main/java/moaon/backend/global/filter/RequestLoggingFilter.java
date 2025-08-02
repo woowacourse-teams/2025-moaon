@@ -20,15 +20,16 @@ public class RequestLoggingFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         long startTime = System.currentTimeMillis();
-
         chain.doFilter(request, response);
+        long responseTime = System.currentTimeMillis() - startTime;
 
         int status = httpServletResponse.getStatus();
-        if (status >= 400) {
-            return;
+        if (isSuccessfulResponse(status)) {
+            doLogging(httpServletRequest, status, responseTime);
         }
+    }
 
-        long responseTime = System.currentTimeMillis() - startTime;
+    private void doLogging(HttpServletRequest httpServletRequest, int status, long responseTime) {
         String method = httpServletRequest.getMethod();
         String requestURI = httpServletRequest.getRequestURI();
         String queryString = httpServletRequest.getQueryString();
@@ -41,5 +42,9 @@ public class RequestLoggingFilter implements Filter {
                 responseTime,
                 clientIP
         );
+    }
+
+    private boolean isSuccessfulResponse(int status) {
+        return status < 400;
     }
 }
