@@ -33,7 +33,10 @@ function Card({ project }: CardProps) {
     <S.Card>
       <S.CardLink to={`/detail/${id}`}>
         <S.CardImageBox>
-          <S.CardImage src={thumbnailUrl} onError={imageLoadError} />
+          <S.CardImage
+            src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
+            onError={imageLoadError}
+          />
         </S.CardImageBox>
         <S.CardInfo>
           <S.CardTitle>{title}</S.CardTitle>
