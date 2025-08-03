@@ -14,8 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "http://localhost:3000",
                 "https://moaon-dev.vercel.app",
                 "https://d2ye9egv48bag1.cloudfront.net",
-                "https://moaon-preview-*.vercel.app"
             )
+        .allowedOriginPatterns("https://moaon-preview-*.vercel.app")
             .allowedMethods("GET")
             .allowedHeaders("*")
             .allowCredentials(true)
