@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -60,16 +58,6 @@ public class ProjectViewCookieManager {
             return createEmptyCookie();
         }
         return buildCookieFromJson(json, secondsUntilMidnight);
-    }
-
-    private Cookie getCookie(HttpServletRequest request) {
-        if (request.getCookies() == null) {
-            return null;
-        }
-        return Arrays.stream(request.getCookies()).
-                filter(cookie -> cookie.getName().equals(COOKIE_NAME))
-                .findFirst()
-                .orElse(null);
     }
 
     private Map<String, Long> decodeAndParseCookie(Cookie cookie) {
@@ -164,5 +152,15 @@ public class ProjectViewCookieManager {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         return cookie;
+    }
+
+    private Cookie getCookie(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return null;
+        }
+        return Arrays.stream(request.getCookies()).
+                filter(cookie -> cookie.getName().equals(COOKIE_NAME))
+                .findFirst()
+                .orElse(null);
     }
 }
