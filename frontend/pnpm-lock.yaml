@@ -14,9 +14,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
-      '@sentry/browser':
-        specifier: ^9.43.0
-        version: 9.43.0
       '@sentry/react':
         specifier: ^9.43.0
         version: 9.43.0(react@19.1.0)
