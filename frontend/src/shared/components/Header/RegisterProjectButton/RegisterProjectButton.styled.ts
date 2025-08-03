@@ -1,8 +1,30 @@
 import styled from "@emotion/styled";
 
 export const RegisterProjectButton = styled.button`
-  color: #fff;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background-color: #007bff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 0.0625rem;
+    bottom: -0.3125rem;
+    left: 0;
+    background-color: #000;
+    transition: transform 0.25s ease-out;
+  }
+
+  &:hover:after {
+    transform: scaleX(1);
+  }
+`;
+
+export const Icon = styled.img`
+  width: 1.125rem;
+  aspect-ratio: 1/1;
 `;
