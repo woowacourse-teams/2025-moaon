@@ -16,6 +16,8 @@ import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.Cursor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,17 +39,30 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .leftJoin(article.techStacks, techStack);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
-        BooleanBuilder havingBuilder = new BooleanBuilder();
 
-        if (categoryName != null && !categoryName.isEmpty()) {
+        if (StringUtils.hasText(categoryName)) {
             whereBuilder.and(article.category.name.eq(categoryName));
         }
 
-        if (techStackNames != null && !techStackNames.isEmpty()) {
+        if (!CollectionUtils.isEmpty(techStackNames)) {
             whereBuilder.and(techStack.name.in(techStackNames));
-            havingBuilder.and(techStack.name.countDistinct().eq((long) techStackNames.size()));
+            query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
         }
 
+        applyCursor(queryCondition, whereBuilder, cursor);
+
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+
+        query.groupBy(article.id)
+                .orderBy(toOrderBy(queryCondition.sortBy()))
+                .limit(queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT);
+
+        return query.fetch();
+    }
+
+    private void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder, Cursor<?> cursor) {
         if (queryCondition.sortBy() == ArticleSortBy.CLICKS) {
             whereBuilder.and(article.clicks.lt((Integer) cursor.getSortValue())
                     .or(article.clicks.eq((Integer) cursor.getSortValue())
@@ -59,20 +74,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                     .or(article.createdAt.eq((LocalDateTime) cursor.getSortValue())
                             .and(article.id.lt(cursor.getLastId()))));
         }
-
-        if (whereBuilder.hasValue()) {
-            query.where(whereBuilder);
-        }
-
-        if (havingBuilder.hasValue()) {
-            query.having(havingBuilder);
-        }
-
-        query.groupBy(article.id)
-                .orderBy(toOrderBy(queryCondition.sortBy()))
-                .limit(queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT);
-
-        return query.fetch();
     }
 
     private OrderSpecifier<?>[] toOrderBy(ArticleSortBy sortBy) {
