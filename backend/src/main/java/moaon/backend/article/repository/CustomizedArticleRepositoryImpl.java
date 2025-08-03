@@ -40,7 +40,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         BooleanBuilder havingBuilder = new BooleanBuilder();
 
         if (categoryName != null && !categoryName.isEmpty()) {
-            whereBuilder.and(article.category.name.in(categoryName));
+            whereBuilder.and(article.category.name.eq(categoryName));
         }
 
         if (techStackNames != null && !techStackNames.isEmpty()) {
