@@ -1,7 +1,13 @@
 package moaon.backend.project.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.cookie.ProjectViewCookieManager;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
@@ -18,11 +24,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectController {
 
+    private final ProjectViewCookieManager cookieManager;
     private final ProjectService projectService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDetailResponse> getProjectById(@PathVariable("id") long id) {
-        return ResponseEntity.ok(projectService.getById(id));
+    public ResponseEntity<ProjectDetailResponse> getProjectById(
+            @PathVariable("id") long id,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        Map<Long, Long> viewedMap = cookieManager.extractViewedMap(request);
+        if (cookieManager.isViewCountIncreasable(id, viewedMap)){
+            projectService.increaseViewsCount(id);
+            Cookie cookie = cookieManager.createOrUpdateCookie(id, viewedMap);
+            response.addCookie(cookie);
+        }
+        ProjectDetailResponse projectDetailResponse = projectService.getById(id);
+
+        return ResponseEntity.ok(projectDetailResponse);
     }
 
     @GetMapping

@@ -7,4 +7,6 @@ import moaon.backend.project.dto.ProjectQueryCondition;
 public interface CustomizedProjectRepository {
 
     List<Project> findWithSearchConditions(ProjectQueryCondition projectQueryCondition);
+
+    void incrementViews(Long id);
 }
