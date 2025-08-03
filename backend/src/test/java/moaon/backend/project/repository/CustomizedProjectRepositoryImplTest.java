@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import jakarta.persistence.EntityManager;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
@@ -31,6 +33,9 @@ class CustomizedProjectRepositoryImplTest {
 
     @Autowired
     private RepositoryHelper repositoryHelper;
+
+    @Autowired
+    EntityManager entityManager;
 
     @DisplayName("조건 없이 모든 프로젝트를 조회한다.")
     @Test
@@ -246,5 +251,23 @@ class CustomizedProjectRepositoryImplTest {
 
         // then
         assertThat(projects).containsExactly(high, middle, low);
+    }
+
+    @DisplayName("프로젝트의 조회수가 1 증가한다.")
+    @Test
+    void incrementViews() {
+        // given
+        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Long id = project.getId();
+        int expect = project.getViews() + 1;
+
+        // when
+        customizedProjectRepositoryImpl.incrementViews(id);
+        entityManager.flush();
+        entityManager.clear();
+        Project resultProject = repositoryHelper.findById(id);
+
+        // then
+        assertThat(resultProject.getViews()).isEqualTo(expect);
     }
 }
