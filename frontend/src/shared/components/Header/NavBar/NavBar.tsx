@@ -1,3 +1,5 @@
+import { useLayoutEffect, useRef, useState } from "react";
+import { useLocation } from "react-router";
 import * as S from "./NavBar.styled";
 
 const NAV_LIST = [
@@ -8,20 +10,51 @@ const NAV_LIST = [
   },
   {
     id: 2,
-    href: "/list", // 아티클 페이지가 없어 임시 링크 사용
+    href: "/", // 아티클 페이지가 없어 임시 링크 사용
     text: "아티클",
   },
 ];
 
 function NavBar() {
+  const pathname = useLocation().pathname;
+  const linkRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+  const activeIndex = NAV_LIST.findIndex((item) => item.href === pathname);
+
+  useLayoutEffect(() => {
+    const activeRef = linkRefs.current[activeIndex];
+    if (activeRef) {
+      const { offsetLeft, clientWidth } = activeRef;
+      setUnderlineStyle({ left: offsetLeft, width: clientWidth });
+    }
+  }, [activeIndex]);
+
+  const hasActive = activeIndex > -1;
   return (
     <S.NavBar>
       <S.NavLinkList>
-        {NAV_LIST.map(({ id, href, text }) => (
-          <S.NavLink key={id}>
-            <S.Link to={href}>{text}</S.Link>
+        {NAV_LIST.map(({ id, href, text }, idx) => (
+          <S.NavLink
+            key={id}
+            ref={(el) => {
+              linkRefs.current[idx] = el;
+
+              return () => {
+                linkRefs.current[idx] = null;
+              };
+            }}
+          >
+            <S.Link to={href} isActive={href === pathname}>
+              {text}
+            </S.Link>
           </S.NavLink>
         ))}
+        {hasActive && (
+          <S.Underline
+            left={underlineStyle.left}
+            width={underlineStyle.width}
+          />
+        )}
       </S.NavLinkList>
     </S.NavBar>
   );
