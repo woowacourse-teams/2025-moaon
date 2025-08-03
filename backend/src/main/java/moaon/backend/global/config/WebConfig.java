@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "https://d2ye9egv48bag1.cloudfront.net",
             )
         .allowedOriginPatterns("https://moaon-preview-*.vercel.app")
-            .allowedMethods("GET")
+            .allowedMethods("*")
             .allowedHeaders("*")
             .allowCredentials(true)
             .maxAge(3600);
