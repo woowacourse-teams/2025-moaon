@@ -11,9 +11,11 @@ export const NavLinkList = styled.ul`
 
 export const NavLink = styled.li``;
 
-export const Link = styled(ReactRouterLink)<{ isActive: boolean }>`
-  color: ${({ isActive }) => (isActive ? "#007BFF" : "#000")};
-  font-weight: ${({ isActive }) => (isActive ? "600" : "400")};
+export const Link = styled(ReactRouterLink, {
+  shouldForwardProp: (prop) => prop !== "active",
+})<{ active: boolean }>`
+  color: ${({ active }) => (active ? "#007BFF" : "#000")};
+  font-weight: ${({ active }) => (active ? "600" : "400")};
 `;
 
 export const Underline = styled.div<{ left: number; width: number }>`

@@ -44,7 +44,7 @@ function NavBar() {
               };
             }}
           >
-            <S.Link to={href} isActive={href === pathname}>
+            <S.Link to={href} active={href === pathname}>
               {text}
             </S.Link>
           </S.NavLink>
