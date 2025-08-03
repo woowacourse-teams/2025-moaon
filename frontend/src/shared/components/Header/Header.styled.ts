@@ -20,7 +20,7 @@ export const HeaderBox = styled.div`
 `;
 
 export const LogoLink = styled(Link)`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 700;
 `;
 
