@@ -8,9 +8,9 @@ function ArticlePage() {
     <S.Main>
       <S.MainBox>
         <S.TitleBox>
-          <S.MainTitle>프로젝트 탐색</S.MainTitle>
+          <S.MainTitle>아티클 탐색</S.MainTitle>
           <S.MainDescription>
-            다양한 개발자들의 프로젝트를 탐색하고 학습하세요
+            프로젝트와 관련된 아티클들을 탐색하고 학습하세요
           </S.MainDescription>
         </S.TitleBox>
         <ArticleSearchBar />
