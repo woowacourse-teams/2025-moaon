@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-  margin-top: 0.9375rem;
+  margin-top: 1.25rem;
   padding-left: 0.25rem;
   min-height: 12rem;
 `;
