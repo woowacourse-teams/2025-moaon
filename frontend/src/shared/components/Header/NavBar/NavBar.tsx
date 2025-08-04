@@ -11,7 +11,7 @@ const NAV_LIST = [
   {
     id: 2,
     href: "/article",
-    text: "아티클",
+    text: "아티클 탐색",
   },
 ];
 
