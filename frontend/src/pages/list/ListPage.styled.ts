@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 export const Main = styled.main`
   padding-bottom: 3rem;
+  margin-top: 5rem;
 `;
 
 export const MainBox = styled.div`
@@ -10,7 +11,7 @@ export const MainBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
-  margin-bottom: 2.8125rem;
+  margin-bottom: 4.6875rem;
 `;
 
 export const TitleBox = styled.div`
