@@ -17,16 +17,16 @@ export const Link = styled(NavLink)`
 
   &[aria-current="page"] {
     color: #007bff;
-    font-weight: 600;
+    font-weight: 900;
   }
 `;
 
 export const Underline = styled.div<{ left: number; width: number }>`
   position: absolute;
-  bottom: -1.625rem;
+  bottom: -1.6875rem;
   left: ${({ left }) => left}px;
   width: ${({ width }) => width}px;
-  height: 0.0625rem;
+  height: 0.125rem;
   background-color: #007bff;
   border-radius: 62.5rem 62.5rem 0rem 0rem;
   transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
