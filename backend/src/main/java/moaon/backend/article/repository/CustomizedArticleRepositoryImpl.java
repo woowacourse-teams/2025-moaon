@@ -8,7 +8,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
@@ -23,14 +22,12 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class CustomizedArticleRepositoryImpl implements CustomizedArticleRepository {
 
-    public static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
+    private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        String categoryName = queryCondition.categoryName();
-        List<String> techStackNames = queryCondition.techStackNames();
         Cursor<?> cursor = queryCondition.cursor();
 
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
@@ -40,16 +37,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
-        if (StringUtils.hasText(categoryName)) {
-            whereBuilder.and(article.category.name.eq(categoryName));
-        }
-
-        if (!CollectionUtils.isEmpty(techStackNames)) {
-            whereBuilder.and(techStack.name.in(techStackNames));
-            query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
-        }
-
-        applyCursor(queryCondition, whereBuilder, cursor);
+        applyWhereAndHaving(whereBuilder, queryCondition, query);
+        cursor.applyCursor(queryCondition, whereBuilder);
 
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
@@ -62,17 +51,21 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return query.fetch();
     }
 
-    private void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder, Cursor<?> cursor) {
-        if (queryCondition.sortBy() == ArticleSortBy.CLICKS) {
-            whereBuilder.and(article.clicks.lt((Integer) cursor.getSortValue())
-                    .or(article.clicks.eq((Integer) cursor.getSortValue())
-                            .and(article.id.lt(cursor.getLastId()))));
+    private void applyWhereAndHaving(
+            BooleanBuilder whereBuilder,
+            ArticleQueryCondition queryCondition,
+            JPAQuery<Article> query
+    ) {
+        String categoryName = queryCondition.categoryName();
+        List<String> techStackNames = queryCondition.techStackNames();
+
+        if (StringUtils.hasText(categoryName)) {
+            whereBuilder.and(article.category.name.eq(categoryName));
         }
 
-        if (queryCondition.sortBy() == ArticleSortBy.CREATED_AT) {
-            whereBuilder.and(article.createdAt.lt((LocalDateTime) cursor.getSortValue())
-                    .or(article.createdAt.eq((LocalDateTime) cursor.getSortValue())
-                            .and(article.id.lt(cursor.getLastId()))));
+        if (!CollectionUtils.isEmpty(techStackNames)) {
+            whereBuilder.and(techStack.name.in(techStackNames));
+            query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
         }
     }
 

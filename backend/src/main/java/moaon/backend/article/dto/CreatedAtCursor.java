@@ -1,5 +1,8 @@
 package moaon.backend.article.dto;
 
+import static moaon.backend.article.domain.QArticle.article;
+
+import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +28,12 @@ public class CreatedAtCursor implements Cursor<LocalDateTime> {
     @Override
     public String getNextCursor() {
         return createdAt.format(FORMATTER) + "_" + id.toString();
+    }
+
+    @Override
+    public void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder) {
+        whereBuilder.and(article.createdAt.lt(getSortValue())
+                .or(article.createdAt.eq(getSortValue())
+                        .and(article.id.lt(getLastId()))));
     }
 }
