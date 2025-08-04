@@ -8,12 +8,16 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class RequestLoggingFilter implements Filter {
+
+    private static final String REQUEST_ID_KEY = "request_id";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -21,13 +25,20 @@ public class RequestLoggingFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        long startTime = System.currentTimeMillis();
-        chain.doFilter(request, response);
-        long responseTime = System.currentTimeMillis() - startTime;
+        String requestId = UUID.randomUUID().toString();
+        MDC.put(REQUEST_ID_KEY, requestId);
 
-        int status = httpServletResponse.getStatus();
-        if (is2xxStatus(status)) {
-            doLogging(httpServletRequest, status, responseTime);
+        try {
+            long startTime = System.currentTimeMillis();
+            chain.doFilter(request, response);
+            long responseTime = System.currentTimeMillis() - startTime;
+
+            int status = httpServletResponse.getStatus();
+            if (is2xxStatus(status)) {
+                doLogging(httpServletRequest, status, responseTime);
+            }
+        } finally {
+            MDC.clear();
         }
     }
 
