@@ -11,5 +11,4 @@ public class CookieConfig {
     public ProjectViewCookieManager projectViewCookieManager() {
         return new ProjectViewCookieManager();
     }
-
 }
