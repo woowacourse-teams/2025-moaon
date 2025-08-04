@@ -17,7 +17,9 @@ function Card() {
       </S.CardSummary>
       <TechStackList techStacks={["java", "react"]} />
       <S.BackDropBox className="back-drop-box">
-        <S.ArticleLink href="#">아티클 보러가기</S.ArticleLink>
+        <S.ArticleLink href="#" target="_blank" rel="noopener noreferrer">
+          아티클 보러가기
+        </S.ArticleLink>
         <S.ProjectLink to="#">프로젝트 보러가기</S.ProjectLink>
       </S.BackDropBox>
     </S.CardContainer>
