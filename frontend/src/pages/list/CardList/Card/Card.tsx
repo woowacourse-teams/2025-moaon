@@ -4,8 +4,8 @@ import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-thumbnail.webp";
 import type { SyntheticEvent } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
-import ActivityBox from "./ActivityBox/ActivityBox";
 import * as S from "./Card.styled";
+import StatBox from "./StatBox/StatBox";
 import TechStackList from "./TechStackList/TechStackList";
 
 interface CardProps {
@@ -43,7 +43,7 @@ function Card({ project }: CardProps) {
           <S.CardSummary>{summary}</S.CardSummary>
           <TechStackList techStacks={techStacks} />
           <S.CardFooter>
-            <ActivityBox
+            <StatBox
               icon={
                 <S.HeartIcon
                   src={isLoved ? redHeartIcon : grayHeartIcon}
@@ -52,7 +52,7 @@ function Card({ project }: CardProps) {
               }
               count={loves}
             />
-            <ActivityBox
+            <StatBox
               icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
               count={views}
             />
