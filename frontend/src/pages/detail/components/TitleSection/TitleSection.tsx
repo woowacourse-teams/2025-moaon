@@ -1,7 +1,7 @@
 import heartIcon from "@assets/icons/heart.svg";
 import emptyHeartIcon from "@assets/icons/heart-outline.svg";
 import githubIcon from "@assets/icons/logo-github.svg";
-import { CATEGORY_MAP } from "@domains/filter/category";
+import { PROJECT_CATEGORY_MAP } from "@domains/filter/projectCategory";
 import formatDateToYMD from "@shared/utils/formatDateToYMD";
 import { useState } from "react";
 import type { ProjectDetail } from "@/apis/projectDetail/getProjectDetail.type";
@@ -34,7 +34,7 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
       <S.TitleSectionLeft>
         <S.Subject>
           {categories
-            .map((category) => `#${CATEGORY_MAP[category].label}`)
+            .map((category) => `#${PROJECT_CATEGORY_MAP[category].label}`)
             .join(" ")}
         </S.Subject>
         <S.ProductName>{title}</S.ProductName>
