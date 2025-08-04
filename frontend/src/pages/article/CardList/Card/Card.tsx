@@ -5,7 +5,7 @@ import * as S from "./Card.styled";
 function Card() {
   return (
     <S.CardContainer>
-      <Badge />
+      <Badge text={"트러블 슈팅"} />
       <S.CardTitle>
         TurboRepo Just-in-Time Packages 적용기 Feat. ModuleResolution
       </S.CardTitle>

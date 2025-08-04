@@ -1,9 +1,14 @@
 import * as S from "./Badge.styled";
 
-function Badge() {
+interface BadgeProps {
+  text: string;
+  bgColor?: string;
+}
+
+function Badge({ text, bgColor = "#d9d9d9" }: BadgeProps) {
   return (
-    <S.BadgeContainer>
-      <S.BadgeText>트러블슈팅</S.BadgeText>
+    <S.BadgeContainer bgColor={bgColor}>
+      <S.BadgeText>{text}</S.BadgeText>
     </S.BadgeContainer>
   );
 }
