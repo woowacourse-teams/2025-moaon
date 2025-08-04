@@ -1,10 +1,10 @@
 package moaon.backend.global.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import moaon.backend.global.dto.HttpRequestLogInfo;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.exception.dto.ErrorResponse;
-import moaon.backend.global.exception.dto.HttpRequestLogInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
