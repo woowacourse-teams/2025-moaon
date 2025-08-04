@@ -1,3 +1,4 @@
+import SortList from "../list/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
@@ -15,8 +16,19 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
-      <CardList />
-      <TagList />
+      <S.Box>
+        <S.ArticleContainer>
+          <S.ArticleHeader>
+            <S.ArticleIntro>
+              <S.ArticleIntroText>262개</S.ArticleIntroText>의 아티클이
+              열려있어요.
+            </S.ArticleIntro>
+            <SortList />
+          </S.ArticleHeader>
+          <CardList />
+        </S.ArticleContainer>
+        <TagList />
+      </S.Box>
     </S.Main>
   );
 }

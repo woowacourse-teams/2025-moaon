@@ -4,7 +4,7 @@ import * as S from "./Card.styled";
 
 function Card() {
   return (
-    <S.CardContainer href="#" rel="noreferrer noopener">
+    <S.CardContainer>
       <Badge />
       <S.CardTitle>
         TurboRepo Just-in-Time Packages 적용기 Feat. ModuleResolution

@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { textOverflowEllipsis } from "@/styles/global.styled";
 
-export const CardContainer = styled.a`
+export const CardContainer = styled.div`
   border: 1px solid #d1d6dd;
   padding: 1rem 1.375rem;
   border-radius: 8px;
@@ -14,10 +15,12 @@ export const CardTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.25;
+  ${textOverflowEllipsis(2)}
 `;
 
 export const CardSummary = styled.span`
   font-size: 0.8125rem;
   line-height: 1.25;
   color: #555555;
+  ${textOverflowEllipsis(3)}
 `;
