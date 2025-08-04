@@ -24,7 +24,7 @@ public class RequestLoggingFilter implements Filter {
         long responseTime = System.currentTimeMillis() - startTime;
 
         int status = httpServletResponse.getStatus();
-        if (isSuccessfulResponse(status)) {
+        if (is2xxStatus(status)) {
             doLogging(httpServletRequest, status, responseTime);
         }
     }
@@ -44,7 +44,7 @@ public class RequestLoggingFilter implements Filter {
         );
     }
 
-    private boolean isSuccessfulResponse(int status) {
-        return status < 400;
+    private boolean is2xxStatus(int status) {
+        return status >= 200 && status < 300;
     }
 }
