@@ -1,3 +1,4 @@
+import Tab from "@shared/components/Tab/Tab";
 import SortList from "../list/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
@@ -16,6 +17,7 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
+      <Tab items={["전체", "트러블슈팅", "기술문서", "기타"]} />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
