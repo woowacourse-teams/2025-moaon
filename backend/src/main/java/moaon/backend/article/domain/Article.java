@@ -74,7 +74,6 @@ public class Article extends BaseTimeEntity {
             String summary,
             String content,
             String articleUrl,
-            int clicks,
             LocalDateTime createdAt,
             Project project,
             ArticleCategory category,
@@ -84,7 +83,7 @@ public class Article extends BaseTimeEntity {
         this.summary = summary;
         this.content = content;
         this.articleUrl = articleUrl;
-        this.clicks = clicks;
+        this.clicks = 0;
         this.createdAt = createdAt;
         this.project = project;
         this.category = category;
