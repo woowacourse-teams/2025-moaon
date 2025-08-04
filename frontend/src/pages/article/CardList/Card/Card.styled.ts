@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { textOverflowEllipsis } from "@/styles/global.styled";
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.li`
   border: 1px solid #d1d6dd;
   padding: 1rem 1.375rem;
   border-radius: 8px;
