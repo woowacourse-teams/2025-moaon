@@ -15,9 +15,10 @@ export const TabItemList = styled.ul`
 
 export const TabItem = styled.li<{ isSelected: boolean }>`
   padding: 0.4375rem 1.875rem;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   border-radius: 5px;
-  color: ${({ isSelected }) => (isSelected ? "#fff" : "#535353")};
+  color: ${({ isSelected }) => (isSelected ? "#fff" : "#000000")};
   background-color: ${({ isSelected }) => (isSelected ? "#007bff" : "#fff")};
   cursor: pointer;
 `;
