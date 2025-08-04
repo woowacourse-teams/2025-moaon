@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.exception.dto.ErrorResponse;
-import moaon.backend.global.exception.dto.ExceptionLogInfo;
+import moaon.backend.global.exception.dto.HttpRequestLogInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
 
-        ExceptionLogInfo logInfo = ExceptionLogInfo.fromCurrentRequest();
+        HttpRequestLogInfo logInfo = HttpRequestLogInfo.fromCurrentRequest();
         log.warn("[{}] {} {} | {} {}",
                 errorCode.name(),
                 errorCode.getId(),
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
         ErrorCode errorCode = ErrorCode.RESOURCE_NOT_FOUND;
 
-        ExceptionLogInfo logInfo = ExceptionLogInfo.fromCurrentRequest();
+        HttpRequestLogInfo logInfo = HttpRequestLogInfo.fromCurrentRequest();
         log.warn("[{}] {} {} | {} {} | Detail: {}",
                 errorCode.name(),
                 errorCode.getId(),
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnknownException(Exception e) {
         ErrorCode errorCode = ErrorCode.UNKNOWN;
 
-        ExceptionLogInfo logInfo = ExceptionLogInfo.fromCurrentRequest();
+        HttpRequestLogInfo logInfo = HttpRequestLogInfo.fromCurrentRequest();
         log.error("[{}] {} {} | {} {} | Detail: {}",
                 errorCode.name(),
                 errorCode.getId(),
