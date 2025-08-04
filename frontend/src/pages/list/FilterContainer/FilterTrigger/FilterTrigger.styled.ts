@@ -25,4 +25,5 @@ export const FilterSelectedCount = styled.span`
   color: #007bff;
   font-size: 0.9688rem;
   font-weight: 800;
+  width: 1.0625rem;
 `;
