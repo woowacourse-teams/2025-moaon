@@ -2,7 +2,7 @@ import eyeIcon from "@assets/icons/eye.svg";
 import grayHeartIcon from "@assets/icons/gray-heart.svg";
 import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-thumbnail.webp";
-import type { SyntheticEvent } from "react";
+import { type SyntheticEvent, useState } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import * as S from "./Card.styled";
 import StatBox from "./StatBox/StatBox";
@@ -24,18 +24,31 @@ function Card({ project }: CardProps) {
     views,
   } = project;
 
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
   const imageLoadError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
     target.src = cardDefaultImage;
+    setIsImageLoading(false);
+  };
+
+  const imageLoadSuccess = () => {
+    setIsImageLoading(false);
   };
 
   return (
     <S.Card>
       <S.CardLink to={`/project/${id}`}>
         <S.CardImageBox>
+          {isImageLoading && <S.SkeletonImageBox />}
           <S.CardImage
+           
             src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
+           
             onError={imageLoadError}
+         
+            onLoad={imageLoadSuccess}
+            style={{ display: isImageLoading ? "none" : "block" }}
           />
         </S.CardImageBox>
         <S.CardInfo>
