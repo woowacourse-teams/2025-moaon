@@ -19,4 +19,5 @@ export const TabItem = styled.li<{ isSelected: boolean }>`
   border-radius: 5px;
   color: ${({ isSelected }) => (isSelected ? "#fff" : "#535353")};
   background-color: ${({ isSelected }) => (isSelected ? "#007bff" : "#fff")};
+  cursor: pointer;
 `;
