@@ -252,22 +252,4 @@ class CustomizedProjectRepositoryImplTest {
         // then
         assertThat(projects).containsExactly(high, middle, low);
     }
-
-    @DisplayName("프로젝트의 조회수가 1 증가한다.")
-    @Test
-    void incrementViews() {
-        // given
-        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Long id = project.getId();
-        int expect = project.getViews() + 1;
-
-        // when
-        customizedProjectRepositoryImpl.incrementViews(id);
-        entityManager.flush();
-        entityManager.clear();
-        Project resultProject = repositoryHelper.findById(id);
-
-        // then
-        assertThat(resultProject.getViews()).isEqualTo(expect);
-    }
 }

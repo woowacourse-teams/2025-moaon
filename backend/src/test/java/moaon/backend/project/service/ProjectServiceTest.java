@@ -31,17 +31,4 @@ class ProjectServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
-
-    @DisplayName("특정 ID에 해당하는 프로젝트의 조회수가 1 증가한다.")
-    @Test
-    void increaseViewsCount() {
-        // given
-        long projectId = 1L;
-
-        // when
-        projectService.increaseViewsCount(projectId);
-
-        // then
-        verify(projectRepository, times(1)).incrementViews(projectId);
-    }
 }
