@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
-import * as S from "./ActivityBox.styled";
+import * as S from "./StatBox.styled";
 
-interface ActivityBoxProps {
+interface StatBoxProps {
   icon: ReactElement;
   count: number;
 }
 
-function ActivityBox({ icon, count }: ActivityBoxProps) {
+function StatBox({ icon, count }: StatBoxProps) {
   return (
     <S.ActivityBox>
       {icon}
@@ -15,4 +15,4 @@ function ActivityBox({ icon, count }: ActivityBoxProps) {
   );
 }
 
-export default ActivityBox;
+export default StatBox;

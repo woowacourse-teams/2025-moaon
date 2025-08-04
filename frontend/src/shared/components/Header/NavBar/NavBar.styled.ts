@@ -16,12 +16,12 @@ export const Link = styled(NavLink)`
   font-weight: 400;
 
   &:hover {
-    font-weight: 900;
+    font-weight: 600;
   }
 
   &[aria-current="page"] {
     color: #007bff;
-    font-weight: 900;
+    font-weight: 700;
   }
 `;
 

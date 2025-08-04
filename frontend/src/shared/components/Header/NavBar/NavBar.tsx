@@ -10,7 +10,7 @@ const NAV_LIST = [
   },
   {
     id: 2,
-    href: "/", // 아티클 페이지가 없어 임시 링크 사용
+    href: "/article",
     text: "아티클",
   },
 ];

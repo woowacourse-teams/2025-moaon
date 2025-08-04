@@ -9,10 +9,6 @@ type SearchParamOptions = {
 const useSearchParams = ({ key, mode }: SearchParamOptions) => {
   const [searchParams, setSearchParams] = useReactRouterSearchParams();
 
-  const getAllSearchParams = useCallback(() => {
-    return Object.fromEntries(searchParams.entries());
-  }, [searchParams]);
-
   const getSearchParams = useCallback(() => {
     const currentValues = searchParams.get(key);
 
@@ -39,6 +35,12 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
     [key, searchParams, setSearchParams]
   );
 
+  const deleteAllSearchParams = useCallback(() => {
+    const params = new URLSearchParams(searchParams);
+    params.delete(key);
+    setSearchParams(params);
+  }, [key, searchParams, setSearchParams]);
+
   const paramOperations = {
     single: (value: string) => [value],
     multi: (value: string) => {
@@ -56,8 +58,8 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
 
   return {
     get: getSearchParams,
-    getAll: getAllSearchParams,
     update: updateParamValue,
+    deleteAll: deleteAllSearchParams,
   };
 };
 
