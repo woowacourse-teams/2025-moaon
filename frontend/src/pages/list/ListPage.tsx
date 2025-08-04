@@ -8,7 +8,7 @@ import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 import SortList from "./SortList/SortList";
 
 function ListPage() {
-  const { resetFilter } = useFilterParams();
+  const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch } = useProjectList();
 
   const handleFilterResetButtonClick = () => {
@@ -16,6 +16,7 @@ function ListPage() {
     refetch();
   };
 
+  const isSelected = techStacks.length > 0 || categories.length > 0;
   return (
     <S.Main>
       <S.MainBox>
@@ -30,9 +31,11 @@ function ListPage() {
       <S.Box>
         <S.Wrap>
           <FilterContainer />
-          <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
-            <S.ResetIcon src={resetIcon} alt="필터 초기화" />
-          </S.ResetButton>
+          {isSelected && (
+            <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
+              <S.ResetIcon src={resetIcon} alt="필터 초기화" />
+            </S.ResetButton>
+          )}
         </S.Wrap>
         <SortList />
       </S.Box>
