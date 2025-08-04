@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Link as ReactRouterLink } from "react-router";
+import { NavLink } from "react-router";
 
 export const NavBar = styled.nav``;
 
@@ -9,13 +9,16 @@ export const NavLinkList = styled.ul`
   position: relative;
 `;
 
-export const NavLink = styled.li``;
+export const NavLinkItem = styled.li``;
 
-export const Link = styled(ReactRouterLink, {
-  shouldForwardProp: (prop) => prop !== "active",
-})<{ active: boolean }>`
-  color: ${({ active }) => (active ? "#007BFF" : "#000")};
-  font-weight: ${({ active }) => (active ? "600" : "400")};
+export const Link = styled(NavLink)`
+  color: #000;
+  font-weight: 400;
+
+  &[aria-current="page"] {
+    color: #007bff;
+    font-weight: 600;
+  }
 `;
 
 export const Underline = styled.div<{ left: number; width: number }>`

@@ -34,7 +34,7 @@ function NavBar() {
     <S.NavBar>
       <S.NavLinkList>
         {NAV_LIST.map(({ id, href, text }, idx) => (
-          <S.NavLink
+          <S.NavLinkItem
             key={id}
             ref={(el) => {
               linkRefs.current[idx] = el;
@@ -44,10 +44,8 @@ function NavBar() {
               };
             }}
           >
-            <S.Link to={href} active={href === pathname}>
-              {text}
-            </S.Link>
-          </S.NavLink>
+            <S.Link to={href}>{text}</S.Link>
+          </S.NavLinkItem>
         ))}
         {hasActive && (
           <S.Underline
