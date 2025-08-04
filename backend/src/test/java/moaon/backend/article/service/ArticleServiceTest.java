@@ -75,9 +75,7 @@ class ArticleServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(actual.articleContents()).hasSize(2),
-                () -> assertThat(actual.articleContents().get(0)).isEqualTo(articleContent1),
-                () -> assertThat(actual.articleContents().get(1)).isEqualTo(articleContent2),
+                () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2),
                 () -> assertThat(actual.hasNext()).isTrue(),
                 () -> assertThat(actual.nextCursor()).isEqualTo(cursor.getNextCursor())
         );
@@ -125,10 +123,8 @@ class ArticleServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(actual.articleContents()).hasSize(3),
-                () -> assertThat(actual.articleContents().get(0)).isEqualTo(articleContent1),
-                () -> assertThat(actual.articleContents().get(1)).isEqualTo(articleContent2),
-                () -> assertThat(actual.articleContents().get(2)).isEqualTo(articleContent3),
+                () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2,
+                        articleContent3),
                 () -> assertThat(actual.hasNext()).isFalse(),
                 () -> assertThat(actual.nextCursor()).isNull()
         );
