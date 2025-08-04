@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from "react-router";
+import ArticlePage from "./pages/article/ArticlePage";
 import DetailPage from "./pages/detail/DetailPage";
 import ListPage from "./pages/list/ListPage";
 import Header from "./shared/components/Header/Header";
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<h1>모아온 프로덕션 배포</h1>} />
           <Route path="/list" element={<ListPage />} />
           <Route path="/detail/:id" element={<DetailPage />} />
+          <Route path="/article" element={<ArticlePage />} />
           <Route
             path="*"
             element={
