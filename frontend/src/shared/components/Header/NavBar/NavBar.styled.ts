@@ -15,6 +15,10 @@ export const Link = styled(NavLink)`
   color: #000;
   font-weight: 400;
 
+  &:hover {
+    font-weight: 900;
+  }
+
   &[aria-current="page"] {
     color: #007bff;
     font-weight: 900;
