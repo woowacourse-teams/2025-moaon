@@ -176,4 +176,7 @@ export const resetStyle = css`
     font-family: "Noto Sans", sans-serif;
     overflow-x: hidden;
   }
+  html {
+    scrollbar-gutter: stable;
+  }
 `;
