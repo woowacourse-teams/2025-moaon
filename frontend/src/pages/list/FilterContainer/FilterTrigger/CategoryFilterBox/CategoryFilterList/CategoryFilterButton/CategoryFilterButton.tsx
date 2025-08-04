@@ -1,12 +1,15 @@
-import type { CategoryKey, CategoryLabel } from "@domains/filter/category";
+import type {
+  ProjectCategoryKey,
+  ProjectCategoryLabel,
+} from "@domains/filter/projectCategory";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useEffect, useState } from "react";
 import useProjectList from "@/pages/list/hooks/useProjectList";
 import * as S from "./CategoryFilterButton.styled";
 
 interface CategoryFilterButtonProps {
-  value: CategoryKey;
-  label: CategoryLabel;
+  value: ProjectCategoryKey;
+  label: ProjectCategoryLabel;
 }
 
 function CategoryFilterButton({ value, label }: CategoryFilterButtonProps) {

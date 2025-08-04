@@ -1,6 +1,6 @@
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 
-export const CATEGORY_MAP = {
+export const PROJECT_CATEGORY_MAP = {
   web: {
     label: "웹",
   },
@@ -45,6 +45,8 @@ export const CATEGORY_MAP = {
   },
 } as const;
 
-export type CategoryKey = keyof typeof CATEGORY_MAP;
-export const CATEGORY_ENTRY = typeSafeObjectEntries(CATEGORY_MAP);
-export type CategoryLabel = (typeof CATEGORY_ENTRY)[number][1]["label"];
+export type ProjectCategoryKey = keyof typeof PROJECT_CATEGORY_MAP;
+export const PROJECT_CATEGORY_ENTRY =
+  typeSafeObjectEntries(PROJECT_CATEGORY_MAP);
+export type ProjectCategoryLabel =
+  (typeof PROJECT_CATEGORY_ENTRY)[number][1]["label"];
