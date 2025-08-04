@@ -5,14 +5,25 @@ export const Container = styled.div`
 `;
 
 export const FilterButton = styled.button`
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
-  border-radius: 16px;
+  padding: 0.5rem 0.5rem 0.5rem 1.125rem;
+  border-radius: 6px;
   border: 1px solid #d2d2d2;
   display: flex;
   align-items: center;
-  gap: 1.25em;
-  font-size: 1.125rem;
-  color: #474747ff;
+  color: #454545;
+  font-size: 0.9688rem;
+  font-weight: 600;
 `;
 
-export const FilterTitle = styled.span``;
+export const FilterTitle = styled.p`
+  display: flex;
+  justify-content: space-between;
+  gap: 0.625rem;
+`;
+
+export const FilterSelectedCount = styled.span`
+  color: #007bff;
+  font-size: 0.9688rem;
+  font-weight: 800;
+  width: 1.0625rem;
+`;
