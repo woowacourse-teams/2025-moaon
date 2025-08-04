@@ -1,4 +1,3 @@
-import registerIcon from "@assets/icons/register.svg";
 import * as S from "./RegisterProjectButton.styled";
 
 function RegisterProjectButton() {
@@ -9,7 +8,6 @@ function RegisterProjectButton() {
   return (
     <S.RegisterProjectButton type="button" onClick={handleClick}>
       프로젝트 등록
-      <S.Icon src={registerIcon} alt="프로젝트 등록" />
     </S.RegisterProjectButton>
   );
 }
