@@ -1,5 +1,3 @@
-import Logo from "@assets/icons/logo.svg";
-import { Link } from "react-router";
 import * as S from "./Header.styled";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
@@ -9,9 +7,7 @@ function Header() {
     <S.Header>
       <S.HeaderBox>
         <S.Wrap>
-          <Link to="/">
-            <img src={Logo} alt="로고" />
-          </Link>
+          <S.LogoLink to="/list">모아온</S.LogoLink>
           <NavBar />
         </S.Wrap>
         <S.Wrap>
