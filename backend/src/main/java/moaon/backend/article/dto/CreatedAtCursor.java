@@ -27,7 +27,7 @@ public class CreatedAtCursor implements Cursor<LocalDateTime> {
 
     @Override
     public String getNextCursor() {
-        return createdAt.format(FORMATTER) + "_" + id.toString();
+        return createdAt.format(FORMATTER) + "_" + id;
     }
 
     @Override
