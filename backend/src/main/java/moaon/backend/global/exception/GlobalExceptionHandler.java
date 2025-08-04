@@ -19,14 +19,12 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = e.getErrorCode();
 
         ExceptionLogInfo logInfo = ExceptionLogInfo.fromCurrentRequest();
-        log.warn("[{}] {} {} | {} {} | IP: {} | UA: {}",
+        log.warn("[{}] {} {} | {} {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
                 logInfo.httpMethod(),
-                logInfo.requestURI(),
-                logInfo.clientIP(),
-                logInfo.userAgent()
+                logInfo.requestURI()
         );
 
         return ResponseEntity
@@ -39,14 +37,12 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.RESOURCE_NOT_FOUND;
 
         ExceptionLogInfo logInfo = ExceptionLogInfo.fromCurrentRequest();
-        log.warn("[{}] {} {} | {} {} | IP: {} | UA: {} | Detail: {}",
+        log.warn("[{}] {} {} | {} {} | Detail: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
                 logInfo.httpMethod(),
                 logInfo.requestURI(),
-                logInfo.clientIP(),
-                logInfo.userAgent(),
                 e.getMessage()
         );
 
@@ -60,14 +56,12 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.UNKNOWN;
 
         ExceptionLogInfo logInfo = ExceptionLogInfo.fromCurrentRequest();
-        log.error("[{}] {} {} | {} {} | IP: {} | UA: {} | Detail: {}",
+        log.error("[{}] {} {} | {} {} | Detail: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
                 logInfo.httpMethod(),
                 logInfo.requestURI(),
-                logInfo.clientIP(),
-                logInfo.userAgent(),
                 e.getMessage(),
                 e
         );
