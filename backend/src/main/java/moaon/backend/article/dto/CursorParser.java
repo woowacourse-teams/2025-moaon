@@ -7,22 +7,18 @@ import moaon.backend.article.domain.ArticleSortBy;
 public class CursorParser {
 
     public static Cursor<?> toCursor(String cursor, ArticleSortBy articleSortBy) {
-        if (articleSortBy == ArticleSortBy.CREATED_AT) {
-            String[] valueAndId = cursor.split("_");
+        String[] valueAndId = cursor.split("_");
 
-            String value = valueAndId[0];
-            String id = valueAndId[1];
+        String value = valueAndId[0];
+        String id = valueAndId[1];
+
+        if (articleSortBy == ArticleSortBy.CREATED_AT) {
 
             LocalDateTime lastCreatedAt = LocalDateTime.parse(value);
             Long lastId = Long.parseLong(id);
 
             return new CreatedAtCursor(lastCreatedAt, lastId);
         }
-
-        String[] valueAndId = cursor.split("_");
-
-        String value = valueAndId[0];
-        String id = valueAndId[1];
 
         int clicks = Integer.parseInt(value);
         Long lastId = Long.parseLong(id);
