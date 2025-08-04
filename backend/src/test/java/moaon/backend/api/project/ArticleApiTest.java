@@ -143,12 +143,12 @@ public class ArticleApiTest {
 
         // then
         assertAll(
-                () -> assertThat(actualResponse.contents()).hasSize(3),
-                () -> assertThat(actualResponse.contents().getFirst().id()).isEqualTo(
+                () -> assertThat(actualResponse.articleContents()).hasSize(3),
+                () -> assertThat(actualResponse.articleContents().getFirst().id()).isEqualTo(
                         articleClickRankFirst.getId()),
-                () -> assertThat(actualResponse.contents().get(1).id()).isEqualTo(
+                () -> assertThat(actualResponse.articleContents().get(1).id()).isEqualTo(
                         articleClickRankSecond.getId()),
-                () -> assertThat(actualResponse.contents().get(2).id()).isEqualTo(
+                () -> assertThat(actualResponse.articleContents().get(2).id()).isEqualTo(
                         articleRankThirdHasBiggerId.getId())
         );
     }

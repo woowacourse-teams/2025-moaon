@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.dto.Content;
 import moaon.backend.article.dto.Cursor;
 import moaon.backend.article.dto.CursorParser;
 import moaon.backend.article.repository.ArticleRepository;
@@ -67,17 +67,17 @@ class ArticleServiceTest {
                 null
         );
 
-        Content content1 = Content.from(article1);
-        Content content2 = Content.from(article2);
+        ArticleContent articleContent1 = ArticleContent.from(article1);
+        ArticleContent articleContent2 = ArticleContent.from(article2);
 
         // when
         ArticleResponse actual = articleService.getPagedArticles(articleQueryCondition);
 
         // then
         assertAll(
-                () -> assertThat(actual.contents()).hasSize(2),
-                () -> assertThat(actual.contents().get(0)).isEqualTo(content1),
-                () -> assertThat(actual.contents().get(1)).isEqualTo(content2),
+                () -> assertThat(actual.articleContents()).hasSize(2),
+                () -> assertThat(actual.articleContents().get(0)).isEqualTo(articleContent1),
+                () -> assertThat(actual.articleContents().get(1)).isEqualTo(articleContent2),
                 () -> assertThat(actual.hasNext()).isTrue(),
                 () -> assertThat(actual.nextCursor()).isEqualTo(cursor.getNextCursor())
         );
@@ -101,7 +101,7 @@ class ArticleServiceTest {
                 .project(project)
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
-        
+
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
@@ -116,19 +116,19 @@ class ArticleServiceTest {
                 null
         );
 
-        Content content1 = Content.from(article1);
-        Content content2 = Content.from(article2);
-        Content content3 = Content.from(article3);
+        ArticleContent articleContent1 = ArticleContent.from(article1);
+        ArticleContent articleContent2 = ArticleContent.from(article2);
+        ArticleContent articleContent3 = ArticleContent.from(article3);
 
         // when
         ArticleResponse actual = articleService.getPagedArticles(articleQueryCondition);
 
         // then
         assertAll(
-                () -> assertThat(actual.contents()).hasSize(3),
-                () -> assertThat(actual.contents().get(0)).isEqualTo(content1),
-                () -> assertThat(actual.contents().get(1)).isEqualTo(content2),
-                () -> assertThat(actual.contents().get(2)).isEqualTo(content3),
+                () -> assertThat(actual.articleContents()).hasSize(3),
+                () -> assertThat(actual.articleContents().get(0)).isEqualTo(articleContent1),
+                () -> assertThat(actual.articleContents().get(1)).isEqualTo(articleContent2),
+                () -> assertThat(actual.articleContents().get(2)).isEqualTo(articleContent3),
                 () -> assertThat(actual.hasNext()).isFalse(),
                 () -> assertThat(actual.nextCursor()).isEqualTo("")
         );
