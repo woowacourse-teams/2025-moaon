@@ -12,7 +12,7 @@ export const FilterButton = styled.button`
   align-items: center;
   color: #454545;
   font-size: 0.9688rem;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 export const FilterTitle = styled.p`
