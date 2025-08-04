@@ -34,14 +34,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                 .fetch();
     }
 
-    @Override
-    public void incrementViews(Long id) {
-        jpaQueryFactory.update(project)
-                .set(project.views, project.views.add(1))
-                .where(project.id.eq(id))
-                .execute();
-    }
-
     private BooleanExpression toContainsSearch(String search) {
         if (StringUtils.hasText(search)) {
             return project.title.contains(search)

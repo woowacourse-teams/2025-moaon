@@ -35,9 +35,10 @@ public class ProjectController {
     ) {
         Map<Long, Long> viewedMap = cookieManager.extractViewedMap(request);
         if (cookieManager.isViewCountIncreasable(id, viewedMap)) {
-            projectService.increaseViewsCount(id);
+            ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
             Cookie cookie = cookieManager.createOrUpdateCookie(id, viewedMap);
             response.addCookie(cookie);
+            return ResponseEntity.ok(projectDetailResponse);
         }
 
         ProjectDetailResponse projectDetailResponse = projectService.getById(id);

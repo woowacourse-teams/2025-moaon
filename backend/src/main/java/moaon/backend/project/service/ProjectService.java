@@ -35,11 +35,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public void increaseViewsCount(long id) {
-        try{
-            projectRepository.incrementViews(id);
-        }catch (Exception e){
-            log.error(e.getMessage()); //로깅 형식 추천좀요
-        }
+    public ProjectDetailResponse increaseViewsCount(long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        project.addViewCount();
+
+        return ProjectDetailResponse.from(project);
     }
 }
