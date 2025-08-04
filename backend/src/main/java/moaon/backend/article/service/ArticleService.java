@@ -35,6 +35,6 @@ public class ArticleService {
                     cursor.getNextCursor());
         }
 
-        return ArticleResponse.from(articles, totalCount, false, "");
+        return ArticleResponse.from(articles, totalCount, false, null);
     }
 }

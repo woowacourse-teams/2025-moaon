@@ -130,7 +130,7 @@ class ArticleServiceTest {
                 () -> assertThat(actual.articleContents().get(1)).isEqualTo(articleContent2),
                 () -> assertThat(actual.articleContents().get(2)).isEqualTo(articleContent3),
                 () -> assertThat(actual.hasNext()).isFalse(),
-                () -> assertThat(actual.nextCursor()).isEqualTo("")
+                () -> assertThat(actual.nextCursor()).isNull()
         );
     }
 }
