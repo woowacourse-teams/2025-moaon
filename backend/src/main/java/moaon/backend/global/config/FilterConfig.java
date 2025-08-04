@@ -1,6 +1,6 @@
 package moaon.backend.global.config;
 
-import moaon.backend.global.filter.RequestLoggingFilter;
+import moaon.backend.global.filter.HttpLoggingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean<RequestLoggingFilter> loggingFilter(RequestLoggingFilter requestLoggingFilter) {
-        FilterRegistrationBean<RequestLoggingFilter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(requestLoggingFilter);
+    public FilterRegistrationBean<HttpLoggingFilter> loggingFilter(HttpLoggingFilter httpLoggingFilter) {
+        FilterRegistrationBean<HttpLoggingFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(httpLoggingFilter);
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.setOrder(1);
         return filterRegistrationBean;

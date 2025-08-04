@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class RequestLoggingFilter implements Filter {
+public class HttpLoggingFilter implements Filter {
 
     private static final String REQUEST_ID_KEY = "request_id";
 
@@ -28,32 +28,37 @@ public class RequestLoggingFilter implements Filter {
         String requestId = UUID.randomUUID().toString();
         MDC.put(REQUEST_ID_KEY, requestId);
 
+        doRequestLogging(httpServletRequest);
+
+        long startTime = System.currentTimeMillis();
         try {
-            long startTime = System.currentTimeMillis();
             chain.doFilter(request, response);
             long responseTime = System.currentTimeMillis() - startTime;
-
             int status = httpServletResponse.getStatus();
             if (is2xxStatus(status)) {
-                doLogging(httpServletRequest, status, responseTime);
+                doResponseLogging(status, responseTime);
             }
         } finally {
             MDC.clear();
         }
     }
 
-    private void doLogging(HttpServletRequest httpServletRequest, int status, long responseTime) {
+    private void doRequestLogging(HttpServletRequest httpServletRequest) {
         String method = httpServletRequest.getMethod();
         String requestURI = httpServletRequest.getRequestURI();
         String queryString = httpServletRequest.getQueryString();
-        String clientIP = httpServletRequest.getRemoteAddr();
+        String fullPath = requestURI + (queryString != null ? "?" + queryString : "");
 
-        log.info("[API Request] {} {} | Status: {} | Time: {}ms | IP: {}",
+        log.info("[REQUEST] {} {}",
                 method,
-                requestURI + (queryString != null ? "?" + queryString : ""),
+                fullPath
+        );
+    }
+
+    private void doResponseLogging(int status, long responseTime) {
+        log.info("[RESPONSE] Status: {} | Time: {}ms",
                 status,
-                responseTime,
-                clientIP
+                responseTime
         );
     }
 

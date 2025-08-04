@@ -1,7 +1,6 @@
 package moaon.backend.global.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import moaon.backend.global.dto.HttpRequestLogInfo;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.exception.dto.ErrorResponse;
@@ -18,13 +17,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
 
-        HttpRequestLogInfo logInfo = HttpRequestLogInfo.fromCurrentRequest();
-        log.warn("[{}] {} {} | {} {}",
+        log.warn("[{}] {} {}",
                 errorCode.name(),
                 errorCode.getId(),
-                errorCode.getMessage(),
-                logInfo.httpMethod(),
-                logInfo.requestURI()
+                errorCode.getMessage()
         );
 
         return ResponseEntity
@@ -36,13 +32,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
         ErrorCode errorCode = ErrorCode.RESOURCE_NOT_FOUND;
 
-        HttpRequestLogInfo logInfo = HttpRequestLogInfo.fromCurrentRequest();
-        log.warn("[{}] {} {} | {} {} | Detail: {}",
+        log.warn("[{}] {} {} | Detail: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
-                logInfo.httpMethod(),
-                logInfo.requestURI(),
                 e.getMessage()
         );
 
@@ -55,13 +48,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnknownException(Exception e) {
         ErrorCode errorCode = ErrorCode.UNKNOWN;
 
-        HttpRequestLogInfo logInfo = HttpRequestLogInfo.fromCurrentRequest();
-        log.error("[{}] {} {} | {} {} | Detail: {}",
+        log.error("[{}] {} {} | Detail: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
-                logInfo.httpMethod(),
-                logInfo.requestURI(),
                 e.getMessage(),
                 e
         );
