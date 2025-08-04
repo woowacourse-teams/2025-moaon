@@ -1,11 +1,11 @@
 package moaon.backend.global.cookie;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -17,11 +17,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+@Slf4j
 public class ProjectViewCookieManager {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProjectViewCookieManager.class);
 
     private static final String COOKIE_NAME = "viewed_projects";
     private static final String COOKIE_PATH = "/projects";
@@ -49,10 +47,36 @@ public class ProjectViewCookieManager {
     }
 
     public Cookie createOrUpdateCookie(long projectId, Map<Long, Long> viewedMap) {
+        if (viewedMap == null || viewedMap.isEmpty()) {
+            return createCookie(projectId, new HashMap<>());
+        }
+        return updateCookie(projectId, viewedMap);
+    }
+
+    private Cookie createCookie(long projectId, Map<Long, Long> viewedMap) {
         long currentTimeSeconds = getCurrentTimeSeconds();
         long secondsUntilMidnight = getSecondsUntilMidnight(currentTimeSeconds);
-        updateViewedMap(projectId, viewedMap, currentTimeSeconds);
 
+        viewedMap.put(projectId, currentTimeSeconds);
+
+        return buildValidCookie(viewedMap, secondsUntilMidnight);
+    }
+
+    private Cookie updateCookie(long projectId, Map<Long, Long> viewedMap) {
+        long currentTimeSeconds = getCurrentTimeSeconds();
+        long secondsUntilMidnight = getSecondsUntilMidnight(currentTimeSeconds);
+
+        removeExpiredEntries(viewedMap);
+        viewedMap.put(projectId, currentTimeSeconds);
+
+        while (viewedMap.size() > MAX_ENTRIES) {
+            removeOldestEntry(viewedMap);
+        }
+
+        return buildValidCookie(viewedMap, secondsUntilMidnight);
+    }
+
+    private Cookie buildValidCookie(Map<Long, Long> viewedMap, long secondsUntilMidnight) {
         String json = serializeWithSizeLimit(viewedMap);
         if (isInvalidForCookie(viewedMap, json)) {
             return createEmptyCookie();
@@ -65,18 +89,21 @@ public class ProjectViewCookieManager {
             String decoded = URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8);
             return objectMapper.readValue(decoded, new TypeReference<Map<String, Long>>() {
             });
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             return new HashMap<>();
         }
     }
 
     private Map<Long, Long> convertKeyToLong(Map<String, Long> map) {
-        return map.entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        e -> Long.parseLong(e.getKey()),
-                        Map.Entry::getValue
-                ));
+        Map<Long, Long> result = new HashMap<>();
+        for (Map.Entry<String, Long> entry : map.entrySet()) {
+            try {
+                result.put(Long.parseLong(entry.getKey()), entry.getValue());
+            } catch (NumberFormatException ex) {
+                log.warn(""); //TODO 추후 로깅 머지되면 로깅컨벤션에 맞춰서 로그 내용 수정
+            }
+        }
+        return result;
     }
 
     private long getCurrentTimeSeconds() {
@@ -103,42 +130,27 @@ public class ProjectViewCookieManager {
         viewedMap.remove(oldestKey);
     }
 
-    private void updateViewedMap(long projectId, Map<Long, Long> viewedMap, long currentTimeSeconds) {
-        removeExpiredEntries(viewedMap);
-        viewedMap.put(projectId, currentTimeSeconds);
-
-        while (viewedMap.size() > MAX_ENTRIES) {
-            removeOldestEntry(viewedMap);
-        }
-    }
-
     private String serializeWithSizeLimit(Map<Long, Long> viewedMap) {
         try {
             String json = objectMapper.writeValueAsString(viewedMap);
-
             while (json.length() > MAX_COOKIE_SIZE && !viewedMap.isEmpty()) {
                 removeOldestEntry(viewedMap);
                 json = objectMapper.writeValueAsString(viewedMap);
             }
             return json;
-
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             return null;
         }
     }
 
     private Cookie buildCookieFromJson(String json, long secondsUntilMidnight) {
-        try {
-            String encoded = URLEncoder.encode(json, StandardCharsets.UTF_8);
-            Cookie cookie = new Cookie(COOKIE_NAME, encoded);
-            cookie.setPath(COOKIE_PATH);
-            cookie.setMaxAge((int) secondsUntilMidnight);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            return cookie;
-        } catch (Exception e) {
-            return createEmptyCookie();
-        }
+        String encoded = URLEncoder.encode(json, StandardCharsets.UTF_8);
+        Cookie cookie = new Cookie(COOKIE_NAME, encoded);
+        cookie.setPath(COOKIE_PATH);
+        cookie.setMaxAge((int) secondsUntilMidnight);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        return cookie;
     }
 
     private boolean isInvalidForCookie(Map<Long, Long> viewedMap, String json) {
