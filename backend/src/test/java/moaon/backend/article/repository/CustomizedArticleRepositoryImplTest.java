@@ -35,25 +35,25 @@ class CustomizedArticleRepositoryImplTest {
     @Test
     void findWithCategoryFilter() {
         // given
-        ArticleCategory articleCategory1 = Fixture.anyArticleCategory();
-        ArticleCategory articleCategory2 = Fixture.anyArticleCategory();
+        ArticleCategory filterdArticleCategory = Fixture.anyArticleCategory();
+        ArticleCategory unFilterdArticleCategory = Fixture.anyArticleCategory();
 
         Article articleWithCategory = repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .category(articleCategory1)
+                        .category(filterdArticleCategory)
                         .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
                         .build()
         );
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .category(articleCategory2)
+                        .category(unFilterdArticleCategory)
                         .build()
         );
 
         ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
                 null,
-                articleCategory1.getName(),
+                filterdArticleCategory.getName(),
                 List.of(),
                 "createdAt",
                 10,

@@ -45,5 +45,4 @@ class CursorParserTest {
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
     }
-
 }
