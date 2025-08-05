@@ -2,12 +2,13 @@ import styled from "@emotion/styled";
 
 export const CarouselContainer = styled.div`
   width: 100%;
-  height: 31.25rem;
+  height: 25rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
   position: relative;
+  margin-bottom: 3rem;
 `;
 
 const CarouselImage = styled.img`

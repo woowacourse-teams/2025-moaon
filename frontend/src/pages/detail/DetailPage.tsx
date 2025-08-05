@@ -56,7 +56,9 @@ function DetailPage() {
     <div>
       <TitleSection projectDetail={projectDetail} />
       <TechStacksSection techStacks={projectDetail.techStacks} />
-      <Carousel imageUrls={projectDetail.imageUrls} />
+      {projectDetail.imageUrls.length > 0 && (
+        <Carousel imageUrls={projectDetail.imageUrls} />
+      )}
       <OverviewSection overview={projectDetail.description} />
       <SectionTitle title="기술 문서" />
 
