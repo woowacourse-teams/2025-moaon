@@ -2,7 +2,7 @@ import heartIcon from "@assets/icons/heart.svg";
 import emptyHeartIcon from "@assets/icons/heart-outline.svg";
 import githubIcon from "@assets/icons/logo-github.svg";
 import productionIcon from "@assets/icons/production.svg";
-import { CATEGORY_MAP } from "@domains/filter/category";
+import { PROJECT_CATEGORY_MAP } from "@domains/filter/projectCategory";
 import formatDateToYMD from "@shared/utils/formatDateToYMD";
 import { useState } from "react";
 import type { ProjectDetail } from "@/apis/projectDetail/getProjectDetail.type";
