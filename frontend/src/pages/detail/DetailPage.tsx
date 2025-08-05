@@ -55,9 +55,9 @@ function DetailPage() {
   return (
     <div>
       <TitleSection projectDetail={projectDetail} />
+      <TechStacksSection techStacks={projectDetail.techStacks} />
       <Carousel imageUrls={projectDetail.imageUrls} />
       <OverviewSection overview={projectDetail.description} />
-      <TechStacksSection techStacks={projectDetail.techStacks} />
       <SectionTitle title="기술 문서" />
 
       {MOCK_DATA.map(({ title, description, linkUrl, imageUrl }) => (
