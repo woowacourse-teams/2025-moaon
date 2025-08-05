@@ -16,10 +16,10 @@ public class ArticleQueryConditionBuilder {
 
     public ArticleQueryConditionBuilder() {
         this.search = null;
-        this.categoryName = null;
+        this.categoryName = "all";
         this.techStackNames = null;
         this.sortBy = null;
-        this.limit = 0;
+        this.limit = 50;
         this.cursor = null;
     }
 
