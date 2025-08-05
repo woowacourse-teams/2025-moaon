@@ -149,15 +149,14 @@ public class ProjectApiTest {
     @Test
     void getArticlesByProjectId() {
         // given
-        Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Project otherProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project targetProject = new ProjectFixtureBuilder().build();
         Article targetProjectArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).build());
         Article targetProjectArticle2 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).build());
         Article targetProjectArticle3 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).build());
-        repositoryHelper.save(new ArticleFixtureBuilder().project(otherProject).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
