@@ -43,7 +43,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         if (StringUtils.hasText(search)) {
             String searchFormat = formatSearchKeyword(search);
             return Expressions
-                    .numberTemplate(Double.class, FullTextSearchHQLFunction.EXPRESSION_TEMPLATE, searchFormat)
+                    .numberTemplate(Double.class, FullTextSearchHQLFunction.PROJECT_EXPRESSION_TEMPLATE, searchFormat)
                     .gt(MINIMUM_MATCH_SCORE);
         }
 
