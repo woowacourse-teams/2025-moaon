@@ -1,6 +1,7 @@
 import heartIcon from "@assets/icons/heart.svg";
 import emptyHeartIcon from "@assets/icons/heart-outline.svg";
 import githubIcon from "@assets/icons/logo-github.svg";
+import productionIcon from "@assets/icons/production.svg";
 import { CATEGORY_MAP } from "@domains/filter/category";
 import formatDateToYMD from "@shared/utils/formatDateToYMD";
 import { useState } from "react";
@@ -32,39 +33,42 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
   return (
     <S.TitleSectionContainer>
       <S.TitleSectionLeft>
-        <S.Subject>
-          {categories
-            .map((category) => `#${CATEGORY_MAP[category].label}`)
-            .join(" ")}
-        </S.Subject>
+        <S.OverlineSection>
+          <S.Subject>
+            {categories
+              .map((category) => `${CATEGORY_MAP[category].label}`)
+              .join(", ")}
+          </S.Subject>
+          |<S.RegistrationDate>{formatDateToYMD(createdAt)}</S.RegistrationDate>
+        </S.OverlineSection>
         <S.ProductName>{title}</S.ProductName>
         <S.ProductDescription>{summary}</S.ProductDescription>
       </S.TitleSectionLeft>
       <S.TitleSectionRight>
-        <S.RegistrationDate>{formatDateToYMD(createdAt)}</S.RegistrationDate>
-        <S.LoveButton onClick={handleLikeToggle}>
+        <S.LoveButton isLiked={isLiked} onClick={handleLikeToggle}>
           <img src={isLiked ? heartIcon : emptyHeartIcon} alt="좋아요 버튼" />
           <S.LoveCount>{loveCount}</S.LoveCount>
         </S.LoveButton>
         <S.ButtonBar>
           {githubUrl && (
-            <S.NavLink
+            <S.GithubLink
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
               <img src={githubIcon} alt="github 바로가기 아이콘" />
-              바로가기
-            </S.NavLink>
+              깃허브
+            </S.GithubLink>
           )}
           {productionUrl && (
-            <S.NavLink
+            <S.ProductionLink
               href={productionUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              서비스 바로가기
-            </S.NavLink>
+              <img src={productionIcon} alt="서비스 바로가기 아이콘" />
+              서비스
+            </S.ProductionLink>
           )}
         </S.ButtonBar>
       </S.TitleSectionRight>
