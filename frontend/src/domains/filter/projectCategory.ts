@@ -20,7 +20,7 @@ export const PROJECT_CATEGORY_MAP = {
     label: "생활",
   },
   social: {
-    label: "소설",
+    label: "소셜",
   },
   ecommerce: {
     label: "쇼핑",
