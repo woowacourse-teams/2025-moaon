@@ -1,3 +1,4 @@
+import { TECH_STACK_ICON_MAP } from "@domains/filter/techStack";
 import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
@@ -6,16 +7,8 @@ function TagList() {
     <S.TagListContainer>
       <S.TagListTitle>태그</S.TagListTitle>
       <S.TagList>
-        {[
-          "JavaScript",
-          "React",
-          "CSS",
-          "HTML",
-          "Node.js",
-          "TypeScript",
-          "Next.js",
-        ].map((tag) => (
-          <Tag key={tag} Text={tag} />
+        {Object.values(TECH_STACK_ICON_MAP).map((tag) => (
+          <Tag key={tag.label} Text={tag.label} />
         ))}
       </S.TagList>
     </S.TagListContainer>
