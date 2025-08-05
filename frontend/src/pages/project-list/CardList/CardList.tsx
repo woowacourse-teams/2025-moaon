@@ -5,6 +5,8 @@ import Card from "./Card/Card";
 import CardSkeleton from "./Card/CardSkeleton";
 import * as S from "./CardList.styled";
 
+const SKELETON_COUNT = 20;
+
 function CardList() {
   const { projects, isLoading, hasNext, nextCursor, totalCount, refetch } =
     useProjectList();
@@ -16,22 +18,18 @@ function CardList() {
     enabled: !isLoading,
   });
 
-  // 스켈레톤 카드 개수 상수
-  const SKELETON_COUNT = 20;
-
   // 스켈레톤 키 생성 (메모이제이션으로 불필요한 재생성 방지)
   const skeletonKeys = useMemo(
     () => Array.from({ length: SKELETON_COUNT }, () => crypto.randomUUID()),
-    [],
+    []
   );
 
   return (
     <>
-      {totalCount && totalCount > 0 ? (
-        <div>총 {totalCount}개의 프로젝트가 있어요.</div>
-      ) : (
-        <div>프로젝트가 없어요.</div>
-      )}
+      <S.ProjectIntro>
+        <S.ProjectIntroText>{totalCount ?? 0}개</S.ProjectIntroText>의
+        프로젝트가 모여있어요.
+      </S.ProjectIntro>
       <S.CardList>
         {/* 기존 프로젝트 카드들 */}
         {projects?.map((project) => (
