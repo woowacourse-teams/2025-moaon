@@ -34,8 +34,8 @@ export const Image = styled(CarouselImage)<{
     switch (position) {
       case "current":
         return `
-        width: 45rem;
-        height: 25rem;
+        width: 43.75rem;
+        height: 23.75rem;
         opacity: 1;
         transform: translateX(-15rem);
         z-index: 1;
@@ -45,7 +45,7 @@ export const Image = styled(CarouselImage)<{
         width: 27.5rem;
         height: 15.5rem;
         opacity: 0.5;
-        transform: translateX(24rem);
+        transform: translateX(23rem);
         z-index: 1;
       `;
       case "prev":
@@ -71,22 +71,25 @@ export const Image = styled(CarouselImage)<{
 const MoveButton = styled.button`
   position: absolute;
   border-radius: 50%;
-  width: 3.125rem;
-  height: 3.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
   font-size: 1.5rem;
-  background-color: #6a6a6aff;
-  color: #fff;
+  background-color: #d9d9d9;
+  color: #636b76;
   z-index: 5;
 
   &:hover {
-    background-color: #1f1f1fff;
+    background-color: #a9a9a9;
   }
 `;
 
 export const NextButton = styled(MoveButton)`
-  right: -1.25rem;
+  right: 0;
 `;
 
 export const PrevButton = styled(MoveButton)`
-  left: -1.25rem;
+  left: 0;
 `;
