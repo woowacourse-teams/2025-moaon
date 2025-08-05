@@ -1,7 +1,12 @@
 package moaon.backend.project.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.cookie.ProjectViewCookieManager;
+import moaon.backend.global.cookie.ProjectViewTimes;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.project.dto.ProjectDetailResponse;
@@ -20,12 +25,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectController {
 
+    private final ProjectViewCookieManager cookieManager;
     private final ProjectService projectService;
     private final ArticleService articleService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDetailResponse> getProjectById(@PathVariable("id") long id) {
-        return ResponseEntity.ok(projectService.getById(id));
+    public ResponseEntity<ProjectDetailResponse> getProjectById(
+            @PathVariable("id") long id,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        ProjectViewTimes projectViewTimes = cookieManager.extractViewedMap(request);
+        if (cookieManager.isViewCountIncreasable(id, projectViewTimes)) {
+            ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
+            Cookie cookie = cookieManager.createOrUpdateCookie(id, projectViewTimes);
+            response.addCookie(cookie);
+            return ResponseEntity.ok(projectDetailResponse);
+        }
+
+        ProjectDetailResponse projectDetailResponse = projectService.getById(id);
+
+        return ResponseEntity.ok(projectDetailResponse);
     }
 
     @GetMapping
@@ -33,9 +53,14 @@ public class ProjectController {
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
-            @RequestParam(value = "sort", required = false) String sortType) {
-        ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(search, categories, techStacks,
-                sortType);
+            @RequestParam(value = "sort", required = false) String sortType
+    ) {
+        ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
+                search,
+                categories,
+                techStacks,
+                sortType
+        );
         return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
     }
 

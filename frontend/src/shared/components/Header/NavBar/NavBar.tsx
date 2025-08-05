@@ -5,13 +5,13 @@ import * as S from "./NavBar.styled";
 const NAV_LIST = [
   {
     id: 1,
-    href: "/list",
+    href: "/project",
     text: "프로젝트 탐색",
   },
   {
     id: 2,
     href: "/article",
-    text: "아티클",
+    text: "아티클 탐색",
   },
 ];
 

@@ -3,7 +3,6 @@ import * as S from "./IconBadge.styled";
 interface IconBadgeProps {
   label: string;
   imgUrl: string;
-  primaryColor?: string;
   iconsSize?: number;
   fontSize?: number;
 }
@@ -11,12 +10,11 @@ interface IconBadgeProps {
 function IconBadge({
   label,
   imgUrl,
-  primaryColor = "#000000",
-  fontSize = 20.8,
-  iconsSize = 24,
+  fontSize = 16,
+  iconsSize = 20,
 }: IconBadgeProps) {
   return (
-    <S.IconBadge fontSize={fontSize} primaryColor={primaryColor}>
+    <S.IconBadge fontSize={fontSize}>
       {imgUrl && <S.Icon src={imgUrl} alt={label} iconsSize={iconsSize} />}
       {label}
     </S.IconBadge>
