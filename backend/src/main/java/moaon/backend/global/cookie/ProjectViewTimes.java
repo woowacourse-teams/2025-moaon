@@ -3,12 +3,12 @@ package moaon.backend.global.cookie;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -32,17 +32,18 @@ public class ProjectViewTimes {
             return objectMapper.readValue(decodedCookieValue, new TypeReference<Map<String, Long>>() {
             });
         } catch (JsonProcessingException e) {
+            log.warn("[JsonProcessingException] JSON 변환에 실패했습니다. | Detail : {}", e.getMessage());
             return Collections.emptyMap();
         }
     }
 
     private static Map<Long, Long> convertKeysToLong(Map<String, Long> map) {
         Map<Long, Long> result = new HashMap<>();
-        for (Map.Entry<String, Long> entry : map.entrySet()) {
+        for (Entry<String, Long> entry : map.entrySet()) {
             try {
                 result.put(Long.parseLong(entry.getKey()), entry.getValue());
             } catch (NumberFormatException ex) {
-                log.warn(""); //TODO 추후 로깅 컨벤션 merge 되면 컨벤션에 맞게 추가
+                log.warn("[NumberFormatException] {} 파싱을 실패했습니다. | Detail : {}", entry.getKey(), ex.getMessage());
             }
         }
         return result;
@@ -53,8 +54,7 @@ public class ProjectViewTimes {
     }
 
     public void removeExpiredEntries(long currentTimeSeconds) {
-        this.projectViewTimes.entrySet()
-                .removeIf(entry -> currentTimeSeconds - entry.getValue() >= BLOCK_SECONDS);
+        this.projectViewTimes.entrySet().removeIf(entry -> currentTimeSeconds - entry.getValue() >= BLOCK_SECONDS);
     }
 
     public boolean isViewCountIncreasable(long projectId, long currentTimeSeconds) {
