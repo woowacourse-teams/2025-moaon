@@ -1,4 +1,4 @@
-import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
+import { ARTICLE_CATEGORY_ENTRY } from "@domains/filter/articleCategory";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
 import SortList from "../../domains/components/SortList/SortList";
@@ -10,9 +10,11 @@ import TagList from "./TagList/TagList";
 
 function ArticlePage() {
   const { isLoading, articles } = useArticleList();
-  const articleCategoryLabels = Object.values(ARTICLE_CATEGORY_MAP).map(
-    (item) => item.label,
-  );
+
+  const articleCategoryItems = ARTICLE_CATEGORY_ENTRY.map(([key, value]) => ({
+    key,
+    label: value.label,
+  }));
 
   if (isLoading) return <div>Loading...</div>;
   if (!articles) return <div>No articles found</div>;
@@ -28,7 +30,7 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
-      <Tab items={articleCategoryLabels} />
+      <Tab items={articleCategoryItems} />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
