@@ -57,7 +57,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     private String formatSearchKeyword(String search) {
         return Arrays.stream(search.split(BLANK))
-                .map(keyword -> String.format("+%s*", keyword))
+                .map(keyword -> String.format("+%s*", keyword.replaceAll("[+-><()~*:\"&|]", "").toLowerCase()))
                 .collect(Collectors.joining(BLANK));
     }
 
