@@ -1,13 +1,17 @@
+import type { Article } from "@/apis/articles/articles.type";
 import Card from "./Card/Card";
 import * as S from "./CardList.styled";
 
-function CardList() {
+interface CardListProps {
+  articles: Article[];
+}
+
+function CardList({ articles }: CardListProps) {
   return (
     <S.CardListContainer>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      {articles.map((article) => (
+        <Card key={article.id} article={article} />
+      ))}
     </S.CardListContainer>
   );
 }
