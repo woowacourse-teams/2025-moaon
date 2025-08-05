@@ -56,7 +56,7 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={githubIcon} alt="github 바로가기 아이콘" />
+              <img width={23} src={githubIcon} alt="github 바로가기 아이콘" />
               깃허브
             </S.GithubLink>
           )}
