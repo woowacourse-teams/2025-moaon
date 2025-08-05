@@ -1,6 +1,7 @@
 package moaon.backend.article.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.global.exception.custom.CustomException;
@@ -26,17 +27,10 @@ public class CursorParser {
         String id = valueAndId[1];
 
         if (articleSortBy == ArticleSortBy.CREATED_AT) {
-
-            LocalDateTime lastCreatedAt = LocalDateTime.parse(value);
-            Long lastId = Long.parseLong(id);
-
-            return new CreatedAtCursor(lastCreatedAt, lastId);
+            return toCreatedAtCursor(value, id);
         }
 
-        int clicks = Integer.parseInt(value);
-        Long lastId = Long.parseLong(id);
-
-        return new ClickCursor(clicks, lastId);
+        return toClickCursor(value, id);
     }
 
     public static Cursor<?> toCursor(Article article, ArticleSortBy articleSortBy) {
@@ -45,5 +39,27 @@ public class CursorParser {
         }
 
         return new ClickCursor(article.getClicks(), article.getId());
+    }
+
+    private static ClickCursor toClickCursor(String value, String id) {
+        try {
+            int clicks = Integer.parseInt(value);
+            Long lastId = Long.parseLong(id);
+
+            return new ClickCursor(clicks, lastId);
+        } catch (NumberFormatException e) {
+            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
+        }
+    }
+
+    private static CreatedAtCursor toCreatedAtCursor(String value, String id) {
+        try {
+            LocalDateTime lastCreatedAt = LocalDateTime.parse(value);
+            Long lastId = Long.parseLong(id);
+
+            return new CreatedAtCursor(lastCreatedAt, lastId);
+        } catch (NumberFormatException | DateTimeParseException e) {
+            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
+        }
     }
 }

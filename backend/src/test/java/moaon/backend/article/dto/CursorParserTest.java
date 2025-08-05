@@ -87,4 +87,26 @@ class CursorParserTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_CURSOR_FORMAT.getMessage());
     }
+
+    @DisplayName("정렬 기준과 Cursor 를 반대로 보내면 예외를 발생한다.")
+    @Test
+    void toClickCursorFail() {
+        // given
+        String clickCursor = "1500_12345";
+        ArticleSortBy createdAt = ArticleSortBy.CREATED_AT;
+
+        String createdAtCursor = "2024-07-31T10:00:00_12345";
+        ArticleSortBy clicks = ArticleSortBy.CLICKS;
+
+        // when
+        assertAll(
+                () -> assertThatThrownBy(() -> CursorParser.toCursor(clickCursor, createdAt))
+                        .isInstanceOf(CustomException.class)
+                        .hasMessage(ErrorCode.INVALID_CURSOR_FORMAT.getMessage()),
+
+                () -> assertThatThrownBy(() -> CursorParser.toCursor(createdAtCursor, clicks))
+                        .isInstanceOf(CustomException.class)
+                        .hasMessage(ErrorCode.INVALID_CURSOR_FORMAT.getMessage())
+        );
+    }
 }
