@@ -51,12 +51,12 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
-        Cursor<?> cursor = CursorParser.toCursor(article3, ArticleSortBy.CREATED_AT);
+        Cursor<?> cursor = CursorParser.toCursor(article2, ArticleSortBy.CREATED_AT);
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        Mockito.when(articleRepository.count()).thenReturn(5L);
+        Mockito.when(articleRepository.count()).thenReturn(3L);
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
                 null,
