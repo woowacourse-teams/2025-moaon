@@ -31,32 +31,32 @@ public class TrackingCookieManager {
         return accessHistory;
     }
 
-    public boolean isCountIncreasable(long projectId, AccessHistory accessHistory) {
+    public boolean isCountIncreasable(long contentId, AccessHistory accessHistory) {
         long currentTimeSeconds = getCurrentTimeSeconds();
-        return accessHistory.isCountIncreasable(projectId, currentTimeSeconds);
+        return accessHistory.isCountIncreasable(contentId, currentTimeSeconds);
     }
 
-    public Cookie createOrUpdateCookie(long projectId, AccessHistory accessHistory) {
+    public Cookie createOrUpdateCookie(long contentId, AccessHistory accessHistory) {
         if (accessHistory.isEmpty()) {
-            return createCookie(projectId, accessHistory);
+            return createCookie(contentId, accessHistory);
         }
-        return updateCookie(projectId, accessHistory);
+        return updateCookie(contentId, accessHistory);
     }
 
-    private Cookie createCookie(long projectId, AccessHistory accessHistory) {
+    private Cookie createCookie(long contentId, AccessHistory accessHistory) {
         long currentTimeSeconds = getCurrentTimeSeconds();
         long secondsUntilMidnight = getSecondsUntilMidnight(currentTimeSeconds);
 
-        accessHistory.add(projectId, currentTimeSeconds);
+        accessHistory.add(contentId, currentTimeSeconds);
         return buildValidCookie(accessHistory, secondsUntilMidnight);
     }
 
-    private Cookie updateCookie(long projectId, AccessHistory accessHistory) {
+    private Cookie updateCookie(long contentId, AccessHistory accessHistory) {
         long currentTimeSeconds = getCurrentTimeSeconds();
         long secondsUntilMidnight = getSecondsUntilMidnight(currentTimeSeconds);
 
         accessHistory.removeExpiredEntries(currentTimeSeconds);
-        accessHistory.add(projectId, currentTimeSeconds);
+        accessHistory.add(contentId, currentTimeSeconds);
         accessHistory.removeUntilMaxSize();
         return buildValidCookie(accessHistory, secondsUntilMidnight);
     }
