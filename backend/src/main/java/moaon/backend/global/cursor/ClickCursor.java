@@ -1,9 +1,10 @@
-package moaon.backend.article.dto;
+package moaon.backend.global.cursor;
 
 import static moaon.backend.article.domain.QArticle.article;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.dto.ArticleQueryCondition;
 
 @RequiredArgsConstructor
 public class ClickCursor implements Cursor<Integer> {

@@ -1,6 +1,7 @@
-package moaon.backend.article.dto;
+package moaon.backend.global.cursor;
 
 import com.querydsl.core.BooleanBuilder;
+import moaon.backend.article.dto.ArticleQueryCondition;
 
 public interface Cursor<T extends Comparable<? super T>> {
 

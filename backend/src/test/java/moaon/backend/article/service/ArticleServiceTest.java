@@ -12,11 +12,11 @@ import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.dto.Cursor;
-import moaon.backend.article.dto.CursorParser;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.global.cursor.Cursor;
+import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -145,7 +145,7 @@ class ArticleServiceTest {
         // Given
         long projectId = 1L;
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
- 
+
         // When & Then
         assertThatThrownBy(() -> articleService.getByProjectId(projectId))
                 .isInstanceOf(CustomException.class)

@@ -1,4 +1,4 @@
-package moaon.backend.article.dto;
+package moaon.backend.global.cursor;
 
 import static moaon.backend.article.domain.QArticle.article;
 
@@ -6,6 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.dto.ArticleQueryCondition;
 
 @RequiredArgsConstructor
 public class CreatedAtCursor implements Cursor<LocalDateTime> {

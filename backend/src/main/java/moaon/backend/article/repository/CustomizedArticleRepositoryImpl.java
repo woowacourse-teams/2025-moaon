@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.dto.Cursor;
+import moaon.backend.global.cursor.Cursor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 

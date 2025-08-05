@@ -1,4 +1,4 @@
-package moaon.backend.article.dto;
+package moaon.backend.global.cursor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
