@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
-import java.util.List;
-
 import io.restassured.response.ValidatableResponse;
+import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
@@ -183,8 +182,7 @@ public class ProjectApiTest extends MySQLContainerTest {
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
-                .queryParams("id", targetProject.getId())
-                .when().get("/projects/{id}/articles")
+                .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ArticleDetailResponse[].class);
