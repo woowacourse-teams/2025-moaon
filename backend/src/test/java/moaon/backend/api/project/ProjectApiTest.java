@@ -150,6 +150,7 @@ public class ProjectApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = new ProjectFixtureBuilder().build();
+
         Article targetProjectArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).build()
         );
@@ -159,6 +160,7 @@ public class ProjectApiTest {
         Article targetProjectArticle3 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).build()
         );
+        
         repositoryHelper.save(new ArticleFixtureBuilder().build());
 
         // when
