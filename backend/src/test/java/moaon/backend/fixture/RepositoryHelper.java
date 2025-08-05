@@ -3,8 +3,6 @@ package moaon.backend.fixture;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.repository.ArticleCategoryRepository;
 import moaon.backend.article.repository.ArticleRepository;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.repository.ProjectCategoryRepository;
@@ -50,8 +48,8 @@ public class RepositoryHelper {
         return articleRepository.save(article);
     }
 
-    public Article findById(long id) {
+    public Article getById(long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
+                .orElseThrow(() -> new IllegalStateException("테스트 실패"));
     }
 }
