@@ -3,12 +3,21 @@ package moaon.backend.article.dto;
 import java.time.LocalDateTime;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 
 public class CursorParser {
+
+    private static final String CLICK_CURSOR_REGEX = "[0-9]+_[0-9]+";
+    private static final String CREATED_AT_CURSOR_REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}_[0-9]+$";
 
     public static Cursor<?> toCursor(String cursor, ArticleSortBy articleSortBy) {
         if (cursor == null || cursor.isEmpty()) {
             return null;
+        }
+
+        if (!cursor.matches(CLICK_CURSOR_REGEX) && !cursor.matches(CREATED_AT_CURSOR_REGEX)) {
+            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
         }
 
         String[] valueAndId = cursor.split("_");

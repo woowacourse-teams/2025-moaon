@@ -1,12 +1,17 @@
 package moaon.backend.article.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CursorParserTest {
 
@@ -57,5 +62,32 @@ class CursorParserTest {
 
         // then
         assertThat(actual).isNull();
+    }
+
+    @DisplayName("잘못된 형식의 커서는 CustomException 을 발생시킨다.")
+    @ParameterizedTest(name = "invalid cursor: {0}")
+    @ValueSource(strings = {
+            "2024-07-31_12345",
+            "2024/07/31T10:00:00_12345",
+            "2024-07-31T10:00:00",
+            "abc_123",
+            "12345",
+            "2024-07-31T10:00:00_abc",
+            "1500-123",
+            "1500_",
+            "_123",
+            "1500_123_999",
+            "2024-07-31T10:00:00_123_456",
+            "20240731T100000_12345",
+            "2024-07-31T10:00:00_12345 ",
+            " 1500_12345"
+    })
+    void invalidCursorFormat_throwsException(String cursor) {
+        assertThatThrownBy(() -> CursorParser.toCursor(cursor, ArticleSortBy.CREATED_AT))
+                .isInstanceOf(CustomException.class)
+                .satisfies(e -> {
+                    CustomException ce = (CustomException) e;
+                    assertThat(ce.getErrorCode()).isEqualTo(ErrorCode.INVALID_CURSOR_FORMAT);
+                });
     }
 }
