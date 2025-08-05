@@ -9,6 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       TZ: Asia/Seoul
+      LANG: C.UTF-8
     volumes:
       - db-data:/var/lib/mysql
       - ./db/mysql/init:/docker-entrypoint-initdb.d
