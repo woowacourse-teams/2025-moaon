@@ -14,7 +14,6 @@ export const CardContainer = styled.li`
   overflow: hidden;
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transform: translateY(-0.125rem);
     transition: all 0.3s ease-in-out;
     & > .back-drop-box {
       opacity: 1;
@@ -43,13 +42,14 @@ export const BackDropBox = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(4, 12, 35, 0.95);
+  background-color: rgba(35, 35, 35, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
   opacity: 0;
   visibility: hidden;
+  transition: all 0.3s ease-in-out;
 `;
 
 export const ArticleLink = styled.a`
