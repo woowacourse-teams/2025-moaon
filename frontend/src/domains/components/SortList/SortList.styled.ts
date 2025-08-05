@@ -7,8 +7,8 @@ export const List = styled.ul`
 `;
 
 export const Separator = styled.div`
-  width: 0.3125rem;
-  height: 0.3125rem;
+  width: 0.2rem;
+  height: 0.2rem;
   border-radius: 50%;
   background-color: #aaa;
 `;

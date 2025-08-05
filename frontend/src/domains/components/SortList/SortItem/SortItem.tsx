@@ -1,8 +1,7 @@
-import type { SortValue } from "../SortList";
 import * as S from "./SortItem.styled";
 
 interface SortItemProps {
-  sortValue: SortValue;
+  sortValue: string;
   isSelected: boolean;
   onSelect: () => void;
 }

@@ -1,11 +1,12 @@
 import resetIcon from "@assets/icons/reset.svg";
+import { PROJECT_SORT_MAP } from "@domains/sort/project";
+import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
 import FilterContainer from "./FilterContainer/FilterContainer";
 import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
 import * as S from "./ListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
-import SortList from "./SortList/SortList";
 
 function ListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
@@ -37,7 +38,7 @@ function ListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        <SortList />
+        <SortList sortMap={PROJECT_SORT_MAP} />
       </S.Box>
       <CardList />
     </S.Main>

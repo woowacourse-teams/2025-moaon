@@ -1,10 +1,17 @@
-import SortList from "../list/SortList/SortList";
+import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
+import { ARTICLE_SORT_MAP } from "@domains/sort/article";
+import Tab from "@shared/components/Tab/Tab";
+import SortList from "../../domains/components/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
 import TagList from "./TagList/TagList";
 
 function ArticlePage() {
+  const articleCategoryLabels = Object.values(ARTICLE_CATEGORY_MAP).map(
+    (item) => item.label,
+  );
+
   return (
     <S.Main>
       <S.MainBox>
@@ -16,6 +23,8 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
+
+      <Tab items={articleCategoryLabels} />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
@@ -23,7 +32,7 @@ function ArticlePage() {
               <S.ArticleIntroText>262개</S.ArticleIntroText>의 아티클이
               모여있어요.
             </S.ArticleIntro>
-            <SortList />
+            <SortList sortMap={ARTICLE_SORT_MAP} />
           </S.ArticleHeader>
           <CardList />
         </S.ArticleContainer>
