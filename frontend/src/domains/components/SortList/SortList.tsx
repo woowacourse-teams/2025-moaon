@@ -15,9 +15,13 @@ function SortList({ sortMap }: SortListProps) {
     key: "sort",
     mode: "single",
   });
+
+  const sortParamValue = params.get()[0];
+  const defaultSortValue = Object.values(sortMap)[0];
   const [selectedSort, setSelectedSort] = useState(
-    sortMap[params.get()[0]] ?? Object.values(sortMap)[0],
+    sortParamValue ?? defaultSortValue,
   );
+
   const { refetch } = useProjectList();
 
   const handleSelectedSort = (sortKey: string, sortValue: string) => {
