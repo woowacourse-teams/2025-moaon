@@ -43,8 +43,8 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         if (StringUtils.hasText(search)) {
             String searchFormat = formatSearchKeyword(search);
             return Expressions
-                .numberTemplate(Double.class, FullTextSearchHQLFunction.EXPRESSION_TEMPLATE, searchFormat)
-                .gt(MINIMUM_MATCH_SCORE);
+                    .numberTemplate(Double.class, FullTextSearchHQLFunction.EXPRESSION_TEMPLATE, searchFormat)
+                    .gt(MINIMUM_MATCH_SCORE);
         }
 
         return null;
@@ -52,8 +52,8 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     private String formatSearchKeyword(String search) {
         return Arrays.stream(search.split(BLANK))
-            .map(keyword -> String.format("+%s*", keyword))
-            .collect(Collectors.joining(BLANK));
+                .map(keyword -> String.format("+%s*", keyword.toLowerCase()))
+                .collect(Collectors.joining(BLANK));
     }
 
     private BooleanExpression toContainsCategory(List<String> categoryNames) {
