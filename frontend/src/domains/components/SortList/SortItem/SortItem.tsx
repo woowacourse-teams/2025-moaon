@@ -1,13 +1,14 @@
-import type { SortValue } from "../SortList";
 import * as S from "./SortItem.styled";
 
 interface SortItemProps {
-  sortValue: SortValue;
+  sortValue: string;
   isSelected: boolean;
   onSelect: () => void;
 }
 
 function SortItem({ sortValue, isSelected, onSelect }: SortItemProps) {
+  console.log(sortValue);
+
   return (
     <S.Item>
       <S.Button
