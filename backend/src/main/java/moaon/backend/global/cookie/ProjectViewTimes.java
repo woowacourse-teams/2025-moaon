@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProjectViewTimes {
 
     private static final int MAX_ENTRIES = 50;
-    private static final int BLOCK_SECONDS = 1800; // 30분
-    private static final int MAX_COOKIE_SIZE = 3500; // 쿠키 크기 제한 (3.5KB)
+    private static final int BLOCK_SECONDS = 60 * 30;
+    private static final int MAX_COOKIE_SIZE = (int) 3.5 * 1024;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final Map<Long, Long> projectViewTimes;

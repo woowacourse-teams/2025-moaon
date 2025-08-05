@@ -1,7 +1,5 @@
 package moaon.backend.fixture;
 
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.repository.ProjectCategoryRepository;
@@ -31,9 +29,5 @@ public class RepositoryHelper {
         projectCategoryRepository.saveAll(project.getCategories());
 
         return projectRepository.save(project);
-    }
-
-    public Project findById(Long id) {
-        return projectRepository.findById(id).orElseThrow(() ->new CustomException(ErrorCode.PROJECT_NOT_FOUND));
     }
 }

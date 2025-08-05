@@ -1,12 +1,5 @@
 package moaon.backend.project.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import jakarta.persistence.EntityManager;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
@@ -24,6 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 @DataJpaTest
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 class CustomizedProjectRepositoryImplTest {
@@ -33,9 +32,6 @@ class CustomizedProjectRepositoryImplTest {
 
     @Autowired
     private RepositoryHelper repositoryHelper;
-
-    @Autowired
-    EntityManager entityManager;
 
     @DisplayName("조건 없이 모든 프로젝트를 조회한다.")
     @Test
