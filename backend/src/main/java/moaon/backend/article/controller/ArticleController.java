@@ -1,10 +1,11 @@
 package moaon.backend.article.controller;
 
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.service.ArticleService;
+import moaon.backend.global.cookie.TrackingCookieManager;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/articles")
-@RequiredArgsConstructor
 public class ArticleController {
 
+    private final TrackingCookieManager cookieManager;
     private final ArticleService articleService;
+
+    public ArticleController(
+            @Qualifier("articleClickCookieManager") TrackingCookieManager cookieManager,
+            ArticleService articleService
+    ) {
+        this.cookieManager = cookieManager;
+        this.articleService = articleService;
+    }
 
     @GetMapping
     public ResponseEntity<ArticleResponse> getPagedArticles(
