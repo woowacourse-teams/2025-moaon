@@ -7,8 +7,6 @@ interface SortItemProps {
 }
 
 function SortItem({ sortValue, isSelected, onSelect }: SortItemProps) {
-  console.log(sortValue);
-
   return (
     <S.Item>
       <S.Button
