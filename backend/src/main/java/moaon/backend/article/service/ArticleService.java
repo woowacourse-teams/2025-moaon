@@ -9,6 +9,9 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.dto.Cursor;
 import moaon.backend.article.dto.CursorParser;
 import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ProjectRepository projectRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         List<Article> articles = articleRepository.findWithSearchConditions(queryCondition);
@@ -40,6 +44,8 @@ public class ArticleService {
     }
 
     public List<ArticleDetailResponse> getByProjectId(long id) {
+        projectRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
         List<Article> articles = articleRepository.findAllByProjectId(id);
         return ArticleDetailResponse.from(articles);
     }
