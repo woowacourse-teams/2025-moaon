@@ -151,11 +151,14 @@ public class ProjectApiTest {
         // given
         Project targetProject = new ProjectFixtureBuilder().build();
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build());
+                new ArticleFixtureBuilder().project(targetProject).build()
+        );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build());
+                new ArticleFixtureBuilder().project(targetProject).build()
+        );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build());
+                new ArticleFixtureBuilder().project(targetProject).build()
+        );
         repositoryHelper.save(new ArticleFixtureBuilder().build());
 
         // when
