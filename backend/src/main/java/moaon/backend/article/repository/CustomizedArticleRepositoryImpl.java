@@ -80,16 +80,15 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
 
         if (StringUtils.hasText(search)) {
-            String searchFormat = formatSearchKeyword(search);
-            whereBuilder.and(satisfiesMatchScore(searchFormat));
+            whereBuilder.and(satisfiesMatchScore(search));
         }
     }
 
-    private BooleanExpression satisfiesMatchScore(String searchFormat) {
+    private BooleanExpression satisfiesMatchScore(String search) {
         return Expressions.numberTemplate(
                 Double.class,
                 FullTextSearchHQLFunction.ARTICLE_EXPRESSION_TEMPLATE,
-                searchFormat
+                formatSearchKeyword(search)
         ).gt(MINIMUM_MATCH_SCORE);
     }
 

@@ -41,13 +41,18 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     private BooleanExpression toContainsSearch(String search) {
         if (StringUtils.hasText(search)) {
-            String searchFormat = formatSearchKeyword(search);
-            return Expressions
-                    .numberTemplate(Double.class, FullTextSearchHQLFunction.PROJECT_EXPRESSION_TEMPLATE, searchFormat)
-                    .gt(MINIMUM_MATCH_SCORE);
+            return satisfiesMatchScore(search);
         }
 
         return null;
+    }
+
+    private BooleanExpression satisfiesMatchScore(String search) {
+        return Expressions.numberTemplate(
+                Double.class,
+                FullTextSearchHQLFunction.PROJECT_EXPRESSION_TEMPLATE,
+                formatSearchKeyword(search)
+        ).gt(MINIMUM_MATCH_SCORE);
     }
 
     private String formatSearchKeyword(String search) {

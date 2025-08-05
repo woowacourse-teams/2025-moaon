@@ -36,7 +36,7 @@ public class ArticleRepositorySearchTest extends MySQLContainerTest {
                 .content("webpack.config.js의 resolve.extensions 배열에서 굳이 .js가 필요할까 하는 생각이 들어 해당 확장자를 제거했습니다.")
                 .build()
         );
-        Article ec2 = repositoryHelper.save(new ArticleFixtureBuilder()
+        Article ec2Docker = repositoryHelper.save(new ArticleFixtureBuilder()
                 .title("EC2 도커 갑자기 안됨")
                 .summary("오늘 아침 EC2 접근이 안돼서 들어가보니까 컨테이너가 실행이 안되고 있음.")
                 .content("오류 로그의 No space left on device 메시지가 명확히 나타내듯, EC2 인스턴스의 디스크(스토리지) 공간이 가득 찼습니다.")
@@ -57,7 +57,7 @@ public class ArticleRepositorySearchTest extends MySQLContainerTest {
         // then
         assertAll(
                 () -> assertThat(aboutWebpack).containsOnlyOnce(webpack),
-                () -> assertThat(aboutDisk).containsExactlyInAnyOrder(ec2, runner),
+                () -> assertThat(aboutDisk).containsExactlyInAnyOrder(ec2Docker, runner),
                 () -> assertThat(aboutRunner).containsOnlyOnce(runner)
         );
     }
