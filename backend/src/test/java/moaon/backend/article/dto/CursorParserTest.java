@@ -82,12 +82,9 @@ class CursorParserTest {
             "2024-07-31T10:00:00_12345 ",
             " 1500_12345"
     })
-    void invalidCursorFormat_throwsException(String cursor) {
+    void toCursorFail(String cursor) {
         assertThatThrownBy(() -> CursorParser.toCursor(cursor, ArticleSortBy.CREATED_AT))
                 .isInstanceOf(CustomException.class)
-                .satisfies(e -> {
-                    CustomException ce = (CustomException) e;
-                    assertThat(ce.getErrorCode()).isEqualTo(ErrorCode.INVALID_CURSOR_FORMAT);
-                });
+                .hasMessage(ErrorCode.INVALID_CURSOR_FORMAT.getMessage());
     }
 }
