@@ -1,5 +1,9 @@
 package moaon.backend.project.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
@@ -8,7 +12,7 @@ import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
-import moaon.backend.project.domain.SortBy;
+import moaon.backend.project.domain.ProjectSortBy;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
@@ -16,12 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
 @Import({RepositoryHelper.class, QueryDslConfig.class})
@@ -135,7 +133,7 @@ class CustomizedProjectRepositoryImplTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(SortBy.VIEWS)
+                        .sortBy(ProjectSortBy.VIEWS)
                         .build()
         );
 
@@ -166,7 +164,7 @@ class CustomizedProjectRepositoryImplTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(SortBy.CREATED_AT)
+                        .sortBy(ProjectSortBy.CREATED_AT)
                         .build()
         );
 
@@ -193,7 +191,7 @@ class CustomizedProjectRepositoryImplTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(SortBy.LOVES)
+                        .sortBy(ProjectSortBy.LOVES)
                         .build()
         );
 
