@@ -3,17 +3,17 @@ package moaon.backend.article.dto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import moaon.backend.global.cursor.CreatedAtCursor;
+import moaon.backend.global.cursor.CreatedAtArticleCursor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CreatedAtCursorTest {
+class CreatedAtArticleCursorTest {
 
     @DisplayName("nextCursor를 포맷팅한다.")
     @Test
     void getNextCursor() {
         // given
-        CreatedAtCursor cursor = new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L);
+        CreatedAtArticleCursor cursor = new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L);
 
         // when
         String nextCursor = cursor.getNextCursor();

@@ -15,7 +15,7 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.global.cursor.ArticleCursor;
 import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -60,7 +60,7 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
-        Cursor<?> cursor = CursorParser.toCursor(article2, ArticleSortBy.CREATED_AT);
+        ArticleCursor<?> articleCursor = CursorParser.toCursor(article2, ArticleSortBy.CREATED_AT);
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
@@ -86,7 +86,7 @@ class ArticleServiceTest {
         assertAll(
                 () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2),
                 () -> assertThat(actual.hasNext()).isTrue(),
-                () -> assertThat(actual.nextCursor()).isEqualTo(cursor.getNextCursor())
+                () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
         );
     }
 

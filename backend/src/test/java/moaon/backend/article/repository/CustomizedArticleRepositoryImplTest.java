@@ -13,8 +13,8 @@ import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.global.cursor.ClickCursor;
-import moaon.backend.global.cursor.CreatedAtCursor;
+import moaon.backend.global.cursor.ClickArticleCursor;
+import moaon.backend.global.cursor.CreatedAtArticleCursor;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ class CustomizedArticleRepositoryImplTest {
                 .categoryName(filterdArticleCategory.getName())
                 .sortBy(ArticleSortBy.CREATED_AT)
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -94,7 +94,7 @@ class CustomizedArticleRepositoryImplTest {
                 .sortBy(ArticleSortBy.CREATED_AT)
                 .categoryName("all")
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -133,7 +133,7 @@ class CustomizedArticleRepositoryImplTest {
                 .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
                 .sortBy(ArticleSortBy.CREATED_AT)
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -179,7 +179,7 @@ class CustomizedArticleRepositoryImplTest {
                 .sortBy(ArticleSortBy.CREATED_AT)
                 .categoryName("all")
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -227,7 +227,7 @@ class CustomizedArticleRepositoryImplTest {
                 .sortBy(ArticleSortBy.CLICKS)
                 .categoryName("all")
                 .limit(10)
-                .cursor(new ClickCursor(4, 4L))
+                .cursor(new ClickArticleCursor(4, 4L))
                 .build();
 
         // when
@@ -281,7 +281,7 @@ class CustomizedArticleRepositoryImplTest {
                 .sortBy(ArticleSortBy.CLICKS)
                 .categoryName("all")
                 .limit(4)
-                .cursor(new ClickCursor(4, 99999999L))
+                .cursor(new ClickArticleCursor(4, 99999999L))
                 .build();
 
         // when
@@ -335,7 +335,7 @@ class CustomizedArticleRepositoryImplTest {
                 .sortBy(ArticleSortBy.CLICKS)
                 .categoryName("all")
                 .limit(9)
-                .cursor(new ClickCursor(4, 999999L))
+                .cursor(new ClickArticleCursor(4, 999999L))
                 .build();
 
         // when
@@ -371,7 +371,7 @@ class CustomizedArticleRepositoryImplTest {
                 .sortBy(ArticleSortBy.CLICKS)
                 .categoryName("all")
                 .limit(9)
-                .cursor(new CreatedAtCursor(LocalDateTime.now(), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.now(), 1L))
                 .build();
 
         // when

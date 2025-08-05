@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
 
 @RequiredArgsConstructor
-public class CreatedAtCursor implements Cursor<LocalDateTime> {
+public class CreatedAtArticleCursor implements ArticleCursor<LocalDateTime> {
 
     private final LocalDateTime createdAt;
     private final Long id;

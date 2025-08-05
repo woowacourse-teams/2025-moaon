@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
 
 @RequiredArgsConstructor
-public class ClickCursor implements Cursor<Integer> {
+public class ClickArticleCursor implements ArticleCursor<Integer> {
 
     private final int clicks;
     private final Long id;

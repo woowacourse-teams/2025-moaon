@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.global.cursor.ArticleCursor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -27,7 +27,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        Cursor<?> cursor = queryCondition.cursor();
+        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
 
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
@@ -38,8 +38,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         applyWhereAndHaving(whereBuilder, queryCondition, query);
 
-        if (cursor != null) {
-            cursor.applyCursor(queryCondition, whereBuilder);
+        if (articleCursor != null) {
+            articleCursor.applyCursor(queryCondition, whereBuilder);
         }
 
         if (whereBuilder.hasValue()) {
