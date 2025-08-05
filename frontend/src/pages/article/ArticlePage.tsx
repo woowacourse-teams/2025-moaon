@@ -1,3 +1,4 @@
+import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
 import SortList from "../../domains/components/SortList/SortList";
@@ -7,6 +8,10 @@ import CardList from "./CardList/CardList";
 import TagList from "./TagList/TagList";
 
 function ArticlePage() {
+  const articleCategoryLabels = Object.values(ARTICLE_CATEGORY_MAP).map(
+    (item) => item.label,
+  );
+
   return (
     <S.Main>
       <S.MainBox>
@@ -18,7 +23,8 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
-      <Tab items={["전체", "트러블슈팅", "기술문서", "기타"]} />
+
+      <Tab items={articleCategoryLabels} />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
