@@ -15,7 +15,7 @@ export const ARTICLE_CATEGORY_MAP = {
   },
 } as const;
 
-export type ProjectCategoryKey = keyof typeof ARTICLE_CATEGORY_MAP;
+export type ArticleCategoryKey = keyof typeof ARTICLE_CATEGORY_MAP;
 export const ARTICLE_CATEGORY_ENTRY =
   typeSafeObjectEntries(ARTICLE_CATEGORY_MAP);
 export type ArticleCategoryLabel =
