@@ -32,7 +32,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             alt={`슬라이드 ${index + 1}`}
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
-            length={imageUrls.length}
+            isSingleImage={imageUrls.length === 1}
           />
         );
       })}
