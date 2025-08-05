@@ -1,10 +1,9 @@
 package moaon.backend.project.controller;
 
-import java.util.List;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cookie.ProjectViewCookieManager;
 import moaon.backend.global.cookie.ProjectViewTimes;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectController {
 
     private final ProjectViewCookieManager cookieManager;
-
     private final ProjectService projectService;
 
     @GetMapping("/{id}")
