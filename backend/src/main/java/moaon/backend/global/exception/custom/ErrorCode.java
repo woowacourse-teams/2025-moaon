@@ -9,9 +9,8 @@ public enum ErrorCode {
     UNKNOWN("GLOBAL-001", "예기치 못한 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     RESOURCE_NOT_FOUND("GLOBAL-002", "요청한 리소스를 찾을 수 없습니다", HttpStatus.NOT_FOUND),
     MISSING_REQUIRED_PARAMETER("GLOBAL-003", "필수 요청 파라미터가 누락되었습니다.", HttpStatus.BAD_REQUEST),
-
     PROJECT_NOT_FOUND("PROJECT-001", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-
+    ARTICLE_NOT_FOUND("ARTICLE-001", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     INVALID_CURSOR_FORMAT("CURSOR-001", "커서 파라미터 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
 
     private final String id;

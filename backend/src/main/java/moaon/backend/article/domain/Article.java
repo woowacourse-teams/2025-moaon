@@ -93,4 +93,8 @@ public class Article extends BaseTimeEntity {
     public List<TechStack> getTechStacks() {
         return List.copyOf(techStacks);
     }
+
+    public void addClickCount() {
+        clicks++;
+    }
 }
