@@ -15,21 +15,23 @@ public abstract class MySQLContainerTest {
 
     @Container
     protected static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.4")
-        .withDatabaseName("moaon")
-        .withUsername("user")
-        .withPassword("password");
+            .withDatabaseName("moaon")
+            .withUsername("root")
+            .withPassword("root");
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     //todo: DDL 하드코딩
     @BeforeEach
-    void initializeFullTextIndex() {
-        jdbcTemplate.execute("ALTER TABLE project ADD FULLTEXT INDEX idx_project_fulltext (title, summary, description)");
+    protected void initializeFullTextIndex() {
+        jdbcTemplate.execute(
+                "ALTER TABLE project ADD FULLTEXT INDEX idx_project_fulltext (title, summary, description) WITH PARSER NGRAM"
+        );
     }
 
     @AfterEach
-    void dropFullTextIndex() {
+    protected void dropFullTextIndex() {
         jdbcTemplate.execute("ALTER TABLE project DROP INDEX idx_project_fulltext");
     }
 
