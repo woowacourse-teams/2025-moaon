@@ -48,6 +48,11 @@ dependencies {
 
     testAnnotationProcessor "io.github.openfeign.querydsl:querydsl-apt:7.0:jpa"
     testAnnotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+    // TestContainers
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.testcontainers:mysql"
+    testImplementation "org.springframework.boot:spring-boot-testcontainers"
 }
 
 clean {

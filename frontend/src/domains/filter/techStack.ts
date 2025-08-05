@@ -4,240 +4,278 @@ export const TECH_STACK_ICON_MAP = {
   react: {
     label: "React",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/React.svg",
-    primaryColor: "#61DAFB",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/React.svg",
   },
   nextjs: {
     label: "Next.js",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Next.js.svg",
-    primaryColor: "#000000",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Next.js.svg",
   },
   vuejs: {
     label: "Vue.js",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Vue.js.svg",
-    primaryColor: "#4FC08D",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Vue.js.svg",
   },
   angular: {
     label: "Angular",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Angular.svg",
-    primaryColor: "#DD0031",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Angular.svg",
   },
   svelte: {
     label: "Svelte",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Svelte.svg",
-    primaryColor: "#FF3E00",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Svelte.svg",
   },
   jquery: {
     label: "JQuery",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/jQuery.svg",
-    primaryColor: "#0769AD",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/jQuery.svg",
   },
   typescript: {
     label: "TypeScript",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/TypeScript.svg",
-    primaryColor: "#3178C6",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/TypeScript.svg",
   },
   javascript: {
     label: "JavaScript",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/JavaScript.svg",
-    primaryColor: "#F7DF1E",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JavaScript.svg",
   },
   tailwind: {
     label: "TailwindCSS",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Tailwind+CSS.svg",
-    primaryColor: "#06B6D4",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/TailwindCSS.svg",
   },
   redux: {
     label: "Redux",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Redux.svg",
-    primaryColor: "#764ABC",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Redux.svg",
   },
   nodejs: {
     label: "Node.js",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Node.js.svg",
-    primaryColor: "#339933",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Node.js.svg",
   },
   express: {
     label: "Express.js",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Express.svg",
-    primaryColor: "#000000",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Express.svg",
   },
   nestjs: {
     label: "NestJS",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Next.js.svg",
-    primaryColor: "#E0234E",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Next.js.svg",
   },
   django: {
     label: "Django",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Django.svg",
-    primaryColor: "#092E20",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Django.svg",
   },
   fastapi: {
     label: "FastAPI",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
-    primaryColor: "#009688",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/FastAPI.svg",
   },
   spring: {
     label: "Spring",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Spring.svg",
-    primaryColor: "#6DB33F",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Spring.svg",
   },
   rubyonrails: {
     label: "Ruby on Rails",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Ruby+on+Rails.svg",
-    primaryColor: "#CC0000",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RubyonRails.svg",
   },
   aws: {
     label: "AWS",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/AWS.svg",
-    primaryColor: "#FF9900",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/AWS.svg",
   },
   mongodb: {
     label: "MongoDB",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/MongoDB.svg",
-    primaryColor: "#47A248",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MongoDB.svg",
   },
   postgresql: {
     label: "PostgreSQL",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/PostgresSQL.svg",
-    primaryColor: "#4169E1",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/PostgresSQL.svg",
   },
   mysql: {
     label: "MySQL",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/MySQL.svg",
-    primaryColor: "#4479A1",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MySQL.svg",
   },
   redis: {
     label: "Redis",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Redis.svg",
-    primaryColor: "#DC382D",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Redis.svg",
   },
   kafka: {
     label: "Apache Kafka",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
-    primaryColor: "#231F20",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ApacheKafka.svg",
   },
   docker: {
     label: "Docker",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Docker.svg",
-    primaryColor: "#2496ED",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Docker.svg",
   },
   kubernetes: {
     label: "Kubernetes",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/FastAPI.svg",
-    primaryColor: "#326CE5",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kubernetes.svg",
   },
   java: {
     label: "Java",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Java.svg",
-    primaryColor: "#ED8B00",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Java.svg",
   },
   python: {
     label: "Python",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Python.svg",
-    primaryColor: "#3776AB",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Python.svg",
   },
   c: {
     label: "C",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/C.svg",
-    primaryColor: "#A8B9CC",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/C.svg",
   },
   cpp: {
     label: "C++",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/C%2B%2B+(CPlusPlus).svg",
-    primaryColor: "#00599C",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/C%2B%2B.svg",
   },
   kotlin: {
     label: "Kotlin",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Kotlin.svg",
-    primaryColor: "#7F52FF",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
   },
   swift: {
     label: "Swift",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Swift.svg",
-    primaryColor: "#FA7343",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Swift.svg",
   },
   flutter: {
     label: "Flutter",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/Flutter.svg",
-    primaryColor: "#02569B",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flutter.svg",
   },
-  // nuxtjs: {
-  //   label: "Nuxt.js",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  //   primaryColor: "#00DC82",
-  // },
-  // styledComponents: {
-  //   label: "Styled-Components",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // emotion: {
-  //   label: "Emotion",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // cssModule: {
-  //   label: "CSS Module",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // recoil: {
-  //   label: "Recoil",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // zustand: {
-  //   label: "Zustand",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // jotai: {
-  //   label: "Jotai",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // tanstackQuery: {
-  //   label: "Tanstack-Query",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // reactNative: {
-  //   label: "React Native",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // springboot: {
-  //   label: "Spring Boot",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
-  // supabase: {
-  //   label: "Supabase",
-  //   imgUrl: "https://icon.icepanel.io/Technology/svg/TypeScript.svg",
-  // },
+  tanstackQuery: {
+    label: "Tanstack-Query",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Tanstack-Query.svg",
+  },
+  jotai: {
+    label: "Jotai",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jotai.svg",
+  },
+  reactNative: {
+    label: "React Native",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
+  },
+  zustand: {
+    label: "Zustand",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Zustand.svg",
+  },
+  styledComponents: {
+    label: "Styled-Components",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Styled-Components.svg",
+  },
+  emotion: {
+    label: "Emotion",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Emotion.svg",
+  },
+  recoil: {
+    label: "Recoil",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Recoil.svg",
+  },
+  nuxtjs: {
+    label: "Nuxt.js",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nuxt.js.svg",
+  },
+  vite: {
+    label: "Vite",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Vite.svg",
+  },
+  astro: {
+    label: "Astro",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Astro.svg",
+  },
+  solidjs: {
+    label: "SolidJS",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SolidJS.svg",
+  },
+  remix: {
+    label: "Remix",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Remix.svg",
+  },
+  springboot: {
+    label: "Spring Boot",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringBoot.svg",
+  },
+  supabase: {
+    label: "Supabase",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Supabase.svg",
+  },
+  prisma: {
+    label: "Prisma",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Prisma.svg",
+  },
+  trpc: {
+    label: "tRPC",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/tRPC.svg",
+  },
+  go: {
+    label: "Go",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Go.svg",
+  },
+  rust: {
+    label: "Rust",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Rust.svg",
+  },
+  deno: {
+    label: "Deno",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Deno.svg",
+  },
+  compose: {
+    label: "Jetpack Compose",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JetpackCompose.svg",
+  },
+  rxswift: {
+    label: "RxSwift",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RxSwift.svg",
+  },
+  alamofire: {
+    label: "Alamofire",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Alamofire.svg",
+  },
+  swiftui: {
+    label: "SwiftUI",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SwiftUI.svg",
+  },
 } as const;
 
 export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;

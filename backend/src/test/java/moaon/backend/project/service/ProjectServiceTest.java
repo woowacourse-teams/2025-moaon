@@ -1,8 +1,6 @@
 package moaon.backend.project.service;
 
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.repository.ProjectRepository;
@@ -12,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {

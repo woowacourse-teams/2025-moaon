@@ -1,30 +1,30 @@
 import { Separated } from "@shared/components/Separated/Separated";
 import useSearchParams from "@shared/hooks/useSearchParams";
+import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 import { useState } from "react";
-import useProjectList from "../hooks/useProjectList";
+import useProjectList from "../../../pages/list/hooks/useProjectList";
 import SortItem from "./SortItem/SortItem";
 import * as S from "./SortList.styled";
 
-export const SORT_MAP = {
-  createdAt: "게시일순",
-  views: "조회순",
-  loves: "좋아요순",
-} as const;
+interface SortListProps {
+  sortMap: Record<string, string>;
+}
 
-export type SortKey = keyof typeof SORT_MAP;
-export type SortValue = (typeof SORT_MAP)[SortKey];
-
-function SortList() {
+function SortList({ sortMap }: SortListProps) {
   const params = useSearchParams({
     key: "sort",
     mode: "single",
   });
-  const [selectedSort, setSelectedSort] = useState<SortValue>(
-    SORT_MAP[params.get()[0] as SortKey] ?? "게시일순",
+
+  const sortParamValue = params.get()[0];
+  const defaultSortValue = Object.values(sortMap)[0];
+  const [selectedSort, setSelectedSort] = useState(
+    sortParamValue ?? defaultSortValue,
   );
+
   const { refetch } = useProjectList();
 
-  const handleSelectedSort = (sortKey: SortKey, sortValue: SortValue) => {
+  const handleSelectedSort = (sortKey: string, sortValue: string) => {
     setSelectedSort(sortValue);
     params.update(sortKey);
     refetch();
@@ -33,12 +33,12 @@ function SortList() {
   return (
     <S.List>
       <Separated by={<S.Separator />}>
-        {Object.entries(SORT_MAP).map(([sortKey, sortValue]) => (
+        {typeSafeObjectEntries(sortMap).map(([sortKey, sortValue]) => (
           <SortItem
             key={sortValue}
             sortValue={sortValue}
             isSelected={selectedSort === sortValue}
-            onSelect={() => handleSelectedSort(sortKey as SortKey, sortValue)}
+            onSelect={() => handleSelectedSort(sortKey, sortValue)}
           />
         ))}
       </Separated>
