@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
@@ -151,5 +152,39 @@ public class ArticleApiTest {
                 () -> assertThat(actualResponse.articleContents().get(2).id()).isEqualTo(
                         articleRankThirdHasBiggerId.getId())
         );
+    }
+
+    @DisplayName("POST /articles/{id}/clicks : 아티클 클릭수 증가 API")
+    @Test
+    void updateArticleClicks() {
+        // given
+        Article article = repositoryHelper.save(new ArticleFixtureBuilder().build());
+
+        // when 첫 클릭 - 기본 응답 + 클릭수 증가 + 쿠키 설정
+        ValidatableResponse firstResponse = RestAssured.given().log().all()
+                .pathParam("id", article.getId())
+                .when().post("/articles/{id}/clicks")
+                .then().log().all()
+                .statusCode(200);
+
+        String cookie = firstResponse.extract().cookie("clicked_articles");
+        // then 클릭수 및 쿠키 검증을 위해 서비스에서 직접 조회
+        Article firstResult = repositoryHelper.findById(article.getId());
+        assertAll("아티클 클릭수 증가 및 쿠키 설정 검증",
+                () -> assertThat(firstResult.getClicks()).isEqualTo(1),
+                () -> assertThat(cookie).isNotNull()
+        );
+
+        // when 쿠키와 함께 재클릭 - 클릭수 미증가 확인
+        RestAssured.given().log().all()
+                .cookie("clicked_articles", cookie)
+                .pathParam("id", article.getId())
+                .when().post("/articles/{id}/clicks")
+                .then().log().all()
+                .statusCode(200);
+        Article secondResult = repositoryHelper.findById(article.getId());
+
+        // then 클릭수 미증가 검증
+        assertThat(secondResult.getClicks()).isEqualTo(1);
     }
 }
