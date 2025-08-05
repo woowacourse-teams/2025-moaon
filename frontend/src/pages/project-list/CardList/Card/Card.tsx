@@ -42,11 +42,8 @@ function Card({ project }: CardProps) {
         <S.CardImageBox>
           {isImageLoading && <S.SkeletonImageBox />}
           <S.CardImage
-           
             src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
-           
             onError={imageLoadError}
-         
             onLoad={imageLoadSuccess}
             style={{ display: isImageLoading ? "none" : "block" }}
           />
