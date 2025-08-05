@@ -1,4 +1,4 @@
-import { useFilterParams } from "@/pages/list/hooks/useFilterParams";
+import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import FilterBox from "../FilterBox/FilterBox";
 import RecommendTechStack from "./RecommendTechStack/RecommendTechStack";
 import SelectedTechStack from "./SelectedTechStack/SelectedTechStack";

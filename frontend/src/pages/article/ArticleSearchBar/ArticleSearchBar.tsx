@@ -1,6 +1,6 @@
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import useSearchParams from "@shared/hooks/useSearchParams";
-import useProjectList from "@/pages/list/hooks/useProjectList";
+import useProjectList from "@/pages/project-list/hooks/useProjectList";
 
 function ArticleSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });

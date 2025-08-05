@@ -5,7 +5,7 @@ import {
   type TechStackKey,
 } from "@domains/filter/techStack";
 import { type ChangeEvent, useState } from "react";
-import { useFilterParams } from "@/pages/list/hooks/useFilterParams";
+import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import * as S from "./TechStackSearchBar.styled";
 import TechStackSearchResult from "./TechStackSearchResult/TechStackSearchResult";
 

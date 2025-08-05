@@ -1,6 +1,6 @@
 import useSearchParams from "@shared/hooks/useSearchParams";
 import type { PropsWithChildren } from "react";
-import useProjectList from "@/pages/list/hooks/useProjectList";
+import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import type { FilterParam } from "../../FilterContainer";
 import * as S from "./FilterBox.styled";
 

@@ -2,7 +2,7 @@ import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
 import ArticlePage from "./pages/article/ArticlePage";
 import DetailPage from "./pages/detail/DetailPage";
-import ListPage from "./pages/list/ListPage";
+import ListPage from "./pages/project-list/ListPage";
 import Header from "./shared/components/Header/Header";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
 

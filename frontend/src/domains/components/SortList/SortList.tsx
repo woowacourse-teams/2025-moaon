@@ -2,7 +2,7 @@ import { Separated } from "@shared/components/Separated/Separated";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 import { useState } from "react";
-import useProjectList from "../../../pages/list/hooks/useProjectList";
+import useProjectList from "../../../pages/project-list/hooks/useProjectList";
 import SortItem from "./SortItem/SortItem";
 import * as S from "./SortList.styled";
 
