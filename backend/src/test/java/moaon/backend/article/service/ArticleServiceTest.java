@@ -17,6 +17,8 @@ import moaon.backend.article.dto.CursorParser;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -146,7 +148,20 @@ class ArticleServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> articleService.getByProjectId(projectId))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("테스트 실패");
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+    }
+
+    @DisplayName("click을 증가시킬 아티클이 존재하지 않다면 예외가 발생한다.")
+    @Test
+    void increaseClicksCount() {
+        // Given
+        long articleId = 1L;
+        given(articleRepository.findById(articleId)).willReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> articleService.increaseClicksCount(articleId))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 }
