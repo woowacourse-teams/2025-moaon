@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
 import ArticlePage from "./pages/article/ArticlePage";
-import DetailPage from "./pages/project-detail/DetailPage";
+import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
 import Header from "./shared/components/Header/Header";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<h1>모아온 배포 환경 통합</h1>} />
           <Route path="/project" element={<ProjectListPage />} />
-          <Route path="/project/:id" element={<DetailPage />} />
+          <Route path="/project/:id" element={<ProjectDetailPage />} />
           <Route path="/article" element={<ArticlePage />} />
           <Route
             path="*"
