@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ProjectViewTimes {
+public class AccessHistory {
 
     private static final int MAX_ENTRIES = 50;
     private static final int BLOCK_SECONDS = 60 * 30;
@@ -21,10 +21,10 @@ public class ProjectViewTimes {
 
     private final Map<Long, Long> projectViewTimes;
 
-    public static ProjectViewTimes from(String decodedCookieValue) {
+    public static AccessHistory from(String decodedCookieValue) {
         Map<String, Long> viewedMap = parseJson(decodedCookieValue);
         Map<Long, Long> result = convertKeysToLong(viewedMap);
-        return new ProjectViewTimes(result);
+        return new AccessHistory(result);
     }
 
     private static Map<String, Long> parseJson(String decodedCookieValue) {
@@ -49,15 +49,15 @@ public class ProjectViewTimes {
         return result;
     }
 
-    public static ProjectViewTimes empty() {
-        return new ProjectViewTimes(new HashMap<>());
+    public static AccessHistory empty() {
+        return new AccessHistory(new HashMap<>());
     }
 
     public void removeExpiredEntries(long currentTimeSeconds) {
         this.projectViewTimes.entrySet().removeIf(entry -> currentTimeSeconds - entry.getValue() >= BLOCK_SECONDS);
     }
 
-    public boolean isViewCountIncreasable(long projectId, long currentTimeSeconds) {
+    public boolean isCountIncreasable(long projectId, long currentTimeSeconds) {
         Long lastViewTime = this.projectViewTimes.get(projectId);
         return lastViewTime == null || currentTimeSeconds - lastViewTime >= BLOCK_SECONDS;
     }
