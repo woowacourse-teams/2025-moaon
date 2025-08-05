@@ -1,3 +1,4 @@
+import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
@@ -31,13 +32,18 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             alt={`슬라이드 ${index + 1}`}
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
+            isSingleImage={imageUrls.length === 1}
           />
         );
       })}
       {imageUrls.length > 1 && (
         <>
-          <S.PrevButton onClick={handleSlidePrev}>❮</S.PrevButton>
-          <S.NextButton onClick={handleSlideNext}>❯</S.NextButton>
+          <S.PrevButton onClick={handleSlidePrev}>
+            <ArrowIcon direction="right" />
+          </S.PrevButton>
+          <S.NextButton onClick={handleSlideNext}>
+            <ArrowIcon direction="left" />
+          </S.NextButton>
         </>
       )}
     </S.CarouselContainer>

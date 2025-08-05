@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 
 export const OverviewSectionContainer = styled.section`
-  padding-bottom: 3.125rem;
+  padding: 2rem 0 3rem;
+  border-bottom: 1px solid #d4d4d4;
+  margin-bottom: 2rem;
 `;
 
 export const OverviewContent = styled.div`
