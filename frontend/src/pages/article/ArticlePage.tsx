@@ -4,12 +4,9 @@ import SortList from "../../domains/components/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
-import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
 function ArticlePage() {
-  const { articles } = useArticleList();
-
   return (
     <S.Main>
       <S.MainBox>

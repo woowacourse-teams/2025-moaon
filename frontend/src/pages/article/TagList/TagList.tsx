@@ -8,7 +8,7 @@ function TagList() {
       <S.TagListTitle>태그</S.TagListTitle>
       <S.TagList>
         {Object.values(TECH_STACK_ICON_MAP).map((tag) => (
-          <Tag key={tag.label} Text={tag.label} />
+          <Tag key={tag.label} text={tag.label} />
         ))}
       </S.TagList>
     </S.TagListContainer>

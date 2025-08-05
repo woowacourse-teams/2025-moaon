@@ -1,13 +1,13 @@
 import * as S from "./Tag.styled";
 
 interface TagBoxProps {
-  Text: string;
+  text: string;
 }
 
-function Tag({ Text }: TagBoxProps) {
+function Tag({ text }: TagBoxProps) {
   return (
     <S.TagBox>
-      <S.TagText className="tag-text">{Text}</S.TagText>
+      <S.TagText className="tag-text">{text}</S.TagText>
     </S.TagBox>
   );
 }
