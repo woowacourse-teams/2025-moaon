@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import ReactGA from "react-ga4";
 import { useLocation } from "react-router";
+import { GA_EVENT } from "../constants";
 
 const normalizePath = (pathname: string) => {
   if (/^\/detail\/\d+/.test(pathname)) {
@@ -27,8 +28,7 @@ const useTrackPageTimeGA = () => {
 
     if (prevPathRef.current !== location.pathname) {
       ReactGA.event({
-        category: "User Engagement",
-        action: "time_stay_per_page",
+        ...GA_EVENT.USER_ENGAGEMENT_TIME_STAY_PER_PAGE,
         label: normalizePath(prevPathRef.current),
         value: stayTime / 1000,
       });

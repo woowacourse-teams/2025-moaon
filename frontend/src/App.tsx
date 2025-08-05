@@ -1,5 +1,4 @@
 import { Link, Route, Routes } from "react-router";
-import useInitializeGA from "./libs/googleAnalytics/hooks/useInitializeGA";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
 import DetailPage from "./pages/detail/DetailPage";
 import ListPage from "./pages/list/ListPage";
@@ -7,14 +6,13 @@ import Header from "./shared/components/Header/Header";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
 
 function App() {
-  useInitializeGA();
   useTrackPageTimeGA();
   return (
     <>
       <Header />
       <GlobalLayout>
         <Routes>
-          <Route path="/" element={<h1>모아온 프로덕션 배포</h1>} />
+          <Route path="/" element={<h1>모아온 배포 환경 통합</h1>} />
           <Route path="/list" element={<ListPage />} />
           <Route path="/detail/:id" element={<DetailPage />} />
           <Route

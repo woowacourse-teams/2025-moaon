@@ -25,9 +25,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         return jpaQueryFactory.selectFrom(project)
                 .where(
                         toContainsSearch(condition.search()),
-                        toContainsPlatform(condition.platformNames()),
                         toContainsCategory(condition.categoryNames()),
-                        toContainsOrganization(condition.organizationNames()),
                         toContainsTechStacks(condition.techStackNames())
                 )
                 .orderBy(toOrderBy(condition.sortBy()))
@@ -44,28 +42,12 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         return null;
     }
 
-    private BooleanExpression toContainsPlatform(List<String> platformNames) {
-        if (platformNames == null || platformNames.isEmpty()) {
-            return null;
-        }
-
-        return project.platforms.any().name.in(platformNames);
-    }
-
     private BooleanExpression toContainsCategory(List<String> categoryNames) {
         if (categoryNames == null || categoryNames.isEmpty()) {
             return null;
         }
 
         return project.categories.any().name.in(categoryNames);
-    }
-
-    private BooleanExpression toContainsOrganization(List<String> organizationNames) {
-        if (organizationNames == null || organizationNames.isEmpty()) {
-            return null;
-        }
-
-        return project.organization.name.in(organizationNames);
     }
 
     private BooleanExpression toContainsTechStacks(List<String> techStackNames) {

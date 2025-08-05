@@ -1,12 +1,13 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router";
 
 export const Header = styled.header`
   width: 100%;
   position: sticky;
   top: 0;
+  padding: 1rem 0;
   background-color: #fff;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #d2d2d2;
+  border-bottom: 1px solid #dfdfdf;
   z-index: 999;
 `;
 
@@ -18,8 +19,13 @@ export const HeaderBox = styled.div`
   justify-content: space-between;
 `;
 
+export const LogoLink = styled(Link)`
+  font-size: 1.75rem;
+  font-weight: 700;
+`;
+
 export const Wrap = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2.5rem;
 `;
