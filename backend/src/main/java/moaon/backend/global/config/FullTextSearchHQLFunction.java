@@ -17,7 +17,7 @@ public class FullTextSearchHQLFunction implements FunctionContributor {
     private static final String PROJECT_SQL_PATTERN = "match (title, summary, description) against (?1 in boolean mode)";
 
     @Override
-    public void contributeFunctions(final FunctionContributions functionContributions) {
+    public void contributeFunctions(FunctionContributions functionContributions) {
         BasicType<Double> columnTypeToSelect = functionContributions.getTypeConfiguration()
             .getBasicTypeRegistry()
             .resolve(DOUBLE);
