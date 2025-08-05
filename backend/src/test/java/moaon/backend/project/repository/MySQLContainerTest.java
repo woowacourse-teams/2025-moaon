@@ -28,11 +28,15 @@ public abstract class MySQLContainerTest {
         jdbcTemplate.execute(
                 "ALTER TABLE project ADD FULLTEXT INDEX idx_project_fulltext (title, summary, description) WITH PARSER NGRAM"
         );
+        jdbcTemplate.execute(
+                "ALTER TABLE article ADD FULLTEXT INDEX idx_article_fulltext (title, summary, content) WITH PARSER NGRAM"
+        );
     }
 
     @AfterEach
     protected void dropFullTextIndex() {
         jdbcTemplate.execute("ALTER TABLE project DROP INDEX idx_project_fulltext");
+        jdbcTemplate.execute("ALTER TABLE article DROP INDEX idx_article_fulltext");
     }
 
     @DynamicPropertySource
