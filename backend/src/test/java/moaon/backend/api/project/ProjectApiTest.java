@@ -15,8 +15,8 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
+import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
-import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.repository.MySQLContainerTest;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
@@ -143,7 +143,7 @@ public class ProjectApiTest extends MySQLContainerTest {
         );
 
         // when
-        ProjectSummaryResponse[] actualResponses = RestAssured.given().log().all()
+        PagedProjectResponse actualResponses = RestAssured.given().log().all()
                 .queryParams("sort", "views")
                 .queryParams("categories", List.of(filteredProjectCategory.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
@@ -151,14 +151,13 @@ public class ProjectApiTest extends MySQLContainerTest {
                 .when().get("/projects")
                 .then().log().all()
                 .statusCode(200)
-                .extract().as(ProjectSummaryResponse[].class);
+                .extract().as(PagedProjectResponse.class);
 
         // then
         assertAll(
-                () -> assertThat(actualResponses).hasSize(3),
-                () -> assertThat(actualResponses[0].id()).isEqualTo(projectViewRankFirst.getId()),
-                () -> assertThat(actualResponses[1].id()).isEqualTo(projectViewRankSecond.getId()),
-                () -> assertThat(actualResponses[2].id()).isEqualTo(projectViewRankThird.getId())
+                () -> assertThat(actualResponses.contents()).hasSize(2),
+                () -> assertThat(actualResponses.contents().get(0).id()).isEqualTo(projectViewRankFirst.getId()),
+                () -> assertThat(actualResponses.contents().get(1).id()).isEqualTo(projectViewRankSecond.getId())
         );
     }
 
