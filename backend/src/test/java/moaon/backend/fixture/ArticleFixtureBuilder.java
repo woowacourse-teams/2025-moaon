@@ -29,6 +29,7 @@ public class ArticleFixtureBuilder {
         this.createdAt = LocalDateTime.now();
         this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
         this.category = Fixture.anyArticleCategory();
+        this.project = new ProjectFixtureBuilder().build();
     }
 
     public ArticleFixtureBuilder id(Long id) {

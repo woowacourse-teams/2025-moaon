@@ -43,6 +43,7 @@ public class RepositoryHelper {
     public Article save(Article article) {
         articleCategoryRepository.save(article.getCategory());
         techStackRepository.saveAll(article.getTechStacks());
+        save(article.getProject());
 
         return articleRepository.save(article);
     }

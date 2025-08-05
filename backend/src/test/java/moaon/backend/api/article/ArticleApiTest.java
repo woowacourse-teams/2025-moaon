@@ -1,4 +1,4 @@
-package moaon.backend.api.project;
+package moaon.backend.api.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

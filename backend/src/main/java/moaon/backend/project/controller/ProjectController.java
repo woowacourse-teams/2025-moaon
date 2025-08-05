@@ -7,6 +7,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cookie.ProjectViewCookieManager;
 import moaon.backend.global.cookie.ProjectViewTimes;
+import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.article.service.ArticleService;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
@@ -25,6 +27,7 @@ public class ProjectController {
 
     private final ProjectViewCookieManager cookieManager;
     private final ProjectService projectService;
+    private final ArticleService articleService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDetailResponse> getProjectById(
@@ -59,5 +62,11 @@ public class ProjectController {
                 sortType
         );
         return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
+    }
+
+    @GetMapping("/{id}/articles")
+    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(@PathVariable("id") long id) {
+        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectId(id);
+        return ResponseEntity.ok(articleDetailResponses);
     }
 }

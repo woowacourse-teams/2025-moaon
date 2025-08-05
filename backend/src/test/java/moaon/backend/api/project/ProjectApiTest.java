@@ -7,6 +7,9 @@ import io.restassured.RestAssured;
 import java.util.List;
 
 import io.restassured.response.ValidatableResponse;
+import moaon.backend.article.domain.Article;
+import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
@@ -158,5 +161,41 @@ public class ProjectApiTest extends MySQLContainerTest {
                 () -> assertThat(actualResponses[1].id()).isEqualTo(projectViewRankSecond.getId()),
                 () -> assertThat(actualResponses[2].id()).isEqualTo(projectViewRankThird.getId())
         );
+    }
+
+    @DisplayName("GET /projects/{id}/articles : 특정 프로젝트 ID에 있는 모든 아티클 조회 API")
+    @Test
+    void getArticlesByProjectId() {
+        // given
+        Project targetProject = new ProjectFixtureBuilder().build();
+
+        Article targetProjectArticle1 = repositoryHelper.save(
+                new ArticleFixtureBuilder().project(targetProject).build()
+        );
+        Article targetProjectArticle2 = repositoryHelper.save(
+                new ArticleFixtureBuilder().project(targetProject).build()
+        );
+        Article targetProjectArticle3 = repositoryHelper.save(
+                new ArticleFixtureBuilder().project(targetProject).build()
+        );
+
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+
+        // when
+        ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
+                .queryParams("id", targetProject.getId())
+                .when().get("/projects/{id}/articles")
+                .then().log().all()
+                .statusCode(200)
+                .extract().as(ArticleDetailResponse[].class);
+
+        // then
+        assertThat(actualArticles)
+                .extracting(ArticleDetailResponse::id)
+                .containsExactlyInAnyOrder(
+                        targetProjectArticle1.getId(),
+                        targetProjectArticle2.getId(),
+                        targetProjectArticle3.getId()
+                );
     }
 }
