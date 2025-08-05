@@ -29,6 +29,12 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+    logging:
+      driver: "awslogs"
+      options:
+        awslogs-group: "moaon"
+        awslogs-region: "ap-northeast-2"
+        awslogs-stream: "dev-docker"
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL_DEV}
