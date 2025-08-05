@@ -3,8 +3,8 @@ import {
   type TechStackKey,
 } from "@domains/filter/techStack";
 import closeIcon from "@/assets/icons/close.svg";
-import { useFilterParams } from "@/pages/list/hooks/useFilterParams";
-import useProjectList from "@/pages/list/hooks/useProjectList";
+import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
+import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import * as S from "./TechStackFilterList.styled";
 
 interface TechStackListProps {

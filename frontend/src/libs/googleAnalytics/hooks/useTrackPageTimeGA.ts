@@ -4,8 +4,8 @@ import { useLocation } from "react-router";
 import { GA_EVENT } from "../constants";
 
 const normalizePath = (pathname: string) => {
-  if (/^\/detail\/\d+/.test(pathname)) {
-    return "/detail/[id]";
+  if (/^\/project\/\d+/.test(pathname)) {
+    return "/project/[id]";
   }
 
   return pathname;

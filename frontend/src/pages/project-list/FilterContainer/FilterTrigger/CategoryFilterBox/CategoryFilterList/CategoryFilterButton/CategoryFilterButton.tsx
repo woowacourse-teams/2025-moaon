@@ -4,7 +4,7 @@ import type {
 } from "@domains/filter/projectCategory";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useEffect, useState } from "react";
-import useProjectList from "@/pages/list/hooks/useProjectList";
+import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import * as S from "./CategoryFilterButton.styled";
 
 interface CategoryFilterButtonProps {

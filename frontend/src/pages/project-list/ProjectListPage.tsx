@@ -5,10 +5,10 @@ import CardList from "./CardList/CardList";
 import FilterContainer from "./FilterContainer/FilterContainer";
 import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
-import * as S from "./ListPage.styled";
+import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 
-function ListPage() {
+function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch } = useProjectList();
 
@@ -45,4 +45,4 @@ function ListPage() {
   );
 }
 
-export default ListPage;
+export default ProjectListPage;

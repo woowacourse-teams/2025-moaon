@@ -1,4 +1,4 @@
-import TechStackList from "@/pages/list/CardList/Card/TechStackList/TechStackList";
+import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
 import Badge from "./Badge/Badge";
 import * as S from "./Card.styled";
 

@@ -44,7 +44,7 @@ const MOCK_DATA = [
   },
 ];
 
-function DetailPage() {
+function ProjectDetailPage() {
   const { id } = useParams();
 
   const { projectDetail, isLoading, error } = useProjectDetail(Number(id));
@@ -75,4 +75,4 @@ function DetailPage() {
   );
 }
 
-export default DetailPage;
+export default ProjectDetailPage;
