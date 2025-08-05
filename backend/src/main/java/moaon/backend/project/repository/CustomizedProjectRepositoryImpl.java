@@ -5,11 +5,13 @@ import static moaon.backend.project.domain.QProject.project;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
+import java.util.Arrays;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.config.FullTextSearchHQLFunction;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.SortBy;
 import moaon.backend.project.dto.ProjectQueryCondition;
@@ -19,6 +21,9 @@ import org.springframework.util.StringUtils;
 @Repository
 @RequiredArgsConstructor
 public class CustomizedProjectRepositoryImpl implements CustomizedProjectRepository {
+
+    private static final double MINIMUM_MATCH_SCORE = 0.0;
+    private static final String BLANK = " ";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -36,12 +41,19 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     private BooleanExpression toContainsSearch(String search) {
         if (StringUtils.hasText(search)) {
-            return project.title.contains(search)
-                    .or(project.summary.contains(search))
-                    .or(project.description.contains(search));
+            String searchFormat = formatSearchKeyword(search);
+            return Expressions
+                    .numberTemplate(Double.class, FullTextSearchHQLFunction.EXPRESSION_TEMPLATE, searchFormat)
+                    .gt(MINIMUM_MATCH_SCORE);
         }
 
         return null;
+    }
+
+    private String formatSearchKeyword(String search) {
+        return Arrays.stream(search.split(BLANK))
+                .map(keyword -> String.format("+%s*", keyword))
+                .collect(Collectors.joining(BLANK));
     }
 
     private BooleanExpression toContainsCategory(List<String> categoryNames) {
