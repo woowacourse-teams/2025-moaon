@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import java.util.List;
+import moaon.backend.article.domain.Article;
+import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
@@ -139,6 +142,37 @@ public class ProjectApiTest {
                 () -> assertThat(actualResponses[0].id()).isEqualTo(projectViewRankFirst.getId()),
                 () -> assertThat(actualResponses[1].id()).isEqualTo(projectViewRankSecond.getId()),
                 () -> assertThat(actualResponses[2].id()).isEqualTo(projectViewRankThird.getId())
+        );
+    }
+
+    @DisplayName("GET /projects/{id}/articles : 특정 프로젝트 ID에 있는 모든 아티클 조회 API")
+    @Test
+    void getArticlesByProjectId() {
+        // given
+        Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Project otherProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Article targetProjectArticle1 = repositoryHelper.save(
+                new ArticleFixtureBuilder().project(targetProject).build());
+        Article targetProjectArticle2 = repositoryHelper.save(
+                new ArticleFixtureBuilder().project(targetProject).build());
+        Article targetProjectArticle3 = repositoryHelper.save(
+                new ArticleFixtureBuilder().project(targetProject).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(otherProject).build());
+
+        // when
+        ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
+                .queryParams("id", targetProject.getId())
+                .when().get("/projects/" + targetProject.getId() + "/articles")
+                .then().log().all()
+                .statusCode(200)
+                .extract().as(ArticleDetailResponse[].class);
+
+        // then
+        assertAll(
+                () -> assertThat(actualArticles).hasSize(3),
+                () -> assertThat(actualArticles[0].id()).isEqualTo(targetProjectArticle1.getId()),
+                () -> assertThat(actualArticles[1].id()).isEqualTo(targetProjectArticle2.getId()),
+                () -> assertThat(actualArticles[2].id()).isEqualTo(targetProjectArticle3.getId())
         );
     }
 }
