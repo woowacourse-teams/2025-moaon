@@ -75,4 +75,5 @@ export const Button = styled.button`
 
 export const Icon = styled.img`
   width: 1rem;
+  aspect-ratio: 1/1;
 `;

@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { sentryWebpackPlugin } from "@sentry/webpack-plugin";
 import Dotenv from "dotenv-webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -47,6 +48,11 @@ export default {
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({ path: ".env.local", systemvars: true }),
+    sentryWebpackPlugin({
+      org: "moaon",
+      project: "moaon",
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+    }),
   ],
   devServer: {
     static: {

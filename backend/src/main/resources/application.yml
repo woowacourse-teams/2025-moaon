@@ -7,14 +7,16 @@ spring:
 
   jpa:
     database: mysql
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
     hibernate:
       ddl-auto: update
 
-  logging:
-    level:
-      org.hibernate.SQL: DEBUG
-      org.hibernate.orm.jdbc.bind: trace
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: trace
