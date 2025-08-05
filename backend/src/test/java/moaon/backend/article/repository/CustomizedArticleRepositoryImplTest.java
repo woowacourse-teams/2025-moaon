@@ -6,8 +6,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.dto.ClickCursor;
+import moaon.backend.article.dto.CreatedAtCursor;
 import moaon.backend.fixture.ArticleFixtureBuilder;
+import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
@@ -51,14 +55,12 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                filterdArticleCategory.getName(),
-                List.of(),
-                "createdAt",
-                10,
-                "2024-07-31T10:00:00_0"
-        );
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .categoryName(filterdArticleCategory.getName())
+                .sortBy(ArticleSortBy.CREATED_AT)
+                .limit(10)
+                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .build();
 
         // when
         List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
@@ -87,14 +89,12 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                null,
-                List.of(techStack1.getName(), techStack2.getName()),
-                "createdAt",
-                10,
-                "2024-07-31T10:00:00_1"
-        );
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
+                .sortBy(ArticleSortBy.CREATED_AT)
+                .limit(10)
+                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .build();
 
         // when
         List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
@@ -127,14 +127,13 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                articleCategory.getName(),
-                List.of(techStack1.getName(), techStack2.getName()),
-                "createdAt",
-                10,
-                "2024-07-31T10:00:00_1"
-        );
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .categoryName(articleCategory.getName())
+                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
+                .sortBy(ArticleSortBy.CREATED_AT)
+                .limit(10)
+                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .build();
 
         // when
         List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
@@ -175,17 +174,14 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                null,
-                null,
-                "createdAt",
-                10,
-                "2024-07-31T10:00:00_1"
-        );
+        ArticleQueryCondition queryCondition1 = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortBy.CREATED_AT)
+                .limit(10)
+                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition1);
 
         // then
         assertThat(articles).containsExactly(tomorrowArticle, todayArticle, yesterdayArticle);
@@ -225,14 +221,11 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                null,
-                null,
-                "clicks",
-                10,
-                "4_4"
-        );
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortBy.CLICKS)
+                .limit(10)
+                .cursor(new ClickCursor(4, 4L))
+                .build();
 
         // when
         List<Article> articles = customizedArticleRepositoryImpl.findWithSearchConditions(queryCondition);
@@ -281,14 +274,11 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                null,
-                null,
-                "clicks",
-                4,
-                "4_9999999"
-        );
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortBy.CLICKS)
+                .limit(4)
+                .cursor(new ClickCursor(4, 99999999L))
+                .build();
 
         // when
         List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
@@ -337,19 +327,51 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
-                null,
-                null,
-                null,
-                "clicks",
-                9,
-                "4_9999999"
-        );
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortBy.CLICKS)
+                .limit(9)
+                .cursor(new ClickCursor(4, 999999L))
+                .build();
 
         // when
         List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
         // then
         assertThat(articles).hasSize(6);
+    }
+
+    @DisplayName("cursor 가 없는 경우 초기 데이터를 가져온다.")
+    @Test
+    void findArticlesWithNoCursor() {
+        // given
+        Article articleWithId1 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .clicks(3)
+                        .build()
+        );
+
+        Article articleWithId2 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .clicks(2)
+                        .build()
+        );
+
+        Article articleWithId3 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .clicks(1)
+                        .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortBy.CLICKS)
+                .limit(9)
+                .cursor(new CreatedAtCursor(LocalDateTime.now(), 1L))
+                .build();
+
+        // when
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+
+        // then
+        assertThat(articles).containsExactly(articleWithId1, articleWithId2, articleWithId3);
     }
 }

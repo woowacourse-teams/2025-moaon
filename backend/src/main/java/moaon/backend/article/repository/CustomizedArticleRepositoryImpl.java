@@ -38,7 +38,10 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
         applyWhereAndHaving(whereBuilder, queryCondition, query);
-        cursor.applyCursor(queryCondition, whereBuilder);
+
+        if (cursor != null) {
+            cursor.applyCursor(queryCondition, whereBuilder);
+        }
 
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);

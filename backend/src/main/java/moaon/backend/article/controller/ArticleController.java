@@ -25,7 +25,7 @@ public class ArticleController {
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "limit") int limit,
-            @RequestParam(value = "cursor") String cursor
+            @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
                 search,
