@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cookie.ProjectViewCookieManager;
-import moaon.backend.global.cookie.ViewedProjects;
+import moaon.backend.global.cookie.ProjectViewTimes;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
@@ -34,10 +34,10 @@ public class ProjectController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        ViewedProjects viewedProjects = cookieManager.extractViewedMap(request);
-        if (cookieManager.isViewCountIncreasable(id, viewedProjects)) {
+        ProjectViewTimes projectViewTimes = cookieManager.extractViewedMap(request);
+        if (cookieManager.isViewCountIncreasable(id, projectViewTimes)) {
             ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
-            Cookie cookie = cookieManager.createOrUpdateCookie(id, viewedProjects);
+            Cookie cookie = cookieManager.createOrUpdateCookie(id, projectViewTimes);
             response.addCookie(cookie);
             return ResponseEntity.ok(projectDetailResponse);
         }

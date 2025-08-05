@@ -12,7 +12,8 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ViewedProjects {
+public class ProjectViewTimes {
+
     private static final int MAX_ENTRIES = 50;
     private static final int BLOCK_SECONDS = 1800; // 30분
     private static final int MAX_COOKIE_SIZE = 3500; // 쿠키 크기 제한 (3.5KB)
@@ -20,15 +21,16 @@ public class ViewedProjects {
 
     private final Map<Long, Long> projectViewTimes;
 
-    public static ViewedProjects from(String decoded) {
-        Map<String, Long> viewedMap = parseJson(decoded);
+    public static ProjectViewTimes from(String decodedCookieValue) {
+        Map<String, Long> viewedMap = parseJson(decodedCookieValue);
         Map<Long, Long> result = convertKeysToLong(viewedMap);
-        return new ViewedProjects(result);
+        return new ProjectViewTimes(result);
     }
 
-    private static Map<String, Long> parseJson(String decoded) {
+    private static Map<String, Long> parseJson(String decodedCookieValue) {
         try {
-            return objectMapper.readValue(decoded, new TypeReference<Map<String, Long>>() {});
+            return objectMapper.readValue(decodedCookieValue, new TypeReference<Map<String, Long>>() {
+            });
         } catch (JsonProcessingException e) {
             return Collections.emptyMap();
         }
@@ -46,8 +48,8 @@ public class ViewedProjects {
         return result;
     }
 
-    public static ViewedProjects empty() {
-        return new ViewedProjects(new HashMap<>());
+    public static ProjectViewTimes empty() {
+        return new ProjectViewTimes(new HashMap<>());
     }
 
     public void removeExpiredEntries(long currentTimeSeconds) {
