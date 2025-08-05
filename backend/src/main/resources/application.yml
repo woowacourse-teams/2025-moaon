@@ -16,7 +16,7 @@ spring:
 
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: trace
