@@ -16,7 +16,6 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.Cursor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -62,7 +61,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         String categoryName = queryCondition.categoryName();
         List<String> techStackNames = queryCondition.techStackNames();
 
-        if (StringUtils.hasText(categoryName)) {
+        if (!categoryName.equals("all")) {
             whereBuilder.and(article.category.name.eq(categoryName));
         }
 

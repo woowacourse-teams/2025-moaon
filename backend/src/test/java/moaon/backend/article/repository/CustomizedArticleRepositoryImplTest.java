@@ -92,6 +92,7 @@ class CustomizedArticleRepositoryImplTest {
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
                 .sortBy(ArticleSortBy.CREATED_AT)
+                .categoryName("all")
                 .limit(10)
                 .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
@@ -176,6 +177,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition1 = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortBy.CREATED_AT)
+                .categoryName("all")
                 .limit(10)
                 .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
@@ -223,6 +225,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortBy.CLICKS)
+                .categoryName("all")
                 .limit(10)
                 .cursor(new ClickCursor(4, 4L))
                 .build();
@@ -276,6 +279,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortBy.CLICKS)
+                .categoryName("all")
                 .limit(4)
                 .cursor(new ClickCursor(4, 99999999L))
                 .build();
@@ -329,6 +333,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortBy.CLICKS)
+                .categoryName("all")
                 .limit(9)
                 .cursor(new ClickCursor(4, 999999L))
                 .build();
@@ -364,6 +369,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortBy.CLICKS)
+                .categoryName("all")
                 .limit(9)
                 .cursor(new CreatedAtCursor(LocalDateTime.now(), 1L))
                 .build();

@@ -22,7 +22,7 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> getPagedArticles(
             @RequestParam(value = "sort", required = false) String sortType,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
-            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "category", required = false, defaultValue = "all") String category,
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "limit") int limit,
             @RequestParam(value = "cursor", required = false) String cursor
