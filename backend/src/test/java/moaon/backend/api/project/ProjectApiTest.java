@@ -164,17 +164,18 @@ public class ProjectApiTest {
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
                 .queryParams("id", targetProject.getId())
-                .when().get("/projects/" + targetProject.getId() + "/articles")
+                .when().get("/projects/{id}/articles")
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ArticleDetailResponse[].class);
 
         // then
-        assertAll(
-                () -> assertThat(actualArticles).hasSize(3),
-                () -> assertThat(actualArticles[0].id()).isEqualTo(targetProjectArticle1.getId()),
-                () -> assertThat(actualArticles[1].id()).isEqualTo(targetProjectArticle2.getId()),
-                () -> assertThat(actualArticles[2].id()).isEqualTo(targetProjectArticle3.getId())
-        );
+        assertThat(actualArticles)
+                .extracting(ArticleDetailResponse::id)
+                .containsExactlyInAnyOrder(
+                        targetProjectArticle1.getId(),
+                        targetProjectArticle2.getId(),
+                        targetProjectArticle3.getId()
+                );
     }
 }
