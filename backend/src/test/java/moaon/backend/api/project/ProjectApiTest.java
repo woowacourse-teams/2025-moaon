@@ -182,8 +182,7 @@ public class ProjectApiTest extends MySQLContainerTest {
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
-                .queryParams("id", targetProject.getId())
-                .when().get("/projects/{id}/articles")
+                .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ArticleDetailResponse[].class);
