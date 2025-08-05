@@ -36,7 +36,7 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
         <S.OverlineSection>
           <S.Subject>
             {categories
-              .map((category) => `${CATEGORY_MAP[category].label}`)
+              .map((category) => `${PROJECT_CATEGORY_MAP[category].label}`)
               .join(", ")}
           </S.Subject>
           |<S.RegistrationDate>{formatDateToYMD(createdAt)}</S.RegistrationDate>
