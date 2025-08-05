@@ -1,14 +1,14 @@
 import styled from "@emotion/styled";
 
-export const IconBadge = styled.li<{ fontSize: number; primaryColor: string }>`
+export const IconBadge = styled.li<{ fontSize: number }>`
   padding: 0.6rem 1.2rem;
-  border: 1px solid ${({ primaryColor }) => primaryColor};
   border-radius: 30px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   font-size: ${({ fontSize }) => fontSize}px;
   gap: 0.6rem;
-  color: ${({ primaryColor }) => primaryColor};
+  color: #464646;
 `;
 
 export const Icon = styled.img<{ iconsSize: number }>`
