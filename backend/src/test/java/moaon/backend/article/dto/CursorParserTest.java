@@ -45,4 +45,17 @@ class CursorParserTest {
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
     }
+
+    @DisplayName("cursor 가 없는 첫 페이지에서는 null 을 리턴한다.")
+    @Test
+    void toNull() {
+        //given
+        String cursor = "";
+
+        //when
+        Cursor<?> actual = CursorParser.toCursor(cursor, ArticleSortBy.CREATED_AT);
+
+        // then
+        assertThat(actual).isNull();
+    }
 }

@@ -24,7 +24,7 @@ public class ArticleService {
 
         if (articles.size() > queryCondition.limit()) {
             List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
-            Article lastArticle = articles.getLast();
+            Article lastArticle = articlesToReturn.getLast();
 
             Cursor<?> cursor = CursorParser.toCursor(lastArticle, queryCondition.sortBy());
 

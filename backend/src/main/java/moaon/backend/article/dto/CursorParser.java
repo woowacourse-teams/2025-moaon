@@ -7,6 +7,10 @@ import moaon.backend.article.domain.ArticleSortBy;
 public class CursorParser {
 
     public static Cursor<?> toCursor(String cursor, ArticleSortBy articleSortBy) {
+        if (cursor == null || cursor.isEmpty()) {
+            return null;
+        }
+
         String[] valueAndId = cursor.split("_");
 
         String value = valueAndId[0];
