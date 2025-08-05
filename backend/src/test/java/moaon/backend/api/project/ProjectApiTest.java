@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
 import java.util.List;
+
+import io.restassured.response.ValidatableResponse;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
@@ -47,24 +49,39 @@ public class ProjectApiTest {
         // given
         Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
-        // when
-        ProjectDetailResponse actualResponse = RestAssured.given().log().all()
+        // when & then 첫 조회 - 기본 응답 + 조회수 증가 + 쿠키 설정
+        ValidatableResponse firstResponse = RestAssured.given().log().all()
+                .pathParam("id", project.getId())
+                .when().get("/projects/{id}")
+                .then().log().all()
+                .statusCode(200);
+
+        ProjectDetailResponse firstResult = firstResponse.extract().as(ProjectDetailResponse.class);
+        String cookie = firstResponse.extract().cookie("viewed_projects");
+
+        // then 기본 응답 검증
+        assertAll("프로젝트 기본 정보 및 첫 조회 검증",
+                () -> assertThat(firstResult.title()).isEqualTo(project.getTitle()),
+                () -> assertThat(firstResult.summary()).isEqualTo(project.getSummary()),
+                () -> assertThat(firstResult.description()).isEqualTo(project.getDescription()),
+                () -> assertThat(firstResult.techStacks())
+                        .isEqualTo(project.getTechStacks().stream().map(TechStack::getName).toList()),
+                () -> assertThat(firstResult.loves()).isEqualTo(0),
+                () -> assertThat(firstResult.views()).isEqualTo(1), // 조회수 증가
+                () -> assertThat(cookie).isNotNull() // 쿠키 설정
+        );
+
+        // when & then 쿠키와 함께 재조회 - 조회수 미증가 확인
+        ProjectDetailResponse secondResult = RestAssured.given().log().all()
+                .cookie("viewed_projects", cookie)
                 .pathParam("id", project.getId())
                 .when().get("/projects/{id}")
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ProjectDetailResponse.class);
 
-        // then
-        assertAll(
-                () -> assertThat(actualResponse.title()).isEqualTo(project.getTitle()),
-                () -> assertThat(actualResponse.summary()).isEqualTo(project.getSummary()),
-                () -> assertThat(actualResponse.description()).isEqualTo(project.getDescription()),
-                () -> assertThat(actualResponse.techStacks())
-                        .isEqualTo(project.getTechStacks().stream().map(TechStack::getName).toList()),
-                () -> assertThat(actualResponse.loves()).isEqualTo(0),
-                () -> assertThat(actualResponse.views()).isEqualTo(1)
-        );
+        // then 쿠키 동작 검증
+        assertThat(secondResult.views()).isEqualTo(1); // 조회수 미증가
     }
 
     @DisplayName("GET /projects : 모든 프로젝트 조회 API")
