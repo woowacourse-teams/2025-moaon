@@ -10,7 +10,7 @@ function App() {
       <Header />
       <GlobalLayout>
         <Routes>
-          <Route path="/" element={<h1>모아온 프로덕션 배포</h1>} />
+          <Route path="/" element={<h1>모아온 배포 환경 통합</h1>} />
           <Route path="/list" element={<ListPage />} />
           <Route path="/detail/:id" element={<DetailPage />} />
           <Route
