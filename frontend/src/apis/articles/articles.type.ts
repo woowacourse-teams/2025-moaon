@@ -5,7 +5,7 @@ export interface ArticleListResponse {
   contents: Article[];
   totalCount: number;
   hasNext: boolean;
-  nextCursor: string;
+  nextCursor: string | null;
 }
 
 export interface Article {
