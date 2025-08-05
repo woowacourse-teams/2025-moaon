@@ -5,7 +5,7 @@ import * as S from "./NavBar.styled";
 const NAV_LIST = [
   {
     id: 1,
-    href: "/list",
+    href: "/project",
     text: "프로젝트 탐색",
   },
   {
