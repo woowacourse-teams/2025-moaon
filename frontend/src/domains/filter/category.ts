@@ -7,38 +7,35 @@ export const CATEGORY_MAP = {
   app: {
     label: "앱",
   },
-  life: {
-    label: "생활",
-  },
-  finance: {
-    label: "금융/핀테크",
-  },
-  ecommerce: {
-    label: "쇼핑/커머스",
-  },
-  education: {
-    label: "교육/학습",
-  },
-  entertainment: {
-    label: "엔터테인먼트/예술",
-  },
   game: {
     label: "게임",
   },
-  health: {
-    label: "헬스케어/운동",
+  education: {
+    label: "교육",
   },
-  it: {
-    label: "IT/테크",
+  finance: {
+    label: "금융",
+  },
+  life: {
+    label: "생활",
   },
   social: {
     label: "소설",
   },
+  ecommerce: {
+    label: "쇼핑",
+  },
   sports: {
     label: "스포츠",
   },
+  entertainment: {
+    label: "엔터테인먼트",
+  },
   travel: {
-    label: "여행/지도",
+    label: "여행",
+  },
+  it: {
+    label: "IT",
   },
   etc: {
     label: "기타",
