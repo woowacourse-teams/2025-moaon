@@ -3,9 +3,9 @@ import getProjects from "./getProjects";
 
 export const projectQueries = {
   all: ["projects"] as const,
-  fetchList: () =>
+  fetchList: (cursor?: string) =>
     queryOptions({
       queryKey: projectQueries.all,
-      queryFn: getProjects,
+      queryFn: () => getProjects(cursor),
     }),
 };

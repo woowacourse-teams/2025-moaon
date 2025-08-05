@@ -10,3 +10,10 @@ export interface ProjectCard {
   loves: number;
   views: number;
 }
+
+export interface ProjectsResponse {
+  contents: ProjectCard[];
+  totalCount: number;
+  hasNext: boolean;
+  nextCursor: string;
+}
