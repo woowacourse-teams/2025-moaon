@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<h1>모아온 배포 환경 통합</h1>} />
           <Route path="/project" element={<ProjectListPage />} />
-          <Route path="/detail/:id" element={<DetailPage />} />
+          <Route path="/project/:id" element={<DetailPage />} />
           <Route path="/article" element={<ArticlePage />} />
           <Route
             path="*"

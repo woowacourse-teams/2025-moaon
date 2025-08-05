@@ -31,7 +31,7 @@ function Card({ project }: CardProps) {
 
   return (
     <S.Card>
-      <S.CardLink to={`/detail/${id}`}>
+      <S.CardLink to={`/project/${id}`}>
         <S.CardImageBox>
           <S.CardImage
             src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
