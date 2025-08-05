@@ -2,7 +2,7 @@ import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
 import type { TechStackKey } from "@domains/filter/techStack";
 
 export interface ArticleListResponse {
-  contents: Article[];
+  articleContents: Article[];
   totalCount: number;
   hasNext: boolean;
   nextCursor: string | null;

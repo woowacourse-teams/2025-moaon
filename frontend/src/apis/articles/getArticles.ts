@@ -1,8 +1,13 @@
 import { httpClient } from "../HttpClient";
-import type { Article } from "./articles.type";
+import type { ArticleListResponse } from "./articles.type";
 
-const getArticles = async (): Promise<Article[]> => {
-  const articles = await httpClient.get(`/articles`);
+const ARTICLE_PAGE_SIZE = 20;
+
+const getArticles = async (): Promise<ArticleListResponse> => {
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.set("limit", ARTICLE_PAGE_SIZE.toString());
+
+  const articles = await httpClient.get(`/articles?${searchParams.toString()}`);
   if (!articles.ok) {
     throw new Error("Failed to fetch articles");
   }
