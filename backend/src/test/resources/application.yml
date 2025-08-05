@@ -3,7 +3,10 @@ spring:
     name: backend
 
   datasource:
-    url: jdbc:h2:mem:database
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mysql:8.4://testDB
+    username: root
+    password: root
 
   jpa:
     show-sql: false
@@ -11,8 +14,12 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
+  sql:
+    init:
+      data-locations: classpath*:schema.sql
+      mode: always
 
 logging:
   level:

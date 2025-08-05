@@ -14,7 +14,6 @@ import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.repository.MySQLContainerTest;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @Import({RepositoryHelper.class, QueryDslConfig.class})
-public class ArticleApiTest extends MySQLContainerTest {
+public class ArticleApiTest {
 
     @LocalServerPort
     private int port;
