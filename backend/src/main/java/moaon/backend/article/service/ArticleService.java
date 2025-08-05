@@ -3,6 +3,7 @@ package moaon.backend.article.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.dto.Cursor;
@@ -36,5 +37,10 @@ public class ArticleService {
         }
 
         return ArticleResponse.from(articles, totalCount, false, null);
+    }
+
+    public List<ArticleDetailResponse> getByProjectId(long id) {
+        List<Article> articles = articleRepository.findAllByProjectId(id);
+        return ArticleDetailResponse.from(articles);
     }
 }

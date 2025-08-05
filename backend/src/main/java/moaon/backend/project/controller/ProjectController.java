@@ -2,6 +2,8 @@ package moaon.backend.project.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.article.service.ArticleService;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final ArticleService articleService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDetailResponse> getProjectById(@PathVariable("id") long id) {
@@ -30,14 +33,15 @@ public class ProjectController {
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
-            @RequestParam(value = "sort", required = false) String sortType
-    ) {
-        ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
-                search,
-                categories,
-                techStacks,
-                sortType
-        );
+            @RequestParam(value = "sort", required = false) String sortType) {
+        ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(search, categories, techStacks,
+                sortType);
         return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
+    }
+
+    @GetMapping("/{id}/articles")
+    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(@PathVariable("id") long id) {
+        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectId(id);
+        return ResponseEntity.ok(articleDetailResponses);
     }
 }
