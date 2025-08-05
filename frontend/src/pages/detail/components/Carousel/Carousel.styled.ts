@@ -25,20 +25,21 @@ const CarouselImage = styled.img`
 
 export const Image = styled(CarouselImage)<{
   position: "current" | "next" | "prev" | "hidden";
+  length: number;
   noTransition?: boolean;
 }>`
   position: absolute;
   transition: ${({ noTransition }) =>
     noTransition ? "none" : "all 0.5s ease-in-out"};
 
-  ${({ position }) => {
+  ${({ position, length }) => {
     switch (position) {
       case "current":
         return `
         width: 43.75rem;
         height: 23.75rem;
         opacity: 1;
-        transform: translateX(-15rem);
+        transform: translateX(${length > 1 ? "-15rem" : "0"});
         z-index: 1;
       `;
       case "next":
