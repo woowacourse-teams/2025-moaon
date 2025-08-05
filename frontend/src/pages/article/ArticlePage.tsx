@@ -1,5 +1,6 @@
+import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
-import SortList from "../list/SortList/SortList";
+import SortList from "../../domains/components/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
@@ -28,7 +29,7 @@ function ArticlePage() {
               <S.ArticleIntroText>262개</S.ArticleIntroText>의 아티클이
               모여있어요.
             </S.ArticleIntro>
-            <SortList />
+            <SortList sortMap={ARTICLE_SORT_MAP} />
           </S.ArticleHeader>
           <CardList />
         </S.ArticleContainer>
