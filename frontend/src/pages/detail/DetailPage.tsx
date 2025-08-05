@@ -60,7 +60,7 @@ function DetailPage() {
         <Carousel imageUrls={projectDetail.imageUrls} />
       )}
       <OverviewSection overview={projectDetail.description} />
-      <SectionTitle title="기술 문서" />
+      <SectionTitle title="프로젝트 아티클" />
 
       {MOCK_DATA.map(({ title, description, linkUrl, imageUrl }) => (
         <Post

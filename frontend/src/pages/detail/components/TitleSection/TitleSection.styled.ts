@@ -16,6 +16,8 @@ export const TitleSectionContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #d4d4d4;
+  padding-bottom: 2rem;
 `;
 
 export const TitleSectionLeft = styled.div`
@@ -40,7 +42,7 @@ export const Subject = styled(Overline)``;
 
 export const RegistrationDate = styled(Overline)``;
 
-export const ProductName = styled.h1`
+export const ProductName = styled.h2`
   font-size: 2rem;
   font-weight: 700;
 `;

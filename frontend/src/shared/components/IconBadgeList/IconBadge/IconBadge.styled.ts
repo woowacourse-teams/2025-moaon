@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
 export const IconBadge = styled.li<{ fontSize: number }>`
-  padding: 0.6rem 1.2rem;
   border-radius: 30px;
   display: flex;
   flex-direction: column;

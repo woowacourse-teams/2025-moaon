@@ -8,7 +8,8 @@ export const CarouselContainer = styled.div`
   align-items: center;
   gap: 1.5rem;
   position: relative;
-  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid #d4d4d4;
 `;
 
 const CarouselImage = styled.img`
