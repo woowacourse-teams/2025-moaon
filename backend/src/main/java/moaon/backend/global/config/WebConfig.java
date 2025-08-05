@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "https://moaon.site",
+                        "https://www.moaon.site",
                         "http://localhost:3000"
                 )
                 .allowedOriginPatterns("https://moaon-preview-*.vercel.app")
