@@ -19,7 +19,7 @@ public class AccessHistory {
     private static final int MAX_COOKIE_SIZE = (int) 3.5 * 1024;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final Map<Long, Long> projectViewTimes;
+    private final Map<Long, Long> accessTimes;
 
     public static AccessHistory from(String decodedCookieValue) {
         Map<String, Long> viewedMap = parseJson(decodedCookieValue);
@@ -54,30 +54,30 @@ public class AccessHistory {
     }
 
     public void removeExpiredEntries(long currentTimeSeconds) {
-        this.projectViewTimes.entrySet().removeIf(entry -> currentTimeSeconds - entry.getValue() >= BLOCK_SECONDS);
+        this.accessTimes.entrySet().removeIf(entry -> currentTimeSeconds - entry.getValue() >= BLOCK_SECONDS);
     }
 
     public boolean isCountIncreasable(long projectId, long currentTimeSeconds) {
-        Long lastViewTime = this.projectViewTimes.get(projectId);
+        Long lastViewTime = this.accessTimes.get(projectId);
         return lastViewTime == null || currentTimeSeconds - lastViewTime >= BLOCK_SECONDS;
     }
 
     public void add(long projectId, long currentTimeSeconds) {
-        this.projectViewTimes.put(projectId, currentTimeSeconds);
+        this.accessTimes.put(projectId, currentTimeSeconds);
     }
 
     public void removeUntilMaxSize() {
-        while (this.projectViewTimes.size() > MAX_ENTRIES) {
+        while (this.accessTimes.size() > MAX_ENTRIES) {
             removeOldestEntry();
         }
     }
 
     public String serializeWithSizeLimit() {
         try {
-            String json = objectMapper.writeValueAsString(this.projectViewTimes);
-            while (json.length() > MAX_COOKIE_SIZE && !this.projectViewTimes.isEmpty()) {
+            String json = objectMapper.writeValueAsString(this.accessTimes);
+            while (json.length() > MAX_COOKIE_SIZE && !this.accessTimes.isEmpty()) {
                 removeOldestEntry();
-                json = objectMapper.writeValueAsString(this.projectViewTimes);
+                json = objectMapper.writeValueAsString(this.accessTimes);
             }
             return json;
         } catch (JsonProcessingException e) {
@@ -86,19 +86,19 @@ public class AccessHistory {
     }
 
     public boolean isEmpty() {
-        return this.projectViewTimes.isEmpty();
+        return this.accessTimes.isEmpty();
     }
 
 
     public boolean isInvalidForCookie(String json) {
-        return json == null || this.projectViewTimes.isEmpty();
+        return json == null || this.accessTimes.isEmpty();
     }
 
     private void removeOldestEntry() {
-        if (this.projectViewTimes.isEmpty()) {
+        if (this.accessTimes.isEmpty()) {
             return;
         }
-        Long oldestKey = Collections.min(this.projectViewTimes.entrySet(), Map.Entry.comparingByValue()).getKey();
-        this.projectViewTimes.remove(oldestKey);
+        Long oldestKey = Collections.min(this.accessTimes.entrySet(), Map.Entry.comparingByValue()).getKey();
+        this.accessTimes.remove(oldestKey);
     }
 }
