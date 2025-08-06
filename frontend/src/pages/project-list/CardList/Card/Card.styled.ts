@@ -51,6 +51,15 @@ export const CardImageBox = styled.div`
   overflow: hidden;
   position: relative;
   border: 1px solid #e9e9e9;
+
+  /* 기본 스켈레톤 배경 */
+  ${shimmerGradient}
+
+  /* 이미지가 완전히 로드되면 배경 애니메이션 중지 */
+  &.image-loaded {
+    background: none;
+    animation: none;
+  }
 `;
 
 export const CardImage = styled.img`
@@ -58,6 +67,15 @@ export const CardImage = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: center;
+
+  /* 처음에는 투명하게 시작 */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  /* 로드 완료 시 나타나기 */
+  &.loaded {
+    opacity: 1;
+  }
 `;
 
 export const CardInfo = styled.div`
