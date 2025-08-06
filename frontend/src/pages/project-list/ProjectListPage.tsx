@@ -44,7 +44,7 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        <SortList
+        <SortList<typeof PROJECT_SORT_MAP>
           sortMap={PROJECT_SORT_MAP}
           onSelect={handleSelect}
           initialValue={DEFAULT_SORT_TYPE}
