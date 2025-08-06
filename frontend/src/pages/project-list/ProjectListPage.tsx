@@ -17,6 +17,10 @@ function ProjectListPage() {
     refetch();
   };
 
+  const handleSelect = () => {
+    refetch();
+  };
+
   const isSelected = techStacks.length > 0 || categories.length > 0;
   return (
     <S.Main>
@@ -38,7 +42,7 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        <SortList sortMap={PROJECT_SORT_MAP} />
+        <SortList sortMap={PROJECT_SORT_MAP} onSelect={handleSelect} />
       </S.Box>
       <CardList />
     </S.Main>

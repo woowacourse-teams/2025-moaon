@@ -2,15 +2,15 @@ import { Separated } from "@shared/components/Separated/Separated";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 import { useState } from "react";
-import useProjectList from "../../../pages/project-list/hooks/useProjectList";
 import SortItem from "./SortItem/SortItem";
 import * as S from "./SortList.styled";
 
 interface SortListProps {
   sortMap: Record<string, string>;
+  onSelect: () => void;
 }
 
-function SortList({ sortMap }: SortListProps) {
+function SortList({ sortMap, onSelect }: SortListProps) {
   const params = useSearchParams({
     key: "sort",
     mode: "single",
@@ -22,12 +22,10 @@ function SortList({ sortMap }: SortListProps) {
     sortParamValue ?? defaultSortValue,
   );
 
-  const { refetch } = useProjectList();
-
   const handleSelectedSort = (sortKey: string, sortValue: string) => {
     setSelectedSort(sortValue);
     params.update(sortKey);
-    refetch();
+    onSelect();
   };
 
   return (

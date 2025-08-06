@@ -9,7 +9,7 @@ import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
 function ArticlePage() {
-  const { isLoading, articles } = useArticleList();
+  const { refetch, isLoading, articles } = useArticleList();
 
   const articleCategoryItems = ARTICLE_CATEGORY_ENTRY.map(([key, value]) => ({
     key,
@@ -18,6 +18,10 @@ function ArticlePage() {
 
   if (isLoading) return <div>Loading...</div>;
   if (!articles) return <div>No articles found</div>;
+
+  const handleSelect = () => {
+    refetch();
+  };
 
   return (
     <S.Main>
@@ -38,7 +42,7 @@ function ArticlePage() {
               <S.ArticleIntroText>{articles.totalCount}개</S.ArticleIntroText>의
               아티클이 모여있어요.
             </S.ArticleIntro>
-            <SortList sortMap={ARTICLE_SORT_MAP} />
+            <SortList sortMap={ARTICLE_SORT_MAP} onSelect={handleSelect} />
           </S.ArticleHeader>
           <CardList articles={articles.articleContents} />
         </S.ArticleContainer>
