@@ -15,5 +15,5 @@ export interface ProjectsResponse {
   contents: ProjectCard[];
   totalCount: number;
   hasNext: boolean;
-  nextCursor: string;
+  nextCursor: string | null;
 }
