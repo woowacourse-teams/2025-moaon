@@ -9,6 +9,7 @@ public record PagedProjectResponse(
         boolean hasNext,
         String nextCursor
 ) {
+
     public static PagedProjectResponse from(
             List<Project> projectsToReturn,
             Long totalCount,
