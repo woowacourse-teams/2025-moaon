@@ -49,4 +49,11 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAllByProjectId(id);
         return ArticleDetailResponse.from(articles);
     }
+
+    @Transactional
+    public void increaseClicksCount(long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
+        article.addClickCount();
+    }
 }

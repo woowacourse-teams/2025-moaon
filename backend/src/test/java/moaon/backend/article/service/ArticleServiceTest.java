@@ -152,4 +152,17 @@ class ArticleServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
+
+    @DisplayName("click을 증가시킬 아티클이 존재하지 않다면 예외가 발생한다.")
+    @Test
+    void increaseClicksCount() {
+        // Given
+        long articleId = 1L;
+        given(articleRepository.findById(articleId)).willReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> articleService.increaseClicksCount(articleId))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
+    }
 }

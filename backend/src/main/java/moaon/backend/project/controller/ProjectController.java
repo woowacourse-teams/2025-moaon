@@ -4,15 +4,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.service.ArticleService;
-import moaon.backend.global.cookie.ProjectViewCookieManager;
-import moaon.backend.global.cookie.ProjectViewTimes;
 import moaon.backend.project.dto.PagedProjectResponse;
+import moaon.backend.global.cookie.AccessHistory;
+import moaon.backend.global.cookie.TrackingCookieManager;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.service.ProjectService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/projects")
-@RequiredArgsConstructor
 public class ProjectController {
 
-    private final ProjectViewCookieManager cookieManager;
+    private final TrackingCookieManager cookieManager;
     private final ProjectService projectService;
     private final ArticleService articleService;
+
+    public ProjectController(
+            @Qualifier("projectViewCookieManager") TrackingCookieManager cookieManager,
+            ProjectService projectService,
+            ArticleService articleService) {
+        this.cookieManager = cookieManager;
+        this.projectService = projectService;
+        this.articleService = articleService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDetailResponse> getProjectById(
@@ -35,10 +43,10 @@ public class ProjectController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        ProjectViewTimes projectViewTimes = cookieManager.extractViewedMap(request);
-        if (cookieManager.isViewCountIncreasable(id, projectViewTimes)) {
+        AccessHistory accessHistory = cookieManager.extractViewedMap(request);
+        if (cookieManager.isCountIncreasable(id, accessHistory)) {
             ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
-            Cookie cookie = cookieManager.createOrUpdateCookie(id, projectViewTimes);
+            Cookie cookie = cookieManager.createOrUpdateCookie(id, accessHistory);
             response.addCookie(cookie);
             return ResponseEntity.ok(projectDetailResponse);
         }
