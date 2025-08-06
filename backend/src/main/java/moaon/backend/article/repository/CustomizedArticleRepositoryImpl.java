@@ -18,7 +18,6 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortBy;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.Cursor;
-import moaon.backend.global.config.FullTextSearchHQLFunction;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -88,7 +87,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private BooleanExpression satisfiesMatchScore(String search) {
         return Expressions.numberTemplate(
                 Double.class,
-                FullTextSearchHQLFunction.ARTICLE_EXPRESSION_TEMPLATE,
+                ArticleFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
                 formatSearchKeyword(search)
         ).gt(MINIMUM_MATCH_SCORE);
     }

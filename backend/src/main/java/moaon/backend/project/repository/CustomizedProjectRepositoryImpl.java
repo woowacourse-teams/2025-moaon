@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.global.config.FullTextSearchHQLFunction;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.SortBy;
 import moaon.backend.project.dto.ProjectQueryCondition;
@@ -51,7 +50,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     private BooleanExpression satisfiesMatchScore(String search) {
         return Expressions.numberTemplate(
                 Double.class,
-                FullTextSearchHQLFunction.PROJECT_EXPRESSION_TEMPLATE,
+                ProjectFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
                 formatSearchKeyword(search)
         ).gt(MINIMUM_MATCH_SCORE);
     }

@@ -1,1 +1,2 @@
-moaon.backend.global.config.FullTextSearchHQLFunction
+moaon.backend.article.repository.ArticleFullTextSearchHQLFunction
+moaon.backend.project.repository.ProjectFullTextSearchHQLFunction
