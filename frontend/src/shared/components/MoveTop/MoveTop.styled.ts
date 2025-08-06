@@ -15,4 +15,9 @@ export const MoveTopButton = styled.button`
   background-color: #d4d4d4;
   gap: 0.25rem;
   padding: 0.3125rem;
+
+  :hover {
+    background-color: #bdbdbd;
+    transition: background-color 0.3s ease;
+  }
 `;
