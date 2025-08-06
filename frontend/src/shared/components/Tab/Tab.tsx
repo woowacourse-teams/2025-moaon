@@ -9,14 +9,16 @@ interface TabItem {
 interface TabProps {
   items: TabItem[];
   onSelect: () => void;
+  initialValue: string;
 }
 
-function Tab({ items, onSelect }: TabProps) {
+function Tab({ items, onSelect, initialValue }: TabProps) {
   const categoryParams = useSearchParams({
     key: "category",
     mode: "single",
   });
-  const [selectedCategory] = categoryParams.get();
+  const [rawSelectedCategory] = categoryParams.get();
+  const selectedCategory = rawSelectedCategory ?? initialValue;
 
   const handleTabItemClick = (value: string) => {
     categoryParams.update(value);

@@ -42,7 +42,11 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        <SortList sortMap={PROJECT_SORT_MAP} onSelect={handleSelect} />
+        <SortList
+          sortMap={PROJECT_SORT_MAP}
+          onSelect={handleSelect}
+          initialValue="createdAt"
+        />
       </S.Box>
       <CardList />
     </S.Main>

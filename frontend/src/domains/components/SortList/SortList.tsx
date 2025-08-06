@@ -1,29 +1,24 @@
 import { Separated } from "@shared/components/Separated/Separated";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
-import { useState } from "react";
 import SortItem from "./SortItem/SortItem";
 import * as S from "./SortList.styled";
 
 interface SortListProps {
   sortMap: Record<string, string>;
   onSelect: () => void;
+  initialValue: string;
 }
 
-function SortList({ sortMap, onSelect }: SortListProps) {
+function SortList({ sortMap, onSelect, initialValue }: SortListProps) {
   const params = useSearchParams({
     key: "sort",
     mode: "single",
   });
 
-  const sortParamValue = params.get()[0];
-  const defaultSortValue = Object.values(sortMap)[0];
-  const [selectedSort, setSelectedSort] = useState(
-    sortParamValue ?? defaultSortValue,
-  );
-
-  const handleSelectedSort = (sortKey: string, sortValue: string) => {
-    setSelectedSort(sortValue);
+  const [rawSortParams] = params.get();
+  const sortParams = rawSortParams ?? initialValue;
+  const handleSelectedSort = (sortKey: string) => {
     params.update(sortKey);
     onSelect();
   };
@@ -35,8 +30,8 @@ function SortList({ sortMap, onSelect }: SortListProps) {
           <SortItem
             key={sortValue}
             sortValue={sortValue}
-            isSelected={selectedSort === sortValue}
-            onSelect={() => handleSelectedSort(sortKey, sortValue)}
+            isSelected={sortParams === sortKey}
+            onSelect={() => handleSelectedSort(sortKey)}
           />
         ))}
       </Separated>

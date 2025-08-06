@@ -34,7 +34,11 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
-      <Tab items={articleCategoryItems} onSelect={handleSelect} />
+      <Tab
+        items={articleCategoryItems}
+        onSelect={handleSelect}
+        initialValue="all"
+      />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
@@ -42,7 +46,11 @@ function ArticlePage() {
               <S.ArticleIntroText>{articles.totalCount}개</S.ArticleIntroText>의
               아티클이 모여있어요.
             </S.ArticleIntro>
-            <SortList sortMap={ARTICLE_SORT_MAP} onSelect={handleSelect} />
+            <SortList
+              sortMap={ARTICLE_SORT_MAP}
+              onSelect={handleSelect}
+              initialValue="createdAt"
+            />
           </S.ArticleHeader>
           <CardList articles={articles.articleContents} />
         </S.ArticleContainer>
