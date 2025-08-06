@@ -162,7 +162,7 @@ public class ArticleApiTest {
                 .queryParams("search", filteredSearch)
                 .queryParams("category", filteredArticleCategory.getName())
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
-                .queryParams("limit", 3)
+                .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
                 .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}",
                         queryParameters(
@@ -195,8 +195,9 @@ public class ArticleApiTest {
                 .extract().as(ArticleResponse.class);
 
         // then
-        assertThat(actualResponse.articleContents()).extracting(ArticleContent::id)
-                .containsExactly(articleClickRankFirst.getId(), articleClickRankThird.getId());
+        assertThat(actualResponse.articleContents())
+                .extracting(ArticleContent::id)
+                .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
 
     @DisplayName("POST /articles/{id}/clicks : 아티클 클릭수 증가 API")
