@@ -89,7 +89,7 @@ public class Article extends BaseTimeEntity {
         this.category = category;
         this.techStacks = new ArrayList<>(techStacks);
     }
-    
+
     public void addClickCount() {
         clicks++;
     }

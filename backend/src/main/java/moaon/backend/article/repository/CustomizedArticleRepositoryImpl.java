@@ -6,9 +6,13 @@ import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
@@ -16,12 +20,16 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.ArticleCursor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
 public class CustomizedArticleRepositoryImpl implements CustomizedArticleRepository {
 
     private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
+    private static final double MINIMUM_MATCH_SCORE = 0.0;
+    private static final String BLANK = " ";
+    private static final String RESERVED_CHARACTERS = "[+-><()~*:\"&|]";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -86,6 +94,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     ) {
         String categoryName = queryCondition.categoryName();
         List<String> techStackNames = queryCondition.techStackNames();
+        String search = queryCondition.search();
 
         if (!categoryName.equals("all")) {
             whereBuilder.and(article.category.name.eq(categoryName));
@@ -95,6 +104,24 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
             whereBuilder.and(techStack.name.in(techStackNames));
             query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
         }
+
+        if (StringUtils.hasText(search)) {
+            whereBuilder.and(satisfiesMatchScore(search));
+        }
+    }
+
+    private BooleanExpression satisfiesMatchScore(String search) {
+        return Expressions.numberTemplate(
+                Double.class,
+                ArticleFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
+                formatSearchKeyword(search)
+        ).gt(MINIMUM_MATCH_SCORE);
+    }
+
+    private String formatSearchKeyword(String search) {
+        return Arrays.stream(search.split(BLANK))
+                .map(keyword -> String.format("+%s*", keyword.replaceAll(RESERVED_CHARACTERS, "").toLowerCase()))
+                .collect(Collectors.joining(BLANK));
     }
 
     private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {

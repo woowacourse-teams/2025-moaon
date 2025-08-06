@@ -19,7 +19,7 @@ public class ArticleFixtureBuilder {
     private Project project;
     private ArticleCategory category;
     private List<TechStack> techStacks;
-    private int clicks = 0;
+    private int clicks;
 
     public ArticleFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 아티클 제목");
@@ -27,13 +27,34 @@ public class ArticleFixtureBuilder {
         this.content = Fixture.nameWithSequence("테스트 아티클 본문");
         this.articleUrl = "https://test-product.com";
         this.createdAt = LocalDateTime.now();
-        this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
-        this.category = Fixture.anyArticleCategory();
         this.project = new ProjectFixtureBuilder().build();
+        this.category = Fixture.anyArticleCategory();
+        this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
+        this.clicks = 0;
     }
 
     public ArticleFixtureBuilder id(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public ArticleFixtureBuilder title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public ArticleFixtureBuilder summary(String summary) {
+        this.summary = summary;
+        return this;
+    }
+
+    public ArticleFixtureBuilder content(String content) {
+        this.content = content;
+        return this;
+    }
+
+    public ArticleFixtureBuilder articleUrl(String articleUrl) {
+        this.articleUrl = articleUrl;
         return this;
     }
 

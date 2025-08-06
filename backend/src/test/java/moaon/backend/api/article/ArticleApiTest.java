@@ -8,6 +8,7 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
@@ -53,6 +54,9 @@ public class ArticleApiTest {
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
 
+        String filteredSearch = "모아";
+        String unfilteredSearch = "모모";
+
         Project project = repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .build()
@@ -60,6 +64,7 @@ public class ArticleApiTest {
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .content(unfilteredSearch)
                         .category(filteredArticleCategory)
                         .techStacks(List.of(unfilteredTechStack))
                         .project(project)
@@ -69,6 +74,7 @@ public class ArticleApiTest {
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .content(unfilteredSearch)
                         .category(unfilteredArticleCategory)
                         .techStacks(List.of(unfilteredTechStack))
                         .project(project)
@@ -78,6 +84,7 @@ public class ArticleApiTest {
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .content(unfilteredSearch)
                         .category(unfilteredArticleCategory)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -87,6 +94,7 @@ public class ArticleApiTest {
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .content(unfilteredSearch)
                         .category(filteredArticleCategory)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -96,6 +104,7 @@ public class ArticleApiTest {
 
         Article articleClickRankFirst = repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .content(filteredSearch)
                         .category(filteredArticleCategory)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -105,6 +114,7 @@ public class ArticleApiTest {
 
         Article articleClickRankSecond = repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .title(filteredSearch)
                         .category(filteredArticleCategory)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -112,8 +122,9 @@ public class ArticleApiTest {
                         .build()
         );
 
-        Article articleRankThirdHasSmallId = repositoryHelper.save(
+        repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .title(unfilteredSearch)
                         .category(filteredArticleCategory)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -121,8 +132,9 @@ public class ArticleApiTest {
                         .build()
         );
 
-        Article articleRankThirdHasBiggerId = repositoryHelper.save(
+        repositoryHelper.save(
                 new ArticleFixtureBuilder()
+                        .summary(unfilteredSearch)
                         .category(filteredArticleCategory)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -133,6 +145,7 @@ public class ArticleApiTest {
         // when
         ArticleResponse actualResponse = RestAssured.given().log().all()
                 .queryParams("sort", "clicks")
+                .queryParams("search", filteredSearch)
                 .queryParams("category", filteredArticleCategory.getName())
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 3)
@@ -143,15 +156,8 @@ public class ArticleApiTest {
                 .extract().as(ArticleResponse.class);
 
         // then
-        assertAll(
-                () -> assertThat(actualResponse.articleContents()).hasSize(3),
-                () -> assertThat(actualResponse.articleContents().getFirst().id()).isEqualTo(
-                        articleClickRankFirst.getId()),
-                () -> assertThat(actualResponse.articleContents().get(1).id()).isEqualTo(
-                        articleClickRankSecond.getId()),
-                () -> assertThat(actualResponse.articleContents().get(2).id()).isEqualTo(
-                        articleRankThirdHasBiggerId.getId())
-        );
+        assertThat(actualResponse.articleContents()).extracting(ArticleContent::id)
+                .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
 
     @DisplayName("POST /articles/{id}/clicks : 아티클 클릭수 증가 API")

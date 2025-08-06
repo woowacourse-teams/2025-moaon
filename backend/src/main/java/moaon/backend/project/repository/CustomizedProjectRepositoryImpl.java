@@ -6,6 +6,7 @@ import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.global.config.FullTextSearchHQLFunction;
 import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectSortType;
@@ -29,6 +29,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
     private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
+    private static final String RESERVED_CHARACTERS = "[+-><()~*:\"&|]";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -113,21 +114,21 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             return;
         }
 
-        String searchFormat = formatSearchKeyword(search);
-
-        whereBuilder.and(
-                Expressions.numberTemplate(
-                        Double.class,
-                        FullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
-                        searchFormat
-                ).gt(MINIMUM_MATCH_SCORE)
-        );
+        whereBuilder.and(satisfiesMatchScore(search));
     }
 
 
+    private BooleanExpression satisfiesMatchScore(String search) {
+        return Expressions.numberTemplate(
+                Double.class,
+                ProjectFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
+                formatSearchKeyword(search)
+        ).gt(MINIMUM_MATCH_SCORE);
+    }
+
     private String formatSearchKeyword(String search) {
         return Arrays.stream(search.split(BLANK))
-                .map(keyword -> String.format("+%s*", keyword))
+                .map(keyword -> String.format("+%s*", keyword.replaceAll(RESERVED_CHARACTERS, "").toLowerCase()))
                 .collect(Collectors.joining(BLANK));
     }
 

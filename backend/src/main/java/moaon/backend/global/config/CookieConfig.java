@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CookieConfig {
-    
+
     private static final String PROJECT_COOKIE_NAME = "viewed_projects";
     private static final String PROJECT_COOKIE_PATH = "/projects";
     private static final String ARTICLE_COOKIE_NAME = "clicked_articles";

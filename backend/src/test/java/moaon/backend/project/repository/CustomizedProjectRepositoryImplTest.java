@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @Import({RepositoryHelper.class, QueryDslConfig.class})
-class CustomizedProjectRepositoryImplTest extends MySQLContainerTest {
+class CustomizedProjectRepositoryImplTest {
 
     @Autowired
     private CustomizedProjectRepositoryImpl customizedProjectRepositoryImpl;
