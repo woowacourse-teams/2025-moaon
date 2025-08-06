@@ -35,6 +35,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
+import org.springframework.restdocs.request.QueryParametersSnippet;
 import org.springframework.restdocs.restassured.RestAssuredRestDocumentation;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -165,29 +167,8 @@ public class ArticleApiTest {
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
                 .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}",
-                        queryParameters(
-                                parameterWithName("sort").description("정렬 기준 (clicks, createdAt)").optional(),
-                                parameterWithName("search").description("검색어").optional(),
-                                parameterWithName("category").description("카테고리").optional(),
-                                parameterWithName("techStacks").description("기술 스택 목록").optional(),
-                                parameterWithName("limit").description("요청 데이터 개수"),
-                                parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
-                        ),
-                        responseFields(
-                                fieldWithPath("articleContents").description("아티클 목록"),
-                                fieldWithPath("articleContents[].id").description("아티클 ID"),
-                                fieldWithPath("articleContents[].projectId").description("프로젝트 ID"),
-                                fieldWithPath("articleContents[].clicks").description("클릭수"),
-                                fieldWithPath("articleContents[].title").description("아티클 제목"),
-                                fieldWithPath("articleContents[].summary").description("아티클 요약"),
-                                fieldWithPath("articleContents[].techStacks").description("기술 스택 목록"),
-                                fieldWithPath("articleContents[].url").description("아티클 URL"),
-                                fieldWithPath("articleContents[].category").description("아티클 카테고리"),
-                                fieldWithPath("articleContents[].createdAt").description("생성일시"),
-                                fieldWithPath("totalCount").description("필터링 걸린 데이터의 전체 개수"),
-                                fieldWithPath("hasNext").description("다음 페이지 존재 여부"),
-                                fieldWithPath("nextCursor").description("다음 요청 커서")
-                        )
+                        articleQueryParameters(),
+                        articleResponseFields()
                 ))
                 .when().get("/articles")
                 .then().log().all()
@@ -233,5 +214,34 @@ public class ArticleApiTest {
 
         // then 클릭수 미증가 검증
         assertThat(secondResult.getClicks()).isEqualTo(1);
+    }
+
+    private static QueryParametersSnippet articleQueryParameters() {
+        return queryParameters(
+                parameterWithName("sort").description("정렬 기준 (clicks, createdAt)").optional(),
+                parameterWithName("search").description("검색어").optional(),
+                parameterWithName("category").description("카테고리").optional(),
+                parameterWithName("techStacks").description("기술 스택 목록").optional(),
+                parameterWithName("limit").description("요청 데이터 개수"),
+                parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
+        );
+    }
+
+    private static ResponseFieldsSnippet articleResponseFields() {
+        return responseFields(
+                fieldWithPath("articleContents").description("아티클 목록"),
+                fieldWithPath("articleContents[].id").description("아티클 ID"),
+                fieldWithPath("articleContents[].projectId").description("프로젝트 ID"),
+                fieldWithPath("articleContents[].clicks").description("클릭수"),
+                fieldWithPath("articleContents[].title").description("아티클 제목"),
+                fieldWithPath("articleContents[].summary").description("아티클 요약"),
+                fieldWithPath("articleContents[].techStacks").description("기술 스택 목록"),
+                fieldWithPath("articleContents[].url").description("아티클 URL"),
+                fieldWithPath("articleContents[].category").description("아티클 카테고리"),
+                fieldWithPath("articleContents[].createdAt").description("생성일시"),
+                fieldWithPath("totalCount").description("필터링 걸린 데이터의 전체 개수"),
+                fieldWithPath("hasNext").description("다음 페이지 존재 여부"),
+                fieldWithPath("nextCursor").description("다음 요청 커서")
+        );
     }
 }
