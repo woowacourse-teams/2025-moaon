@@ -1,33 +1,30 @@
 import { Separated } from "@shared/components/Separated/Separated";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
-import { useState } from "react";
-import useProjectList from "../../../pages/project-list/hooks/useProjectList";
 import SortItem from "./SortItem/SortItem";
 import * as S from "./SortList.styled";
 
-interface SortListProps {
-  sortMap: Record<string, string>;
+interface SortListProps<T extends Record<string, string>> {
+  sortMap: T;
+  onSelect: () => void;
+  initialValue: keyof T;
 }
 
-function SortList({ sortMap }: SortListProps) {
+function SortList<T extends Record<string, string>>({
+  sortMap,
+  onSelect,
+  initialValue,
+}: SortListProps<T>) {
   const params = useSearchParams({
     key: "sort",
     mode: "single",
   });
 
-  const sortParamValue = params.get()[0];
-  const defaultSortValue = Object.values(sortMap)[0];
-  const [selectedSort, setSelectedSort] = useState(
-    sortParamValue ?? defaultSortValue,
-  );
-
-  const { refetch } = useProjectList();
-
-  const handleSelectedSort = (sortKey: string, sortValue: string) => {
-    setSelectedSort(sortValue);
+  const rawSortParams = params.get()[0];
+  const sortParams = rawSortParams ?? initialValue;
+  const handleSelectedSort = (sortKey: string) => {
     params.update(sortKey);
-    refetch();
+    onSelect();
   };
 
   return (
@@ -36,10 +33,11 @@ function SortList({ sortMap }: SortListProps) {
         {typeSafeObjectEntries(sortMap).map(([sortKey, sortValue]) => (
           <SortItem
             key={sortValue}
-            sortValue={sortValue}
-            isSelected={selectedSort === sortValue}
-            onSelect={() => handleSelectedSort(sortKey, sortValue)}
-          />
+            isSelected={sortParams === sortKey}
+            onSelect={() => handleSelectedSort(sortKey.toString())}
+          >
+            {sortValue}
+          </SortItem>
         ))}
       </Separated>
     </S.List>

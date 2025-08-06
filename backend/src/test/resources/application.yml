@@ -14,11 +14,11 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
 
   sql:
     init:
-      data-locations: classpath*:schema.sql
       mode: always
 
 logging:

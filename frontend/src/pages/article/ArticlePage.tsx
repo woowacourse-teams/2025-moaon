@@ -1,4 +1,4 @@
-import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
+import { ARTICLE_CATEGORY_ENTRY } from "@domains/filter/articleCategory";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
 import SortList from "../../domains/components/SortList/SortList";
@@ -8,14 +8,25 @@ import CardList from "./CardList/CardList";
 import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
+const DEFAULT_SORT_TYPE = "createdAt";
+const DEFAULT_FILTER_TYPE = "all";
+
 function ArticlePage() {
-  const { isLoading, articles } = useArticleList();
-  const articleCategoryLabels = Object.values(ARTICLE_CATEGORY_MAP).map(
-    (item) => item.label,
-  );
+  const { refetch, isLoading, articles } = useArticleList();
+
+  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
+    key,
+    label,
+  }));
 
   if (isLoading) return <div>Loading...</div>;
   if (!articles) return <div>No articles found</div>;
+
+  const { articleContents, totalCount } = articles;
+
+  const handleSelect = () => {
+    refetch();
+  };
 
   return (
     <S.Main>
@@ -28,17 +39,25 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
-      <Tab items={articleCategoryLabels} />
+      <Tab
+        items={articleCategories}
+        onSelect={handleSelect}
+        initialValue={DEFAULT_FILTER_TYPE}
+      />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
             <S.ArticleIntro>
-              <S.ArticleIntroText>{articles.totalCount}개</S.ArticleIntroText>의
-              아티클이 모여있어요.
+              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
+              모여있어요.
             </S.ArticleIntro>
-            <SortList sortMap={ARTICLE_SORT_MAP} />
+            <SortList<typeof ARTICLE_SORT_MAP>
+              sortMap={ARTICLE_SORT_MAP}
+              onSelect={handleSelect}
+              initialValue={DEFAULT_SORT_TYPE}
+            />
           </S.ArticleHeader>
-          <CardList articles={articles.articleContents} />
+          <CardList articles={articleContents} />
         </S.ArticleContainer>
         <TagList />
       </S.Box>

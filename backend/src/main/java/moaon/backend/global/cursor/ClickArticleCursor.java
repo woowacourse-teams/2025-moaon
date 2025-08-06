@@ -29,8 +29,12 @@ public class ClickArticleCursor implements ArticleCursor<Integer> {
 
     @Override
     public void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder) {
-        whereBuilder.and(article.clicks.lt(getSortValue())
-                .or(article.clicks.eq(getSortValue())
-                        .and(article.id.lt(getLastId()))));
+        whereBuilder.and(
+                article.clicks.lt(getSortValue())
+                        .or(
+                                article.clicks.eq(getSortValue())
+                                        .and(article.id.lt(getLastId()))
+                        )
+        );
     }
 }

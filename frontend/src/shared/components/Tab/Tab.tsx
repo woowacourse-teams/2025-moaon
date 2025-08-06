@@ -1,25 +1,43 @@
-import { useState } from "react";
+import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import useSearchParams from "@shared/hooks/useSearchParams";
 import * as S from "./Tab.styled";
 
-interface TabProps {
-  items: string[];
+interface TabItem {
+  key: string;
+  label: string;
 }
 
-function Tab({ items }: TabProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+interface TabProps {
+  items: TabItem[];
+  onSelect: () => void;
+  initialValue: ArticleCategoryKey;
+}
+
+function Tab({ items, onSelect, initialValue }: TabProps) {
+  const categoryParams = useSearchParams({
+    key: "category",
+    mode: "single",
+  });
+  const [rawSelectedCategory] = categoryParams.get();
+  const selectedCategory = rawSelectedCategory ?? initialValue;
+
+  const handleTabItemClick = (value: string) => {
+    categoryParams.update(value);
+    onSelect();
+  };
 
   return (
     <S.TabContainer>
       <S.TabItemList>
-        {items.map((item, index) => {
-          const isSelected = selectedIndex === index;
+        {items.map(({ key, label }) => {
+          const isSelected = selectedCategory === key;
           return (
             <S.TabItem
-              key={item}
+              key={key}
               isSelected={isSelected}
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => handleTabItemClick(key)}
             >
-              {item}
+              {label}
             </S.TabItem>
           );
         })}

@@ -1,11 +1,14 @@
-import { queryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions } from "@tanstack/react-query";
 import getProjects from "./getProjects";
 
 export const projectQueries = {
   all: ["projects"] as const,
   fetchList: () =>
-    queryOptions({
+    infiniteQueryOptions({
       queryKey: projectQueries.all,
-      queryFn: getProjects,
+      queryFn: ({ pageParam }) => getProjects(pageParam),
+      getNextPageParam: (lastPage) =>
+        lastPage.hasNext ? lastPage.nextCursor : "",
+      initialPageParam: "",
     }),
 };

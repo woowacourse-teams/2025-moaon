@@ -33,8 +33,12 @@ public class CreatedAtArticleCursor implements ArticleCursor<LocalDateTime> {
 
     @Override
     public void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder) {
-        whereBuilder.and(article.createdAt.lt(getSortValue())
-                .or(article.createdAt.eq(getSortValue())
-                        .and(article.id.lt(getLastId()))));
+        whereBuilder.and(
+                article.createdAt.lt(getSortValue())
+                        .or(
+                                article.createdAt.eq(getSortValue())
+                                        .and(article.id.lt(getLastId()))
+                        )
+        );
     }
 }
