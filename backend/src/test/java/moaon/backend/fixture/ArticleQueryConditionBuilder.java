@@ -1,7 +1,7 @@
 package moaon.backend.fixture;
 
 import java.util.List;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.ArticleCursor;
 
@@ -10,7 +10,7 @@ public class ArticleQueryConditionBuilder {
     private String search;
     private String categoryName;
     private List<String> techStackNames;
-    private ArticleSortBy sortBy;
+    private ArticleSortType sortBy;
     private int limit;
     private ArticleCursor<?> articleCursor;
 
@@ -38,8 +38,8 @@ public class ArticleQueryConditionBuilder {
         return this;
     }
 
-    public ArticleQueryConditionBuilder sortBy(ArticleSortBy articleSortBy) {
-        this.sortBy = articleSortBy;
+    public ArticleQueryConditionBuilder sortBy(ArticleSortType articleSortType) {
+        this.sortBy = articleSortType;
         return this;
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import moaon.backend.global.cursor.ProjectCursor;
-import moaon.backend.project.domain.ProjectSortBy;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 public class ProjectQueryConditionFixtureBuilder {
@@ -12,7 +12,7 @@ public class ProjectQueryConditionFixtureBuilder {
     private String search;
     private List<String> categoryNames;
     private List<String> techStackNames;
-    private ProjectSortBy projectSortBy;
+    private ProjectSortType projectSortType;
     private int limit;
     private ProjectCursor<?> cursor;
 
@@ -20,7 +20,7 @@ public class ProjectQueryConditionFixtureBuilder {
         this.search = null;
         this.categoryNames = new ArrayList<>();
         this.techStackNames = new ArrayList<>();
-        this.projectSortBy = null;
+        this.projectSortType = null;
         this.limit = 50;
         this.cursor = null;
     }
@@ -40,8 +40,8 @@ public class ProjectQueryConditionFixtureBuilder {
         return this;
     }
 
-    public ProjectQueryConditionFixtureBuilder sortBy(ProjectSortBy projectSortBy) {
-        this.projectSortBy = projectSortBy;
+    public ProjectQueryConditionFixtureBuilder sortBy(ProjectSortType projectSortType) {
+        this.projectSortType = projectSortType;
         return this;
     }
 
@@ -60,7 +60,7 @@ public class ProjectQueryConditionFixtureBuilder {
                 this.search,
                 this.categoryNames,
                 this.techStackNames,
-                this.projectSortBy,
+                this.projectSortType,
                 this.limit,
                 this.cursor
         );

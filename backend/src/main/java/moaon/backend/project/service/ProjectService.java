@@ -38,7 +38,8 @@ public class ProjectService {
             List<Project> projectsToReturn = projects.subList(0, projectQueryCondition.limit());
             Project lastProject = projectsToReturn.getLast();
 
-            ProjectCursor<?> projectCursor = CursorParser.toCursor(lastProject, projectQueryCondition.projectSortBy());
+            ProjectCursor<?> projectCursor = CursorParser.toCursor(lastProject,
+                    projectQueryCondition.projectSortType());
 
             return PagedProjectResponse.from(
                     projectsToReturn,

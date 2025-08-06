@@ -12,7 +12,7 @@ import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectSortBy;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
@@ -57,7 +57,7 @@ class ProjectServiceTest {
                 .build();
         List<Project> projects = List.of(project1, project2, project3);
 
-        ProjectCursor<?> cursor = CursorParser.toCursor(project2, ProjectSortBy.CREATED_AT);
+        ProjectCursor<?> cursor = CursorParser.toCursor(project2, ProjectSortType.CREATED_AT);
 
         Mockito.when(projectRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(projects);
@@ -68,7 +68,7 @@ class ProjectServiceTest {
                 null,
                 null,
                 null,
-                ProjectSortBy.CREATED_AT,
+                ProjectSortType.CREATED_AT,
                 2,
                 null
         );
@@ -103,7 +103,7 @@ class ProjectServiceTest {
 
         List<Project> projects = List.of(project1, project2, project3);
 
-        ProjectCursor<?> cursor = CursorParser.toCursor(project2, ProjectSortBy.CREATED_AT);
+        ProjectCursor<?> cursor = CursorParser.toCursor(project2, ProjectSortType.CREATED_AT);
 
         Mockito.when(projectRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(projects);
@@ -114,7 +114,7 @@ class ProjectServiceTest {
                 null,
                 null,
                 null,
-                ProjectSortBy.CREATED_AT,
+                ProjectSortType.CREATED_AT,
                 3,
                 null
         );

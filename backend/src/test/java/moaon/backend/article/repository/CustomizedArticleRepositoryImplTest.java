@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
@@ -57,7 +57,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .categoryName(filterdArticleCategory.getName())
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .limit(10)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
@@ -91,7 +91,7 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .categoryName("all")
                 .limit(10)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
@@ -131,7 +131,7 @@ class CustomizedArticleRepositoryImplTest {
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .categoryName(articleCategory.getName())
                 .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .limit(10)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
@@ -176,7 +176,7 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition1 = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .categoryName("all")
                 .limit(10)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
@@ -224,7 +224,7 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(10)
                 .cursor(new ClickArticleCursor(4, 4L))
@@ -278,7 +278,7 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(4)
                 .cursor(new ClickArticleCursor(4, 99999999L))
@@ -332,7 +332,7 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(9)
                 .cursor(new ClickArticleCursor(4, 999999L))
@@ -368,7 +368,7 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(9)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.now(), 1L))

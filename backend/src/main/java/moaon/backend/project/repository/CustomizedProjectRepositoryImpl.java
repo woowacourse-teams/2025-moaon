@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.global.config.FullTextSearchHQLFunction;
 import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectSortBy;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
@@ -56,7 +56,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
 
         return query.groupBy(project.id)
-                .orderBy(toOrderBy(condition.projectSortBy()))
+                .orderBy(toOrderBy(condition.projectSortType()))
                 .limit(condition.limit() + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
@@ -103,12 +103,12 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                 .collect(Collectors.joining(BLANK));
     }
 
-    private OrderSpecifier<?>[] toOrderBy(ProjectSortBy sortBy) {
-        if (sortBy == ProjectSortBy.CREATED_AT) {
+    private OrderSpecifier<?>[] toOrderBy(ProjectSortType sortBy) {
+        if (sortBy == ProjectSortType.CREATED_AT) {
             return new OrderSpecifier<?>[]{project.createdAt.desc(), project.id.desc()};
         }
 
-        if (sortBy == ProjectSortBy.VIEWS) {
+        if (sortBy == ProjectSortType.VIEWS) {
             return new OrderSpecifier<?>[]{project.views.desc(), project.id.desc()};
         }
 

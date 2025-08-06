@@ -11,7 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.ArticleCursor;
 import org.springframework.stereotype.Repository;
@@ -71,8 +71,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
     }
 
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortBy sortBy) {
-        if (sortBy == ArticleSortBy.CLICKS) {
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
+        if (sortBy == ArticleSortType.CLICKS) {
             return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }
 

@@ -3,13 +3,13 @@ package moaon.backend.project.dto;
 import java.util.List;
 import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.cursor.ProjectCursor;
-import moaon.backend.project.domain.ProjectSortBy;
+import moaon.backend.project.domain.ProjectSortType;
 
 public record ProjectQueryCondition(
         String search,
         List<String> categoryNames,
         List<String> techStackNames,
-        ProjectSortBy projectSortBy,
+        ProjectSortType projectSortType,
         int limit,
         ProjectCursor<?> cursor
 ) {
@@ -22,7 +22,7 @@ public record ProjectQueryCondition(
             int limit,
             String cursor
     ) {
-        ProjectSortBy sortType = ProjectSortBy.from(sortBy);
+        ProjectSortType sortType = ProjectSortType.from(sortBy);
         return new ProjectQueryCondition(
                 search,
                 categories,

@@ -8,7 +8,7 @@ import static org.mockito.BDDMockito.given;
 import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -60,7 +60,7 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
-        ArticleCursor<?> articleCursor = CursorParser.toCursor(article2, ArticleSortBy.CREATED_AT);
+        ArticleCursor<?> articleCursor = CursorParser.toCursor(article2, ArticleSortType.CREATED_AT);
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
@@ -71,7 +71,7 @@ class ArticleServiceTest {
                 null,
                 null,
                 null,
-                ArticleSortBy.CREATED_AT,
+                ArticleSortType.CREATED_AT,
                 2,
                 null
         );
@@ -118,7 +118,7 @@ class ArticleServiceTest {
                 null,
                 null,
                 null,
-                ArticleSortBy.CREATED_AT,
+                ArticleSortType.CREATED_AT,
                 3,
                 null
         );

@@ -12,7 +12,7 @@ import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
-import moaon.backend.project.domain.ProjectSortBy;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
@@ -184,7 +184,7 @@ class CustomizedProjectRepositoryImplTest extends MySQLContainerTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortBy.VIEWS)
+                        .sortBy(ProjectSortType.VIEWS)
                         .build()
         );
 
@@ -215,7 +215,7 @@ class CustomizedProjectRepositoryImplTest extends MySQLContainerTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortBy.CREATED_AT)
+                        .sortBy(ProjectSortType.CREATED_AT)
                         .build()
         );
 
@@ -242,7 +242,7 @@ class CustomizedProjectRepositoryImplTest extends MySQLContainerTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortBy.LOVES)
+                        .sortBy(ProjectSortType.LOVES)
                         .build()
         );
 
