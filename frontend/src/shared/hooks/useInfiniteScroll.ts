@@ -33,11 +33,8 @@ const useInfiniteScroll = ({
 
   useEffect(() => {
     const target = targetRef.current;
-    if (!target) return;
-
-    // 기존 observer 정리
-    if (observerRef.current) {
-      observerRef.current.disconnect();
+    if (!target) {
+      return;
     }
 
     // 새로운 observer 생성
@@ -48,7 +45,7 @@ const useInfiniteScroll = ({
 
     observerRef.current.observe(target);
 
-    // 정리 함수
+    // 정리 함수 - useEffect가 다시 실행되거나 컴포넌트가 언마운트될 때 자동 호출
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
