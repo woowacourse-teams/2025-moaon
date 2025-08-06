@@ -61,10 +61,38 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                 .fetch();
     }
 
+    @Override
+    public long countWithSearchCondition(ProjectQueryCondition condition) {
+        ProjectCursor<?> cursor = condition.cursor();
+
+        JPAQuery<Long> query = jpaQueryFactory.select(project.countDistinct())
+                .from(project)
+                .leftJoin(project.categories, projectCategory)
+                .leftJoin(project.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        applyWhereAndHaving(whereBuilder, condition, query);
+
+        toContainsSearch(condition.search(), whereBuilder);
+
+        if (cursor != null) {
+            cursor.applyCursor(condition, whereBuilder);
+        }
+
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+
+        return query.groupBy(project.id)
+                .fetch()
+                .size();
+    }
+
     private void applyWhereAndHaving(
             BooleanBuilder whereBuilder,
             ProjectQueryCondition queryCondition,
-            JPAQuery<Project> query
+            JPAQuery<?> query
     ) {
         List<String> techStackNames = queryCondition.techStackNames();
         List<String> categoryNames = queryCondition.categoryNames();

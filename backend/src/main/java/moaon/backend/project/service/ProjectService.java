@@ -32,7 +32,7 @@ public class ProjectService {
 
     public PagedProjectResponse getPagedProjects(ProjectQueryCondition projectQueryCondition) {
         List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
-        long totalCount = projectRepository.count();
+        long totalCount = projectRepository.countWithSearchCondition(projectQueryCondition);
 
         if (projects.size() > projectQueryCondition.limit()) {
             List<Project> projectsToReturn = projects.subList(0, projectQueryCondition.limit());

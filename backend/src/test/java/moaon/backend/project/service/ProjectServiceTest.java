@@ -62,8 +62,6 @@ class ProjectServiceTest {
         Mockito.when(projectRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(projects);
 
-        Mockito.when(projectRepository.count()).thenReturn(5L);
-
         ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(
                 null,
                 null,
@@ -72,6 +70,8 @@ class ProjectServiceTest {
                 2,
                 null
         );
+
+        Mockito.when(projectRepository.countWithSearchCondition(projectQueryCondition)).thenReturn(5L);
 
         ProjectSummaryResponse projectSummaryResponse1 = ProjectSummaryResponse.from(project1);
         ProjectSummaryResponse projectSummaryResponse2 = ProjectSummaryResponse.from(project2);
@@ -83,6 +83,7 @@ class ProjectServiceTest {
         assertAll(
                 () -> assertThat(actual.contents()).containsExactly(projectSummaryResponse1, projectSummaryResponse2),
                 () -> assertThat(actual.hasNext()).isTrue(),
+                () -> assertThat(actual.totalCount()).isEqualTo(5L),
                 () -> assertThat(actual.nextCursor()).isEqualTo(cursor.getNextCursor())
         );
     }
@@ -108,8 +109,6 @@ class ProjectServiceTest {
         Mockito.when(projectRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(projects);
 
-        Mockito.when(projectRepository.count()).thenReturn(5L);
-
         ProjectQueryCondition projectQueryCondition = new ProjectQueryCondition(
                 null,
                 null,
@@ -118,6 +117,8 @@ class ProjectServiceTest {
                 3,
                 null
         );
+
+        Mockito.when(projectRepository.countWithSearchCondition(projectQueryCondition)).thenReturn(5L);
 
         ProjectSummaryResponse projectSummaryResponse1 = ProjectSummaryResponse.from(project1);
         ProjectSummaryResponse projectSummaryResponse2 = ProjectSummaryResponse.from(project2);

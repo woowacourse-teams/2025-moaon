@@ -7,4 +7,6 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 public interface CustomizedArticleRepository {
 
     List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition);
+
+    long countWithSearchCondition(ArticleQueryCondition queryCondition);
 }

@@ -65,8 +65,6 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        Mockito.when(articleRepository.count()).thenReturn(5L);
-
         ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
                 null,
                 null,
@@ -75,6 +73,8 @@ class ArticleServiceTest {
                 2,
                 null
         );
+
+        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
         ArticleContent articleContent2 = ArticleContent.from(article2);
@@ -85,6 +85,7 @@ class ArticleServiceTest {
         // then
         assertAll(
                 () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2),
+                () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
                 () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
         );
@@ -112,8 +113,6 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        Mockito.when(articleRepository.count()).thenReturn(5L);
-
         ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
                 null,
                 null,
@@ -122,6 +121,8 @@ class ArticleServiceTest {
                 3,
                 null
         );
+
+        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
         ArticleContent articleContent2 = ArticleContent.from(article2);

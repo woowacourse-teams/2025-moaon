@@ -249,4 +249,48 @@ class CustomizedProjectRepositoryImplTest extends MySQLContainerTest {
         // then
         assertThat(projects).containsExactly(high, middle, low);
     }
+
+    @DisplayName("필터링을 거친 프로젝트의 개수를 가져온다.")
+    @Test
+    void countWithSearchCondition() {
+        // given
+        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+
+        Project wantToFindProject1 = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+
+        Project wantToFindProject2 = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+
+        Project wantToFindProject3 = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .techStackNames(techStack1.getName(), techStack2.getName())
+                .build();
+
+        // when
+        long count = customizedProjectRepositoryImpl.countWithSearchCondition(queryCondition);
+
+        // then
+        assertThat(count).isEqualTo(3);
+    }
 }

@@ -53,10 +53,37 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return query.fetch();
     }
 
+    @Override
+    public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
+        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
+
+        JPAQuery<Long> query = jpaQueryFactory.select(article.countDistinct())
+                .from(article)
+                .leftJoin(article.category, articleCategory)
+                .leftJoin(article.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        applyWhereAndHaving(whereBuilder, queryCondition, query);
+
+        if (articleCursor != null) {
+            articleCursor.applyCursor(queryCondition, whereBuilder);
+        }
+
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+
+        return query.groupBy(article.id)
+                .fetch()
+                .size();
+
+    }
+
     private void applyWhereAndHaving(
             BooleanBuilder whereBuilder,
             ArticleQueryCondition queryCondition,
-            JPAQuery<Article> query
+            JPAQuery<?> query
     ) {
         String categoryName = queryCondition.categoryName();
         List<String> techStackNames = queryCondition.techStackNames();

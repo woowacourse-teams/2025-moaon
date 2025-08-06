@@ -380,4 +380,36 @@ class CustomizedArticleRepositoryImplTest {
         // then
         assertThat(articles).containsExactly(articleWithId1, articleWithId2, articleWithId3);
     }
+
+    @DisplayName("필터링을 거친 아티클의 개수를 확인하여 반환한다.")
+    @Test
+    void findWithSearchCondition() {
+        // given
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+
+        Article wantToFind1 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .techStacks(List.of(techStack1, techStack2))
+                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
+                        .build()
+        );
+
+        Article wantToFind2 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .techStacks(List.of(techStack1, techStack2))
+                        .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
+                .categoryName("all")
+                .build();
+
+        // when
+        long count = customizedArticleRepository.countWithSearchCondition(queryCondition);
+
+        // then
+        assertThat(count).isEqualTo(2);
+    }
 }

@@ -25,7 +25,7 @@ public class ArticleService {
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         List<Article> articles = articleRepository.findWithSearchConditions(queryCondition);
-        long totalCount = articleRepository.count();
+        long totalCount = articleRepository.countWithSearchCondition(queryCondition);
 
         if (articles.size() > queryCondition.limit()) {
             List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
