@@ -7,4 +7,6 @@ import moaon.backend.project.dto.ProjectQueryCondition;
 public interface CustomizedProjectRepository {
 
     List<Project> findWithSearchConditions(ProjectQueryCondition projectQueryCondition);
+
+    long countWithSearchCondition(ProjectQueryCondition projectQueryCondition);
 }

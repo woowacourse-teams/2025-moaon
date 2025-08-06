@@ -12,6 +12,7 @@ import moaon.backend.techStack.domain.TechStack;
 
 public class ProjectFixtureBuilder {
 
+    private Long id;
     private String title;
     private String summary;
     private String description;
@@ -23,6 +24,7 @@ public class ProjectFixtureBuilder {
     private List<ProjectCategory> categories;
     private LocalDateTime createdAt;
     private int views = 0;
+    private List<Member> lovedMembers;
 
     public ProjectFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 프로젝트 제목");
@@ -35,6 +37,7 @@ public class ProjectFixtureBuilder {
         this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
         this.categories = new ArrayList<>(List.of(Fixture.anyProjectCategory()));
         this.createdAt = LocalDateTime.now();
+        this.lovedMembers = new ArrayList<>();
     }
 
     public ProjectFixtureBuilder title(String title) {
@@ -49,6 +52,11 @@ public class ProjectFixtureBuilder {
 
     public ProjectFixtureBuilder description(String description) {
         this.description = description;
+        return this;
+    }
+
+    public ProjectFixtureBuilder id(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -93,18 +101,21 @@ public class ProjectFixtureBuilder {
     }
 
     public Project build() {
-        Project project = new Project(
-                this.title,
-                this.summary,
-                this.description,
-                this.githubUrl,
-                this.productionUrl,
-                this.images,
-                this.author,
-                this.techStacks,
-                this.categories,
-                this.createdAt
-        );
+        Project project = Project.builder()
+                .id(this.id)
+                .title(this.title)
+                .productionUrl(this.productionUrl)
+                .views(this.views)
+                .author(this.author)
+                .lovedMembers(this.lovedMembers)
+                .createdAt(this.createdAt)
+                .summary(this.summary)
+                .categories(this.categories)
+                .description(this.description)
+                .githubUrl(this.githubUrl)
+                .images(this.images)
+                .techStacks(this.techStacks)
+                .build();
         for (int i = 0; i < views; i++) {
             project.addViewCount();
         }

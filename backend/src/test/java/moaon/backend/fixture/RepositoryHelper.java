@@ -47,4 +47,9 @@ public class RepositoryHelper {
 
         return articleRepository.save(article);
     }
+
+    public Article getById(long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("테스트 실패"));
+    }
 }

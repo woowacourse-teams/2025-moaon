@@ -5,9 +5,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.ClickArticleCursor;
+import moaon.backend.global.cursor.CreatedAtArticleCursor;
+import moaon.backend.global.cursor.CreatedAtProjectCursor;
+import moaon.backend.global.cursor.CursorParser;
+import moaon.backend.global.cursor.LoveProjectCursor;
+import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.cursor.ViewProjectCursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.project.domain.ProjectSortType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,14 +29,14 @@ class CursorParserTest {
     void toCreatedAtCursor() {
         // given
         String cursor = "2024-07-31T10:00:00_12345";
-        ArticleSortBy sortBy = ArticleSortBy.CREATED_AT;
+        ArticleSortType sortBy = ArticleSortType.CREATED_AT;
 
         // when
-        Cursor<?> actual = CursorParser.toCursor(cursor, sortBy);
+        ArticleCursor<?> actual = CursorParser.toCursor(cursor, sortBy);
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(CreatedAtCursor.class),
+                () -> assertThat(actual).isInstanceOf(CreatedAtArticleCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(LocalDateTime.of(2024, 7, 31, 10, 0))
         );
@@ -38,14 +47,14 @@ class CursorParserTest {
     void toClickCursor() {
         // given
         String cursor = "1500_12345";
-        ArticleSortBy sortBy = ArticleSortBy.CLICKS;
+        ArticleSortType sortBy = ArticleSortType.CLICKS;
 
         // when
-        Cursor<?> actual = CursorParser.toCursor(cursor, sortBy);
+        ArticleCursor<?> actual = CursorParser.toCursor(cursor, sortBy);
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(ClickCursor.class),
+                () -> assertThat(actual).isInstanceOf(ClickArticleCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
@@ -58,7 +67,7 @@ class CursorParserTest {
         String cursor = "";
 
         //when
-        Cursor<?> actual = CursorParser.toCursor(cursor, ArticleSortBy.CREATED_AT);
+        ArticleCursor<?> actual = CursorParser.toCursor(cursor, ArticleSortType.CREATED_AT);
 
         // then
         assertThat(actual).isNull();
@@ -83,7 +92,7 @@ class CursorParserTest {
             " 1500_12345"
     })
     void toCursorFail(String cursor) {
-        assertThatThrownBy(() -> CursorParser.toCursor(cursor, ArticleSortBy.CREATED_AT))
+        assertThatThrownBy(() -> CursorParser.toCursor(cursor, ArticleSortType.CREATED_AT))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_CURSOR_FORMAT.getMessage());
     }
@@ -93,10 +102,10 @@ class CursorParserTest {
     void toClickCursorFail() {
         // given
         String clickCursor = "1500_12345";
-        ArticleSortBy createdAt = ArticleSortBy.CREATED_AT;
+        ArticleSortType createdAt = ArticleSortType.CREATED_AT;
 
         String createdAtCursor = "2024-07-31T10:00:00_12345";
-        ArticleSortBy clicks = ArticleSortBy.CLICKS;
+        ArticleSortType clicks = ArticleSortType.CLICKS;
 
         // when
         assertAll(
@@ -107,6 +116,60 @@ class CursorParserTest {
                 () -> assertThatThrownBy(() -> CursorParser.toCursor(createdAtCursor, clicks))
                         .isInstanceOf(CustomException.class)
                         .hasMessage(ErrorCode.INVALID_CURSOR_FORMAT.getMessage())
+        );
+    }
+
+    @DisplayName("CreatedAtProjectCursor 를 만든다.")
+    @Test
+    void toCreatedAtProjectCursor() {
+        // given
+        String cursor = "2024-07-31T10:00:00_12345";
+        ProjectSortType sortBy = ProjectSortType.CREATED_AT;
+
+        // when
+        ProjectCursor<?> actual = CursorParser.toCursor(cursor, sortBy);
+
+        // then
+        assertAll(
+                () -> assertThat(actual).isInstanceOf(CreatedAtProjectCursor.class),
+                () -> assertThat(actual.getLastId()).isEqualTo(12345),
+                () -> assertThat(actual.getSortValue()).isEqualTo(LocalDateTime.of(2024, 7, 31, 10, 0))
+        );
+    }
+
+    @DisplayName("CreatedAtProjectCursor 를 만든다.")
+    @Test
+    void toLoveProjectCursor() {
+        // given
+        String cursor = "1500_12345";
+        ProjectSortType sortBy = ProjectSortType.LOVES;
+
+        // when
+        ProjectCursor<?> actual = CursorParser.toCursor(cursor, sortBy);
+
+        // then
+        assertAll(
+                () -> assertThat(actual).isInstanceOf(LoveProjectCursor.class),
+                () -> assertThat(actual.getLastId()).isEqualTo(12345),
+                () -> assertThat(actual.getSortValue()).isEqualTo(1500)
+        );
+    }
+
+    @DisplayName("CreatedAtProjectCursor 를 만든다.")
+    @Test
+    void toViewProjectCursor() {
+        // given
+        String cursor = "1500_12345";
+        ProjectSortType sortBy = ProjectSortType.VIEWS;
+
+        // when
+        ProjectCursor<?> actual = CursorParser.toCursor(cursor, sortBy);
+
+        // then
+        assertAll(
+                () -> assertThat(actual).isInstanceOf(ViewProjectCursor.class),
+                () -> assertThat(actual.getLastId()).isEqualTo(12345),
+                () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
     }
 }

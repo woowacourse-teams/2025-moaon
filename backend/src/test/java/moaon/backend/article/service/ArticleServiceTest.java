@@ -8,15 +8,15 @@ import static org.mockito.BDDMockito.given;
 import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.dto.Cursor;
-import moaon.backend.article.dto.CursorParser;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -60,21 +60,21 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
-        Cursor<?> cursor = CursorParser.toCursor(article2, ArticleSortBy.CREATED_AT);
+        ArticleCursor<?> articleCursor = CursorParser.toCursor(article2, ArticleSortType.CREATED_AT);
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
-
-        Mockito.when(articleRepository.count()).thenReturn(5L);
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
                 null,
                 null,
                 null,
-                ArticleSortBy.CREATED_AT,
+                ArticleSortType.CREATED_AT,
                 2,
                 null
         );
+
+        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
         ArticleContent articleContent2 = ArticleContent.from(article2);
@@ -85,8 +85,9 @@ class ArticleServiceTest {
         // then
         assertAll(
                 () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2),
+                () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
-                () -> assertThat(actual.nextCursor()).isEqualTo(cursor.getNextCursor())
+                () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
         );
     }
 
@@ -112,16 +113,16 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        Mockito.when(articleRepository.count()).thenReturn(5L);
-
         ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
                 null,
                 null,
                 null,
-                ArticleSortBy.CREATED_AT,
+                ArticleSortType.CREATED_AT,
                 3,
                 null
         );
+
+        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
         ArticleContent articleContent2 = ArticleContent.from(article2);
@@ -145,10 +146,23 @@ class ArticleServiceTest {
         // Given
         long projectId = 1L;
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
- 
+
         // When & Then
         assertThatThrownBy(() -> articleService.getByProjectId(projectId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+    }
+
+    @DisplayName("click을 증가시킬 아티클이 존재하지 않다면 예외가 발생한다.")
+    @Test
+    void increaseClicksCount() {
+        // Given
+        long articleId = 1L;
+        given(articleRepository.findById(articleId)).willReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> articleService.increaseClicksCount(articleId))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 }

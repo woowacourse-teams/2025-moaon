@@ -2,7 +2,7 @@ package moaon.backend.project.domain;
 
 import java.util.Arrays;
 
-public enum SortBy {
+public enum ProjectSortType {
 
     CREATED_AT("createdAt"),
     VIEWS("views"),
@@ -10,12 +10,12 @@ public enum SortBy {
 
     private final String sortType;
 
-    SortBy(String sortType) {
+    ProjectSortType(String sortType) {
         this.sortType = sortType;
     }
 
-    public static SortBy from(String sortType) {
-        return Arrays.stream(SortBy.values())
+    public static ProjectSortType from(String sortType) {
+        return Arrays.stream(ProjectSortType.values())
                 .filter(sortBy -> sortBy.sortType.equals(sortType))
                 .findAny()
                 .orElse(CREATED_AT);

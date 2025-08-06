@@ -1,15 +1,17 @@
 package moaon.backend.article.dto;
 
 import java.util.List;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.CursorParser;
 
 public record ArticleQueryCondition(
         String search,
         String categoryName,
         List<String> techStackNames,
-        ArticleSortBy sortBy,
+        ArticleSortType sortBy,
         int limit,
-        Cursor<?> cursor
+        ArticleCursor<?> articleCursor
 ) {
 
     public static ArticleQueryCondition from(
@@ -20,7 +22,7 @@ public record ArticleQueryCondition(
             int limit,
             String cursor
     ) {
-        ArticleSortBy sortBy = ArticleSortBy.from(sortType);
+        ArticleSortType sortBy = ArticleSortType.from(sortType);
         return new ArticleQueryCondition(
                 search,
                 categoryName,
