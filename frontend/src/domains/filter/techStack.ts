@@ -276,6 +276,41 @@ export const TECH_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SwiftUI.svg",
   },
+  githubAction: {
+    label: "Github Action",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+  git: {
+    label: "Git",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
+  elasticsearch: {
+    label: "ElasticSearch",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ElasticSearch.svg",
+  },
+  grafana: {
+    label: "Grafana",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Grafana.svg",
+  },
+  jenkins: {
+    label: "Jenkins",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jenkins.svg",
+  },
+  jpa: {
+    label: "JPA",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JPA.svg",
+  },
+  querydsl: {
+    label: "Querydsl",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Querydsl.svg",
+  },
 } as const;
 
 export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;
