@@ -1,4 +1,4 @@
-import { TECH_STACK_ENTRY } from "@domains/filter/techStack";
+import { TECH_STACK_ENTRY, type TechStackKey } from "@domains/filter/techStack";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useArticleList from "../hooks/useArticleList";
 import Tag from "./Tag/Tag";
@@ -9,7 +9,7 @@ function TagList() {
   const selectedTags = tagParams.get();
   const { refetch } = useArticleList();
 
-  const handleTagSelect = (value: string) => {
+  const handleTagSelect = (value: TechStackKey) => {
     tagParams.update(value);
     refetch();
   };
