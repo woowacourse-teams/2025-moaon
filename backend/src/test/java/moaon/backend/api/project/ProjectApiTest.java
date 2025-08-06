@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.dto.ArticleDetailResponse;
@@ -21,17 +23,20 @@ import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
+import org.springframework.restdocs.restassured.RestAssuredRestDocumentation;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @Import({RepositoryHelper.class, QueryDslConfig.class})
+@ExtendWith(RestDocumentationExtension.class)
 public class ProjectApiTest {
 
     @LocalServerPort
@@ -40,9 +45,18 @@ public class ProjectApiTest {
     @Autowired
     private RepositoryHelper repositoryHelper;
 
+    private RequestSpecification documentationSpecification;
+
     @BeforeEach
-    void setUp() {
+    void setUp(RestDocumentationContextProvider restDocumentation) {
         RestAssured.port = port;
+        this.documentationSpecification = new RequestSpecBuilder()
+                .addFilter(RestAssuredRestDocumentation.documentationConfiguration(restDocumentation)
+                        .operationPreprocessors()
+                        .withRequestDefaults(Preprocessors.prettyPrint())
+                        .withResponseDefaults(Preprocessors.prettyPrint())
+                )
+                .build();
     }
 
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
@@ -52,8 +66,9 @@ public class ProjectApiTest {
         Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         // when & then 첫 조회 - 기본 응답 + 조회수 증가 + 쿠키 설정
-        ValidatableResponse firstResponse = RestAssured.given().log().all()
+        ValidatableResponse firstResponse = RestAssured.given(documentationSpecification).log().all()
                 .pathParam("id", project.getId())
+                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
                 .when().get("/projects/{id}")
                 .then().log().all()
                 .statusCode(200);
@@ -142,12 +157,13 @@ public class ProjectApiTest {
         );
 
         // when
-        PagedProjectResponse actualResponses = RestAssured.given().log().all()
+        PagedProjectResponse actualResponses = RestAssured.given(documentationSpecification).log().all()
                 .queryParams("search", filteredSearch)
                 .queryParams("sort", "views")
                 .queryParams("categories", List.of(filteredProjectCategory.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
+                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
                 .when().get("/projects")
                 .then().log().all()
                 .statusCode(200)
@@ -180,7 +196,8 @@ public class ProjectApiTest {
         repositoryHelper.save(new ArticleFixtureBuilder().build());
 
         // when
-        ArticleDetailResponse[] actualArticles = RestAssured.given().log().all()
+        ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
+                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)

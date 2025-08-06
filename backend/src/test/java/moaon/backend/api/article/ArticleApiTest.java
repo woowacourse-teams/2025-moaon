@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
@@ -20,17 +22,20 @@ import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
+import org.springframework.restdocs.restassured.RestAssuredRestDocumentation;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @Import({RepositoryHelper.class, QueryDslConfig.class})
+@ExtendWith(RestDocumentationExtension.class)
 public class ArticleApiTest {
 
     @LocalServerPort
@@ -39,9 +44,18 @@ public class ArticleApiTest {
     @Autowired
     private RepositoryHelper repositoryHelper;
 
+    private RequestSpecification documentationSpecification;
+
     @BeforeEach
-    void setUp() {
+    void setUp(RestDocumentationContextProvider restDocumentation) {
         RestAssured.port = port;
+        this.documentationSpecification = new RequestSpecBuilder()
+                .addFilter(RestAssuredRestDocumentation.documentationConfiguration(restDocumentation)
+                        .operationPreprocessors()
+                        .withRequestDefaults(Preprocessors.prettyPrint())
+                        .withResponseDefaults(Preprocessors.prettyPrint())
+                )
+                .build();
     }
 
     @DisplayName("GET /articles : 페이징 방식의 프로젝트 조회 API")
@@ -143,13 +157,14 @@ public class ArticleApiTest {
         );
 
         // when
-        ArticleResponse actualResponse = RestAssured.given().log().all()
+        ArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
                 .queryParams("sort", "clicks")
                 .queryParams("search", filteredSearch)
                 .queryParams("category", filteredArticleCategory.getName())
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 3)
                 .queryParams("cursor", "5_6")
+                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
                 .when().get("/articles")
                 .then().log().all()
                 .statusCode(200)
@@ -167,8 +182,9 @@ public class ArticleApiTest {
         Article article = repositoryHelper.save(new ArticleFixtureBuilder().build());
 
         // when 첫 클릭 - 기본 응답 + 클릭수 증가 + 쿠키 설정
-        ValidatableResponse firstResponse = RestAssured.given().log().all()
+        ValidatableResponse firstResponse = RestAssured.given(documentationSpecification).log().all()
                 .pathParam("id", article.getId())
+                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
                 .when().post("/articles/{id}/clicks")
                 .then().log().all()
                 .statusCode(200);
