@@ -5,8 +5,8 @@ import {
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
 import SortList from "../../domains/components/SortList/SortList";
+import * as S from "./ArticlePage.styled";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
-import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
 import { useArticleCategory } from "./hooks/useArticleCategory";
 import useArticleList from "./hooks/useArticleList";
