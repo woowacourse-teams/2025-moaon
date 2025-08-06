@@ -22,7 +22,6 @@ public record ProjectQueryCondition(
             int limit,
             String cursor
     ) {
-
         ProjectSortBy sortType = ProjectSortBy.from(sortBy);
         return new ProjectQueryCondition(
                 search,
