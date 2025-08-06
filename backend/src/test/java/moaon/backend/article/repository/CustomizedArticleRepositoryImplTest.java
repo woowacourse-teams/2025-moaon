@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.dto.ClickCursor;
-import moaon.backend.article.dto.CreatedAtCursor;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.global.cursor.ClickArticleCursor;
+import moaon.backend.global.cursor.CreatedAtArticleCursor;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,9 +57,9 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .categoryName(filterdArticleCategory.getName())
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -91,10 +91,10 @@ class CustomizedArticleRepositoryImplTest {
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .categoryName("all")
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -131,9 +131,9 @@ class CustomizedArticleRepositoryImplTest {
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .categoryName(articleCategory.getName())
                 .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -176,10 +176,10 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition1 = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CREATED_AT)
+                .sortBy(ArticleSortType.CREATED_AT)
                 .categoryName("all")
                 .limit(10)
-                .cursor(new CreatedAtCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -224,10 +224,10 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(10)
-                .cursor(new ClickCursor(4, 4L))
+                .cursor(new ClickArticleCursor(4, 4L))
                 .build();
 
         // when
@@ -278,10 +278,10 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(4)
-                .cursor(new ClickCursor(4, 99999999L))
+                .cursor(new ClickArticleCursor(4, 99999999L))
                 .build();
 
         // when
@@ -332,10 +332,10 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(9)
-                .cursor(new ClickCursor(4, 999999L))
+                .cursor(new ClickArticleCursor(4, 999999L))
                 .build();
 
         // when
@@ -368,10 +368,10 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortBy.CLICKS)
+                .sortBy(ArticleSortType.CLICKS)
                 .categoryName("all")
                 .limit(9)
-                .cursor(new CreatedAtCursor(LocalDateTime.now(), 1L))
+                .cursor(new CreatedAtArticleCursor(LocalDateTime.now(), 1L))
                 .build();
 
         // when
@@ -379,5 +379,37 @@ class CustomizedArticleRepositoryImplTest {
 
         // then
         assertThat(articles).containsExactly(articleWithId1, articleWithId2, articleWithId3);
+    }
+
+    @DisplayName("필터링을 거친 아티클의 개수를 확인하여 반환한다.")
+    @Test
+    void findWithSearchCondition() {
+        // given
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+
+        Article wantToFind1 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .techStacks(List.of(techStack1, techStack2))
+                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
+                        .build()
+        );
+
+        Article wantToFind2 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .techStacks(List.of(techStack1, techStack2))
+                        .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
+                .categoryName("all")
+                .build();
+
+        // when
+        long count = customizedArticleRepository.countWithSearchCondition(queryCondition);
+
+        // then
+        assertThat(count).isEqualTo(2);
     }
 }

@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,8 @@ import moaon.backend.techStack.domain.TechStack;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Project extends BaseTimeEntity {
 
     @Id

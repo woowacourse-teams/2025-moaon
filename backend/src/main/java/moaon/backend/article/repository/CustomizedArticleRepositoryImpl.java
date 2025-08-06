@@ -11,9 +11,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.dto.Cursor;
+import moaon.backend.global.cursor.ArticleCursor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -27,7 +27,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        Cursor<?> cursor = queryCondition.cursor();
+        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
 
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
@@ -38,8 +38,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         applyWhereAndHaving(whereBuilder, queryCondition, query);
 
-        if (cursor != null) {
-            cursor.applyCursor(queryCondition, whereBuilder);
+        if (articleCursor != null) {
+            articleCursor.applyCursor(queryCondition, whereBuilder);
         }
 
         if (whereBuilder.hasValue()) {
@@ -53,10 +53,36 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return query.fetch();
     }
 
+    @Override
+    public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
+        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
+
+        JPAQuery<Long> query = jpaQueryFactory.select(article.countDistinct())
+                .from(article)
+                .leftJoin(article.category, articleCategory)
+                .leftJoin(article.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        applyWhereAndHaving(whereBuilder, queryCondition, query);
+
+        if (articleCursor != null) {
+            articleCursor.applyCursor(queryCondition, whereBuilder);
+        }
+
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+
+        return query.groupBy(article.id)
+                .fetch()
+                .size();
+    }
+
     private void applyWhereAndHaving(
             BooleanBuilder whereBuilder,
             ArticleQueryCondition queryCondition,
-            JPAQuery<Article> query
+            JPAQuery<?> query
     ) {
         String categoryName = queryCondition.categoryName();
         List<String> techStackNames = queryCondition.techStackNames();
@@ -71,8 +97,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
     }
 
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortBy sortBy) {
-        if (sortBy == ArticleSortBy.CLICKS) {
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
+        if (sortBy == ArticleSortType.CLICKS) {
             return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }
 

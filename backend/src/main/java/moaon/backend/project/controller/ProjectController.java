@@ -6,11 +6,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.service.ArticleService;
+import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -57,19 +57,23 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectSummaryResponse>> getAllProjects(
+    public ResponseEntity<PagedProjectResponse> getPagedProjects(
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
-            @RequestParam(value = "sort", required = false) String sortType
+            @RequestParam(value = "sort", required = false) String sortType,
+            @RequestParam(value = "limit") int limit,
+            @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
                 search,
                 categories,
                 techStacks,
-                sortType
+                sortType,
+                limit,
+                cursor
         );
-        return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
+        return ResponseEntity.ok(projectService.getPagedProjects(projectQueryCondition));
     }
 
     @GetMapping("/{id}/articles")

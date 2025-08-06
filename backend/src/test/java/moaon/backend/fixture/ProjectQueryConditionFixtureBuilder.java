@@ -3,7 +3,8 @@ package moaon.backend.fixture;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import moaon.backend.project.domain.SortBy;
+import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 public class ProjectQueryConditionFixtureBuilder {
@@ -11,13 +12,17 @@ public class ProjectQueryConditionFixtureBuilder {
     private String search;
     private List<String> categoryNames;
     private List<String> techStackNames;
-    private SortBy sortBy;
+    private ProjectSortType projectSortType;
+    private int limit;
+    private ProjectCursor<?> cursor;
 
     public ProjectQueryConditionFixtureBuilder() {
         this.search = null;
         this.categoryNames = new ArrayList<>();
         this.techStackNames = new ArrayList<>();
-        this.sortBy = null;
+        this.projectSortType = null;
+        this.limit = 50;
+        this.cursor = null;
     }
 
     public ProjectQueryConditionFixtureBuilder search(String search) {
@@ -29,14 +34,24 @@ public class ProjectQueryConditionFixtureBuilder {
         this.categoryNames = new ArrayList<>(Arrays.asList(categoryNames));
         return this;
     }
-    
+
     public ProjectQueryConditionFixtureBuilder techStackNames(String... techStackNames) {
         this.techStackNames = new ArrayList<>(Arrays.asList(techStackNames));
         return this;
     }
 
-    public ProjectQueryConditionFixtureBuilder sortBy(SortBy sortBy) {
-        this.sortBy = sortBy;
+    public ProjectQueryConditionFixtureBuilder sortBy(ProjectSortType projectSortType) {
+        this.projectSortType = projectSortType;
+        return this;
+    }
+
+    public ProjectQueryConditionFixtureBuilder limit(int limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public ProjectQueryConditionFixtureBuilder cursor(ProjectCursor<?> cursor) {
+        this.cursor = cursor;
         return this;
     }
 
@@ -45,7 +60,9 @@ public class ProjectQueryConditionFixtureBuilder {
                 this.search,
                 this.categoryNames,
                 this.techStackNames,
-                this.sortBy
+                this.projectSortType,
+                this.limit,
+                this.cursor
         );
     }
 }

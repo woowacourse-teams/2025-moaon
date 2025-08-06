@@ -1,18 +1,18 @@
 package moaon.backend.fixture;
 
 import java.util.List;
-import moaon.backend.article.domain.ArticleSortBy;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.dto.Cursor;
+import moaon.backend.global.cursor.ArticleCursor;
 
 public class ArticleQueryConditionBuilder {
 
     private String search;
     private String categoryName;
     private List<String> techStackNames;
-    private ArticleSortBy sortBy;
+    private ArticleSortType sortBy;
     private int limit;
-    private Cursor<?> cursor;
+    private ArticleCursor<?> articleCursor;
 
     public ArticleQueryConditionBuilder() {
         this.search = null;
@@ -20,7 +20,7 @@ public class ArticleQueryConditionBuilder {
         this.techStackNames = null;
         this.sortBy = null;
         this.limit = 50;
-        this.cursor = null;
+        this.articleCursor = null;
     }
 
     public ArticleQueryConditionBuilder search(String search) {
@@ -38,8 +38,8 @@ public class ArticleQueryConditionBuilder {
         return this;
     }
 
-    public ArticleQueryConditionBuilder sortBy(ArticleSortBy articleSortBy) {
-        this.sortBy = articleSortBy;
+    public ArticleQueryConditionBuilder sortBy(ArticleSortType articleSortType) {
+        this.sortBy = articleSortType;
         return this;
     }
 
@@ -48,8 +48,8 @@ public class ArticleQueryConditionBuilder {
         return this;
     }
 
-    public ArticleQueryConditionBuilder cursor(Cursor<?> cursor) {
-        this.cursor = cursor;
+    public ArticleQueryConditionBuilder cursor(ArticleCursor<?> articleCursor) {
+        this.articleCursor = articleCursor;
         return this;
     }
 
@@ -60,7 +60,7 @@ public class ArticleQueryConditionBuilder {
                 techStackNames,
                 sortBy,
                 limit,
-                cursor
+                articleCursor
         );
     }
 }

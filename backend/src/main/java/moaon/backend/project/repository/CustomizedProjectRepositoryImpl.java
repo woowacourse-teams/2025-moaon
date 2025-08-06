@@ -1,21 +1,25 @@
 package moaon.backend.project.repository;
 
 import static moaon.backend.project.domain.QProject.project;
+import static moaon.backend.project.domain.QProjectCategory.projectCategory;
+import static moaon.backend.techStack.domain.QTechStack.techStack;
 
-import com.querydsl.core.types.Order;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.config.FullTextSearchHQLFunction;
+import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.SortBy;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 @Repository
@@ -24,31 +28,102 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
+    private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<Project> findWithSearchConditions(ProjectQueryCondition condition) {
-        return jpaQueryFactory.selectFrom(project)
-                .where(
-                        toContainsSearch(condition.search()),
-                        toContainsCategory(condition.categoryNames()),
-                        toContainsTechStacks(condition.techStackNames())
-                )
-                .orderBy(toOrderBy(condition.sortBy()))
+        ProjectCursor<?> cursor = condition.cursor();
+
+        JPAQuery<Project> query = jpaQueryFactory.selectFrom(project)
+                .distinct()
+                .leftJoin(project.categories, projectCategory)
+                .leftJoin(project.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        applyWhereAndHaving(whereBuilder, condition, query);
+
+        toContainsSearch(condition.search(), whereBuilder);
+
+        if (cursor != null) {
+            cursor.applyCursor(condition, whereBuilder);
+        }
+
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+
+        return query.groupBy(project.id)
+                .orderBy(toOrderBy(condition.projectSortType()))
+                .limit(condition.limit() + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
 
-    private BooleanExpression toContainsSearch(String search) {
-        if (StringUtils.hasText(search)) {
-            String searchFormat = formatSearchKeyword(search);
-            return Expressions
-                    .numberTemplate(Double.class, FullTextSearchHQLFunction.EXPRESSION_TEMPLATE, searchFormat)
-                    .gt(MINIMUM_MATCH_SCORE);
+    @Override
+    public long countWithSearchCondition(ProjectQueryCondition condition) {
+        ProjectCursor<?> cursor = condition.cursor();
+
+        JPAQuery<Long> query = jpaQueryFactory.select(project.countDistinct())
+                .from(project)
+                .leftJoin(project.categories, projectCategory)
+                .leftJoin(project.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        applyWhereAndHaving(whereBuilder, condition, query);
+
+        toContainsSearch(condition.search(), whereBuilder);
+
+        if (cursor != null) {
+            cursor.applyCursor(condition, whereBuilder);
         }
 
-        return null;
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+
+        return query.groupBy(project.id)
+                .fetch()
+                .size();
     }
+
+    private void applyWhereAndHaving(
+            BooleanBuilder whereBuilder,
+            ProjectQueryCondition queryCondition,
+            JPAQuery<?> query
+    ) {
+        List<String> techStackNames = queryCondition.techStackNames();
+        List<String> categoryNames = queryCondition.categoryNames();
+
+        if (!CollectionUtils.isEmpty(techStackNames)) {
+            whereBuilder.and(techStack.name.in(techStackNames));
+            query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
+        }
+
+        if (!CollectionUtils.isEmpty(categoryNames)) {
+            whereBuilder.and(projectCategory.name.in(categoryNames));
+            query.having(projectCategory.name.countDistinct().eq((long) categoryNames.size()));
+        }
+    }
+
+    private void toContainsSearch(String search, BooleanBuilder whereBuilder) {
+        if (!StringUtils.hasText(search)) {
+            return;
+        }
+
+        String searchFormat = formatSearchKeyword(search);
+
+        whereBuilder.and(
+                Expressions.numberTemplate(
+                        Double.class,
+                        FullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
+                        searchFormat
+                ).gt(MINIMUM_MATCH_SCORE)
+        );
+    }
+
 
     private String formatSearchKeyword(String search) {
         return Arrays.stream(search.split(BLANK))
@@ -56,31 +131,15 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                 .collect(Collectors.joining(BLANK));
     }
 
-    private BooleanExpression toContainsCategory(List<String> categoryNames) {
-        if (categoryNames == null || categoryNames.isEmpty()) {
-            return null;
+    private OrderSpecifier<?>[] toOrderBy(ProjectSortType sortBy) {
+        if (sortBy == ProjectSortType.CREATED_AT) {
+            return new OrderSpecifier<?>[]{project.createdAt.desc(), project.id.desc()};
         }
 
-        return project.categories.any().name.in(categoryNames);
-    }
-
-    private BooleanExpression toContainsTechStacks(List<String> techStackNames) {
-        if (techStackNames == null || techStackNames.isEmpty()) {
-            return null;
+        if (sortBy == ProjectSortType.VIEWS) {
+            return new OrderSpecifier<?>[]{project.views.desc(), project.id.desc()};
         }
 
-        return project.techStacks.any().name.in(techStackNames);
-    }
-
-    private OrderSpecifier<?> toOrderBy(SortBy sortBy) {
-        if (sortBy == SortBy.VIEWS) {
-            return new OrderSpecifier<>(Order.DESC, project.views);
-        }
-
-        if (sortBy == SortBy.LOVES) {
-            return new OrderSpecifier<>(Order.DESC, project.lovedMembers.size());
-        }
-
-        return new OrderSpecifier<>(Order.DESC, project.createdAt);
+        return new OrderSpecifier<?>[]{project.lovedMembers.size().desc(), project.id.desc()};
     }
 }

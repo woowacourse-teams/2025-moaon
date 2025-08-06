@@ -1,14 +1,15 @@
-package moaon.backend.article.dto;
+package moaon.backend.global.cursor;
 
-import static moaon.backend.article.domain.QArticle.article;
+import static moaon.backend.project.domain.QProject.project;
 
 import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
-public class CreatedAtCursor implements Cursor<LocalDateTime> {
+public class CreatedAtProjectCursor implements ProjectCursor<LocalDateTime> {
 
     private final LocalDateTime createdAt;
     private final Long id;
@@ -31,9 +32,9 @@ public class CreatedAtCursor implements Cursor<LocalDateTime> {
     }
 
     @Override
-    public void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder) {
-        whereBuilder.and(article.createdAt.lt(getSortValue())
-                .or(article.createdAt.eq(getSortValue())
-                        .and(article.id.lt(getLastId()))));
+    public void applyCursor(ProjectQueryCondition queryCondition, BooleanBuilder whereBuilder) {
+        whereBuilder.and(project.createdAt.lt(getSortValue()))
+                .or(project.createdAt.eq(getSortValue())
+                        .and(project.id.lt(getLastId())));
     }
 }

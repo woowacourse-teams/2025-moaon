@@ -6,9 +6,9 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.dto.Cursor;
-import moaon.backend.article.dto.CursorParser;
 import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.repository.ProjectRepository;
@@ -25,19 +25,19 @@ public class ArticleService {
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         List<Article> articles = articleRepository.findWithSearchConditions(queryCondition);
-        long totalCount = articleRepository.count();
+        long totalCount = articleRepository.countWithSearchCondition(queryCondition);
 
         if (articles.size() > queryCondition.limit()) {
             List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
             Article lastArticle = articlesToReturn.getLast();
 
-            Cursor<?> cursor = CursorParser.toCursor(lastArticle, queryCondition.sortBy());
+            ArticleCursor<?> articleCursor = CursorParser.toCursor(lastArticle, queryCondition.sortBy());
 
             return ArticleResponse.from(
                     articlesToReturn,
                     totalCount,
                     true,
-                    cursor.getNextCursor());
+                    articleCursor.getNextCursor());
         }
 
         return ArticleResponse.from(articles, totalCount, false, null);

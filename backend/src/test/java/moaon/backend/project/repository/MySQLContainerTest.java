@@ -1,7 +1,5 @@
 package moaon.backend.project.repository;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -11,6 +9,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
+//@Import(DatabaseCleaner.class)
 public abstract class MySQLContainerTest {
 
     @Container
@@ -22,18 +21,18 @@ public abstract class MySQLContainerTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //todo: DDL 하드코딩
-    @BeforeEach
-    protected void initializeFullTextIndex() {
-        jdbcTemplate.execute(
-                "ALTER TABLE project ADD FULLTEXT INDEX idx_project_fulltext (title, summary, description) WITH PARSER NGRAM"
-        );
-    }
-
-    @AfterEach
-    protected void dropFullTextIndex() {
-        jdbcTemplate.execute("ALTER TABLE project DROP INDEX idx_project_fulltext");
-    }
+//    //todo: DDL 하드코딩
+//    @BeforeEach
+//    protected void initializeFullTextIndex() {
+//        jdbcTemplate.execute(
+//                "ALTER TABLE project ADD FULLTEXT INDEX idx_project_fulltext (title, summary, description) WITH PARSER NGRAM"
+//        );
+//    }
+//
+//    @AfterEach
+//    protected void dropFullTextIndex() {
+//        jdbcTemplate.execute("ALTER TABLE project DROP INDEX idx_project_fulltext");
+//    }
 
     @DynamicPropertySource
     private static void overrideProperties(DynamicPropertyRegistry registry) {
