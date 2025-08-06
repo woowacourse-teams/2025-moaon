@@ -94,7 +94,10 @@ public class TrackingCookieManager {
 
     private long getSecondsUntilMidnight(long currentTimeSeconds) {
         ZonedDateTime nowKST = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        ZonedDateTime tomorrowMidnight = nowKST.plusDays(1).truncatedTo(ChronoUnit.DAYS);
+        ZonedDateTime tomorrowMidnight = nowKST
+                .plusDays(1)
+                .truncatedTo(ChronoUnit.DAYS)
+                .plusHours(4);
         long koreaMidnightTimestamp = tomorrowMidnight.toEpochSecond();
         return koreaMidnightTimestamp - currentTimeSeconds;
     }
