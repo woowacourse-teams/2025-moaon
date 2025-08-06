@@ -1,16 +1,20 @@
+import type { PropsWithChildren } from "react";
 import * as S from "./Tag.styled";
 
 interface TagBoxProps {
-  text: string;
   onSelect: () => void;
   isSelected: boolean;
 }
 
-function Tag({ text, onSelect, isSelected }: TagBoxProps) {
+function Tag({
+  children,
+  onSelect,
+  isSelected,
+}: PropsWithChildren<TagBoxProps>) {
   return (
     <S.TagBox onClick={onSelect} isSelected={isSelected}>
       <S.TagText className="tag-text" isSelected={isSelected}>
-        {text}
+        {children}
       </S.TagText>
     </S.TagBox>
   );

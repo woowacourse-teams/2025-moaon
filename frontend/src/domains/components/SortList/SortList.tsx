@@ -4,13 +4,17 @@ import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 import SortItem from "./SortItem/SortItem";
 import * as S from "./SortList.styled";
 
-interface SortListProps {
-  sortMap: Record<string, string>;
+interface SortListProps<T extends Record<string, string>> {
+  sortMap: T;
   onSelect: () => void;
-  initialValue: string;
+  initialValue: keyof T;
 }
 
-function SortList({ sortMap, onSelect, initialValue }: SortListProps) {
+function SortList<T extends Record<string, string>>({
+  sortMap,
+  onSelect,
+  initialValue,
+}: SortListProps<T>) {
   const params = useSearchParams({
     key: "sort",
     mode: "single",
@@ -29,10 +33,11 @@ function SortList({ sortMap, onSelect, initialValue }: SortListProps) {
         {typeSafeObjectEntries(sortMap).map(([sortKey, sortValue]) => (
           <SortItem
             key={sortValue}
-            sortValue={sortValue}
             isSelected={sortParams === sortKey}
-            onSelect={() => handleSelectedSort(sortKey)}
-          />
+            onSelect={() => handleSelectedSort(sortKey.toString())}
+          >
+            {sortValue}
+          </SortItem>
         ))}
       </Separated>
     </S.List>

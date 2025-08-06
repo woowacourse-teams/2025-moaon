@@ -25,9 +25,10 @@ function TagList() {
             <Tag
               onSelect={() => handleTagSelect(key)}
               key={label}
-              text={label}
               isSelected={isSelected}
-            />
+            >
+              {label}
+            </Tag>
           );
         })}
       </S.TagList>
