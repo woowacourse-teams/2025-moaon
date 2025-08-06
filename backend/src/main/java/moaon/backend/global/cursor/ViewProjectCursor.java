@@ -12,7 +12,6 @@ public class ViewProjectCursor implements ProjectCursor<Integer> {
     private final int views;
     private final Long id;
 
-
     @Override
     public Integer getSortValue() {
         return views;
@@ -30,8 +29,12 @@ public class ViewProjectCursor implements ProjectCursor<Integer> {
 
     @Override
     public void applyCursor(ProjectQueryCondition queryCondition, BooleanBuilder whereBuilder) {
-        whereBuilder.and(project.views.lt(getSortValue()))
-                .or(project.views.eq(getSortValue())
-                        .and(project.id.lt(getLastId())));
+        whereBuilder.and(
+                project.views.lt(getSortValue())
+                        .or(
+                                project.views.eq(getSortValue())
+                                        .and(project.id.lt(getLastId()))
+                        )
+        );
     }
 }
