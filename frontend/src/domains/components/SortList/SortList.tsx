@@ -20,7 +20,7 @@ function SortList<T extends Record<string, string>>({
     mode: "single",
   });
 
-  const [rawSortParams] = params.get();
+  const rawSortParams = params.get()[0];
   const sortParams = rawSortParams ?? initialValue;
   const handleSelectedSort = (sortKey: string) => {
     params.update(sortKey);
