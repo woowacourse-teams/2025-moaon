@@ -19,13 +19,14 @@ function CardList() {
     isRefetching,
   } = useProjectList();
 
-  const enabled = !isLoading && hasNext && !isFetchingNextPage;
+  const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
+  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
 
   const { targetRef } = useInfiniteScroll({
     hasNext,
     nextCursor,
     fetchNextPage,
-    enabled,
+    scrollEnabled,
   });
 
   // 스켈레톤 키 생성 (메모이제이션으로 불필요한 재생성 방지)
@@ -46,11 +47,10 @@ function CardList() {
           <Card key={project.id} project={project} />
         ))}
 
-        {(isLoading || isFetchingNextPage || isRefetching) &&
-          skeletonKeys.map((key) => <CardSkeleton key={key} />)}
+        {showSkeleton && skeletonKeys.map((key) => <CardSkeleton key={key} />)}
 
         {/* 무한스크롤 트리거 요소 */}
-        {enabled && <div ref={targetRef} />}
+        {scrollEnabled && <div ref={targetRef} />}
       </S.CardList>
     </section>
   );

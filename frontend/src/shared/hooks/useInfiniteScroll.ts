@@ -4,7 +4,7 @@ interface UseInfiniteScrollProps {
   hasNext: boolean;
   nextCursor?: string;
   fetchNextPage: () => void;
-  enabled?: boolean;
+  scrollEnabled?: boolean;
 }
 
 /**
@@ -15,7 +15,7 @@ const useInfiniteScroll = ({
   hasNext,
   nextCursor,
   fetchNextPage,
-  enabled = true,
+  scrollEnabled = true,
 }: UseInfiniteScrollProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -24,11 +24,11 @@ const useInfiniteScroll = ({
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
 
-      if (entry.isIntersecting && hasNext && nextCursor && enabled) {
+      if (entry.isIntersecting && hasNext && nextCursor && scrollEnabled) {
         fetchNextPage();
       }
     },
-    [hasNext, nextCursor, fetchNextPage, enabled]
+    [hasNext, nextCursor, fetchNextPage, scrollEnabled]
   );
 
   useEffect(() => {
