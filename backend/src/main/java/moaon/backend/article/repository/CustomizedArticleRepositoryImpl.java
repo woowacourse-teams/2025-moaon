@@ -77,7 +77,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return query.groupBy(article.id)
                 .fetch()
                 .size();
-
     }
 
     private void applyWhereAndHaving(
