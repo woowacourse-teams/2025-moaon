@@ -1,3 +1,4 @@
+import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import * as S from "./Tab.styled";
 
@@ -9,7 +10,7 @@ interface TabItem {
 interface TabProps {
   items: TabItem[];
   onSelect: () => void;
-  initialValue: string;
+  initialValue: ArticleCategoryKey;
 }
 
 function Tab({ items, onSelect, initialValue }: TabProps) {
