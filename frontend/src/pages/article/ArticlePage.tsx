@@ -8,6 +8,9 @@ import CardList from "./CardList/CardList";
 import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
+const DEFAULT_SORT_TYPE = "createdAt";
+const DEFAULT_FILTER_TYPE = "all";
+
 function ArticlePage() {
   const { refetch, isLoading, articles } = useArticleList();
 
@@ -37,7 +40,7 @@ function ArticlePage() {
       <Tab
         items={articleCategoryItems}
         onSelect={handleSelect}
-        initialValue="all"
+        initialValue={DEFAULT_FILTER_TYPE}
       />
       <S.Box>
         <S.ArticleContainer>
@@ -49,7 +52,7 @@ function ArticlePage() {
             <SortList
               sortMap={ARTICLE_SORT_MAP}
               onSelect={handleSelect}
-              initialValue="createdAt"
+              initialValue={DEFAULT_SORT_TYPE}
             />
           </S.ArticleHeader>
           <CardList articles={articles.articleContents} />

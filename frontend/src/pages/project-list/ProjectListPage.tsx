@@ -8,6 +8,8 @@ import useProjectList from "./hooks/useProjectList";
 import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 
+const DEFAULT_SORT_TYPE = "createdAt";
+
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch } = useProjectList();
@@ -45,7 +47,7 @@ function ProjectListPage() {
         <SortList
           sortMap={PROJECT_SORT_MAP}
           onSelect={handleSelect}
-          initialValue="createdAt"
+          initialValue={DEFAULT_SORT_TYPE}
         />
       </S.Box>
       <CardList />
