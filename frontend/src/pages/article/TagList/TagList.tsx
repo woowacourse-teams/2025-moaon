@@ -1,17 +1,35 @@
-import { TECH_STACK_ICON_MAP } from "@domains/filter/techStack";
+import { TECH_STACK_ENTRY } from "@domains/filter/techStack";
+import useSearchParams from "@shared/hooks/useSearchParams";
+import useArticleList from "../hooks/useArticleList";
 import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
 function TagList() {
-  const techStacks = Object.values(TECH_STACK_ICON_MAP);
+  const tagParams = useSearchParams({ key: "techStacks", mode: "multi" }); // TODO: 쿼리파라미터를 "tag"로 변경하는것이 유지보수에 적절함
+  const selectedTags = tagParams.get();
+  const { refetch } = useArticleList();
+
+  const handleTagSelect = (value: string) => {
+    tagParams.update(value);
+    refetch();
+  };
 
   return (
     <S.TagListContainer>
       <S.TagListTitle>태그</S.TagListTitle>
       <S.TagList>
-        {techStacks.map(({ label }) => (
-          <Tag key={label} text={label} />
-        ))}
+        {TECH_STACK_ENTRY.map(([key, { label }]) => {
+          const isSelected = selectedTags.includes(key);
+
+          return (
+            <Tag
+              onSelect={() => handleTagSelect(key)}
+              key={label}
+              text={label}
+              isSelected={isSelected}
+            />
+          );
+        })}
       </S.TagList>
     </S.TagListContainer>
   );

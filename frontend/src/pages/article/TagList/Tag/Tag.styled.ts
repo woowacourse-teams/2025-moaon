@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
-export const TagBox = styled.li`
-  background-color: #f2f4f6;
+export const TagBox = styled.li<{ isSelected: boolean }>`
+  background-color: ${({ isSelected }) => (isSelected ? "#007bff" : "#f2f4f6")};
   border-radius: 1.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
@@ -15,6 +15,6 @@ export const TagBox = styled.li`
   }
 `;
 
-export const TagText = styled.span`
-  color: #555555;
+export const TagText = styled.span<{ isSelected: boolean }>`
+  color: ${({ isSelected }) => (isSelected ? "#ffffff" : "#555555")};
 `;
