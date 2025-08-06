@@ -3,7 +3,7 @@
 === GET /articles
 
 ====
-operation::article-api-test/get-paged-articles[snippets='curl-request,http-request,http-response']
+operation::article-api-test/get-paged-articles[snippets='curl-request,http-request,http-response,query-parameters,response-fields']
 ====
 
 === POST /articles/{id}/clicks

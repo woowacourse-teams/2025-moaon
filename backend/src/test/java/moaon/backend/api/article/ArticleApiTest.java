@@ -2,6 +2,10 @@ package moaon.backend.api.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -63,16 +67,14 @@ public class ArticleApiTest {
                 .build();
     }
 
-    @DisplayName("GET /articles : 페이징 방식의 프로젝트 조회 API")
+    @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
     @Test
     void getPagedArticles() {
         // given
         ArticleCategory filteredArticleCategory = Fixture.anyArticleCategory();
         ArticleCategory unfilteredArticleCategory = Fixture.anyArticleCategory();
-
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
-
         String filteredSearch = "moa";
         String unfilteredSearch = "momo";
 
@@ -83,64 +85,22 @@ public class ArticleApiTest {
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .content(unfilteredSearch)
-                        .category(filteredArticleCategory)
-                        .techStacks(List.of(unfilteredTechStack))
-                        .project(project)
-                        .clicks(4)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .content(unfilteredSearch)
                         .category(unfilteredArticleCategory)
-                        .techStacks(List.of(unfilteredTechStack))
-                        .project(project)
-                        .clicks(4)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .content(unfilteredSearch)
-                        .category(unfilteredArticleCategory)
+                        .content(filteredSearch)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(4)
                         .build()
         );
-
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .content(unfilteredSearch)
-                        .category(filteredArticleCategory)
-                        .techStacks(List.of(filteredTechStack))
-                        .project(project)
-                        .clicks(6)
-                        .build()
-        );
-
-        Article articleClickRankFirst = repositoryHelper.save(
-                new ArticleFixtureBuilder()
+                        .techStacks(List.of(unfilteredTechStack))
                         .content(filteredSearch)
                         .category(filteredArticleCategory)
-                        .techStacks(List.of(filteredTechStack))
                         .project(project)
-                        .clicks(3)
+                        .clicks(4)
                         .build()
         );
-
-        Article articleClickRankSecond = repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .title(filteredSearch)
-                        .category(filteredArticleCategory)
-                        .techStacks(List.of(filteredTechStack))
-                        .project(project)
-                        .clicks(2)
-                        .build()
-        );
-
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .title(unfilteredSearch)
@@ -150,7 +110,6 @@ public class ArticleApiTest {
                         .clicks(1)
                         .build()
         );
-
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .summary(unfilteredSearch)
@@ -158,6 +117,42 @@ public class ArticleApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .content(unfilteredSearch)
+                        .category(filteredArticleCategory)
+                        .techStacks(List.of(unfilteredTechStack))
+                        .project(project)
+                        .clicks(4)
+                        .build()
+        );
+        Article articleClickRankThird = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .content(filteredSearch)
+                        .category(filteredArticleCategory)
+                        .techStacks(List.of(filteredTechStack))
+                        .project(project)
+                        .clicks(1)
+                        .build()
+        );
+        Article articleClickRankSecond = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .title(filteredSearch)
+                        .category(filteredArticleCategory)
+                        .techStacks(List.of(filteredTechStack))
+                        .project(project)
+                        .clicks(2)
+                        .build()
+        );
+        Article articleClickRankFirst = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .content(filteredSearch)
+                        .category(filteredArticleCategory)
+                        .techStacks(List.of(filteredTechStack))
+                        .project(project)
+                        .clicks(3)
                         .build()
         );
 
@@ -169,7 +164,31 @@ public class ArticleApiTest {
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 3)
                 .queryParams("cursor", "5_6")
-                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
+                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}",
+                        queryParameters(
+                                parameterWithName("sort").description("정렬 기준 (clicks, createdAt)").optional(),
+                                parameterWithName("search").description("검색어").optional(),
+                                parameterWithName("category").description("카테고리").optional(),
+                                parameterWithName("techStacks").description("기술 스택 목록").optional(),
+                                parameterWithName("limit").description("요청 데이터 개수"),
+                                parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("articleContents").description("아티클 목록"),
+                                fieldWithPath("articleContents[].id").description("아티클 ID"),
+                                fieldWithPath("articleContents[].projectId").description("프로젝트 ID"),
+                                fieldWithPath("articleContents[].clicks").description("클릭수"),
+                                fieldWithPath("articleContents[].title").description("아티클 제목"),
+                                fieldWithPath("articleContents[].summary").description("아티클 요약"),
+                                fieldWithPath("articleContents[].techStacks").description("기술 스택 목록"),
+                                fieldWithPath("articleContents[].url").description("아티클 URL"),
+                                fieldWithPath("articleContents[].category").description("아티클 카테고리"),
+                                fieldWithPath("articleContents[].createdAt").description("생성일시"),
+                                fieldWithPath("totalCount").description("필터링 걸린 데이터의 전체 개수"),
+                                fieldWithPath("hasNext").description("다음 페이지 존재 여부"),
+                                fieldWithPath("nextCursor").description("다음 요청 커서")
+                        )
+                ))
                 .when().get("/articles")
                 .then().log().all()
                 .statusCode(200)
@@ -177,7 +196,7 @@ public class ArticleApiTest {
 
         // then
         assertThat(actualResponse.articleContents()).extracting(ArticleContent::id)
-                .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
+                .containsExactly(articleClickRankFirst.getId(), articleClickRankThird.getId());
     }
 
     @DisplayName("POST /articles/{id}/clicks : 아티클 클릭수 증가 API")
