@@ -1,6 +1,4 @@
 import useSearchParams from "@shared/hooks/useSearchParams";
-import { useEffect, useState } from "react";
-import useArticleList from "../../../pages/article/hooks/useArticleList";
 import * as S from "./Tab.styled";
 
 interface TabItem {
@@ -10,40 +8,31 @@ interface TabItem {
 
 interface TabProps {
   items: TabItem[];
+  onSelect: () => void;
 }
 
-function Tab({ items }: TabProps) {
+function Tab({ items, onSelect }: TabProps) {
   const categoryParams = useSearchParams({
     key: "category",
     mode: "single",
   });
-  const { refetch } = useArticleList();
   const [selectedCategory] = categoryParams.get();
-  const selectedIndex = selectedCategory
-    ? items.findIndex((item) => item.key === selectedCategory)
-    : 0;
-  const [currentIndex, setCurrentIndex] = useState(selectedIndex);
 
-  useEffect(() => {
-    setCurrentIndex(selectedIndex);
-  }, [selectedIndex]);
-
-  const handleTabItemClick = (value: string, index: number) => {
-    setCurrentIndex(index);
+  const handleTabItemClick = (value: string) => {
     categoryParams.update(value);
-    refetch();
+    onSelect();
   };
 
   return (
     <S.TabContainer>
       <S.TabItemList>
-        {items.map(({ key, label }, index) => {
-          const isSelected = currentIndex === index;
+        {items.map(({ key, label }) => {
+          const isSelected = selectedCategory === key;
           return (
             <S.TabItem
               key={key}
               isSelected={isSelected}
-              onClick={() => handleTabItemClick(key, index)}
+              onClick={() => handleTabItemClick(key)}
             >
               {label}
             </S.TabItem>

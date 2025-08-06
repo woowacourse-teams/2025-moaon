@@ -34,7 +34,7 @@ function ArticlePage() {
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
-      <Tab items={articleCategoryItems} />
+      <Tab items={articleCategoryItems} onSelect={handleSelect} />
       <S.Box>
         <S.ArticleContainer>
           <S.ArticleHeader>
