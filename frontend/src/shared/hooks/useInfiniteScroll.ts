@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 interface UseInfiniteScrollProps {
   hasNext: boolean;
   nextCursor?: string;
-  refetch: () => void;
+  fetchNextPage: () => void;
   enabled?: boolean;
 }
 
@@ -14,7 +14,7 @@ interface UseInfiniteScrollProps {
 const useInfiniteScroll = ({
   hasNext,
   nextCursor,
-  refetch,
+  fetchNextPage,
   enabled = true,
 }: UseInfiniteScrollProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -25,10 +25,10 @@ const useInfiniteScroll = ({
       const [entry] = entries;
 
       if (entry.isIntersecting && hasNext && nextCursor && enabled) {
-        refetch();
+        fetchNextPage();
       }
     },
-    [hasNext, nextCursor, refetch, enabled]
+    [hasNext, nextCursor, fetchNextPage, enabled]
   );
 
   useEffect(() => {
