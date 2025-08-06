@@ -53,7 +53,13 @@ public class ProjectApiTest {
         this.documentationSpecification = new RequestSpecBuilder()
                 .addFilter(RestAssuredRestDocumentation.documentationConfiguration(restDocumentation)
                         .operationPreprocessors()
-                        .withRequestDefaults(Preprocessors.prettyPrint())
+                        .withRequestDefaults(
+                                Preprocessors.prettyPrint(),
+                                Preprocessors.modifyUris()
+                                        .scheme("https")
+                                        .host("api.moaon.site")
+                                        .removePort()
+                        )
                         .withResponseDefaults(Preprocessors.prettyPrint())
                 )
                 .build();
@@ -105,8 +111,8 @@ public class ProjectApiTest {
     @Test
     void getAllProjects() {
         // given
-        String filteredSearch = "모아온";
-        String unfilteredSearch = "모모온";
+        String filteredSearch = "moaon";
+        String unfilteredSearch = "momoon";
         ProjectCategory filteredProjectCategory = Fixture.anyProjectCategory();
         ProjectCategory unfilteredProjectCategory = Fixture.anyProjectCategory();
         TechStack filteredTechStack = Fixture.anyTechStack();

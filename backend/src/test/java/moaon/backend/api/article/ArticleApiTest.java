@@ -52,9 +52,14 @@ public class ArticleApiTest {
         this.documentationSpecification = new RequestSpecBuilder()
                 .addFilter(RestAssuredRestDocumentation.documentationConfiguration(restDocumentation)
                         .operationPreprocessors()
-                        .withRequestDefaults(Preprocessors.prettyPrint())
-                        .withResponseDefaults(Preprocessors.prettyPrint())
-                )
+                        .withRequestDefaults(
+                                Preprocessors.prettyPrint(),
+                                Preprocessors.modifyUris()
+                                        .scheme("https")
+                                        .host("api.moaon.site")
+                                        .removePort()
+                        )
+                        .withResponseDefaults(Preprocessors.prettyPrint()))
                 .build();
     }
 
@@ -68,8 +73,8 @@ public class ArticleApiTest {
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
 
-        String filteredSearch = "모아";
-        String unfilteredSearch = "모모";
+        String filteredSearch = "moa";
+        String unfilteredSearch = "momo";
 
         Project project = repositoryHelper.save(
                 new ProjectFixtureBuilder()
