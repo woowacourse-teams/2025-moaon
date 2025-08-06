@@ -30,6 +30,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
+    private static final String RESERVED_CHARACTERS = "[+-><()~*:\"&|]";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -94,7 +95,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     private String formatSearchKeyword(String search) {
         return Arrays.stream(search.split(BLANK))
-                .map(keyword -> String.format("+%s*", keyword.replaceAll("[+-><()~*:\"&|]", "").toLowerCase()))
+                .map(keyword -> String.format("+%s*", keyword.replaceAll(RESERVED_CHARACTERS, "").toLowerCase()))
                 .collect(Collectors.joining(BLANK));
     }
 
