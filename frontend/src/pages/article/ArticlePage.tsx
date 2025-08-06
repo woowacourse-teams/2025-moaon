@@ -4,11 +4,11 @@ import {
 } from "@domains/filter/articleCategory";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
-import useSearchParams from "@shared/hooks/useSearchParams";
 import SortList from "../../domains/components/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
+import { useArticleCategory } from "./hooks/useArticleCategory";
 import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
@@ -17,15 +17,8 @@ const DEFAULT_FILTER_TYPE = "all";
 
 function ArticlePage() {
   const { refetch, isLoading, articles } = useArticleList();
-
-  const categoryParams = useSearchParams({
-    key: "category",
-    mode: "single",
-  });
-
-  const rawSelectedCategory = categoryParams.get()[0];
-  const selectedCategory = (rawSelectedCategory ??
-    DEFAULT_FILTER_TYPE) as ArticleCategoryKey;
+  const { selectedCategory, updateCategory } =
+    useArticleCategory(DEFAULT_FILTER_TYPE);
 
   const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
     key,
@@ -42,7 +35,7 @@ function ArticlePage() {
   };
 
   const handleTabSelect = (key: ArticleCategoryKey) => {
-    categoryParams.update(key);
+    updateCategory(key);
     refetch();
   };
 
