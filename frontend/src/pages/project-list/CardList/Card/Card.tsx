@@ -27,6 +27,15 @@ function Card({ project }: CardProps) {
   const imageLoadError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
     target.src = cardDefaultImage;
+    // 에러 발생 시에도 로드된 것으로 처리
+    target.classList.add("loaded");
+    target.parentElement?.classList.add("image-loaded");
+  };
+
+  const imageLoadSuccess = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.classList.add("loaded");
+    target.parentElement?.classList.add("image-loaded");
   };
 
   return (
@@ -36,6 +45,8 @@ function Card({ project }: CardProps) {
           <S.CardImage
             src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
             onError={imageLoadError}
+            onLoad={imageLoadSuccess}
+            alt={`${title} 프로젝트 썸네일`}
           />
         </S.CardImageBox>
         <S.CardInfo>

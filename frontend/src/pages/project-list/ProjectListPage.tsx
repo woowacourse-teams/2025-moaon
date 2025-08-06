@@ -7,6 +7,7 @@ import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
 import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
+import MoveTop from "@/shared/components/MoveTop/MoveTop";
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
@@ -41,6 +42,7 @@ function ProjectListPage() {
         <SortList sortMap={PROJECT_SORT_MAP} />
       </S.Box>
       <CardList />
+      <MoveTop />
     </S.Main>
   );
 }
