@@ -13,8 +13,6 @@ const useProjectList = () => {
     isRefetching,
   } = useInfiniteQuery(projectQueries.fetchList());
 
-  console.log(data);
-
   const projects = data?.pages.flatMap((page) => page.contents);
 
   // 첫 번째 페이지의 totalCount 사용
