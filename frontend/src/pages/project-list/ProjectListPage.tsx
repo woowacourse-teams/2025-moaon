@@ -9,12 +9,18 @@ import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
 
+const DEFAULT_SORT_TYPE = "createdAt";
+
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch } = useProjectList();
 
   const handleFilterResetButtonClick = () => {
     resetFilter();
+    refetch();
+  };
+
+  const handleSelect = () => {
     refetch();
   };
 
@@ -39,7 +45,11 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        <SortList sortMap={PROJECT_SORT_MAP} />
+        <SortList<typeof PROJECT_SORT_MAP>
+          sortMap={PROJECT_SORT_MAP}
+          onSelect={handleSelect}
+          initialValue={DEFAULT_SORT_TYPE}
+        />
       </S.Box>
       <CardList />
       <MoveTop />

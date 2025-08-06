@@ -1,20 +1,20 @@
+import type { PropsWithChildren } from "react";
 import * as S from "./SortItem.styled";
 
 interface SortItemProps {
-  sortValue: string;
   isSelected: boolean;
   onSelect: () => void;
 }
 
-function SortItem({ sortValue, isSelected, onSelect }: SortItemProps) {
+function SortItem({
+  isSelected,
+  onSelect,
+  children,
+}: PropsWithChildren<SortItemProps>) {
   return (
     <S.Item>
-      <S.Button
-        type="button"
-        onClick={() => onSelect()}
-        isSelected={isSelected}
-      >
-        {sortValue}
+      <S.Button type="button" onClick={onSelect} isSelected={isSelected}>
+        {children}
       </S.Button>
     </S.Item>
   );
