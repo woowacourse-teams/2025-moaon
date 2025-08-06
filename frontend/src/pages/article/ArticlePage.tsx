@@ -14,9 +14,9 @@ const DEFAULT_FILTER_TYPE = "all";
 function ArticlePage() {
   const { refetch, isLoading, articles } = useArticleList();
 
-  const articleCategoryItems = ARTICLE_CATEGORY_ENTRY.map(([key, value]) => ({
+  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
     key,
-    label: value.label,
+    label,
   }));
 
   if (isLoading) return <div>Loading...</div>;
@@ -38,7 +38,7 @@ function ArticlePage() {
         <ArticleSearchBar />
       </S.MainBox>
       <Tab
-        items={articleCategoryItems}
+        items={articleCategories}
         onSelect={handleSelect}
         initialValue={DEFAULT_FILTER_TYPE}
       />
@@ -49,7 +49,7 @@ function ArticlePage() {
               <S.ArticleIntroText>{articles.totalCount}개</S.ArticleIntroText>의
               아티클이 모여있어요.
             </S.ArticleIntro>
-            <SortList
+            <SortList<typeof ARTICLE_SORT_MAP>
               sortMap={ARTICLE_SORT_MAP}
               onSelect={handleSelect}
               initialValue={DEFAULT_SORT_TYPE}
