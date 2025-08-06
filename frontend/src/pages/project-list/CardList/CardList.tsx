@@ -35,7 +35,7 @@ function CardList() {
   );
 
   return (
-    <>
+    <section aria-label="프로젝트 목록">
       <S.ProjectIntro>
         <S.ProjectIntroText>{totalCount ?? 0}개</S.ProjectIntroText>의
         프로젝트가 모여있어요.
@@ -52,7 +52,7 @@ function CardList() {
         {/* 무한스크롤 트리거 요소 */}
         {enabled && <div ref={targetRef} />}
       </S.CardList>
-    </>
+    </section>
   );
 }
 
