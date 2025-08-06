@@ -2,6 +2,7 @@ import {
   ARTICLE_CATEGORY_ENTRY,
   type ArticleCategoryKey,
 } from "@domains/filter/articleCategory";
+import MoveTop from "@shared/components/MoveTop/MoveTop";
 import Tab from "@shared/components/Tab/Tab";
 import ArticleBox from "./ArticleBox/ArticleBox";
 import * as S from "./ArticlePage.styled";
@@ -48,6 +49,7 @@ function ArticlePage() {
         <ArticleBox />
         <TagList />
       </S.Box>
+      <MoveTop />
     </S.Main>
   );
 }
