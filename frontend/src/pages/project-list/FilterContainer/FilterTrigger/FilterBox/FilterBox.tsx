@@ -13,7 +13,7 @@ function FilterBox({ children, param }: PropsWithChildren<FilterBoxProps>) {
   const { refetch } = useProjectList();
 
   const handelFilterResetButtonClick = () => {
-    params.deleteAll();
+    params.deleteAll({ replace: true });
     refetch();
   };
 

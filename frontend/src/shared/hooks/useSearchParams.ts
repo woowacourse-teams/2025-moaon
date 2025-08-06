@@ -1,5 +1,8 @@
 import { useCallback } from "react";
-import { useSearchParams as useReactRouterSearchParams } from "react-router";
+import {
+  type NavigateOptions,
+  useSearchParams as useReactRouterSearchParams,
+} from "react-router";
 
 type SearchParamOptions = {
   key: string;
@@ -20,26 +23,29 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
   }, [key, searchParams]);
 
   const updateSearchParams = useCallback(
-    (values: string[]) => {
+    (values: string[], options?: NavigateOptions) => {
       const params = new URLSearchParams(searchParams);
       params.delete(key);
 
       if (values.length === 0) {
-        setSearchParams(params);
+        setSearchParams(params, options);
         return;
       }
 
       params.append(key, values.join(","));
-      setSearchParams(params);
+      setSearchParams(params, options);
     },
     [key, searchParams, setSearchParams]
   );
 
-  const deleteAllSearchParams = useCallback(() => {
-    const params = new URLSearchParams(searchParams);
-    params.delete(key);
-    setSearchParams(params);
-  }, [key, searchParams, setSearchParams]);
+  const deleteAllSearchParams = useCallback(
+    (options?: NavigateOptions) => {
+      const params = new URLSearchParams(searchParams);
+      params.delete(key);
+      setSearchParams(params, options);
+    },
+    [key, searchParams, setSearchParams]
+  );
 
   const paramOperations = {
     single: (value: string) => [value],
@@ -51,9 +57,9 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
     },
   };
 
-  const updateParamValue = (value: string) => {
+  const updateParamValue = (value: string, options?: { replace?: boolean }) => {
     const newValues = paramOperations[mode](value);
-    updateSearchParams(newValues);
+    updateSearchParams(newValues, options);
   };
 
   return {

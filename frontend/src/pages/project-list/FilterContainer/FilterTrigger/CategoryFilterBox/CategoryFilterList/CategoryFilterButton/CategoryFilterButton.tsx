@@ -33,7 +33,7 @@ function CategoryFilterButton({ value, label }: CategoryFilterButtonProps) {
 
   const handleFilterButtonClick = (value: string) => {
     toggle();
-    params.update(value);
+    params.update(value, { replace: true });
     refetch();
   };
 

@@ -10,7 +10,7 @@ function TagList() {
   const { refetch } = useArticleList();
 
   const handleTagSelect = (value: TechStackKey) => {
-    tagParams.update(value);
+    tagParams.update(value, { replace: true });
     refetch();
   };
 

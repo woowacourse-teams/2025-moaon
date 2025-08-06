@@ -8,12 +8,12 @@ function ProjectSearchBar() {
 
   const handleSearchSubmit = (value: string) => {
     if (value === "") {
-      params.deleteAll();
+      params.deleteAll({ replace: true });
       refetch();
       return;
     }
 
-    params.update(value);
+    params.update(value, { replace: true });
     refetch();
   };
 
