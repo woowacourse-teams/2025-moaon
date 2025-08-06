@@ -64,8 +64,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     @Override
     public long countWithSearchCondition(ProjectQueryCondition condition) {
-        ProjectCursor<?> cursor = condition.cursor();
-
         JPAQuery<Long> query = jpaQueryFactory.select(project.countDistinct())
                 .from(project)
                 .leftJoin(project.categories, projectCategory)
@@ -76,10 +74,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         applyWhereAndHaving(whereBuilder, condition, query);
 
         toContainsSearch(condition.search(), whereBuilder);
-
-        if (cursor != null) {
-            cursor.applyCursor(condition, whereBuilder);
-        }
 
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);

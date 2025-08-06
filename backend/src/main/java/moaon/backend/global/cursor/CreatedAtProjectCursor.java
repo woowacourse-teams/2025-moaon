@@ -33,8 +33,12 @@ public class CreatedAtProjectCursor implements ProjectCursor<LocalDateTime> {
 
     @Override
     public void applyCursor(ProjectQueryCondition queryCondition, BooleanBuilder whereBuilder) {
-        whereBuilder.and(project.createdAt.lt(getSortValue()))
-                .or(project.createdAt.eq(getSortValue())
-                        .and(project.id.lt(getLastId())));
+        whereBuilder.and(
+                project.createdAt.lt(getSortValue())
+                        .or(
+                                project.createdAt.eq(getSortValue())
+                                        .and(project.id.lt(getLastId()))
+                        )
+        );
     }
 }

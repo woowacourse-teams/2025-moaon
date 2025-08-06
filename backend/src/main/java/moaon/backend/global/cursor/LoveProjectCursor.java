@@ -30,8 +30,12 @@ public class LoveProjectCursor implements ProjectCursor<Integer> {
 
     @Override
     public void applyCursor(ProjectQueryCondition queryCondition, BooleanBuilder whereBuilder) {
-        whereBuilder.and(project.lovedMembers.size().lt(getSortValue()))
-                .or(project.lovedMembers.size().eq(getSortValue())
-                        .and(project.id.lt(getLastId())));
+        whereBuilder.and(
+                project.lovedMembers.size().lt(getSortValue())
+                        .or(
+                                project.lovedMembers.size().eq(getSortValue())
+                                        .and(project.id.lt(getLastId()))
+                        )
+        );
     }
 }

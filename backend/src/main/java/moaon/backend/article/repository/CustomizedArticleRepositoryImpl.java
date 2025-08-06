@@ -63,8 +63,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
-        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
-
         JPAQuery<Long> query = jpaQueryFactory.select(article.countDistinct())
                 .from(article)
                 .leftJoin(article.category, articleCategory)
@@ -73,10 +71,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
         applyWhereAndHaving(whereBuilder, queryCondition, query);
-
-        if (articleCursor != null) {
-            articleCursor.applyCursor(queryCondition, whereBuilder);
-        }
 
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
