@@ -1,10 +1,10 @@
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import useSearchParams from "@shared/hooks/useSearchParams";
-import useProjectList from "@/pages/project-list/hooks/useProjectList";
+import useArticleList from "../hooks/useArticleList";
 
 function ArticleSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
-  const { refetch } = useProjectList();
+  const { refetch } = useArticleList();
 
   const handleSearchSubmit = (value: string) => {
     if (value === "") {
