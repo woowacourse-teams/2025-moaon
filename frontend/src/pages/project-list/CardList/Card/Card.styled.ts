@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
+import {
+  flexCenter,
+  shimmerGradient,
+  textOverflowEllipsis,
+} from "@/styles/global.styled";
 
 export const Card = styled.li`
   width: 100%;
