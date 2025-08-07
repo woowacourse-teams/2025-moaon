@@ -13,12 +13,13 @@ import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
 const DEFAULT_SORT_TYPE = "createdAt";
-const DEFAULT_FILTER_TYPE = "all";
+const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 
 function ArticlePage() {
   const { refetch, isLoading, articles } = useArticleList();
-  const { selectedCategory, updateCategory } =
-    useArticleCategory(DEFAULT_FILTER_TYPE);
+  const { selectedCategory, updateCategory } = useArticleCategory(
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
+  );
 
   const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
     key,
