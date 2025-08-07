@@ -169,7 +169,7 @@ public class ProjectApiTest extends BaseApiTest {
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
-                .queryParams("category", "a")
+                .queryParams("category", filterCategory.getName())
                 .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()

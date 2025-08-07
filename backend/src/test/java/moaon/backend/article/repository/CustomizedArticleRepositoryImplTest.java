@@ -454,6 +454,6 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         // then
-        assertThat(2).isEqualTo(articles.size());
+        assertThat(articles).containsExactlyInAnyOrder(filterArticle1, filterArticle2);
     }
 }
