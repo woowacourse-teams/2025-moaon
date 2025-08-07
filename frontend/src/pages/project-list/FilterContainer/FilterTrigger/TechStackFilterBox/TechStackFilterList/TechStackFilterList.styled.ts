@@ -35,6 +35,7 @@ export const Button = styled.button`
   &:hover {
     background-color: #007bff;
     color: #fff;
+    --close-icon-color: #fff;
   }
 `;
 
@@ -50,11 +51,4 @@ export const IconBox = styled.div`
 export const Icon = styled.img`
   width: 1rem;
   aspect-ratio: 1/1;
-`;
-
-export const CloseIcon = styled.img`
-  width: 0.8rem;
-  aspect-ratio: 1/1;
-
-  border-radius: 50%;
 `;
