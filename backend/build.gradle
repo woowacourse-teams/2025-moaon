@@ -100,13 +100,13 @@ asciidoctor {
     }
 }
 
-bootJar {
-    dependsOn asciidoctor
-    from('${asciidoctor.outputDir}') {
-        into 'static/docs'
-    }
-}
-
-tasks.named('build') {
-    dependsOn asciidoctor
-}
+//bootJar {
+//    dependsOn asciidoctor
+//    from('${asciidoctor.outputDir}') {
+//        into 'static/docs'
+//    }
+//}
+//
+//tasks.named('build') {
+//    dependsOn asciidoctor
+//}
