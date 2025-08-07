@@ -1,0 +1,52 @@
+import {
+  ARTICLE_CATEGORY_ENTRY,
+  type ArticleCategoryKey,
+} from "@domains/filter/articleCategory";
+import Tab from "@shared/components/Tab/Tab";
+import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
+import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
+import Card from "@/pages/article/CardList/Card/Card";
+import SectionTitle from "../SectionTitle";
+import * as S from "./ArticleSection.styled";
+
+const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
+
+interface ArticleSectionProps {
+  projectArticles: ProjectArticle[];
+  refetch: () => void;
+}
+
+function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
+  const { selectedCategory, updateCategory } = useArticleCategory(
+    DEFAULT_ARTICLE_CATEGORY_TYPE
+  );
+
+  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
+    key,
+    label,
+  }));
+
+  const handleTabSelect = (key: ArticleCategoryKey) => {
+    updateCategory(key);
+    refetch();
+  };
+
+  return (
+    <>
+      <SectionTitle title="프로젝트 아티클" />
+      <Tab
+        items={articleCategories}
+        onSelect={handleTabSelect}
+        selected={selectedCategory}
+        width={100}
+      />
+      <S.CardListContainer>
+        {projectArticles?.map((article) => (
+          <Card key={article.id} article={article} />
+        ))}
+      </S.CardListContainer>
+    </>
+  );
+}
+
+export default ArticleSection;
