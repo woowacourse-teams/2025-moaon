@@ -11,7 +11,7 @@ export const useArticleCategory = (defaultValue: ArticleCategoryKey) => {
   const selectedCategory = rawSelectedCategory ?? defaultValue;
 
   const updateCategory = (key: ArticleCategoryKey) => {
-    categoryParams.update(key);
+    categoryParams.update(key, { replace: true });
   };
 
   return { selectedCategory, updateCategory };
