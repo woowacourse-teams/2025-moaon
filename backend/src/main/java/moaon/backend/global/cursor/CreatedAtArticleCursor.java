@@ -6,7 +6,6 @@ import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleQueryCondition;
 
 @RequiredArgsConstructor
 public class CreatedAtArticleCursor implements ArticleCursor<LocalDateTime> {
@@ -32,7 +31,7 @@ public class CreatedAtArticleCursor implements ArticleCursor<LocalDateTime> {
     }
 
     @Override
-    public void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder) {
+    public void applyCursor(BooleanBuilder whereBuilder) {
         whereBuilder.and(
                 article.createdAt.lt(getSortValue())
                         .or(
