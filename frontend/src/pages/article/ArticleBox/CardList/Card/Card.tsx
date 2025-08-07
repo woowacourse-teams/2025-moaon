@@ -1,4 +1,4 @@
-import clickIcon from "@assets/icons/click-icon.svg";
+import eyeIcon from "@assets/icons/eye.svg";
 import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
 import type { Article } from "@/apis/articles/articles.type";
 import useArticleList from "@/pages/article/hooks/useArticleList";
@@ -24,7 +24,7 @@ function Card({ article }: CardProps) {
       <S.CardInfoBox>
         <TechStackList techStacks={techStacks} />
         <S.CardClickBox>
-          <S.CardClickIcon src={clickIcon} alt="클릭 수 아이콘" />
+          <S.CardClickIcon src={eyeIcon} alt="클릭 수 아이콘" />
           <S.CardClickCount>{clicks > 999 ? "999+" : clicks}</S.CardClickCount>
         </S.CardClickBox>
       </S.CardInfoBox>

@@ -54,11 +54,13 @@ export const CardClickBox = styled.div`
   gap: 0.4rem;
 `;
 
-export const CardClickIcon = styled.img``;
+export const CardClickIcon = styled.img`
+  width: 1.125rem;
+`;
 
 export const CardClickCount = styled.span`
   font-size: 0.8125rem;
-  height: 0.6875rem;
+  color: #595858;
 `;
 
 export const BackDropBox = styled.div`
