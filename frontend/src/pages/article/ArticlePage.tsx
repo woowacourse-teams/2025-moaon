@@ -24,10 +24,6 @@ function ArticlePage() {
     label,
   }));
 
-  const handleSelect = () => {
-    refetch();
-  };
-
   const handleTabSelect = (key: ArticleCategoryKey) => {
     updateCategory(key);
     refetch();
