@@ -36,6 +36,31 @@ export const CardSummary = styled.span`
   ${textOverflowEllipsis(3)}
 `;
 
+export const CardInfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  width: 100%;
+
+  > ul {
+    flex: 1;
+  }
+`;
+
+export const CardClickBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+`;
+
+export const CardClickIcon = styled.img``;
+
+export const CardClickCount = styled.span`
+  font-size: 0.8125rem;
+  height: 0.6875rem;
+`;
+
 export const BackDropBox = styled.div`
   width: 100%;
   height: 100%;

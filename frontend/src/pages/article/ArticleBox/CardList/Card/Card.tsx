@@ -1,3 +1,4 @@
+import clickIcon from "@assets/icons/click-icon.svg";
 import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
 import type { Article } from "@/apis/articles/articles.type";
 import useArticleList from "@/pages/article/hooks/useArticleList";
@@ -16,11 +17,16 @@ function Card({ article }: CardProps) {
 
   return (
     <S.CardContainer>
-      {article.clicks}
       <Badge text={label} bgColor={bgColor} />
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardSummary>{summary}</S.CardSummary>
-      <TechStackList techStacks={techStacks} />
+      <S.CardInfoBox>
+        <TechStackList techStacks={techStacks} />
+        <S.CardClickBox>
+          <S.CardClickIcon src={clickIcon} alt="클릭 수 아이콘" />
+          <S.CardClickCount>{article.clicks}</S.CardClickCount>
+        </S.CardClickBox>
+      </S.CardInfoBox>
       <S.BackDropBox className="back-drop-box">
         <S.ArticleLink
           href={url}
