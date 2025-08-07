@@ -16,6 +16,8 @@ import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.fixture.RepositoryHelper;
+import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.dto.PagedProjectResponse;
@@ -23,10 +25,16 @@ import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
 
+@Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ProjectApiTest extends BaseApiTest {
+
+    @Autowired
+    protected RepositoryHelper repositoryHelper;
 
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
