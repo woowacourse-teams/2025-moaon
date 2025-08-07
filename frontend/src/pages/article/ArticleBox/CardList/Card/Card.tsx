@@ -11,7 +11,8 @@ interface CardProps {
 function Card({ article }: CardProps) {
   const { title, summary, techStacks, url, category, projectId } = article;
   const isArticleList = projectId;
-  const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
+  const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];  const isArticleList = projectId;
+
   return (
     <S.CardContainer>
       <Badge text={label} bgColor={bgColor} />
