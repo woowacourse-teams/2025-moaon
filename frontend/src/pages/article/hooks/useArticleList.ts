@@ -13,7 +13,7 @@ const useArticleList = () => {
     isRefetching,
   } = useInfiniteQuery(articlesQueries.fetchList());
 
-  const articles = data?.pages.flatMap((page) => page.articleContents);
+  const articles = data?.pages.flatMap((page) => page.contents);
 
   const totalCount = data?.pages[0]?.totalCount;
 
