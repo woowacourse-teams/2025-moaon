@@ -446,17 +446,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_projects">1. /projects</a>
+<li><a href="#_error_responses">1. Error Responses</a>
 <ul class="sectlevel2">
-<li><a href="#_get_projects">1.1. GET /projects</a></li>
-<li><a href="#_get_projectsid">1.2. GET /projects/{id}</a></li>
-<li><a href="#_get_projectsidarticles">1.3. GET /projects/{id}/articles</a></li>
+<li><a href="#_error_response_format">1.1. Error Response Format</a></li>
+<li><a href="#_error_codes">1.2. Error Codes</a></li>
 </ul>
 </li>
-<li><a href="#_articles">2. /articles</a>
+<li><a href="#_projects">2. /projects</a>
 <ul class="sectlevel2">
-<li><a href="#_get_articles">2.1. GET /articles</a></li>
-<li><a href="#_post_articlesidclicks">2.2. POST /articles/{id}/clicks</a></li>
+<li><a href="#_get_projects">2.1. GET /projects</a></li>
+<li><a href="#_get_projectsid">2.2. GET /projects/{id}</a></li>
+<li><a href="#_get_projectsidarticles">2.3. GET /projects/{id}/articles</a></li>
+</ul>
+</li>
+<li><a href="#_articles">3. /articles</a>
+<ul class="sectlevel2">
+<li><a href="#_get_articles">3.1. GET /articles</a></li>
+<li><a href="#_post_articlesidclicks">3.2. POST /articles/{id}/clicks</a></li>
 </ul>
 </li>
 </ul>
@@ -464,10 +470,90 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_projects"><a class="link" href="#_projects">1. /projects</a></h2>
+<h2 id="_error_responses"><a class="link" href="#_error_responses">1. Error Responses</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_get_projects"><a class="link" href="#_get_projects">1.1. GET /projects</a></h3>
+<h3 id="_error_response_format"><a class="link" href="#_error_response_format">1.1. Error Response Format</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "code": "ERROR-CODE",
+  "message": "에러 메시지",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_error_codes"><a class="link" href="#_error_codes">1.2. Error Codes</a></h3>
+<div class="paragraph">
+<p>다음은 시스템에서 사용되는 모든 에러 코드입니다:</p>
+</div>
+<div class="sect3">
+<h4 id="_error_codes_error_response-fields"><a class="link" href="#_error_codes_error_response-fields">Error response-fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Message</th>
+<th class="tableblock halign-left valign-top">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNKNOWN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예기치 못한 오류가 발생했습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESOURCE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청한 리소스를 찾을 수 없습니다</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MISSING_REQUIRED_PARAMETER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">필수 요청 파라미터가 누락되었습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트를 찾을 수 없습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ARTICLE-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ARTICLE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클을 찾을 수 없습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CURSOR-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_CURSOR_FORMAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">커서 파라미터 형식이 올바르지 않습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_projects"><a class="link" href="#_projects">2. /projects</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_get_projects"><a class="link" href="#_get_projects">2.1. GET /projects</a></h3>
 <div class="exampleblock">
 <div class="content">
 <div class="sect3">
@@ -497,7 +583,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 11:58:38 GMT
+Date: Thu, 07 Aug 2025 19:06:27 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 582
@@ -671,11 +757,27 @@ Content-Length: 582
 </tbody>
 </table>
 </div>
+<div class="paragraph">
+<p>Error Codes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GLOBAL-001</p>
+</li>
+<li>
+<p>GLOBAL-003</p>
+</li>
+<li>
+<p>CURSOR-001</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_get_projectsid"><a class="link" href="#_get_projectsid">1.2. GET /projects/{id}</a></h3>
+<h3 id="_get_projectsid"><a class="link" href="#_get_projectsid">2.2. GET /projects/{id}</a></h3>
 <div class="exampleblock">
 <div class="content">
 <div class="sect3">
@@ -703,10 +805,10 @@ Host: api.moaon.site</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewed_projects=%7B%225%22%3A1754567918%7D; Max-Age=25282; Expires=Thu, 07 Aug 2025 19:00:00 GMT; Path=/projects; Secure; HttpOnly
+Set-Cookie: viewed_projects=%7B%225%22%3A1754593587%7D; Max-Age=86013; Expires=Fri, 08 Aug 2025 19:00:00 GMT; Path=/project; Secure; HttpOnly
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 11:58:38 GMT
+Date: Thu, 07 Aug 2025 19:06:27 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 554
@@ -723,7 +825,7 @@ Content-Length: 554
   "isLoved" : false,
   "loves" : 0,
   "views" : 1,
-  "createdAt" : "2025-08-07T20:58:38.245588",
+  "createdAt" : "2025-08-08T04:06:27.209861",
   "githubUrl" : "https://github.com/test-repo",
   "productionUrl" : "https://test-product.com"
 }</code></pre>
@@ -835,11 +937,24 @@ Content-Length: 554
 </tbody>
 </table>
 </div>
+<div class="paragraph">
+<p><strong>Error Response</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GLOBAL-001</p>
+</li>
+<li>
+<p>PROJECT-001</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_get_projectsidarticles"><a class="link" href="#_get_projectsidarticles">1.3. GET /projects/{id}/articles</a></h3>
+<h3 id="_get_projectsidarticles"><a class="link" href="#_get_projectsidarticles">2.3. GET /projects/{id}/articles</a></h3>
 <div class="exampleblock">
 <div class="content">
 <div class="sect3">
@@ -869,35 +984,38 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 11:58:38 GMT
+Date: Thu, 07 Aug 2025 19:06:27 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 848
+Content-Length: 896
 
 [ {
   "id" : 10,
   "title" : "테스트 아티클 제목116",
   "summary" : "테스트 아티클 요약117",
+  "clicks" : 0,
   "techStacks" : [ "testTechStack126" ],
   "articleUrl" : "https://test-product.com",
   "category" : "testArticleCategory125",
-  "createdAt" : "2025-08-07T20:58:37.866757"
+  "createdAt" : "2025-08-08T04:06:26.795592"
 }, {
   "id" : 11,
   "title" : "테스트 아티클 제목127",
   "summary" : "테스트 아티클 요약128",
+  "clicks" : 0,
   "techStacks" : [ "testTechStack137" ],
   "articleUrl" : "https://test-product.com",
   "category" : "testArticleCategory136",
-  "createdAt" : "2025-08-07T20:58:37.919907"
+  "createdAt" : "2025-08-08T04:06:26.864585"
 }, {
   "id" : 12,
   "title" : "테스트 아티클 제목138",
   "summary" : "테스트 아티클 요약139",
+  "clicks" : 0,
   "techStacks" : [ "testTechStack148" ],
   "articleUrl" : "https://test-product.com",
   "category" : "testArticleCategory147",
-  "createdAt" : "2025-08-07T20:58:37.959586"
+  "createdAt" : "2025-08-08T04:06:26.916889"
 } ]</code></pre>
 </div>
 </div>
@@ -939,6 +1057,12 @@ Content-Length: 848
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].clicks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 클릭수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].techStacks</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술 스택 목록</p></td>
@@ -965,16 +1089,29 @@ Content-Length: 848
 </tbody>
 </table>
 </div>
+<div class="paragraph">
+<p><strong>Error Response</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GLOBAL-001</p>
+</li>
+<li>
+<p>PROJECT-001</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_articles"><a class="link" href="#_articles">2. /articles</a></h2>
+<h2 id="_articles"><a class="link" href="#_articles">3. /articles</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_get_articles"><a class="link" href="#_get_articles">2.1. GET /articles</a></h3>
+<h3 id="_get_articles"><a class="link" href="#_get_articles">3.1. GET /articles</a></h3>
 <div class="exampleblock">
 <div class="content">
 <div class="sect3">
@@ -1004,10 +1141,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 11:58:36 GMT
+Date: Thu, 07 Aug 2025 19:06:25 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 705
+Content-Length: 706
 
 {
   "contents" : [ {
@@ -1019,7 +1156,7 @@ Content-Length: 705
     "techStacks" : [ "testTechStack3" ],
     "url" : "https://test-product.com",
     "category" : "testArticleCategory1",
-    "createdAt" : "2025-08-07T20:58:33.302259"
+    "createdAt" : "2025-08-08T04:06:22.201352"
   }, {
     "id" : 7,
     "projectId" : 1,
@@ -1029,7 +1166,7 @@ Content-Length: 705
     "techStacks" : [ "testTechStack3" ],
     "url" : "https://test-product.com",
     "category" : "testArticleCategory1",
-    "createdAt" : "2025-08-07T20:58:33.25566"
+    "createdAt" : "2025-08-08T04:06:22.168104"
   } ],
   "totalCount" : 3,
   "hasNext" : true,
@@ -1186,11 +1323,27 @@ Content-Length: 705
 </tbody>
 </table>
 </div>
+<div class="paragraph">
+<p>Error Codes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GLOBAL-001</p>
+</li>
+<li>
+<p>GLOBAL-003</p>
+</li>
+<li>
+<p>CURSOR-001</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_post_articlesidclicks"><a class="link" href="#_post_articlesidclicks">2.2. POST /articles/{id}/clicks</a></h3>
+<h3 id="_post_articlesidclicks"><a class="link" href="#_post_articlesidclicks">3.2. POST /articles/{id}/clicks</a></h3>
 <div class="exampleblock">
 <div class="content">
 <div class="sect3">
@@ -1220,12 +1373,25 @@ Host: api.moaon.site</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: clicked_articles=%7B%229%22%3A1754567917%7D; Max-Age=25283; Expires=Thu, 07 Aug 2025 19:00:00 GMT; Path=/articles; Secure; HttpOnly
-Date: Thu, 07 Aug 2025 11:58:37 GMT
+Set-Cookie: clicked_articles=%7B%229%22%3A1754593586%7D; Max-Age=86014; Expires=Fri, 08 Aug 2025 19:00:00 GMT; Path=/article; Secure; HttpOnly
+Date: Thu, 07 Aug 2025 19:06:26 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
 </div>
+</div>
+<div class="paragraph">
+<p>Error Codes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GLOBAL-001</p>
+</li>
+<li>
+<p>ARTICLE-001</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1236,7 +1402,7 @@ Connection: keep-alive</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2025-08-07 13:27:44 +0900
+Last updated 2025-08-08 04:05:41 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
