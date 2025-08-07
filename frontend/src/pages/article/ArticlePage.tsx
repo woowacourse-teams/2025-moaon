@@ -24,11 +24,6 @@ function ArticlePage() {
     label,
   }));
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!articles) return <div>No articles found</div>;
-
-  const { contents, totalCount } = articles;
-
   const handleSelect = () => {
     refetch();
   };
@@ -55,20 +50,7 @@ function ArticlePage() {
         selected={selectedCategory}
       />
       <S.Box>
-        <S.ArticleContainer>
-          <S.ArticleHeader>
-            <S.ArticleIntro>
-              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
-              모여있어요.
-            </S.ArticleIntro>
-            <SortList<typeof ARTICLE_SORT_MAP>
-              sortMap={ARTICLE_SORT_MAP}
-              onSelect={handleSelect}
-              initialValue={DEFAULT_SORT_TYPE}
-            />
-          </S.ArticleHeader>
-          <CardList articles={contents} />
-        </S.ArticleContainer>
+        <ArticleBox />
         <TagList />
       </S.Box>
       <MoveTop />

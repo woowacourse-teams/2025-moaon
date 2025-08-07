@@ -5,7 +5,7 @@ import {
 import Tab from "@shared/components/Tab/Tab";
 import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
 import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
-import Card from "@/pages/article/CardList/Card/Card";
+import Card from "@/pages/article/ArticleBox/CardList/Card/Card";
 import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
