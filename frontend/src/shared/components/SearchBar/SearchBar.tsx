@@ -5,16 +5,21 @@ import * as S from "./SearchBar.styled";
 interface SearchBarProps {
   placeholder: string;
   onSubmit: (value: string) => void;
+  defaultValue?: string;
 }
 
-function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
+function SearchBar({
+  placeholder,
+  onSubmit,
+  defaultValue = "",
+}: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchFormSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit(inputRef.current?.value || "");
   };
-
+  console.log("a");
   return (
     <S.SearchForm onSubmit={handleSearchFormSubmit}>
       <S.SearchLabel htmlFor="search-input">
@@ -22,7 +27,16 @@ function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
         <S.SearchInput
           type="text"
           placeholder={placeholder}
-          ref={inputRef}
+          ref={(el) => {
+            if (el) {
+              inputRef.current = el;
+              inputRef.current.value = defaultValue;
+            }
+
+            return () => {
+              inputRef.current = null;
+            };
+          }}
           id="search-input"
         />
       </S.SearchLabel>
