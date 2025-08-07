@@ -9,11 +9,20 @@ const FILTER_LABEL_LIST = [
 export type FilterLabel = (typeof FILTER_LABEL_LIST)[number]["label"];
 export type FilterParam = (typeof FILTER_LABEL_LIST)[number]["param"];
 
-function FilterContainer() {
+interface FilterContainerProps {
+  onSelect: () => void;
+}
+
+function FilterContainer({ onSelect }: FilterContainerProps) {
   return (
     <S.Container>
       {FILTER_LABEL_LIST.map(({ label, param }) => (
-        <FilterTrigger key={label} label={label} param={param} />
+        <FilterTrigger
+          key={label}
+          label={label}
+          param={param}
+          onSelect={onSelect}
+        />
       ))}
     </S.Container>
   );
