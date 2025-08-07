@@ -3,8 +3,6 @@ name: BE Dev CD
 on:
   push:
     branches: [ "develop" ]
-  pull_request: # TODO : 테스트 후 삭제
-    branches: [ "develop" ]
 
 jobs:
   deploy-to-ec2:
