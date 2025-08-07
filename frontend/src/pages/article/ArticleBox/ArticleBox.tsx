@@ -35,17 +35,19 @@ function ArticleBox() {
   return (
     <S.ArticleContainer>
       <S.ArticleHeader hasTotalCount={totalCount !== undefined}>
-        {totalCount && (
-          <S.ArticleIntro>
-            <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
-            모여있어요.
-          </S.ArticleIntro>
+        {typeof totalCount === "number" && totalCount > 0 && (
+          <>
+            <S.ArticleIntro>
+              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
+              모여있어요.
+            </S.ArticleIntro>
+            <SortList<typeof ARTICLE_SORT_MAP>
+              sortMap={ARTICLE_SORT_MAP}
+              onSelect={handleSelect}
+              initialValue={DEFAULT_SORT_TYPE}
+            />
+          </>
         )}
-        <SortList<typeof ARTICLE_SORT_MAP>
-          sortMap={ARTICLE_SORT_MAP}
-          onSelect={handleSelect}
-          initialValue={DEFAULT_SORT_TYPE}
-        />
       </S.ArticleHeader>
       {showSkeleton && <ArticleSkeletonList />}
       <CardList>
