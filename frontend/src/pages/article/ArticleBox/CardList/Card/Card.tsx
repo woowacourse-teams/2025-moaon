@@ -12,7 +12,8 @@ interface CardProps {
 
 function Card({ article }: CardProps) {
   const { postArticleClick } = useArticleList();
-  const { title, summary, techStacks, url, category, projectId } = article;
+  const { title, summary, techStacks, url, category, projectId, clicks, id } =
+    article;
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
 
   return (
@@ -24,7 +25,7 @@ function Card({ article }: CardProps) {
         <TechStackList techStacks={techStacks} />
         <S.CardClickBox>
           <S.CardClickIcon src={clickIcon} alt="클릭 수 아이콘" />
-          <S.CardClickCount>{article.clicks}</S.CardClickCount>
+          <S.CardClickCount>{clicks > 999 ? "999+" : clicks}</S.CardClickCount>
         </S.CardClickBox>
       </S.CardInfoBox>
       <S.BackDropBox className="back-drop-box">
@@ -32,7 +33,7 @@ function Card({ article }: CardProps) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => postArticleClick(article.id)}
+          onClick={() => postArticleClick(id)}
         >
           아티클 보러가기
         </S.ArticleLink>
