@@ -62,9 +62,9 @@ export const TECH_STACK_ICON_MAP = {
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Express.svg",
   },
   nestjs: {
-    label: "NestJS",
+    label: "Nest.js",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Next.js.svg",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nest.js.svg",
   },
   django: {
     label: "Django",
