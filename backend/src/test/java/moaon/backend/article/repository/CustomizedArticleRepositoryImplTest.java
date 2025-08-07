@@ -420,14 +420,14 @@ class CustomizedArticleRepositoryImplTest {
     void getByProjectIdAndCategory() {
         // given
         Project project = new ProjectFixtureBuilder().build();
-        ArticleCategory filterdArticleCategory = new ArticleCategory("a");
+        ArticleCategory filteredArticleCategory = new ArticleCategory("a");
         ArticleCategory unFilterdArticleCategory = new ArticleCategory("b");
 
         Project resultProject = repositoryHelper.save(project);
         Article filterArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(project)
-                        .category(filterdArticleCategory)
+                        .category(filteredArticleCategory)
                         .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
                         .build()
         );
@@ -435,7 +435,7 @@ class CustomizedArticleRepositoryImplTest {
         Article filterArticle2 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(project)
-                        .category(filterdArticleCategory)
+                        .category(filteredArticleCategory)
                         .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
                         .build()
         );
@@ -450,12 +450,10 @@ class CustomizedArticleRepositoryImplTest {
         // when
         List<Article> articles = customizedArticleRepository.findAllByProjectIdAndCategory(
                 resultProject.getId(),
-                filterdArticleCategory.getName()
+                filteredArticleCategory.getName()
         );
 
         // then
-//        assertThat(articles).containsExactly(filterArticle1, filterArticle2);
         assertThat(2).isEqualTo(articles.size());
-
     }
 }
