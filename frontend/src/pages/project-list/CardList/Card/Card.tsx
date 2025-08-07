@@ -1,7 +1,7 @@
 import eyeIcon from "@assets/icons/eye.svg";
 import grayHeartIcon from "@assets/icons/gray-heart.svg";
 import redHeartIcon from "@assets/icons/pink-heart.svg";
-import cardDefaultImage from "@assets/images/default-thumbnail.webp";
+import cardDefaultImage from "@assets/images/default-image.png";
 import type { SyntheticEvent } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import * as S from "./Card.styled";
