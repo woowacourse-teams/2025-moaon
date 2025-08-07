@@ -11,7 +11,7 @@ RUN chmod +x ./gradlew && ./gradlew dependencies --no-daemon
 
 COPY src ./src
 
-RUN ./gradlew build --no-daemon
+RUN ./gradlew bootJar --no-daemon
 
 FROM amazoncorretto:21-alpine
 
