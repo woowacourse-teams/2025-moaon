@@ -49,6 +49,7 @@ export const useListKeyboardNavigation = ({
         }
 
         onEnter();
+        setKeyboardFocusIndex(-1);
         break;
       }
     }
