@@ -34,7 +34,7 @@ function ArticleBox() {
 
   return (
     <S.ArticleContainer>
-      <S.ArticleHeader hasTotalCount={Number.isNaN(totalCount)}>
+      <S.ArticleHeader hasTotalCount={totalCount !== undefined}>
         {totalCount && (
           <S.ArticleIntro>
             <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
