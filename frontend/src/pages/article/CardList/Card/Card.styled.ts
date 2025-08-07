@@ -31,7 +31,8 @@ export const CardTitle = styled.h2`
 
 export const CardSummary = styled.span`
   font-size: 0.8125rem;
-  line-height: 1.25;
+  line-height: 1.5;
+  height: 3.66rem;
   color: #555555;
   ${textOverflowEllipsis(3)}
 `;
