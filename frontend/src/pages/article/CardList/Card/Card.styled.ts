@@ -59,6 +59,7 @@ export const ArticleLink = styled.a`
   color: #fff;
   border: 1px solid #fff;
   border-radius: 4px;
+  cursor: pointer;
 `;
 
 export const ProjectLink = styled(Link)`
