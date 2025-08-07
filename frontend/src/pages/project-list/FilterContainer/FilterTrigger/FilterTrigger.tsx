@@ -32,7 +32,7 @@ function FilterTrigger({ label, param }: FilterProps) {
             {selectedCount ? selectedCount : ""}
           </S.FilterSelectedCount>
         </S.FilterTitle>
-        <ArrowIcon direction="up" />
+        <ArrowIcon direction={isOpen ? "up" : "down"} />
       </S.FilterButton>
       {isOpen && (
         <SwitchCase
