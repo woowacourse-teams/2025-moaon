@@ -59,7 +59,7 @@ export const Item = styled.li`
   }
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<{ isOver: boolean }>`
   width: 100%;
   padding: 0.75rem;
   background-color: #fff;
@@ -67,6 +67,7 @@ export const Button = styled.button`
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
+  background-color: ${({ isOver }) => (isOver ? "#f0f0f0" : "#fff")};
 
   &:hover {
     background-color: #f0f0f0;
