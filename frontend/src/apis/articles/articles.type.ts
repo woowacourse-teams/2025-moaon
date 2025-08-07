@@ -10,7 +10,7 @@ export interface ArticleListResponse {
 
 export interface Article {
   id: number;
-  projectId: number;
+  projectId?: number;
   clicks: number;
   title: string;
   summary: string;

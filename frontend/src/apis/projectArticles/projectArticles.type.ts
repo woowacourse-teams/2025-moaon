@@ -4,6 +4,7 @@ import type { TechStackKey } from "@domains/filter/techStack";
 export interface ProjectArticle {
   id: number;
   title: string;
+  clicks: number;
   summary: string;
   techStacks: TechStackKey[];
   url: string;
