@@ -1,18 +1,25 @@
-import { ARTICLE_CATEGORY_ENTRY } from "@domains/filter/articleCategory";
+import {
+  ARTICLE_CATEGORY_ENTRY,
+  type ArticleCategoryKey,
+} from "@domains/filter/articleCategory";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import Tab from "@shared/components/Tab/Tab";
 import SortList from "../../domains/components/SortList/SortList";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
 import * as S from "./AticlePage.styled";
 import CardList from "./CardList/CardList";
+import { useArticleCategory } from "./hooks/useArticleCategory";
 import useArticleList from "./hooks/useArticleList";
 import TagList from "./TagList/TagList";
 
 const DEFAULT_SORT_TYPE = "createdAt";
-const DEFAULT_FILTER_TYPE = "all";
+const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 
 function ArticlePage() {
   const { refetch, isLoading, articles } = useArticleList();
+  const { selectedCategory, updateCategory } = useArticleCategory(
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
+  );
 
   const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
     key,
@@ -25,6 +32,11 @@ function ArticlePage() {
   const { articleContents, totalCount } = articles;
 
   const handleSelect = () => {
+    refetch();
+  };
+
+  const handleTabSelect = (key: ArticleCategoryKey) => {
+    updateCategory(key);
     refetch();
   };
 
@@ -41,8 +53,8 @@ function ArticlePage() {
       </S.MainBox>
       <Tab
         items={articleCategories}
-        onSelect={handleSelect}
-        initialValue={DEFAULT_FILTER_TYPE}
+        onSelect={handleTabSelect}
+        selected={selectedCategory}
       />
       <S.Box>
         <S.ArticleContainer>
