@@ -10,6 +10,7 @@ interface CardProps {
 
 function Card({ article }: CardProps) {
   const { title, summary, techStacks, url, category, projectId } = article;
+  const isArticleList = projectId;
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
   return (
     <S.CardContainer>
@@ -21,9 +22,11 @@ function Card({ article }: CardProps) {
         <S.ArticleLink href={url} target="_blank" rel="noopener noreferrer">
           아티클 보러가기
         </S.ArticleLink>
-        <S.ProjectLink to={`/project/${projectId}`}>
-          프로젝트 보러가기
-        </S.ProjectLink>
+        {isArticleList && (
+          <S.ProjectLink to={`/project/${projectId}`}>
+            프로젝트 보러가기
+          </S.ProjectLink>
+        )}
       </S.BackDropBox>
     </S.CardContainer>
   );
