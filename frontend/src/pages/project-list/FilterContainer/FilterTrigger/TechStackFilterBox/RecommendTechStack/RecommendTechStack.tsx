@@ -4,15 +4,15 @@ import TechStackFilterList from "../TechStackFilterList/TechStackFilterList";
 
 const RECOMMEND_TECH_STACKS = [
   "react",
-  "nodejs",
-  "aws",
-  "kotlin",
-  "swift",
-  "flutter",
-  "mysql",
-  "python",
-  "express",
   "typescript",
+  "nextjs",
+  "mysql",
+  "spring",
+  "aws",
+  "redis",
+  "java",
+  "docker",
+  "kotlin",
 ] as TechStackKey[];
 
 function RecommendTechStack() {
