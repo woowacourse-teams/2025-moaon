@@ -5,39 +5,12 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  build:
+  build-and-push-image:
     if: |
-      github.actor == 'yesjuhee' || 
+      github.actor == 'yesjuhee' ||
       github.actor == 'Minuring' ||
       github.actor == 'eueo8259' ||
       github.actor == 'minjae8563'
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./backend
-
-    permissions:
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'corretto'
-          cache: 'gradle'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-
-      - name: Build with Gradle Wrapper using cache
-        run: ./gradlew build --build-cache --no-daemon
-
-  build-and-push-image:
-    needs: build
     runs-on: ubuntu-latest
 
     defaults:
@@ -61,7 +34,7 @@ jobs:
         with:
           context: ./backend
           push: true
-          platforms: linux/amd64,linux/arm64
+#          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:${{ github.sha }}
@@ -69,8 +42,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   check-dependencies-changed:
-    needs: build
-
     outputs:
       dependencies-changed: ${{ steps.filter.outputs.dependencies }}
 
