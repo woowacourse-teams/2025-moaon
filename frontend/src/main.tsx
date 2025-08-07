@@ -7,7 +7,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, type RootOptions } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import App from "./App";
 import GAInitializer from "./libs/googleAnalytics/components/GAInitializer";
@@ -19,8 +19,7 @@ import {
 } from "./libs/sentry/errorReporter";
 import { resetStyle } from "./styles/reset.styled";
 
-const container = document.getElementById("root");
-const root = createRoot(container!, {
+const createRootOptions: RootOptions = {
   onUncaughtError: (error, errorInfo) => {
     sentryRenderError(error, errorInfo, "react-uncaught-error");
   },
@@ -30,7 +29,10 @@ const root = createRoot(container!, {
   onRecoverableError: (error, errorInfo) => {
     sentryRenderRecoverable(error, errorInfo);
   },
-});
+};
+
+const container = document.getElementById("root");
+const root = createRoot(container!, createRootOptions);
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({

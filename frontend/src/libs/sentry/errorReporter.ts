@@ -1,4 +1,7 @@
+import type { Context } from "@sentry/react";
 import * as Sentry from "@sentry/react";
+import type { Component } from "react";
+import type { ErrorInfo } from "react-dom/client";
 import { typeSafeError } from "./utils/typeSafeError";
 
 interface QueryLike {
@@ -11,18 +14,22 @@ interface MutationLike {
   };
 }
 
-export const sentryRenderError = (error: unknown, errorInfo: any, errorType: string) => {
+interface ErrorInfoWithErrorBoundary extends ErrorInfo {
+  errorBoundary?: Component<unknown>;
+}
+
+export const sentryRenderError = (error: unknown, errorInfo: ErrorInfoWithErrorBoundary, errorType: string) => {
   const errorObj = typeSafeError(error);
 
   Sentry.captureException(errorObj, {
     tags: { errorType },
     contexts: {
-      react: errorInfo,
+      react: errorInfo as Context,
     },
   });
 };
 
-export const sentryRenderRecoverable = (error: unknown, errorInfo: any) => {
+export const sentryRenderRecoverable = (error: unknown, errorInfo: ErrorInfo) => {
   const errorObj = typeSafeError(error);
 
   Sentry.captureException(errorObj, {
