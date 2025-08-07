@@ -1,4 +1,6 @@
 import { useParams } from "react-router";
+import { ProjectArticle } from "../../apis/projectArticles/projectArticles.type";
+import Card from "../article/CardList/Card/Card";
 import Carousel from "./components/Carousel/Carousel";
 import useProjectArticles from "./components/hooks/useProjectArticles";
 import useProjectDetail from "./components/hooks/useProjectDetail";
@@ -12,6 +14,7 @@ function ProjectDetailPage() {
 
   const { projectDetail, isLoading, error } = useProjectDetail(Number(id));
   const { projectArticles } = useProjectArticles(Number(id));
+
   if (isLoading || !projectDetail) return <div>로딩 중...</div>;
   if (error) return <div>비상!</div>;
 
@@ -23,7 +26,12 @@ function ProjectDetailPage() {
         <Carousel imageUrls={projectDetail.imageUrls} />
       )}
       <OverviewSection overview={projectDetail.description} />
-      <SectionTitle title="프로젝트 아티클" />
+      {projectArticles && projectArticles.length > 0 && (
+        <SectionTitle title="프로젝트 아티클" />
+      )}
+      {/* {projectArticles?.map((projectArticle) => {
+        return <Card article={projectArticle} key={projectArticle.id} />;
+      })} */}
     </div>
   );
 }
