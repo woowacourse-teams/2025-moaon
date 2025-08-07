@@ -9,5 +9,6 @@ export const articlesQueries = {
       queryFn: ({ pageParam }) => getArticles(pageParam),
       getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : ""),
       initialPageParam: "",
+      throwOnError: true,
     }),
 };
