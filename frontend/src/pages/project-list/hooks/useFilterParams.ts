@@ -16,11 +16,11 @@ export const useFilterParams = () => {
   };
 
   const updateTechStackParam = (techStack: string) => {
-    techStackParams.update(techStack);
+    techStackParams.update(techStack, { replace: true });
   };
 
   const updateCategoryParam = (category: string) => {
-    categoryParams.update(category);
+    categoryParams.update(category, { replace: true });
   };
 
   return {

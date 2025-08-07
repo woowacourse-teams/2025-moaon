@@ -22,7 +22,7 @@ function Tab({ items, onSelect, initialValue }: TabProps) {
   const selectedCategory = rawSelectedCategory ?? initialValue;
 
   const handleTabItemClick = (value: string) => {
-    categoryParams.update(value);
+    categoryParams.update(value, { replace: true });
     onSelect();
   };
 
