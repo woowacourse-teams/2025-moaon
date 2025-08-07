@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
+import { textOverflowEllipsis } from "@/styles/global.styled";
 
 export const CardContainer = styled.li`
   position: relative;
@@ -64,36 +64,4 @@ export const ProjectLink = styled(Link)`
   color: #fff;
   border: 1px solid #fff;
   border-radius: 4px;
-`;
-
-export const SkeletonBadge = styled.div`
-  display: flex;
-  ${shimmerGradient}
-`;
-
-export const SkeletonCardTitle = styled.h2`
-  width: 100%;
-  height: 1.5rem;
-  border-radius: 0.375rem;
-  ${shimmerGradient}
-`;
-
-export const SkeletonCardSummary = styled.span`
-  width: 100%;
-  height: 3rem;
-  border-radius: 0.375rem;
-  ${shimmerGradient}
-`;
-
-export const SkeletonTechStacks = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-`;
-
-export const SkeletonTechStack = styled.div`
-  height: 1.5rem;
-  width: 3.5rem;
-  border-radius: 0.75rem;
-  ${shimmerGradient}
 `;
