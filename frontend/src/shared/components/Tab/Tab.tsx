@@ -1,17 +1,17 @@
 import * as S from "./Tab.styled";
 
-interface TabItem<T extends string> {
-  key: T;
+interface TabItem<K extends string> {
+  key: K;
   label: string;
 }
 
-interface TabProps<T extends string> {
-  items: TabItem<T>[];
-  onSelect: (key: T) => void;
-  selected: T;
+interface TabProps<K extends string> {
+  items: TabItem<K>[];
+  onSelect: (key: K) => void;
+  selected: K;
 }
 
-function Tab<T extends string>({ items, selected, onSelect }: TabProps<T>) {
+function Tab<K extends string>({ items, selected, onSelect }: TabProps<K>) {
   return (
     <S.TabContainer>
       <S.TabItemList>
