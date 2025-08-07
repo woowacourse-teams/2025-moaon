@@ -1,11 +1,9 @@
 import { useParams } from "react-router";
-import { ProjectArticle } from "../../apis/projectArticles/projectArticles.type";
-import Card from "../article/CardList/Card/Card";
+import ArticleSection from "./components/ArticleSection/ArticleSection";
 import Carousel from "./components/Carousel/Carousel";
 import useProjectArticles from "./components/hooks/useProjectArticles";
 import useProjectDetail from "./components/hooks/useProjectDetail";
 import OverviewSection from "./components/OverviewSection/OverviewSection";
-import SectionTitle from "./components/SectionTitle";
 import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
 import TitleSection from "./components/TitleSection/TitleSection";
 
@@ -13,7 +11,7 @@ function ProjectDetailPage() {
   const { id } = useParams();
 
   const { projectDetail, isLoading, error } = useProjectDetail(Number(id));
-  const { projectArticles } = useProjectArticles(Number(id));
+  const { projectArticles, refetch } = useProjectArticles(Number(id));
 
   if (isLoading || !projectDetail) return <div>로딩 중...</div>;
   if (error) return <div>비상!</div>;
@@ -27,11 +25,8 @@ function ProjectDetailPage() {
       )}
       <OverviewSection overview={projectDetail.description} />
       {projectArticles && projectArticles.length > 0 && (
-        <SectionTitle title="프로젝트 아티클" />
+        <ArticleSection projectArticles={projectArticles} refetch={refetch} />
       )}
-      {/* {projectArticles?.map((projectArticle) => {
-        return <Card article={projectArticle} key={projectArticle.id} />;
-      })} */}
     </div>
   );
 }
