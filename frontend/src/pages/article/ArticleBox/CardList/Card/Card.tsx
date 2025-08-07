@@ -10,10 +10,10 @@ interface CardProps {
 
 function Card({ article }: CardProps) {
   const { title, summary, techStacks, url, category, projectId } = article;
-
+  const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
   return (
     <S.CardContainer>
-      <Badge text={ARTICLE_CATEGORY_MAP[category].label} />
+      <Badge text={label} bgColor={bgColor} />
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardSummary>{summary}</S.CardSummary>
       <TechStackList techStacks={techStacks} />

@@ -7,7 +7,7 @@ export const BadgeContainer = styled.div<{ bgColor: string }>`
 `;
 
 export const BadgeText = styled.span`
-  color: #555555;
+  color: #fff;
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.875rem;

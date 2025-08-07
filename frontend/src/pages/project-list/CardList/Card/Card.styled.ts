@@ -1,27 +1,6 @@
-import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { textOverflowEllipsis } from "@/styles/global.styled";
-
-const shimmerAnimation = keyframes`
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-`;
-
-const shimmerGradient = css`
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: ${shimmerAnimation} 1.5s infinite;
-`;
-
-const flexCenter = css`
-  display: flex;
-  align-items: center;
-`;
+import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
 
 export const Card = styled.li`
   width: 100%;
