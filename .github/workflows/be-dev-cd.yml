@@ -5,7 +5,7 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  deploy-to-ec2:
+  deploy:
     if: |
       github.actor == 'yesjuhee' || 
       github.actor == 'Minuring' ||
@@ -34,19 +34,9 @@ jobs:
           SPRING_DATASOURCE_URL_DEV=${{ secrets.SPRING_DATASOURCE_URL_DEV }}
           SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
           SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}
           EOF
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Pull latest image and deploy
+      - name: Run Docker Compose
         run: |
-          sudo docker compose down
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:latest
-          sudo docker image prune -f
-          sudo docker compose up -d
+          sudo docker compose down --rmi all
+          sudo docker compose up --build -d
