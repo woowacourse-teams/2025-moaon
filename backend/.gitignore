@@ -47,4 +47,4 @@ db
 application-local.yml
 
 ### rest docs
-src/main/resources/static/docs
+#src/main/resources/static/docs # TODO 도커 빌드 문제를 해결 못해서 일단 index.html을 직접 업로드 하는 방식 선택
