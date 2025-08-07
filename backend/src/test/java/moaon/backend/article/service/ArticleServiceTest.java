@@ -84,7 +84,7 @@ class ArticleServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2),
+                () -> assertThat(actual.contents()).containsExactly(articleContent1, articleContent2),
                 () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
                 () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
@@ -133,7 +133,7 @@ class ArticleServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(actual.articleContents()).containsExactly(articleContent1, articleContent2,
+                () -> assertThat(actual.contents()).containsExactly(articleContent1, articleContent2,
                         articleContent3),
                 () -> assertThat(actual.hasNext()).isFalse(),
                 () -> assertThat(actual.nextCursor()).isNull()
