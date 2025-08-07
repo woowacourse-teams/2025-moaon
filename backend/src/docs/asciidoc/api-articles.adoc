@@ -1,0 +1,13 @@
+== /articles
+
+=== GET /articles
+
+====
+operation::article-api-test/get-paged-articles[snippets='curl-request,http-request,http-response,query-parameters,response-fields']
+====
+
+=== POST /articles/{id}/clicks
+
+====
+operation::article-api-test/update-article-clicks[snippets='curl-request,http-request,http-response']
+====

@@ -1,0 +1,19 @@
+== /projects
+
+=== GET /projects
+
+====
+operation::project-api-test/get-paged-projects[snippets='curl-request,http-request,http-response,query-parameters,response-fields']
+====
+
+=== GET /projects/{id}
+
+====
+operation::project-api-test/get-project-by-id[snippets='curl-request,http-request,http-response,response-fields']
+====
+
+=== GET /projects/{id}/articles
+
+====
+operation::project-api-test/get-articles-by-project-id[snippets='curl-request,http-request,http-response,response-fields']
+====
