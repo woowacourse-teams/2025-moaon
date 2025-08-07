@@ -176,7 +176,7 @@ public class ArticleApiTest {
                 .extract().as(ArticleResponse.class);
 
         // then
-        assertThat(actualResponse.articleContents())
+        assertThat(actualResponse.contents())
                 .extracting(ArticleContent::id)
                 .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
@@ -229,16 +229,16 @@ public class ArticleApiTest {
 
     private static ResponseFieldsSnippet articleResponseFields() {
         return responseFields(
-                fieldWithPath("articleContents").description("아티클 목록"),
-                fieldWithPath("articleContents[].id").description("아티클 ID"),
-                fieldWithPath("articleContents[].projectId").description("프로젝트 ID"),
-                fieldWithPath("articleContents[].clicks").description("클릭수"),
-                fieldWithPath("articleContents[].title").description("아티클 제목"),
-                fieldWithPath("articleContents[].summary").description("아티클 요약"),
-                fieldWithPath("articleContents[].techStacks").description("기술 스택 목록"),
-                fieldWithPath("articleContents[].url").description("아티클 URL"),
-                fieldWithPath("articleContents[].category").description("아티클 카테고리"),
-                fieldWithPath("articleContents[].createdAt").description("생성일시"),
+                fieldWithPath("contents").description("아티클 목록"),
+                fieldWithPath("contents[].id").description("아티클 ID"),
+                fieldWithPath("contents[].projectId").description("프로젝트 ID"),
+                fieldWithPath("contents[].clicks").description("클릭수"),
+                fieldWithPath("contents[].title").description("아티클 제목"),
+                fieldWithPath("contents[].summary").description("아티클 요약"),
+                fieldWithPath("contents[].techStacks").description("기술 스택 목록"),
+                fieldWithPath("contents[].url").description("아티클 URL"),
+                fieldWithPath("contents[].category").description("아티클 카테고리"),
+                fieldWithPath("contents[].createdAt").description("생성일시"),
                 fieldWithPath("totalCount").description("필터링 걸린 데이터의 전체 개수"),
                 fieldWithPath("hasNext").description("다음 페이지 존재 여부"),
                 fieldWithPath("nextCursor").description("다음 요청 커서")
