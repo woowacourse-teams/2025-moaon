@@ -2,6 +2,7 @@ import eyeIcon from "@assets/icons/eye.svg";
 import grayHeartIcon from "@assets/icons/gray-heart.svg";
 import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-image.png";
+import notFoundImage from "@assets/images/image-not-found.png";
 import type { SyntheticEvent } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import * as S from "./Card.styled";
@@ -26,7 +27,7 @@ function Card({ project }: CardProps) {
 
   const imageLoadError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
-    target.src = cardDefaultImage;
+    target.src = notFoundImage;
     // 에러 발생 시에도 로드된 것으로 처리
     target.classList.add("loaded");
     target.parentElement?.classList.add("image-loaded");
