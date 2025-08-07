@@ -29,7 +29,7 @@ function ArticlePage() {
   if (isLoading) return <div>Loading...</div>;
   if (!articles) return <div>No articles found</div>;
 
-  const { articleContents, totalCount } = articles;
+  const { contents, totalCount } = articles;
 
   const handleSelect = () => {
     refetch();
@@ -69,7 +69,7 @@ function ArticlePage() {
               initialValue={DEFAULT_SORT_TYPE}
             />
           </S.ArticleHeader>
-          <CardList articles={articleContents} />
+          <CardList articles={contents} />
         </S.ArticleContainer>
         <TagList />
       </S.Box>
