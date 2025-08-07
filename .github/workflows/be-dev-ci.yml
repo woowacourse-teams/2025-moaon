@@ -69,6 +69,7 @@ jobs:
           context: ./backend
           push: true
 #          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:${{ github.sha }}
