@@ -7,5 +7,6 @@ export const articlesQueries = {
     queryOptions({
       queryKey: articlesQueries.all,
       queryFn: getArticles,
+      throwOnError: true,
     }),
 };

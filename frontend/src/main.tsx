@@ -1,5 +1,6 @@
 import "./libs/sentry/initializeSentry";
 import { Global } from "@emotion/react";
+import { ErrorBoundary } from "@sentry/react";
 import {
   MutationCache,
   QueryCache,
@@ -49,12 +50,14 @@ const queryClient = new QueryClient({
 
 root.render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Global styles={resetStyle} />
-        <GAInitializer />
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ErrorBoundary fallback={<h1>에러가 발생했습니다.</h1>}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Global styles={resetStyle} />
+          <GAInitializer />
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
