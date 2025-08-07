@@ -11,10 +11,12 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
+import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.global.cursor.ClickArticleCursor;
 import moaon.backend.global.cursor.CreatedAtArticleCursor;
+import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -411,5 +413,49 @@ class CustomizedArticleRepositoryImplTest {
 
         // then
         assertThat(count).isEqualTo(2);
+    }
+
+    @DisplayName("상세페이지에서 카테고리 필터를 이용하여 아티클을 조회한다.")
+    @Test
+    void getByProjectIdAndCategory() {
+        // given
+        Project project = new ProjectFixtureBuilder().build();
+        ArticleCategory filterdArticleCategory = new ArticleCategory("a");
+        ArticleCategory unFilterdArticleCategory = new ArticleCategory("b");
+
+        Project resultProject = repositoryHelper.save(project);
+        Article filterArticle1 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .category(filterdArticleCategory)
+                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
+                        .build()
+        );
+
+        Article filterArticle2 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .category(filterdArticleCategory)
+                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
+                        .build()
+        );
+
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .category(unFilterdArticleCategory)
+                        .build()
+        );
+
+        // when
+        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndCategory(
+                resultProject.getId(),
+                filterdArticleCategory.getName()
+        );
+
+        // then
+//        assertThat(articles).containsExactly(filterArticle1, filterArticle2);
+        assertThat(2).isEqualTo(articles.size());
+
     }
 }

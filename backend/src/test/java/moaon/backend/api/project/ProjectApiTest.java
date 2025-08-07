@@ -12,6 +12,7 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCategory;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
@@ -151,21 +152,24 @@ public class ProjectApiTest extends BaseApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = new ProjectFixtureBuilder().build();
+        ArticleCategory filterCategory = new ArticleCategory("a");
+        ArticleCategory unfilterCategory = new ArticleCategory("b");
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
 
-        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().category(unfilterCategory).build());
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
+                .queryParams("category", "a")
                 .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()

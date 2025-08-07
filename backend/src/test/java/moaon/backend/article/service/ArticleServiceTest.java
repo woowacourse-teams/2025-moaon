@@ -145,10 +145,11 @@ class ArticleServiceTest {
     void getByProjectId() {
         // Given
         long projectId = 1L;
+        String category = "all";
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> articleService.getByProjectId(projectId))
+        assertThatThrownBy(() -> articleService.getByProjectIdAndCategory(projectId, category))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
