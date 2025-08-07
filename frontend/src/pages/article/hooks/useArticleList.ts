@@ -3,15 +3,7 @@ import { articlesQueries } from "@/apis/articles/articles.queries";
 
 const useArticleList = () => {
   const queryClient = useQueryClient();
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    refetch: originalRefetch,
-    isRefetching,
-  } = useInfiniteQuery(articlesQueries.fetchList());
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, refetch: originalRefetch, isRefetching } = useInfiniteQuery(articlesQueries.fetchList());
 
   const articles = data?.pages.flatMap((page) => page.contents);
 
@@ -28,17 +20,18 @@ const useArticleList = () => {
     return originalRefetch();
   };
 
+  const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
+  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+
   return {
     articles,
-    totalCount,
     hasNext,
     nextCursor,
-    isLoading,
+    totalCount,
     fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    showSkeleton,
+    scrollEnabled,
     refetch,
-    isRefetching,
   };
 };
 

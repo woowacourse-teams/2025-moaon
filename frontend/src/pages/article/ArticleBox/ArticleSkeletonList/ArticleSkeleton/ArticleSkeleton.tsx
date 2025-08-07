@@ -1,8 +1,8 @@
-import * as S from "./Card.styled";
+import * as S from "./ArticleSkeleton.styled";
 
-function CardSkeleton() {
+function ArticleSkeleton() {
   return (
-    <S.CardContainer>
+    <S.SkeletonContainer>
       <S.SkeletonBadge />
       <S.SkeletonCardTitle />
       <S.SkeletonCardSummary />
@@ -11,8 +11,8 @@ function CardSkeleton() {
         <S.SkeletonTechStack />
         <S.SkeletonTechStack />
       </S.SkeletonTechStacks>
-    </S.CardContainer>
+    </S.SkeletonContainer>
   );
 }
 
-export default CardSkeleton;
+export default ArticleSkeleton;

@@ -7,9 +7,9 @@ export const ArticleContainer = styled.div`
   padding-top: 2rem;
 `;
 
-export const ArticleHeader = styled.div`
+export const ArticleHeader = styled.div<{ hasTotalCount: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ hasTotalCount }) => (hasTotalCount ? `space-between` : "flex-end")};
   align-items: center;
   padding: 0 1rem;
 `;
