@@ -7,9 +7,8 @@ export const useArticleCategory = (defaultValue: ArticleCategoryKey) => {
     mode: "single",
   });
 
-  const rawSelectedCategory = categoryParams.get()[0];
-  const selectedCategory = (rawSelectedCategory ??
-    defaultValue) as ArticleCategoryKey;
+  const rawSelectedCategory = categoryParams.get()[0] as ArticleCategoryKey;
+  const selectedCategory = rawSelectedCategory ?? defaultValue;
 
   const updateCategory = (key: ArticleCategoryKey) => {
     categoryParams.update(key);
