@@ -6,71 +6,27 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 import java.util.List;
+import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.fixture.RepositoryHelper;
-import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
-import org.springframework.restdocs.restassured.RestAssuredRestDocumentation;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Import({RepositoryHelper.class, QueryDslConfig.class})
-@ExtendWith(RestDocumentationExtension.class)
-public class ProjectApiTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private RepositoryHelper repositoryHelper;
-
-    private RequestSpecification documentationSpecification;
-
-    @BeforeEach
-    void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
-        this.documentationSpecification = new RequestSpecBuilder()
-                .addFilter(RestAssuredRestDocumentation.documentationConfiguration(restDocumentation)
-                        .operationPreprocessors()
-                        .withRequestDefaults(
-                                Preprocessors.prettyPrint(),
-                                Preprocessors.modifyUris()
-                                        .scheme("https")
-                                        .host("api.moaon.site")
-                                        .removePort()
-                        )
-                        .withResponseDefaults(Preprocessors.prettyPrint())
-                )
-                .build();
-    }
+public class ProjectApiTest extends BaseApiTest {
 
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
@@ -81,7 +37,7 @@ public class ProjectApiTest {
         // when & then 첫 조회 - 기본 응답 + 조회수 증가 + 쿠키 설정
         ValidatableResponse firstResponse = RestAssured.given(documentationSpecification).log().all()
                 .pathParam("id", project.getId())
-                .filter(document("{class-name}/{method-name}", projectDetailResponseFields()))
+                .filter(document(projectDetailResponseFields()))
                 .when().get("/projects/{id}")
                 .then().log().all()
                 .statusCode(200);
@@ -176,10 +132,7 @@ public class ProjectApiTest {
                 .queryParams("categories", List.of(filteredProjectCategory.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
-                .filter(document("{class-name}/{method-name}",
-                        projectQueryParameters(),
-                        pagedProjectResponseFields()
-                ))
+                .filter(document(projectQueryParameters(), pagedProjectResponseFields()))
                 .when().get("/projects")
                 .then().log().all()
                 .statusCode(200)
@@ -213,9 +166,7 @@ public class ProjectApiTest {
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
-                .filter(document("{class-name}/{method-name}",
-                        projectArticlesResponseFields()
-                ))
+                .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)

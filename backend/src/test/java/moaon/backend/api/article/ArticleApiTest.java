@@ -8,10 +8,9 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 import java.util.List;
+import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCategory;
 import moaon.backend.article.dto.ArticleContent;
@@ -19,55 +18,14 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.fixture.RepositoryHelper;
-import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
-import org.springframework.restdocs.restassured.RestAssuredRestDocumentation;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Import({RepositoryHelper.class, QueryDslConfig.class})
-@ExtendWith(RestDocumentationExtension.class)
-public class ArticleApiTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private RepositoryHelper repositoryHelper;
-
-    private RequestSpecification documentationSpecification;
-
-    @BeforeEach
-    void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
-        this.documentationSpecification = new RequestSpecBuilder()
-                .addFilter(RestAssuredRestDocumentation.documentationConfiguration(restDocumentation)
-                        .operationPreprocessors()
-                        .withRequestDefaults(
-                                Preprocessors.prettyPrint(),
-                                Preprocessors.modifyUris()
-                                        .scheme("https")
-                                        .host("api.moaon.site")
-                                        .removePort()
-                        )
-                        .withResponseDefaults(Preprocessors.prettyPrint()))
-                .build();
-    }
+public class ArticleApiTest extends BaseApiTest {
 
     @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
     @Test
@@ -166,10 +124,7 @@ public class ArticleApiTest {
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
-                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}",
-                        articleQueryParameters(),
-                        articleResponseFields()
-                ))
+                .filter(document(articleQueryParameters(), articleResponseFields()))
                 .when().get("/articles")
                 .then().log().all()
                 .statusCode(200)
@@ -190,7 +145,7 @@ public class ArticleApiTest {
         // when 첫 클릭 - 기본 응답 + 클릭수 증가 + 쿠키 설정
         ValidatableResponse firstResponse = RestAssured.given(documentationSpecification).log().all()
                 .pathParam("id", article.getId())
-                .filter(RestAssuredRestDocumentation.document("{class-name}/{method-name}"))
+                .filter(document())
                 .when().post("/articles/{id}/clicks")
                 .then().log().all()
                 .statusCode(200);
