@@ -17,10 +17,15 @@ function FilterBox({ children, param }: PropsWithChildren<FilterBoxProps>) {
     refetch();
   };
 
+  const disabledReset = params.get().length === 0;
   return (
     <S.Container>
       <S.Wrap>{children}</S.Wrap>
-      <S.FilterResetButton type="button" onClick={handelFilterResetButtonClick}>
+      <S.FilterResetButton
+        type="button"
+        onClick={handelFilterResetButtonClick}
+        disabled={disabledReset}
+      >
         초기화
       </S.FilterResetButton>
     </S.Container>
