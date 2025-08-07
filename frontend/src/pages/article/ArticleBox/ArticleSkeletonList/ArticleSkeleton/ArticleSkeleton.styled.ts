@@ -15,6 +15,9 @@ export const SkeletonContainer = styled.li`
 
 export const SkeletonBadge = styled.div`
   display: flex;
+  width: 6rem;
+  height: 1.5rem;
+  border-radius: 0.375rem;
   ${shimmerGradient}
 `;
 
