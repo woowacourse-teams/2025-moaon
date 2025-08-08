@@ -38,6 +38,33 @@ export const CardSummary = styled.span`
   ${textOverflowEllipsis(3)};
 `;
 
+export const CardInfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  width: 100%;
+
+  > ul {
+    flex: 1;
+  }
+`;
+
+export const CardClickBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+`;
+
+export const CardClickIcon = styled.img`
+  width: 1.125rem;
+`;
+
+export const CardClickCount = styled.span`
+  font-size: 0.8125rem;
+  color: #595858;
+`;
+
 export const BackDropBox = styled.div`
   width: 100%;
   height: 100%;
