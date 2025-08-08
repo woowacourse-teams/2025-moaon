@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.joining;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.annotation.Nullable;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
-        return handleMvcStandardException(ErrorCode.RESOURCE_NOT_FOUND, e.getMessage());
+        return handleMvcStandardException(ErrorCode.RESOURCE_NOT_FOUND, e);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -50,14 +49,14 @@ public class GlobalExceptionHandler {
             MissingServletRequestParameterException e
     ) {
         String detailMessage = String.format("쿼리 파라미터 '%s'(%s)가 누락되었습니다.", e.getParameterName(), e.getParameterType());
-        return handleMvcStandardException(ErrorCode.MISSING_REQUIRED_PARAMETER, e.getMessage(), detailMessage);
+        return handleMvcStandardException(ErrorCode.MISSING_REQUIRED_PARAMETER, e, detailMessage);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e
     ) {
-        return handleMvcStandardException(ErrorCode.HTTP_METHOD_NOT_SUPPORTED, e.getMessage());
+        return handleMvcStandardException(ErrorCode.HTTP_METHOD_NOT_SUPPORTED, e);
     }
 
     @ExceptionHandler(TypeMismatchException.class)
@@ -66,50 +65,48 @@ public class GlobalExceptionHandler {
                 "파라미터 '%s'(%s)와 자료형이 일치하지 않습니다 : '%s'",
                 e.getPropertyName(), e.getRequiredType(), e.getValue()
         );
-        return handleMvcStandardException(ErrorCode.TYPE_MISMATCH, e.getMessage(), detailMessage);
+        return handleMvcStandardException(ErrorCode.TYPE_MISMATCH, e, detailMessage);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         if (e.getCause() instanceof InvalidFormatException ex) {
-            List<Reference> path = ex.getPath();
-            String fieldName = path.stream().map(Reference::getFieldName).collect(joining("."));
+            String fieldName = ex.getPath().stream().map(Reference::getFieldName).collect(joining("."));
             Object inputValue = ex.getValue();
 
             String detailMessage = String.format(
                     "필드 '%s'의 형식이 일치하지 않습니다. 입력: '%s'",
                     fieldName, inputValue
             );
-            return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e.getMessage(), detailMessage);
+            return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e, detailMessage);
         }
 
-        return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e.getMessage());
+        return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String detailMessage = e.getFieldErrors()
-                .stream()
+        String detailMessage = e.getFieldErrors().stream()
                 .map(FieldError::getField)
                 .map(field -> String.format("필드 '%s'에 대한 검증에 실패했습니다.", field))
                 .collect(joining("\n"));
-        return handleMvcStandardException(ErrorCode.ARGUMENT_NOT_VALID, e.getMessage(), detailMessage);
+        return handleMvcStandardException(ErrorCode.ARGUMENT_NOT_VALID, e, detailMessage);
     }
 
-    private ResponseEntity<ErrorResponse> handleMvcStandardException(ErrorCode errorCode, String exceptionMessage) {
-        return this.handleMvcStandardException(errorCode, exceptionMessage, null);
+    private ResponseEntity<ErrorResponse> handleMvcStandardException(ErrorCode errorCode, Exception exception) {
+        return this.handleMvcStandardException(errorCode, exception, null);
     }
 
     private ResponseEntity<ErrorResponse> handleMvcStandardException(
             ErrorCode errorCode,
-            String exceptionMessage,
+            Exception exception,
             @Nullable String detailMessage
     ) {
-        log.warn("[{}] {} {} | Detail: {}",
+        log.warn("[{}] {} {} | Exception Message: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
-                exceptionMessage
+                exception.getMessage()
         );
 
         return ResponseEntity
@@ -121,7 +118,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnknownException(Exception e) {
         ErrorCode errorCode = ErrorCode.UNKNOWN;
 
-        log.error("[{}] {} {} | Detail: {}",
+        log.error("[{}] {} {} | Exception Message: {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage(),
