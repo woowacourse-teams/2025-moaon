@@ -91,6 +91,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
+        whereBuilder.and(article.project.id.eq(id));
+
         applyWhereCategory(whereBuilder, category);
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
