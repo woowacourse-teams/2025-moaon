@@ -32,20 +32,25 @@ function ArticleBox() {
     refetch();
   };
 
+  const hasTotalCount = totalCount !== undefined;
+  const hasCountToDisplay = hasTotalCount && totalCount > 0;
+
   return (
     <S.ArticleContainer>
-      <S.ArticleHeader hasTotalCount={totalCount !== undefined}>
-        {totalCount && (
-          <S.ArticleIntro>
-            <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
-            모여있어요.
-          </S.ArticleIntro>
+      <S.ArticleHeader hasTotalCount={hasTotalCount}>
+        {hasCountToDisplay && (
+          <>
+            <S.ArticleIntro>
+              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
+              모여있어요.
+            </S.ArticleIntro>
+            <SortList
+              sortMap={ARTICLE_SORT_MAP}
+              onSelect={handleSelect}
+              initialValue={DEFAULT_SORT_TYPE}
+            />
+          </>
         )}
-        <SortList<typeof ARTICLE_SORT_MAP>
-          sortMap={ARTICLE_SORT_MAP}
-          onSelect={handleSelect}
-          initialValue={DEFAULT_SORT_TYPE}
-        />
       </S.ArticleHeader>
       {showSkeleton && <ArticleSkeletonList />}
       <CardList>

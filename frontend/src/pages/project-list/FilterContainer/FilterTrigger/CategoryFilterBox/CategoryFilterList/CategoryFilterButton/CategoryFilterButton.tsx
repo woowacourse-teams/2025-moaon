@@ -4,20 +4,23 @@ import type {
 } from "@domains/filter/projectCategory";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useEffect, useState } from "react";
-import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import * as S from "./CategoryFilterButton.styled";
 
 interface CategoryFilterButtonProps {
   value: ProjectCategoryKey;
   label: ProjectCategoryLabel;
+  onSelect: () => void;
 }
 
-function CategoryFilterButton({ value, label }: CategoryFilterButtonProps) {
+function CategoryFilterButton({
+  value,
+  label,
+  onSelect,
+}: CategoryFilterButtonProps) {
   const params = useSearchParams({
     key: "categories",
     mode: "multi",
   });
-  const { refetch } = useProjectList();
   const selectedCategories = params.get();
   const [isSelected, setIsSelected] = useState(
     selectedCategories.includes(value),
@@ -34,7 +37,7 @@ function CategoryFilterButton({ value, label }: CategoryFilterButtonProps) {
   const handleFilterButtonClick = (value: string) => {
     toggle();
     params.update(value, { replace: true });
-    refetch();
+    onSelect();
   };
 
   return (

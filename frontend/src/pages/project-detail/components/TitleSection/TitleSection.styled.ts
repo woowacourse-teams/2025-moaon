@@ -32,7 +32,7 @@ export const TitleSectionRight = styled.div`
   align-items: flex-end;
 `;
 
-export const OverlineSection = styled(Overline)`
+export const OverlineSection = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;

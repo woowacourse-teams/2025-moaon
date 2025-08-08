@@ -11,8 +11,10 @@ export const CardList = styled.ul`
 export const ProjectIntro = styled.p`
   color: #73798d;
   font-size: 1.125rem;
+  margin-bottom: 1.25rem;
 `;
 
 export const ProjectIntroText = styled.span`
   color: #007bff;
+  font-weight: 500;
 `;

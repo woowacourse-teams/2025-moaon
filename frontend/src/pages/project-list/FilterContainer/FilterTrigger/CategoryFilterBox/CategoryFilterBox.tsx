@@ -2,11 +2,15 @@ import FilterBox from "../FilterBox/FilterBox";
 import * as S from "./CategoryFilterBox.styled";
 import CategoryFilterList from "./CategoryFilterList/CategoryFilterList";
 
-function CategoryFilterBox() {
+interface CategoryFilterBoxProps {
+  onSelect: () => void;
+}
+
+function CategoryFilterBox({ onSelect }: CategoryFilterBoxProps) {
   return (
-    <FilterBox param="categories">
+    <FilterBox param="categories" onSelect={onSelect}>
       <S.Title>주제 선택</S.Title>
-      <CategoryFilterList />
+      <CategoryFilterList onSelect={onSelect} />
     </FilterBox>
   );
 }
