@@ -57,15 +57,7 @@ public enum ProjectSortType {
     }
 
     public ProjectCursor<?> toCursor(Project project) {
-        if (this == CREATED_AT) {
-            return new CreatedAtProjectCursor(project.getCreatedAt(), project.getId());
-        }
-
-        if (this == VIEWS) {
-            return new ViewProjectCursor(project.getViews(), project.getId());
-        }
-
-        return new LoveProjectCursor(project.getLoveCount(), project.getId());
+        return projectToCursorFactory.apply(project);
     }
 
     private static <T> ProjectCursor<?> parseCursor(
