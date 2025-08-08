@@ -32,7 +32,7 @@ function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
   };
 
   return (
-    <>
+    <S.ArticleSectionContainer>
       <SectionTitle title="프로젝트 아티클" />
       <Tab
         items={articleCategories}
@@ -45,7 +45,7 @@ function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
           <Card key={article.id} article={article} />
         ))}
       </S.CardListContainer>
-    </>
+    </S.ArticleSectionContainer>
   );
 }
 
