@@ -1,11 +1,10 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { articlesQueries } from "@/apis/articles/articles.queries";
 
 const useArticleList = () => {
   const queryClient = useQueryClient();
-  const { data, isLoading, fetchNextPage, isFetchingNextPage, refetch: originalRefetch, isRefetching } = useInfiniteQuery(articlesQueries.fetchList());
-
-  const postArticleClickMutation = useMutation(articlesQueries.postArticleClick());
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, isRefetching } =
+    useInfiniteQuery(articlesQueries.fetchList());
 
   const articles = data?.pages.flatMap((page) => page.contents);
 
@@ -14,19 +13,13 @@ const useArticleList = () => {
   const hasNext = data?.pages[data.pages.length - 1]?.hasNext ?? false;
   const nextCursor = data?.pages[data.pages.length - 1]?.nextCursor ?? "";
 
+  const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
+  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+
   const refetch = async () => {
     await queryClient.resetQueries({
       queryKey: articlesQueries.all,
     });
-
-    return originalRefetch();
-  };
-
-  const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
-  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
-
-  const postArticleClick = (id: number) => {
-    postArticleClickMutation.mutate(id);
   };
 
   return {
@@ -38,7 +31,6 @@ const useArticleList = () => {
     showSkeleton,
     scrollEnabled,
     refetch,
-    postArticleClick,
   };
 };
 

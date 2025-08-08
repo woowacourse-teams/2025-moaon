@@ -3,14 +3,8 @@ import { projectQueries } from "@/apis/projects/project.queries";
 
 const useProjectList = () => {
   const queryClient = useQueryClient();
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    isFetchingNextPage,
-    refetch: originalRefetch,
-    isRefetching,
-  } = useInfiniteQuery(projectQueries.fetchList());
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, isRefetching } =
+    useInfiniteQuery(projectQueries.fetchList());
 
   const projects = data?.pages.flatMap((page) => page.contents);
 
@@ -23,7 +17,6 @@ const useProjectList = () => {
     await queryClient.resetQueries({
       queryKey: projectQueries.all,
     });
-    return originalRefetch();
   };
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;

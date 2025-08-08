@@ -38,7 +38,7 @@ function ProjectListPage() {
       </S.MainBox>
       <S.Box>
         <S.Wrap>
-          <FilterContainer />
+          <FilterContainer onSelect={handleSelect} />
           {isSelected && (
             <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
               <S.ResetIcon src={resetIcon} alt="필터 초기화" />
