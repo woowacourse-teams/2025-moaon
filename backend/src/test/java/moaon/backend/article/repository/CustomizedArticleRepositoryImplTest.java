@@ -420,15 +420,14 @@ class CustomizedArticleRepositoryImplTest {
     void getByProjectIdAndCategory() {
         // given
         Project project = new ProjectFixtureBuilder().build();
-        ArticleCategory filteredArticleCategory = new ArticleCategory("a");
-        ArticleCategory unFilterdArticleCategory = new ArticleCategory("b");
+        ArticleCategory filteredArticleCategory = Fixture.anyArticleCategory();
+        ArticleCategory unFilterdArticleCategory = Fixture.anyArticleCategory();
 
         Project resultProject = repositoryHelper.save(project);
         Article filterArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(project)
                         .category(filteredArticleCategory)
-                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
                         .build()
         );
 
@@ -436,7 +435,6 @@ class CustomizedArticleRepositoryImplTest {
                 new ArticleFixtureBuilder()
                         .project(project)
                         .category(filteredArticleCategory)
-                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
                         .build()
         );
 
