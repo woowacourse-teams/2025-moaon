@@ -234,6 +234,7 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("[].id").description("아티클 ID"),
                 fieldWithPath("[].title").description("아티클 제목"),
                 fieldWithPath("[].summary").description("아티클 요약"),
+                fieldWithPath("[].clicks").description("아티클 클릭수"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
                 fieldWithPath("[].articleUrl").description("아티클 URL"),
                 fieldWithPath("[].category").description("아티클 카테고리"),

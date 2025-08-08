@@ -28,7 +28,7 @@ function MoveTop() {
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       type="button"
     >
-      <ArrowIcon direction="down" />
+      <ArrowIcon direction="up" />
       TOP
     </S.MoveTopButton>
   );

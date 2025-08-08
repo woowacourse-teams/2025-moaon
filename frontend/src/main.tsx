@@ -1,52 +1,63 @@
 import "./libs/sentry/initializeSentry";
 import { Global } from "@emotion/react";
-import * as Sentry from "@sentry/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ErrorBoundary } from "@sentry/react";
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, type RootOptions } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import App from "./App";
 import GAInitializer from "./libs/googleAnalytics/components/GAInitializer";
+import {
+  sentryMutationError,
+  sentryQueryError,
+  sentryRenderError,
+  sentryRenderRecoverable,
+} from "./libs/sentry/errorReporter";
 import { resetStyle } from "./styles/reset.styled";
 
-const container = document.getElementById("root");
-const root = createRoot(container!, {
+const createRootOptions: RootOptions = {
   onUncaughtError: (error, errorInfo) => {
-    Sentry.captureException(error, {
-      contexts: {
-        react: errorInfo,
-      },
-    });
+    sentryRenderError(error, errorInfo, "react-uncaught-error");
   },
   onCaughtError: (error, errorInfo) => {
-    Sentry.captureException(error, {
-      contexts: {
-        react: errorInfo,
-      },
-    });
+    sentryRenderError(error, errorInfo, "react-caught-error");
   },
   onRecoverableError: (error, errorInfo) => {
-    Sentry.captureException(error, {
-      level: "warning",
-      contexts: {
-        react: {
-          componentStack: errorInfo?.componentStack || "No component stack",
-          errorBoundary: true,
-          recoverable: true,
-        },
-      },
-    });
+    sentryRenderRecoverable(error, errorInfo);
   },
+};
+
+const container = document.getElementById("root");
+const root = createRoot(container!, createRootOptions);
+
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      sentryQueryError(error, query);
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error, variables, _, mutation) => {
+      sentryMutationError(error, variables, mutation);
+    },
+  }),
 });
-const queryClient = new QueryClient();
+
 root.render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Global styles={resetStyle} />
-        <GAInitializer />
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ErrorBoundary fallback={<h1>에러가 발생했습니다.</h1>}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Global styles={resetStyle} />
+          <GAInitializer />
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );

@@ -5,9 +5,14 @@ import * as S from "./SearchBar.styled";
 interface SearchBarProps {
   placeholder: string;
   onSubmit: (value: string) => void;
+  defaultValue?: string;
 }
 
-function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
+function SearchBar({
+  placeholder,
+  onSubmit,
+  defaultValue = "",
+}: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchFormSubmit = (event: FormEvent) => {
@@ -23,6 +28,7 @@ function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
           type="text"
           placeholder={placeholder}
           ref={inputRef}
+          defaultValue={defaultValue}
           id="search-input"
         />
       </S.SearchLabel>

@@ -7,7 +7,6 @@ const useProjectList = () => {
     data,
     isLoading,
     fetchNextPage,
-    hasNextPage,
     isFetchingNextPage,
     isRefetching,
   } = useInfiniteQuery(projectQueries.fetchList());
@@ -25,17 +24,19 @@ const useProjectList = () => {
     });
   };
 
+  const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
+  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+
   return {
     projects,
     totalCount,
-    hasNext,
     nextCursor,
-    isLoading,
     fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
     refetch,
+    hasNext,
     isRefetching,
+    scrollEnabled,
+    showSkeleton,
   };
 };
 

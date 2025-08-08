@@ -1,4 +1,4 @@
-import * as S from "./Card.styled";
+import * as S from "./CardSkeleton.styled";
 
 function CardSkeleton() {
   return (
