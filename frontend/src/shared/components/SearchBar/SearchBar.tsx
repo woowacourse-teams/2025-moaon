@@ -19,7 +19,7 @@ function SearchBar({
     event.preventDefault();
     onSubmit(inputRef.current?.value || "");
   };
-  console.log("a");
+
   return (
     <S.SearchForm onSubmit={handleSearchFormSubmit}>
       <S.SearchLabel htmlFor="search-input">
