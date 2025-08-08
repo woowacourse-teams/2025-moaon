@@ -2,10 +2,11 @@ import {
   ARTICLE_CATEGORY_ENTRY,
   type ArticleCategoryKey,
 } from "@domains/filter/articleCategory";
+import EmptyState from "@shared/components/EmptyState/EmptyState";
 import Tab from "@shared/components/Tab/Tab";
 import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
-import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
 import Card from "@/pages/article/ArticleBox/CardList/Card/Card";
+import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
 import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
@@ -18,7 +19,7 @@ interface ArticleSectionProps {
 
 function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
   const { selectedCategory, updateCategory } = useArticleCategory(
-    DEFAULT_ARTICLE_CATEGORY_TYPE
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
 
   const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
@@ -31,6 +32,13 @@ function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
     refetch();
   };
 
+  const filteredArticles =
+    selectedCategory === "all"
+      ? projectArticles
+      : projectArticles.filter((a) => a.category === selectedCategory);
+
+  const showEmpty = selectedCategory !== "all" && filteredArticles.length === 0;
+
   return (
     <S.ArticleSectionContainer>
       <SectionTitle title="프로젝트 아티클" />
@@ -40,11 +48,17 @@ function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
         selected={selectedCategory}
         width={100}
       />
-      <S.CardListContainer>
-        {projectArticles?.map((article) => (
-          <Card key={article.id} article={article} />
-        ))}
-      </S.CardListContainer>
+      {showEmpty ? (
+        <S.EmptyContainer>
+          <EmptyState title="해당 카테고리의 아티클이 없어요." description="" />
+        </S.EmptyContainer>
+      ) : (
+        <S.CardListContainer>
+          {filteredArticles.map((article) => (
+            <Card key={article.id} article={article} />
+          ))}
+        </S.CardListContainer>
+      )}
     </S.ArticleSectionContainer>
   );
 }

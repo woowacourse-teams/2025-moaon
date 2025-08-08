@@ -4,12 +4,11 @@ import { projectArticleQueries } from "@/apis/projectArticles/projectArticle.que
 const useProjectArticles = (id: number) => {
   const {
     data: projectArticles,
-    isLoading,
     error,
     refetch,
   } = useQuery(projectArticleQueries.fetchList(id));
 
-  return { projectArticles, isLoading, error, refetch };
+  return { projectArticles, error, refetch };
 };
 
 export default useProjectArticles;
