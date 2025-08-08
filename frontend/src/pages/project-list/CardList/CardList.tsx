@@ -1,3 +1,4 @@
+import EmptyState from "@shared/components/EmptyState/EmptyState";
 import useInfiniteScroll from "@/shared/hooks/useInfiniteScroll";
 import useProjectList from "../hooks/useProjectList";
 import Card from "./Card/Card";
@@ -22,25 +23,27 @@ function CardList() {
     scrollEnabled,
   });
 
+  const hasItems = (projects?.length ?? 0) > 0;
+
   return (
     <section aria-label="프로젝트 목록">
-      {totalCount && totalCount > 0 ? (
+      {hasItems && (
         <S.ProjectIntro>
           <S.ProjectIntroText>{totalCount}개</S.ProjectIntroText>의 프로젝트가
           모여있어요.
         </S.ProjectIntro>
-      ) : (
-        <S.ProjectIntro>프로젝트가 없어요.</S.ProjectIntro>
       )}
-      <S.CardList>
-        {projects?.map((project) => (
-          <Card key={project.id} project={project} />
-        ))}
-
-        {showSkeleton && <CardSkeletonList />}
-
-        {scrollEnabled && <div ref={targetRef} />}
-      </S.CardList>
+      {showSkeleton && <CardSkeletonList />}
+      {hasItems ? (
+        <S.CardList>
+          {projects?.map((project) => (
+            <Card key={project.id} project={project} />
+          ))}
+          {scrollEnabled && <div ref={targetRef} />}
+        </S.CardList>
+      ) : (
+        !showSkeleton && <EmptyState title="조건에 맞는 프로젝트가 없어요." />
+      )}
     </section>
   );
 }
