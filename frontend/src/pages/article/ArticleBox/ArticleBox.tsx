@@ -44,7 +44,7 @@ function ArticleBox() {
               <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
               모여있어요.
             </S.ArticleIntro>
-            <SortList<typeof ARTICLE_SORT_MAP>
+            <SortList
               sortMap={ARTICLE_SORT_MAP}
               onSelect={handleSelect}
               initialValue={DEFAULT_SORT_TYPE}
