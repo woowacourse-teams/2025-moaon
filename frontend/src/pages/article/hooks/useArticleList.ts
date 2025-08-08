@@ -1,15 +1,10 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { articlesQueries } from "@/apis/articles/articles.queries";
 
 const useArticleList = () => {
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    isFetchingNextPage,
-    refetch,
-    isRefetching,
-  } = useInfiniteQuery(articlesQueries.fetchList());
+  const queryClient = useQueryClient();
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, isRefetching } =
+    useInfiniteQuery(articlesQueries.fetchList());
 
   const articles = data?.pages.flatMap((page) => page.contents);
 
@@ -20,6 +15,12 @@ const useArticleList = () => {
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
   const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+
+  const refetch = async () => {
+    await queryClient.resetQueries({
+      queryKey: articlesQueries.all,
+    });
+  };
 
   return {
     articles,
