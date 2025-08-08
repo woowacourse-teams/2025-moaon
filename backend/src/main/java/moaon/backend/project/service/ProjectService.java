@@ -3,7 +3,6 @@ package moaon.backend.project.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -38,8 +37,7 @@ public class ProjectService {
             List<Project> projectsToReturn = projects.subList(0, projectQueryCondition.limit());
             Project lastProject = projectsToReturn.getLast();
 
-            ProjectCursor<?> projectCursor = CursorParser.toCursor(lastProject,
-                    projectQueryCondition.projectSortType());
+            ProjectCursor<?> projectCursor = projectQueryCondition.projectSortType().toCursor(lastProject);
 
             return PagedProjectResponse.from(
                     projectsToReturn,
