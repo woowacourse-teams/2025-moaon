@@ -2,7 +2,7 @@ import {
   TECH_STACK_ICON_MAP,
   type TechStackKey,
 } from "@domains/filter/techStack";
-import CloseIconComponent from "@shared/components/Close/Close";
+import CloseIcon from "@shared/components/Close/Close";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import * as S from "./TechStackFilterList.styled";
@@ -39,7 +39,7 @@ function TechStackFilterList({ title, techStacks }: TechStackListProps) {
                   <S.Icon src={imgUrl} alt={techStack} />
                 </S.IconBox>
                 {label}
-                {isSelected && <CloseIconComponent />}
+                {isSelected && <CloseIcon />}
               </S.Button>
             </S.Item>
           );
