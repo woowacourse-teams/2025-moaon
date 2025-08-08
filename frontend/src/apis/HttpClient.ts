@@ -28,11 +28,11 @@ class HTTPClient {
     return response;
   }
 
-  async post<T>(url: string, data: T) {
+  async post<T>(url: string, data?: T) {
     const response = await fetch(this.baseUrl + url, {
       method: "POST",
       headers: this.getHeaders(),
-      body: JSON.stringify(data),
+      ...(data && { body: JSON.stringify(data) }),
     });
 
     return response;
