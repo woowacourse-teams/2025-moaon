@@ -9,12 +9,11 @@ export const SearchLabel = styled.label`
   padding: 0.75rem 0.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  justify-content: space-between;
+  gap: 0.8rem;
 `;
 
 export const SearchInput = styled.input`
-  width: 100%;
+  flex: 1;
   height: 1.875rem;
   font-size: 1.375rem;
   font-weight: 500;
@@ -28,4 +27,8 @@ export const SearchInput = styled.input`
 export const SearchIcon = styled.img`
   width: 1.75rem;
   aspect-ratio: 1/1;
+`;
+
+export const CloseButton = styled.button`
+  padding: 0.3rem;
 `;
