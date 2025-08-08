@@ -17,10 +17,12 @@ function ProjectSearchBar() {
     refetch();
   };
 
+  const searchValue = params.get()[0];
   return (
     <SearchBar
       placeholder="프로젝트 제목, 한 줄 설명, 개요를 검색해 보세요"
       onSubmit={handleSearchSubmit}
+      defaultValue={searchValue}
     />
   );
 }

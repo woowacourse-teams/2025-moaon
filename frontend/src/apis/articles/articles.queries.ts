@@ -1,5 +1,6 @@
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, mutationOptions } from "@tanstack/react-query";
 import getArticles from "./getArticles";
+import postArticle from "./postArticle";
 
 export const articlesQueries = {
   all: ["articles"] as const,
@@ -9,5 +10,9 @@ export const articlesQueries = {
       queryFn: ({ pageParam }) => getArticles(pageParam),
       getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : ""),
       initialPageParam: "",
+    }),
+  postArticleClick: () =>
+    mutationOptions({
+      mutationFn: (id: number) => postArticle(id),
     }),
 };

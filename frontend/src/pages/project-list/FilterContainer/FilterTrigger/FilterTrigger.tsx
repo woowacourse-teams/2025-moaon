@@ -11,9 +11,10 @@ import TechStackFilterBox from "./TechStackFilterBox/TechStackFilterBox";
 interface FilterProps {
   label: FilterLabel;
   param: FilterParam;
+  onSelect: () => void;
 }
 
-function FilterTrigger({ label, param }: FilterProps) {
+function FilterTrigger({ label, param, onSelect }: FilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const addToSafeZone = useOutsideClick(() => setIsOpen(false));
   const searchParams = useSearchParams({ key: param, mode: "multi" });
@@ -32,14 +33,14 @@ function FilterTrigger({ label, param }: FilterProps) {
             {selectedCount ? selectedCount : ""}
           </S.FilterSelectedCount>
         </S.FilterTitle>
-        <ArrowIcon direction="up" />
+        <ArrowIcon direction={isOpen ? "up" : "down"} />
       </S.FilterButton>
       {isOpen && (
         <SwitchCase
           value={label}
           caseBy={{
-            주제: () => <CategoryFilterBox />,
-            "기술 스택": () => <TechStackFilterBox />,
+            주제: () => <CategoryFilterBox onSelect={onSelect} />,
+            "기술 스택": () => <TechStackFilterBox onSelect={onSelect} />,
           }}
         />
       )}
