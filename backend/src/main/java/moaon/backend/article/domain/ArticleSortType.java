@@ -43,11 +43,7 @@ public enum ArticleSortType {
     }
 
     public ArticleCursor<?> toCursor(Article article) {
-        if (this == CREATED_AT) {
-            return new CreatedAtArticleCursor(article.getCreatedAt(), article.getId());
-        }
-
-        return new ClickArticleCursor(article.getClicks(), article.getId());
+        return articleToCursorFactory.apply(article);
     }
 
     private static <T> ArticleCursor<?> parseCursor(
