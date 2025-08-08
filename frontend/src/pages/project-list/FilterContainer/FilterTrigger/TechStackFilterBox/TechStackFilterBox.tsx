@@ -13,7 +13,7 @@ function TechStackFilterBox({ onSelect }: TechStackFilterBoxProps) {
 
   return (
     <FilterBox param="techStacks" onSelect={onSelect}>
-      <TechStackSearchBar />
+      <TechStackSearchBar onSelect={onSelect} />
       {selectedTechStacks.length > 0 ? (
         <SelectedTechStack
           techStacks={selectedTechStacks}
