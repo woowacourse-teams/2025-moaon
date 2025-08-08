@@ -44,7 +44,9 @@ function NavBar() {
               };
             }}
           >
-            <S.Link to={href}>{text}</S.Link>
+            <S.Link to={href} reloadDocument>
+              {text}
+            </S.Link>
           </S.NavLinkItem>
         ))}
         {hasActive && (

@@ -3,14 +3,8 @@ import { projectQueries } from "@/apis/projects/project.queries";
 
 const useProjectList = () => {
   const queryClient = useQueryClient();
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isRefetching,
-  } = useInfiniteQuery(projectQueries.fetchList());
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, isRefetching } =
+    useInfiniteQuery(projectQueries.fetchList());
 
   const projects = data?.pages.flatMap((page) => page.contents);
 
@@ -25,17 +19,19 @@ const useProjectList = () => {
     });
   };
 
+  const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
+  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+
   return {
     projects,
     totalCount,
-    hasNext,
     nextCursor,
-    isLoading,
     fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
     refetch,
+    hasNext,
     isRefetching,
+    scrollEnabled,
+    showSkeleton,
   };
 };
 

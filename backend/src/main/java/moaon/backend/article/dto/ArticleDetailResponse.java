@@ -9,8 +9,9 @@ public record ArticleDetailResponse(
         long id,
         String title,
         String summary,
+        int clicks,
         List<String> techStacks,
-        String articleUrl,
+        String url,
         String category,
         LocalDateTime createdAt
 ) {
@@ -20,6 +21,7 @@ public record ArticleDetailResponse(
                 article.getId(),
                 article.getTitle(),
                 article.getSummary(),
+                article.getClicks(),
                 article.getTechStacks().stream()
                         .map(TechStack::getName)
                         .toList(),

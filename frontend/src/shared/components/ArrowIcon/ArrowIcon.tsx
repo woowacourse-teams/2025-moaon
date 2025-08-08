@@ -5,10 +5,10 @@ interface ArrowIconProps {
 }
 
 const rotationDegrees = {
-  up: 0,
-  right: 90,
-  down: 180,
-  left: 270,
+  down: 0,
+  left: 90,
+  up: 180,
+  right: 270,
 };
 
 function ArrowIcon({ direction }: ArrowIconProps) {

@@ -26,14 +26,43 @@ export const CardTitle = styled.h2`
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.25;
+  height: 2.8125rem;
   ${textOverflowEllipsis(2)}
 `;
 
 export const CardSummary = styled.span`
   font-size: 0.8125rem;
-  line-height: 1.25;
+  line-height: 1.5;
   color: #555555;
-  ${textOverflowEllipsis(3)}
+  height: 3.75rem;
+  ${textOverflowEllipsis(3)};
+`;
+
+export const CardInfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  width: 100%;
+
+  > ul {
+    flex: 1;
+  }
+`;
+
+export const CardClickBox = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+`;
+
+export const CardClickIcon = styled.img`
+  width: 1.125rem;
+`;
+
+export const CardClickCount = styled.span`
+  font-size: 0.8125rem;
+  color: #595858;
 `;
 
 export const BackDropBox = styled.div`
@@ -57,6 +86,7 @@ export const ArticleLink = styled.a`
   color: #fff;
   border: 1px solid #fff;
   border-radius: 4px;
+  cursor: pointer;
 `;
 
 export const ProjectLink = styled(Link)`

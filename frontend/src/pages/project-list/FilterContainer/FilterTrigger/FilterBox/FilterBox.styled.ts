@@ -27,21 +27,7 @@ export const FilterResetButton = styled.button`
   color: #3f3f3f;
   position: relative;
 
-  &::after {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: -0.25rem;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #3f3f3f;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.25s ease;
-  }
-
-  &:hover::after {
-    transform: scaleX(1);
+  &:disabled {
+    color: #bdbdbd;
   }
 `;

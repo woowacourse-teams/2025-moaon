@@ -12,6 +12,7 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCategory;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
@@ -150,22 +151,25 @@ public class ProjectApiTest extends BaseApiTest {
     @Test
     void getArticlesByProjectId() {
         // given
-        Project targetProject = new ProjectFixtureBuilder().build();
+        Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        ArticleCategory filterCategory = Fixture.anyArticleCategory();
+        ArticleCategory unfilterCategory = Fixture.anyArticleCategory();
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
 
-        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().category(unfilterCategory).build());
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
+                .queryParams("category", filterCategory.getName())
                 .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
@@ -234,8 +238,9 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("[].id").description("아티클 ID"),
                 fieldWithPath("[].title").description("아티클 제목"),
                 fieldWithPath("[].summary").description("아티클 요약"),
+                fieldWithPath("[].clicks").description("아티클 클릭수"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
-                fieldWithPath("[].articleUrl").description("아티클 URL"),
+                fieldWithPath("[].url").description("아티클 URL"),
                 fieldWithPath("[].category").description("아티클 카테고리"),
                 fieldWithPath("[].createdAt").description("생성일시")
         );

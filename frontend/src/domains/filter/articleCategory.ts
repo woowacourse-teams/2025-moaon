@@ -11,7 +11,7 @@ export const ARTICLE_CATEGORY_MAP = {
   },
   tech: {
     label: "기술문서",
-    bgColor: "#71ee73ff",
+    bgColor: "#48a235",
   },
   etc: {
     label: "기타",
