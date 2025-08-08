@@ -27,16 +27,8 @@ function SearchBar({
         <S.SearchInput
           type="text"
           placeholder={placeholder}
-          ref={(el) => {
-            if (el) {
-              inputRef.current = el;
-              inputRef.current.value = defaultValue;
-            }
-
-            return () => {
-              inputRef.current = null;
-            };
-          }}
+          ref={inputRef}
+          defaultValue={defaultValue}
           id="search-input"
         />
       </S.SearchLabel>
