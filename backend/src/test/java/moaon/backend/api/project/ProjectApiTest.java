@@ -151,10 +151,9 @@ public class ProjectApiTest extends BaseApiTest {
     @Test
     void getArticlesByProjectId() {
         // given
-        Project targetProject = new ProjectFixtureBuilder().build();
+        Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
         ArticleCategory filterCategory = Fixture.anyArticleCategory();
         ArticleCategory unfilterCategory = Fixture.anyArticleCategory();
-        ;
 
         Article targetProjectArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()

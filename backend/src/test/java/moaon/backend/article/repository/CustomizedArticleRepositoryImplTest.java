@@ -419,11 +419,10 @@ class CustomizedArticleRepositoryImplTest {
     @Test
     void getByProjectIdAndCategory() {
         // given
-        Project project = new ProjectFixtureBuilder().build();
+        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
         ArticleCategory filteredArticleCategory = Fixture.anyArticleCategory();
         ArticleCategory unFilterdArticleCategory = Fixture.anyArticleCategory();
 
-        Project resultProject = repositoryHelper.save(project);
         Article filterArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(project)
@@ -447,7 +446,7 @@ class CustomizedArticleRepositoryImplTest {
 
         // when
         List<Article> articles = customizedArticleRepository.findAllByProjectIdAndCategory(
-                resultProject.getId(),
+                project.getId(),
                 filteredArticleCategory.getName()
         );
 
