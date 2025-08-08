@@ -1,5 +1,6 @@
 import SortList from "@domains/components/SortList/SortList";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
+import EmptyState from "@shared/components/EmptyState/EmptyState";
 import useInfiniteScroll from "@shared/hooks/useInfiniteScroll";
 import useArticleList from "../hooks/useArticleList";
 import * as S from "./ArticleBox.styled";
@@ -34,10 +35,11 @@ function ArticleBox() {
 
   const hasTotalCount = totalCount !== undefined;
   const hasCountToDisplay = hasTotalCount && totalCount > 0;
+  const hasItems = (articles?.length ?? 0) > 0;
 
   return (
     <S.ArticleContainer>
-      <S.ArticleHeader hasTotalCount={hasTotalCount}>
+      <S.ArticleHeader>
         {hasCountToDisplay && (
           <>
             <S.ArticleIntro>
@@ -53,12 +55,20 @@ function ArticleBox() {
         )}
       </S.ArticleHeader>
       {showSkeleton && <ArticleSkeletonList />}
-      <CardList>
-        {articles?.map((article) => (
-          <Card key={article.id} article={article} />
-        ))}
-        {scrollEnabled && <div ref={targetRef} />}
-      </CardList>
+      {hasItems ? (
+        <CardList>
+          {articles?.map((article) => (
+            <Card key={article.id} article={article} />
+          ))}
+          {scrollEnabled && <div ref={targetRef} />}
+        </CardList>
+      ) : (
+        !showSkeleton && (
+          <S.EmptyContainer>
+            <EmptyState title="조건에 맞는 아티클이 없어요." />
+          </S.EmptyContainer>
+        )
+      )}
     </S.ArticleContainer>
   );
 }

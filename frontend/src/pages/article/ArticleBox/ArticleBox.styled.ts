@@ -6,10 +6,9 @@ export const ArticleContainer = styled.div`
   gap: 1.25rem;
 `;
 
-export const ArticleHeader = styled.div<{ hasTotalCount: boolean }>`
+export const ArticleHeader = styled.div`
   display: flex;
-  justify-content: ${({ hasTotalCount }) =>
-    hasTotalCount ? `space-between` : "flex-end"};
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -21,4 +20,8 @@ export const ArticleIntro = styled.p`
 export const ArticleIntroText = styled.span`
   font-weight: 500;
   color: #007bff;
+`;
+
+export const EmptyContainer = styled.div`
+  width: 58.125rem; /* CardList와 동일한 폭 */
 `;
