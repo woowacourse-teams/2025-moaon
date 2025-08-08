@@ -1,5 +1,5 @@
 import searchIcon from "@assets/icons/search.svg";
-import { type FormEvent, useRef, useState } from "react";
+import { type ChangeEvent, type FormEvent, useRef, useState } from "react";
 import CloseIcon from "../Close/Close";
 import * as S from "./SearchBar.styled";
 
@@ -10,7 +10,7 @@ interface SearchBarProps {
 
 function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [searchValue, setSearchValue] = useState("");
+  const [hasSearchValue, setHasSearchValue] = useState(false);
 
   const handleSearchFormSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -18,15 +18,19 @@ function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
     onSubmit(value);
   };
 
-  const handleInputChange = () => {
-    const value = inputRef.current?.value || "";
-    setSearchValue(value);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
+      setHasSearchValue(false);
+      return;
+    }
+
+    setHasSearchValue(true);
   };
 
   const handleClearSearch = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
-      setSearchValue("");
+      setHasSearchValue(false);
       onSubmit("");
     }
   };
@@ -42,7 +46,7 @@ function SearchBar({ placeholder, onSubmit }: SearchBarProps) {
           id="search-input"
           onChange={handleInputChange}
         />
-        {searchValue && (
+        {hasSearchValue && (
           <S.CloseButton type="button" onClick={handleClearSearch}>
             <CloseIcon size={15} />
           </S.CloseButton>
