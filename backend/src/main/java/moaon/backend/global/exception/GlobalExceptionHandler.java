@@ -93,6 +93,23 @@ public class GlobalExceptionHandler {
         return handleMvcStandardException(ErrorCode.ARGUMENT_NOT_VALID, e, detailMessage);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnknownException(Exception e) {
+        ErrorCode errorCode = ErrorCode.UNKNOWN;
+
+        log.error("[{}] {} {} | Exception Message: {}",
+                errorCode.name(),
+                errorCode.getId(),
+                errorCode.getMessage(),
+                e.getMessage(),
+                e
+        );
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.from(errorCode));
+    }
+
     private ResponseEntity<ErrorResponse> handleMvcStandardException(ErrorCode errorCode, Exception exception) {
         return this.handleMvcStandardException(errorCode, exception, null);
     }
@@ -112,22 +129,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.from(errorCode, detailMessage));
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleUnknownException(Exception e) {
-        ErrorCode errorCode = ErrorCode.UNKNOWN;
-
-        log.error("[{}] {} {} | Exception Message: {}",
-                errorCode.name(),
-                errorCode.getId(),
-                errorCode.getMessage(),
-                e.getMessage(),
-                e
-        );
-
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ErrorResponse.from(errorCode));
     }
 }
