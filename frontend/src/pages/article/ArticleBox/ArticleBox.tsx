@@ -32,10 +32,13 @@ function ArticleBox() {
     refetch();
   };
 
+  const hasTotalCount = totalCount !== undefined;
+  const hasCountToDisplay = hasTotalCount && totalCount > 0;
+
   return (
     <S.ArticleContainer>
-      <S.ArticleHeader hasTotalCount={totalCount !== undefined}>
-        {typeof totalCount === "number" && totalCount > 0 && (
+      <S.ArticleHeader hasTotalCount={hasTotalCount}>
+        {hasCountToDisplay && (
           <>
             <S.ArticleIntro>
               <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
