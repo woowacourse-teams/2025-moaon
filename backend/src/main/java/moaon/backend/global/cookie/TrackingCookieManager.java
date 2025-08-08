@@ -76,7 +76,6 @@ public class TrackingCookieManager {
         cookie.setMaxAge((int) secondsUntilMidnight);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setDomain(".moaon.site");
         return cookie;
     }
 
@@ -86,7 +85,6 @@ public class TrackingCookieManager {
         cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setDomain(".moaon.site");
         return cookie;
     }
 
