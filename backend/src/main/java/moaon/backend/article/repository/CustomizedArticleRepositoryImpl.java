@@ -122,7 +122,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     private void applyWhereCategory(BooleanBuilder whereBuilder, String category) {
-        if (!category.equals(ALL)) {
+        if (StringUtils.hasText(category) && !category.equals(ALL)) {
             whereBuilder.and(article.category.name.eq(category));
         }
     }
