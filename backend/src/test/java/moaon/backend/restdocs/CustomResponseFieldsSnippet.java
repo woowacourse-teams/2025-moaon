@@ -1,6 +1,5 @@
 package moaon.backend.restdocs;
 
-import java.io.IOException;
 import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.operation.Operation;
@@ -23,7 +22,7 @@ public class CustomResponseFieldsSnippet extends AbstractFieldsSnippet {
     }
 
     @Override
-    protected byte[] getContent(Operation operation) throws IOException {
+    protected byte[] getContent(Operation operation) {
         return operation.getResponse().getContent();
     }
 }
