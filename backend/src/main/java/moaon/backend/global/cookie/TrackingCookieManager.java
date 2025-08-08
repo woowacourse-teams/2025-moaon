@@ -2,20 +2,25 @@ package moaon.backend.global.cookie;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 
 @RequiredArgsConstructor
 @Slf4j
 public class TrackingCookieManager {
 
+    private static final String NONE = "None";
+    private static final String SET_COOKIE_HEADER = "Set-Cookie";
     private final String cookieName;
     private final String cookiePath;
 
@@ -36,56 +41,84 @@ public class TrackingCookieManager {
         return accessHistory.isCountIncreasable(contentId, currentTimeSeconds);
     }
 
-    public Cookie createOrUpdateCookie(long contentId, AccessHistory accessHistory) {
+    public void createOrUpdateCookie(
+            long contentId,
+            AccessHistory accessHistory,
+            HttpServletResponse response
+    ) {
         if (accessHistory.isEmpty()) {
-            return createCookie(contentId, accessHistory);
+            createCookie(contentId, accessHistory, response);
         }
-        return updateCookie(contentId, accessHistory);
+        updateCookie(contentId, accessHistory, response);
     }
 
-    private Cookie createCookie(long contentId, AccessHistory accessHistory) {
+    private void createCookie(
+            long contentId,
+            AccessHistory accessHistory,
+            HttpServletResponse response
+    ) {
         long currentTimeSeconds = getCurrentTimeSeconds();
         long secondsUntilMidnight = getSecondsUntilMidnight(currentTimeSeconds);
 
         accessHistory.add(contentId, currentTimeSeconds);
-        return buildValidCookie(accessHistory, secondsUntilMidnight);
+        buildAndSetCookie(accessHistory, secondsUntilMidnight, response);
     }
 
-    private Cookie updateCookie(long contentId, AccessHistory accessHistory) {
+    private void updateCookie(
+            long contentId,
+            AccessHistory accessHistory,
+            HttpServletResponse response
+    ) {
         long currentTimeSeconds = getCurrentTimeSeconds();
         long secondsUntilMidnight = getSecondsUntilMidnight(currentTimeSeconds);
 
         accessHistory.removeExpiredEntries(currentTimeSeconds);
         accessHistory.add(contentId, currentTimeSeconds);
         accessHistory.removeUntilMaxSize();
-        return buildValidCookie(accessHistory, secondsUntilMidnight);
+        buildAndSetCookie(accessHistory, secondsUntilMidnight, response);
     }
 
-    private Cookie buildValidCookie(AccessHistory accessHistory, long secondsUntilMidnight) {
+    private void buildAndSetCookie(
+            AccessHistory accessHistory,
+            long secondsUntilMidnight,
+            HttpServletResponse response
+    ) {
         String json = accessHistory.serializeWithSizeLimit();
         if (accessHistory.isInvalidForCookie(json)) {
-            return createEmptyCookie();
+            setEmptyCookie(response);
+            return;
         }
-        return buildCookieFromJson(json, secondsUntilMidnight);
+        setCookieWithResponseCookie(json, secondsUntilMidnight, response);
     }
 
-    private Cookie buildCookieFromJson(String json, long secondsUntilMidnight) {
+    private void setCookieWithResponseCookie(
+            String json,
+            long secondsUntilMidnight,
+            HttpServletResponse response
+    ) {
         String encoded = URLEncoder.encode(json, StandardCharsets.UTF_8);
-        Cookie cookie = new Cookie(cookieName, encoded);
-        cookie.setPath(cookiePath);
-        cookie.setMaxAge((int) secondsUntilMidnight);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        return cookie;
+
+        ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from(cookieName, encoded)
+                .path(cookiePath)
+                .maxAge(Duration.ofSeconds(secondsUntilMidnight))
+                .httpOnly(true)
+                .secure(true)
+                .sameSite(NONE);
+
+        ResponseCookie cookie = builder.build();
+        response.addHeader(SET_COOKIE_HEADER, cookie.toString());
     }
 
-    private Cookie createEmptyCookie() {
-        Cookie cookie = new Cookie(cookieName, "");
-        cookie.setPath(cookiePath);
-        cookie.setMaxAge(0);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        return cookie;
+    private void setEmptyCookie(HttpServletResponse response) {
+        ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from(cookieName, "")
+                .path(cookiePath)
+                .maxAge(Duration.ZERO)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite(NONE);
+
+        ResponseCookie cookie = builder.build();
+        response.addHeader(SET_COOKIE_HEADER, cookie.toString());
     }
 
     private long getCurrentTimeSeconds() {
@@ -106,8 +139,8 @@ public class TrackingCookieManager {
         if (request.getCookies() == null) {
             return null;
         }
-        return Arrays.stream(request.getCookies()).
-                filter(cookie -> cookie.getName().equals(cookieName))
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(cookieName))
                 .findFirst()
                 .orElse(null);
     }
