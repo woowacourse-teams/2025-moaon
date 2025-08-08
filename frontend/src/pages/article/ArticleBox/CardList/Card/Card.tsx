@@ -1,7 +1,7 @@
 import eyeIcon from "@assets/icons/eye.svg";
 import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
 import type { Article } from "@/apis/articles/articles.type";
-import useArticleList from "@/pages/article/hooks/useArticleList";
+import useArticleClick from "@/pages/article/hooks/useArticleClick";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
 import Badge from "./Badge/Badge";
 import * as S from "./Card.styled";
@@ -11,7 +11,7 @@ interface CardProps {
 }
 
 function Card({ article }: CardProps) {
-  const { postArticleClick } = useArticleList();
+  const { postArticleClick } = useArticleClick();
   const { title, summary, techStacks, url, category, projectId, clicks, id } =
     article;
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
