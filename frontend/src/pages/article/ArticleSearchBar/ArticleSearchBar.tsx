@@ -17,10 +17,12 @@ function ArticleSearchBar() {
     refetch();
   };
 
+  const searchValue = params.get()[0];
   return (
     <SearchBar
       placeholder="아티클 제목, 내용을 검색해 보세요"
       onSubmit={handleSearchSubmit}
+      defaultValue={searchValue}
     />
   );
 }

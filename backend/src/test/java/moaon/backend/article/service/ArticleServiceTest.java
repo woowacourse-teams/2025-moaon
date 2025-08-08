@@ -143,12 +143,14 @@ class ArticleServiceTest {
     @DisplayName("프로젝트가 존재하지 않다면 예외가 발생한다.")
     @Test
     void getByProjectId() {
-        // Given
+        // given
         long projectId = 1L;
+        String category = "all";
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
 
-        // When & Then
-        assertThatThrownBy(() -> articleService.getByProjectId(projectId))
+        // when
+        // then
+        assertThatThrownBy(() -> articleService.getByProjectIdAndCategory(projectId, category))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
@@ -156,11 +158,12 @@ class ArticleServiceTest {
     @DisplayName("click을 증가시킬 아티클이 존재하지 않다면 예외가 발생한다.")
     @Test
     void increaseClicksCount() {
-        // Given
+        // given
         long articleId = 1L;
         given(articleRepository.findById(articleId)).willReturn(Optional.empty());
 
-        // When & Then
+        // when
+        // then
         assertThatThrownBy(() -> articleService.increaseClicksCount(articleId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());

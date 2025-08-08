@@ -9,4 +9,6 @@ public interface CustomizedArticleRepository {
     List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition);
 
     long countWithSearchCondition(ArticleQueryCondition queryCondition);
+
+    List<Article> findAllByProjectIdAndCategory(long id, String category);
 }

@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
+import {
+  flexCenter,
+  shimmerGradient,
+  textOverflowEllipsis,
+} from "@/styles/global.styled";
 
 export const Card = styled.li`
   width: 100%;
@@ -8,10 +12,10 @@ export const Card = styled.li`
 
   &:hover {
     transition: 0.25s linear;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
 
     & > a > div > img {
-      transform: scale(1.2);
+      transform: scale(1.1);
       transition: 0.25s linear;
     }
 
@@ -80,6 +84,7 @@ export const CardSummary = styled.p`
 export const CardFooter = styled.div`
   ${flexCenter}
   margin-top: 0.75rem;
+  gap: 1rem;
 `;
 
 export const GroupText = styled.span`
@@ -105,62 +110,4 @@ export const HeartIcon = styled.img`
 
 export const EyeIcon = styled.img`
   width: 1.125rem;
-`;
-
-export const SkeletonCard = styled.li`
-  width: 100%;
-  overflow: hidden;
-  background-color: #ffffff;
-`;
-
-export const SkeletonImageBox = styled.div`
-  width: 100%;
-  height: 10.9375rem;
-  ${shimmerGradient}
-  border-bottom: 1px solid #e9e9e9;
-`;
-
-export const SkeletonInfo = styled.div`
-  padding: 1rem 0.75rem;
-  height: 12.5rem;
-`;
-
-export const SkeletonTitle = styled.div`
-  height: 1.875rem;
-  ${shimmerGradient}
-  border-radius: 0.25rem;
-  margin: 0.25rem 0 0.5rem 0;
-  width: 80%;
-`;
-
-export const SkeletonSummary = styled.div`
-  height: 3rem;
-  ${shimmerGradient}
-  border-radius: 0.25rem;
-  margin-bottom: 1.5rem;
-`;
-
-export const SkeletonTechStacks = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-`;
-
-export const SkeletonTechStack = styled.div`
-  height: 1.5rem;
-  width: 3.5rem;
-  ${shimmerGradient}
-  border-radius: 0.75rem;
-`;
-
-export const SkeletonFooter = styled.div`
-  ${flexCenter}
-  gap: 1rem;
-`;
-
-export const SkeletonActivityItem = styled.div`
-  height: 1.25rem;
-  width: 3rem;
-  ${shimmerGradient}
-  border-radius: 0.25rem;
 `;

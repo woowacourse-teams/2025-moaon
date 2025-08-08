@@ -11,10 +11,12 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
+import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.global.cursor.ClickArticleCursor;
 import moaon.backend.global.cursor.CreatedAtArticleCursor;
+import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -411,5 +413,44 @@ class CustomizedArticleRepositoryImplTest {
 
         // then
         assertThat(count).isEqualTo(2);
+    }
+
+    @DisplayName("상세페이지에서 카테고리 필터를 이용하여 아티클을 조회한다.")
+    @Test
+    void getByProjectIdAndCategory() {
+        // given
+        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        ArticleCategory filteredArticleCategory = Fixture.anyArticleCategory();
+        ArticleCategory unFilterdArticleCategory = Fixture.anyArticleCategory();
+
+        Article filterArticle1 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .category(filteredArticleCategory)
+                        .build()
+        );
+
+        Article filterArticle2 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .category(filteredArticleCategory)
+                        .build()
+        );
+
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .category(unFilterdArticleCategory)
+                        .build()
+        );
+
+        // when
+        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndCategory(
+                project.getId(),
+                filteredArticleCategory.getName()
+        );
+
+        // then
+        assertThat(articles).containsExactlyInAnyOrder(filterArticle1, filterArticle2);
     }
 }

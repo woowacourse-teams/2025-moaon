@@ -15,19 +15,22 @@ export const SkeletonContainer = styled.li`
 
 export const SkeletonBadge = styled.div`
   display: flex;
+  width: 6rem;
+  height: 1.5rem;
+  border-radius: 0.375rem;
   ${shimmerGradient}
 `;
 
 export const SkeletonCardTitle = styled.h2`
   width: 100%;
-  height: 1.5rem;
+  height: 2.8125rem;
   border-radius: 0.375rem;
   ${shimmerGradient}
 `;
 
 export const SkeletonCardSummary = styled.span`
   width: 100%;
-  height: 3rem;
+  height: 3.75rem;
   border-radius: 0.375rem;
   ${shimmerGradient}
 `;

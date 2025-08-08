@@ -4,8 +4,9 @@ import {
   TECH_STACK_ICON_MAP,
   type TechStackKey,
 } from "@domains/filter/techStack";
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useRef, useState } from "react";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
+import { useListKeyboardNavigation } from "./hooks/useListKeyboardNavigation";
 import * as S from "./TechStackSearchBar.styled";
 import TechStackSearchResult from "./TechStackSearchResult/TechStackSearchResult";
 
@@ -26,13 +27,55 @@ const getFilteredListWithoutSelected = (
 
 function TechStackSearchBar() {
   const [value, setValue] = useState("");
-  const [isOpen, setIsOpen] = useState(true);
-  const [filterList, setFilterList] = useState(TECH_STACK_ENTRY);
+  const [isOpen, setIsOpen] = useState(false);
+  const [filterList, setFilterList] = useState<typeof TECH_STACK_ENTRY>([]);
   const { techStacks: selectedTechStacks } = useFilterParams();
+  const { updateTechStackParam } = useFilterParams();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleTechStackItemClick = (techStack: TechStackKey) => {
+    updateTechStackParam(techStack);
+    setValue("");
+  };
+
+  const handleArrowUp = () => {
+    setIsOpen(false);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+      const length = inputRef.current.value.length;
+      inputRef.current.setSelectionRange(length, length);
+    }
+  };
+
+  const handleArrowDown = () => {
+    setIsOpen(true);
+  };
+
+  const handleEnter = () => {
+    setIsOpen(false);
+    handleTechStackItemClick(filterList[keyboardFocusIndex][0]);
+  };
+
+  const { onKeyDown, focusIndex: keyboardFocusIndex } =
+    useListKeyboardNavigation({
+      handlers: {
+        onArrowUp: handleArrowUp,
+        onArrowDown: handleArrowDown,
+        onEnter: handleEnter,
+      },
+      maxIndex: filterList.length - 1,
+    });
 
   const handleFilterInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const keyword = event.target.value;
     setValue(keyword);
+
+    if (keyword === "") {
+      setFilterList([]);
+      setIsOpen(false);
+      return;
+    }
 
     const filteredListWithoutSelected = getFilteredListWithoutSelected(
       keyword,
@@ -42,39 +85,27 @@ function TechStackSearchBar() {
     setIsOpen(true);
   };
 
-  const handleFilterInputFocus = () => {
-    if (value) {
-      setIsOpen(true);
-    }
-  };
-
-  const resetSearchInput = () => {
-    setValue("");
-  };
-
-  const closeSearchResults = () => {
-    setIsOpen(false);
-  };
-
-  const isSearchResultVisible = value && isOpen;
   return (
     <S.Container>
       <S.SearchLabel htmlFor="filter-search">
         <S.SearchIcon src={searchIcon} alt="검색" />
         <S.SearchInput
+          autoComplete="off"
           type="text"
           id="filter-search"
           placeholder="찾으시는 기술 스택을 입력해 주세요"
           value={value}
+          ref={inputRef}
           onChange={handleFilterInputChange}
-          onFocus={handleFilterInputFocus}
+          onKeyDown={onKeyDown}
         />
       </S.SearchLabel>
-      {isSearchResultVisible && (
+      {isOpen && (
         <TechStackSearchResult
           filterList={filterList}
-          resetSearchInput={resetSearchInput}
-          closeSearchResults={closeSearchResults}
+          closeSearchResult={() => setIsOpen(false)}
+          onTechStackSelect={handleTechStackItemClick}
+          keyboardFocusIndex={keyboardFocusIndex}
         />
       )}
     </S.Container>

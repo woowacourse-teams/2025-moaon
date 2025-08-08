@@ -4,22 +4,27 @@ import TechStackFilterList from "../TechStackFilterList/TechStackFilterList";
 
 const RECOMMEND_TECH_STACKS = [
   "react",
-  "nodejs",
-  "aws",
-  "kotlin",
-  "swift",
-  "flutter",
-  "mysql",
-  "python",
-  "express",
   "typescript",
+  "nextjs",
+  "mysql",
+  "spring",
+  "aws",
+  "redis",
+  "java",
+  "docker",
+  "kotlin",
 ] as TechStackKey[];
 
-function RecommendTechStack() {
+interface RecommendTechStackProps {
+  onSelect: () => void;
+}
+
+function RecommendTechStack({ onSelect }: RecommendTechStackProps) {
   return (
     <TechStackFilterList
       title="추천 기술 스택"
       techStacks={RECOMMEND_TECH_STACKS}
+      onSelect={onSelect}
     />
   );
 }

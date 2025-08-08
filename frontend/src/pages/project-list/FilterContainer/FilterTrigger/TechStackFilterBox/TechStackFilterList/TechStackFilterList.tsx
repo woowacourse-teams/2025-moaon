@@ -10,17 +10,22 @@ import * as S from "./TechStackFilterList.styled";
 interface TechStackListProps {
   title: string;
   techStacks: TechStackKey[];
+  onSelect: () => void;
 }
 
-function TechStackFilterList({ title, techStacks }: TechStackListProps) {
+function TechStackFilterList({
+  title,
+  techStacks,
+  onSelect,
+}: TechStackListProps) {
   const { techStacks: selectedTechStacks, updateTechStackParam } =
     useFilterParams();
-  const { refetch } = useProjectList();
+
   const isSelected = selectedTechStacks.length > 0;
 
   const handleTechStackClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);
-    refetch();
+    onSelect();
   };
 
   return (
