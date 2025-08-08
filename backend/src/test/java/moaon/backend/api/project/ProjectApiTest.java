@@ -152,8 +152,9 @@ public class ProjectApiTest extends BaseApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = new ProjectFixtureBuilder().build();
-        ArticleCategory filterCategory = new ArticleCategory("a");
-        ArticleCategory unfilterCategory = new ArticleCategory("b");
+        ArticleCategory filterCategory = Fixture.anyArticleCategory();
+        ArticleCategory unfilterCategory = Fixture.anyArticleCategory();
+        ;
 
         Article targetProjectArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
@@ -240,7 +241,7 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("[].summary").description("아티클 요약"),
                 fieldWithPath("[].clicks").description("아티클 클릭수"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
-                fieldWithPath("[].articleUrl").description("아티클 URL"),
+                fieldWithPath("[].url").description("아티클 URL"),
                 fieldWithPath("[].category").description("아티클 카테고리"),
                 fieldWithPath("[].createdAt").description("생성일시")
         );
