@@ -14,7 +14,7 @@ const Overline = styled.p`
 export const TitleSectionContainer = styled.section`
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   border-bottom: 1px solid #d4d4d4;
   padding-bottom: 2rem;
@@ -28,19 +28,31 @@ export const TitleSectionLeft = styled.div`
 
 export const TitleSectionRight = styled.div`
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.875rem;
   align-items: flex-end;
 `;
 
 export const OverlineSection = styled(Overline)`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 export const Subject = styled(Overline)``;
 
 export const RegistrationDate = styled(Overline)``;
+
+export const View = styled(Overline)`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  & > img {
+    width: 1.25rem;
+  }
+`;
 
 export const ProductName = styled.h2`
   font-size: 2rem;
@@ -51,6 +63,12 @@ export const ProductDescription = styled(Body)`
   color: #73798d;
 `;
 
+export const ActionButtons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+`;
+
 export const LoveCount = styled(Body)``;
 
 export const LoveButton = styled.button<{ isLiked: boolean }>`
@@ -59,6 +77,7 @@ export const LoveButton = styled.button<{ isLiked: boolean }>`
   justify-content: center;
   gap: 0.5rem;
   border-radius: 8px;
+  margin-right: 1rem;
   width: 4.5rem;
   height: 2.125rem;
   border: 1px solid #f35656;
@@ -71,7 +90,7 @@ export const LoveButton = styled.button<{ isLiked: boolean }>`
 export const ButtonBar = styled.div`
   display: flex;
   gap: 0.625rem;
-  border-left: 1px solid #d4d4d4;
+  border-left: 1px solid #535353;
   padding-left: 1.5rem;
 `;
 
