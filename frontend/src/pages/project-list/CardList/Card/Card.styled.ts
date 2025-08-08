@@ -12,10 +12,10 @@ export const Card = styled.li`
 
   &:hover {
     transition: 0.25s linear;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
 
     & > a > div > img {
-      transform: scale(1.2);
+      transform: scale(1.1);
       transition: 0.25s linear;
     }
 
