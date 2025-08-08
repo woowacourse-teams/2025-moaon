@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.annotation.Nullable;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -71,23 +72,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         if (e.getCause() instanceof InvalidFormatException ex) {
-            return handleWithFieldMessages(e, ex);
+            List<Reference> path = ex.getPath();
+            String fieldName = path.stream().map(Reference::getFieldName).collect(joining("."));
+            Object inputValue = ex.getValue();
+
+            String detailMessage = String.format(
+                    "필드 '%s'의 형식이 일치하지 않습니다. 입력: '%s'",
+                    fieldName, inputValue
+            );
+            return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e.getMessage(), detailMessage);
         }
 
         return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e.getMessage());
-    }
-
-    private ResponseEntity<ErrorResponse> handleWithFieldMessages(
-            HttpMessageNotReadableException e,
-            InvalidFormatException ex
-    ) {
-        Reference reference = ex.getPath().getFirst();
-        String detailMessage = String.format(
-                "필드 '%s'에 대한 형식이 일치하지 않습니다. 요청한 입력 : '%s'",
-                reference.getFieldName(), ex.getValue()
-        );
-
-        return handleMvcStandardException(ErrorCode.HTTP_MESSAGE_NOT_READABLE, e.getMessage(), detailMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
