@@ -5,7 +5,7 @@ export const TabContainer = styled.div<{ width?: number }>`
   padding: 0.3125rem;
   border: 1.5px solid #e6e8eb;
   border-radius: 5px;
-  margin-bottom: 2.25rem;
+  margin-bottom: 2rem;
   width: ${({ width }) => width}%;
 `;
 
