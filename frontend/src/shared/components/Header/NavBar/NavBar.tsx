@@ -44,7 +44,7 @@ function NavBar() {
               };
             }}
           >
-            <S.Link to={href} reloadDocument>
+            <S.Link isSelected={activeIndex === idx} to={href} reloadDocument>
               {text}
             </S.Link>
           </S.NavLinkItem>
