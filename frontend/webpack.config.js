@@ -30,8 +30,10 @@ export default {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: "ts-loader",
         exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.(png|jpe?g|gif|svg|webp)$/i,

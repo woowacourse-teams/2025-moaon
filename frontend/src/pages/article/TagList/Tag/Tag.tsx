@@ -13,9 +13,7 @@ function Tag({
 }: PropsWithChildren<TagBoxProps>) {
   return (
     <S.TagBox onClick={onSelect} isSelected={isSelected}>
-      <S.TagText className="tag-text" isSelected={isSelected}>
-        {children}
-      </S.TagText>
+      <S.TagText isSelected={isSelected}>{children}</S.TagText>
     </S.TagBox>
   );
 }

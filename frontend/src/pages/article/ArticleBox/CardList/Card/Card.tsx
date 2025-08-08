@@ -17,7 +17,7 @@ function Card({ article }: CardProps) {
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardSummary>{summary}</S.CardSummary>
       <TechStackList techStacks={techStacks} />
-      <S.BackDropBox className="back-drop-box">
+      <S.BackDropBox>
         <S.ArticleLink href={url} target="_blank" rel="noopener noreferrer">
           아티클 보러가기
         </S.ArticleLink>
