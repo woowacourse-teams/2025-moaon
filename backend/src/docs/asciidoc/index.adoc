@@ -9,5 +9,6 @@
 
 = 모아온 API 문서
 
+include::info-error.adoc[]
 include::api-projects.adoc[]
 include::api-articles.adoc[]

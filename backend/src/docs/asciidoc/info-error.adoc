@@ -1,0 +1,16 @@
+== Error Responses
+
+=== Error Response Format
+
+[source,json]
+----
+{
+  "code": "ERROR-CODE",
+  "message": "에러 메시지",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+----
+
+=== Error Codes
+
+operation::error-code-test[snippets='error-response-fields']
