@@ -11,7 +11,7 @@ public record ArticleDetailResponse(
         String summary,
         int clicks,
         List<String> techStacks,
-        String articleUrl,
+        String url,
         String category,
         LocalDateTime createdAt
 ) {

@@ -30,6 +30,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
     private static final String RESERVED_CHARACTERS = "[+-><()~*:\"&|]";
+    private static final String ALL = "all";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -81,6 +82,24 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .size();
     }
 
+    @Override
+    public List<Article> findAllByProjectIdAndCategory(long id, String category) {
+        JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
+                .distinct()
+                .leftJoin(article.category, articleCategory)
+                .leftJoin(article.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        whereBuilder.and(article.project.id.eq(id));
+
+        applyWhereCategory(whereBuilder, category);
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+        return query.fetch();
+    }
+
     private void applyWhereAndHaving(
             BooleanBuilder whereBuilder,
             ArticleQueryCondition queryCondition,
@@ -90,9 +109,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         List<String> techStackNames = queryCondition.techStackNames();
         String search = queryCondition.search();
 
-        if (!categoryName.equals("all")) {
-            whereBuilder.and(article.category.name.eq(categoryName));
-        }
+        applyWhereCategory(whereBuilder, categoryName);
 
         if (!CollectionUtils.isEmpty(techStackNames)) {
             whereBuilder.and(techStack.name.in(techStackNames));
@@ -101,6 +118,12 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         if (StringUtils.hasText(search)) {
             whereBuilder.and(satisfiesMatchScore(search));
+        }
+    }
+
+    private void applyWhereCategory(BooleanBuilder whereBuilder, String category) {
+        if (StringUtils.hasText(category) && !category.equals(ALL)) {
+            whereBuilder.and(article.category.name.eq(category));
         }
     }
 

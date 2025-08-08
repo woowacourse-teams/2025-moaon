@@ -77,8 +77,11 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/articles")
-    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(@PathVariable("id") long id) {
-        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectId(id);
+    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(
+            @PathVariable("id") long id,
+            @RequestParam(value = "category", required = false, defaultValue = "all") String category
+    ) {
+        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndCategory(id, category);
         return ResponseEntity.ok(articleDetailResponses);
     }
 }
