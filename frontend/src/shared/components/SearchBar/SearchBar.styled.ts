@@ -13,7 +13,7 @@ export const SearchLabel = styled.label`
 `;
 
 export const SearchInput = styled.input`
-  width: 85%;
+  flex: 1;
   height: 1.875rem;
   font-size: 1.375rem;
   font-weight: 500;
