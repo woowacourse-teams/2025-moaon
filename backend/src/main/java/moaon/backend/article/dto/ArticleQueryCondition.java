@@ -3,7 +3,6 @@ package moaon.backend.article.dto;
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.global.cursor.ArticleCursor;
-import moaon.backend.global.cursor.CursorParser;
 
 public record ArticleQueryCondition(
         String search,
@@ -29,7 +28,7 @@ public record ArticleQueryCondition(
                 techStackNames,
                 sortBy,
                 limit,
-                CursorParser.toCursor(cursor, sortBy)
+                sortBy.toCursor(cursor)
         );
     }
 }
