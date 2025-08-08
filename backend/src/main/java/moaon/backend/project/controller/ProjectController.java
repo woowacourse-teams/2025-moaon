@@ -30,7 +30,8 @@ public class ProjectController {
     public ProjectController(
             @Qualifier("projectViewCookieManager") TrackingCookieManager cookieManager,
             ProjectService projectService,
-            ArticleService articleService) {
+            ArticleService articleService
+    ) {
         this.cookieManager = cookieManager;
         this.projectService = projectService;
         this.articleService = articleService;

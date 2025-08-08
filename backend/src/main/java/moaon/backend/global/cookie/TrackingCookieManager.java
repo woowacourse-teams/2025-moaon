@@ -21,6 +21,7 @@ public class TrackingCookieManager {
 
     private static final String NONE = "None";
     private static final String SET_COOKIE_HEADER = "Set-Cookie";
+
     private final String cookieName;
     private final String cookiePath;
 
