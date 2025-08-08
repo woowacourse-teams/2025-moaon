@@ -11,7 +11,8 @@ interface CardProps {
 }
 
 function Card({ article }: CardProps) {
-  const { title, summary, techStacks, url, category, projectId } = article;
+  const { title, summary, techStacks, url, category, projectId, clicks, id } =
+    article;
   const isArticleList = !!projectId;
   const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
