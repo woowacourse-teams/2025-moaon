@@ -1,9 +1,11 @@
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { articlesQueries } from "@/apis/articles/articles.queries";
 
 const useArticleList = () => {
   const queryClient = useQueryClient();
   const { data, isLoading, fetchNextPage, isFetchingNextPage, refetch: originalRefetch, isRefetching } = useInfiniteQuery(articlesQueries.fetchList());
+
+  const postArticleClickMutation = useMutation(articlesQueries.postArticleClick());
 
   const articles = data?.pages.flatMap((page) => page.contents);
 
@@ -23,6 +25,10 @@ const useArticleList = () => {
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
   const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
 
+  const postArticleClick = (id: number) => {
+    postArticleClickMutation.mutate(id);
+  };
+
   return {
     articles,
     hasNext,
@@ -32,6 +38,7 @@ const useArticleList = () => {
     showSkeleton,
     scrollEnabled,
     refetch,
+    postArticleClick,
   };
 };
 
