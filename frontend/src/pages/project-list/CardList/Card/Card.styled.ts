@@ -84,6 +84,7 @@ export const CardSummary = styled.p`
 export const CardFooter = styled.div`
   ${flexCenter}
   margin-top: 0.75rem;
+  gap: 1rem;
 `;
 
 export const GroupText = styled.span`
