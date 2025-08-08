@@ -11,9 +11,10 @@ interface CardProps {
 }
 
 function Card({ article }: CardProps) {
-  const { postArticleClick } = useArticleClick();
   const { title, summary, techStacks, url, category, projectId, clicks, id } =
     article;
+  const isArticleList = !!projectId;
+  const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
 
   return (
@@ -37,9 +38,11 @@ function Card({ article }: CardProps) {
         >
           아티클 보러가기
         </S.ArticleLink>
-        <S.ProjectLink to={`/project/${projectId}`}>
-          프로젝트 보러가기
-        </S.ProjectLink>
+        {isArticleList && (
+          <S.ProjectLink to={`/project/${projectId}`}>
+            프로젝트 보러가기
+          </S.ProjectLink>
+        )}
       </S.BackDropBox>
     </S.CardContainer>
   );
