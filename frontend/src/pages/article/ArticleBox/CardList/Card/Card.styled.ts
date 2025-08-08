@@ -39,7 +39,7 @@ export const CardSummary = styled.span`
 export const CardInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   gap: 1rem;
   width: 100%;
 
