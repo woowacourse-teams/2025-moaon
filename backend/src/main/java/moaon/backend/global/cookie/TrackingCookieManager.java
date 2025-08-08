@@ -49,6 +49,7 @@ public class TrackingCookieManager {
     ) {
         if (accessHistory.isEmpty()) {
             createCookie(contentId, accessHistory, response);
+            return;
         }
         updateCookie(contentId, accessHistory, response);
     }
