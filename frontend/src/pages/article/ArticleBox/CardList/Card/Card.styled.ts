@@ -26,14 +26,16 @@ export const CardTitle = styled.h2`
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.25;
+  height: 2.8125rem;
   ${textOverflowEllipsis(2)}
 `;
 
 export const CardSummary = styled.span`
   font-size: 0.8125rem;
-  line-height: 1.25;
+  line-height: 1.5;
   color: #555555;
-  ${textOverflowEllipsis(3)}
+  height: 3.75rem;
+  ${textOverflowEllipsis(3)};
 `;
 
 export const BackDropBox = styled.div`
