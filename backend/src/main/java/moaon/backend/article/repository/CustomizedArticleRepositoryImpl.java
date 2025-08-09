@@ -49,7 +49,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         applyWhereAndHaving(whereBuilder, queryCondition, query);
 
         if (articleCursor != null) {
-            articleCursor.applyCursor(queryCondition, whereBuilder);
+            articleCursor.applyCursor(whereBuilder);
         }
 
         if (whereBuilder.hasValue()) {
