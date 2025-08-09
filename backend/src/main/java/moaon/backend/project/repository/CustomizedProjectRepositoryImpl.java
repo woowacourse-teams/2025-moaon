@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
@@ -103,12 +104,12 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
     }
 
-    private void toContainsSearch(String search, BooleanBuilder whereBuilder) {
-        if (!StringUtils.hasText(search)) {
+    private void toContainsSearch(SearchKeyword search, BooleanBuilder whereBuilder) {
+        if (!StringUtils.hasText(search.value())) {
             return;
         }
 
-        whereBuilder.and(satisfiesMatchScore(search));
+        whereBuilder.and(satisfiesMatchScore(search.value()));
     }
 
 
