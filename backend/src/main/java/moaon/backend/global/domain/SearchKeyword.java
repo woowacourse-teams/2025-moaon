@@ -1,5 +1,6 @@
 package moaon.backend.global.domain;
 
+import java.util.regex.Pattern;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 
@@ -9,11 +10,16 @@ public record SearchKeyword(
 
     public static final int MIN_LENGTH = 2;
     public static final int MAX_LENGTH = 50;
+    private static final Pattern NON_SPECIAL_CHARACTERS = Pattern.compile("[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s]");
 
     public SearchKeyword {
         if (value != null) {
             validateLength(value);
         }
+    }
+
+    public String replaceSpecialCharacters(String replacement) {
+        return NON_SPECIAL_CHARACTERS.matcher(value).replaceAll(replacement);
     }
 
     private void validateLength(String value) {
