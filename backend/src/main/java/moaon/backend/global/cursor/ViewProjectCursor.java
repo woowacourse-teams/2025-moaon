@@ -6,7 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ViewProjectCursor implements ProjectCursor<Integer> {
+public class ViewProjectCursor implements Cursor<Integer> {
 
     private final int views;
     private final Long id;

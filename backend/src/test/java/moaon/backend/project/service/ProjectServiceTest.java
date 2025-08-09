@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -68,7 +68,7 @@ class ProjectServiceTest {
                 null
         );
 
-        ProjectCursor<?> cursor = projectQueryCondition.projectSortType().toCursor(project2);
+        Cursor<?> cursor = projectQueryCondition.projectSortType().toCursor(project2);
 
         Mockito.when(projectRepository.countWithSearchCondition(projectQueryCondition)).thenReturn(5L);
 
