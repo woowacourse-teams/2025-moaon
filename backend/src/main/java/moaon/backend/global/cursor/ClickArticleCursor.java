@@ -6,7 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ClickArticleCursor implements ArticleCursor<Integer> {
+public class ClickArticleCursor implements Cursor<Integer> {
 
     private final int clicks;
     private final Long id;

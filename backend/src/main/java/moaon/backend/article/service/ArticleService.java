@@ -7,7 +7,7 @@ import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
-import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.repository.ProjectRepository;
@@ -30,7 +30,7 @@ public class ArticleService {
             List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
             Article lastArticle = articlesToReturn.getLast();
 
-            ArticleCursor<?> articleCursor = queryCondition.sortBy().toCursor(lastArticle);
+            Cursor<?> articleCursor = queryCondition.sortBy().toCursor(lastArticle);
 
             return ArticleResponse.from(
                     articlesToReturn,

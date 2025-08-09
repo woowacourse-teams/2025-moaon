@@ -3,7 +3,7 @@ package moaon.backend.fixture;
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 
 public class ArticleQueryConditionBuilder {
@@ -13,7 +13,7 @@ public class ArticleQueryConditionBuilder {
     private List<String> techStackNames;
     private ArticleSortType sortBy;
     private int limit;
-    private ArticleCursor<?> articleCursor;
+    private Cursor<?> articleCursor;
 
     public ArticleQueryConditionBuilder() {
         this.search = new SearchKeyword(null);
@@ -49,7 +49,7 @@ public class ArticleQueryConditionBuilder {
         return this;
     }
 
-    public ArticleQueryConditionBuilder cursor(ArticleCursor<?> articleCursor) {
+    public ArticleQueryConditionBuilder cursor(Cursor<?> articleCursor) {
         this.articleCursor = articleCursor;
         return this;
     }

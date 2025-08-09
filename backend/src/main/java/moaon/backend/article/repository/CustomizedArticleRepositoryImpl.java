@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
@@ -37,7 +37,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
 
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
