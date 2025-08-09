@@ -18,7 +18,7 @@ public class ProjectQueryConditionFixtureBuilder {
     private ProjectCursor<?> cursor;
 
     public ProjectQueryConditionFixtureBuilder() {
-        this.search = null;
+        this.search = new SearchKeyword(null);
         this.categoryNames = new ArrayList<>();
         this.techStackNames = new ArrayList<>();
         this.projectSortType = null;

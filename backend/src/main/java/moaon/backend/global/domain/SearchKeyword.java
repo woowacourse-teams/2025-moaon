@@ -18,6 +18,10 @@ public record SearchKeyword(
         }
     }
 
+    public boolean isEmpty() {
+        return value == null || value.isEmpty();
+    }
+
     public String replaceSpecialCharacters(String replacement) {
         return NON_SPECIAL_CHARACTERS.matcher(value).replaceAll(replacement);
     }
