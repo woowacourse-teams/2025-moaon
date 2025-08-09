@@ -18,8 +18,8 @@ public record SearchKeyword(
         }
     }
 
-    public boolean isEmpty() {
-        return value == null || value.isEmpty();
+    public boolean hasValue() {
+        return value != null && !value.isBlank();
     }
 
     public String replaceSpecialCharacters(String replacement) {

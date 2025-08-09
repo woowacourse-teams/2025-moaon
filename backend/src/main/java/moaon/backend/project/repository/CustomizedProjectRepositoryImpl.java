@@ -98,11 +98,10 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
 
         SearchKeyword searchKeyword = queryCondition.search();
-        if (!searchKeyword.isEmpty()) {
+        if (searchKeyword.hasValue()) {
             whereBuilder.and(satisfiesMatchScore(searchKeyword));
         }
     }
-
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         return Expressions.numberTemplate(
