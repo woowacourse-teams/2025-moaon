@@ -4,10 +4,11 @@ import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.domain.SearchKeyword;
 
 public class ArticleQueryConditionBuilder {
 
-    private String search;
+    private SearchKeyword search;
     private String categoryName;
     private List<String> techStackNames;
     private ArticleSortType sortBy;
@@ -15,7 +16,7 @@ public class ArticleQueryConditionBuilder {
     private ArticleCursor<?> articleCursor;
 
     public ArticleQueryConditionBuilder() {
-        this.search = null;
+        this.search = new SearchKeyword(null);
         this.categoryName = "all";
         this.techStackNames = null;
         this.sortBy = null;
@@ -24,7 +25,7 @@ public class ArticleQueryConditionBuilder {
     }
 
     public ArticleQueryConditionBuilder search(String search) {
-        this.search = search;
+        this.search = new SearchKeyword(search);
         return this;
     }
 
