@@ -9,6 +9,8 @@ operation::project-api-test/get-paged-projects[snippets='curl-request,http-reque
 
 - GLOBAL-001
 - GLOBAL-003
+- GLOBAL-005
+- GLOBAL-007
 - CURSOR-001
 
 ====
@@ -21,6 +23,7 @@ operation::project-api-test/get-project-by-id[snippets='curl-request,http-reques
 **Error Codes **
 
 - GLOBAL-001
+- GLOBAL-005
 - PROJECT-001
 
 ====
@@ -33,6 +36,7 @@ operation::project-api-test/get-articles-by-project-id[snippets='curl-request,ht
 **Error Codes **
 
 - GLOBAL-001
+- GLOBAL-005
 - PROJECT-001
 
 ====

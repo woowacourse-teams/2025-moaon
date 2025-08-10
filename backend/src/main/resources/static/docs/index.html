@@ -477,8 +477,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
-  "code": "ERROR-CODE",
+  "errorId": "ERROR-CODE",
   "message": "에러 메시지",
+  "detailMessage": "상세 에러 메시지 (Optional, 디버깅 용)",
   "timestamp": "2024-01-01T00:00:00.000Z"
 }</code></pre>
 </div>
@@ -486,9 +487,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect2">
 <h3 id="_error_codes"><a class="link" href="#_error_codes">1.2. Error Codes</a></h3>
-<div class="paragraph">
-<p>다음은 시스템에서 사용되는 모든 에러 코드입니다:</p>
-</div>
 <div class="sect3">
 <h4 id="_error_codes_error_response-fields"><a class="link" href="#_error_codes_error_response-fields">Error response-fields</a></h4>
 <table class="tableblock frame-all grid-all stretch">
@@ -526,6 +524,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP_METHOD_NOT_SUPPORTED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지원하지 않는 HTTP 메서드입니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TYPE_MISMATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터의 자료형이 일치하지 않습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP_MESSAGE_NOT_READABLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 본문을 파싱하지 못했습니다. 형식을 확인해 주세요.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-007</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ARGUMENT_NOT_VALID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터에 대한 검증에 실패했습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT-001</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT_NOT_FOUND</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트를 찾을 수 없습니다.</p></td>
@@ -560,7 +582,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_curl_request"><a class="link" href="#_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory166&amp;techStacks=testTechStack168&amp;limit=2' -i -X GET</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory168&amp;techStacks=testTechStack170&amp;limit=2' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -568,7 +590,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory166&amp;techStacks=testTechStack168&amp;limit=2 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory168&amp;techStacks=testTechStack170&amp;limit=2 HTTP/1.1
 Host: api.moaon.site</code></pre>
 </div>
 </div>
@@ -583,7 +605,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 19:06:27 GMT
+Date: Sun, 10 Aug 2025 05:43:40 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 582
@@ -592,17 +614,17 @@ Content-Length: 582
   "contents" : [ {
     "id" : 11,
     "title" : "moaon",
-    "summary" : "테스트 프로젝트 요약201",
-    "techStacks" : [ "testTechStack168" ],
+    "summary" : "테스트 프로젝트 요약203",
+    "techStacks" : [ "testTechStack170" ],
     "thumbnailUrl" : "https://test.com/image1.png",
     "isLoved" : false,
     "loves" : 0,
     "views" : 6
   }, {
     "id" : 10,
-    "title" : "테스트 프로젝트 제목194",
+    "title" : "테스트 프로젝트 제목196",
     "summary" : "moaon",
-    "techStacks" : [ "testTechStack168" ],
+    "techStacks" : [ "testTechStack170" ],
     "thumbnailUrl" : "https://test.com/image1.png",
     "isLoved" : false,
     "loves" : 0,
@@ -758,7 +780,7 @@ Content-Length: 582
 </table>
 </div>
 <div class="paragraph">
-<p>Error Codes</p>
+<p><strong>Error Codes </strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -767,6 +789,12 @@ Content-Length: 582
 </li>
 <li>
 <p>GLOBAL-003</p>
+</li>
+<li>
+<p>GLOBAL-005</p>
+</li>
+<li>
+<p>GLOBAL-007</p>
 </li>
 <li>
 <p>CURSOR-001</p>
@@ -805,10 +833,10 @@ Host: api.moaon.site</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewed_projects=%7B%225%22%3A1754593587%7D; Max-Age=86013; Expires=Fri, 08 Aug 2025 19:00:00 GMT; Path=/project; Secure; HttpOnly
+Set-Cookie: viewed_projects=%7B%225%22%3A1754804619%7D; Path=/projects; Max-Age=47781; Expires=Sun, 10 Aug 2025 19:00:00 GMT; Secure; HttpOnly; SameSite=None
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 19:06:27 GMT
+Date: Sun, 10 Aug 2025 05:43:39 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 554
@@ -816,16 +844,16 @@ Content-Length: 554
 {
   "id" : 5,
   "authorId" : 5,
-  "title" : "테스트 프로젝트 제목160",
-  "summary" : "테스트 프로젝트 요약161",
-  "description" : "테스트 프로젝트 상세 설명162",
-  "techStacks" : [ "testTechStack164" ],
-  "categories" : [ "testProjectCategory165" ],
+  "title" : "테스트 프로젝트 제목162",
+  "summary" : "테스트 프로젝트 요약163",
+  "description" : "테스트 프로젝트 상세 설명164",
+  "techStacks" : [ "testTechStack166" ],
+  "categories" : [ "testProjectCategory167" ],
   "imageUrls" : [ "https://test.com/image1.png", "https://test.com/image2.png" ],
   "isLoved" : false,
   "loves" : 0,
   "views" : 1,
-  "createdAt" : "2025-08-08T04:06:27.209861",
+  "createdAt" : "2025-08-10T14:43:39.115063",
   "githubUrl" : "https://github.com/test-repo",
   "productionUrl" : "https://test-product.com"
 }</code></pre>
@@ -938,12 +966,15 @@ Content-Length: 554
 </table>
 </div>
 <div class="paragraph">
-<p><strong>Error Response</strong></p>
+<p><strong>Error Codes </strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
 <p>GLOBAL-001</p>
+</li>
+<li>
+<p>GLOBAL-005</p>
 </li>
 <li>
 <p>PROJECT-001</p>
@@ -961,7 +992,7 @@ Content-Length: 554
 <h4 id="_curl_request"><a class="link" href="#_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects/3/articles' -i -X GET</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects/3/articles?category=testArticleCategory116' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -969,7 +1000,7 @@ Content-Length: 554
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects/3/articles HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects/3/articles?category=testArticleCategory116 HTTP/1.1
 Host: api.moaon.site</code></pre>
 </div>
 </div>
@@ -984,38 +1015,38 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 19:06:27 GMT
+Date: Sun, 10 Aug 2025 05:43:39 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 896
+Content-Length: 875
 
 [ {
   "id" : 10,
-  "title" : "테스트 아티클 제목116",
-  "summary" : "테스트 아티클 요약117",
+  "title" : "테스트 아티클 제목118",
+  "summary" : "테스트 아티클 요약119",
   "clicks" : 0,
-  "techStacks" : [ "testTechStack126" ],
-  "articleUrl" : "https://test-product.com",
-  "category" : "testArticleCategory125",
-  "createdAt" : "2025-08-08T04:06:26.795592"
+  "techStacks" : [ "testTechStack128" ],
+  "url" : "https://test-product.com",
+  "category" : "testArticleCategory116",
+  "createdAt" : "2025-08-10T14:43:38.719037"
 }, {
   "id" : 11,
-  "title" : "테스트 아티클 제목127",
-  "summary" : "테스트 아티클 요약128",
+  "title" : "테스트 아티클 제목129",
+  "summary" : "테스트 아티클 요약130",
   "clicks" : 0,
-  "techStacks" : [ "testTechStack137" ],
-  "articleUrl" : "https://test-product.com",
-  "category" : "testArticleCategory136",
-  "createdAt" : "2025-08-08T04:06:26.864585"
+  "techStacks" : [ "testTechStack139" ],
+  "url" : "https://test-product.com",
+  "category" : "testArticleCategory116",
+  "createdAt" : "2025-08-10T14:43:38.768916"
 }, {
   "id" : 12,
-  "title" : "테스트 아티클 제목138",
-  "summary" : "테스트 아티클 요약139",
+  "title" : "테스트 아티클 제목140",
+  "summary" : "테스트 아티클 요약141",
   "clicks" : 0,
-  "techStacks" : [ "testTechStack148" ],
-  "articleUrl" : "https://test-product.com",
-  "category" : "testArticleCategory147",
-  "createdAt" : "2025-08-08T04:06:26.916889"
+  "techStacks" : [ "testTechStack150" ],
+  "url" : "https://test-product.com",
+  "category" : "testArticleCategory116",
+  "createdAt" : "2025-08-10T14:43:38.828003"
 } ]</code></pre>
 </div>
 </div>
@@ -1069,7 +1100,7 @@ Content-Length: 896
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].articleUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].url</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아티클 URL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
@@ -1090,12 +1121,15 @@ Content-Length: 896
 </table>
 </div>
 <div class="paragraph">
-<p><strong>Error Response</strong></p>
+<p><strong>Error Codes </strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
 <p>GLOBAL-001</p>
+</li>
+<li>
+<p>GLOBAL-005</p>
 </li>
 <li>
 <p>PROJECT-001</p>
@@ -1141,7 +1175,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 07 Aug 2025 19:06:25 GMT
+Date: Sun, 10 Aug 2025 05:43:37 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 706
@@ -1156,7 +1190,7 @@ Content-Length: 706
     "techStacks" : [ "testTechStack3" ],
     "url" : "https://test-product.com",
     "category" : "testArticleCategory1",
-    "createdAt" : "2025-08-08T04:06:22.201352"
+    "createdAt" : "2025-08-10T14:43:34.159494"
   }, {
     "id" : 7,
     "projectId" : 1,
@@ -1166,7 +1200,7 @@ Content-Length: 706
     "techStacks" : [ "testTechStack3" ],
     "url" : "https://test-product.com",
     "category" : "testArticleCategory1",
-    "createdAt" : "2025-08-08T04:06:22.168104"
+    "createdAt" : "2025-08-10T14:43:34.118583"
   } ],
   "totalCount" : 3,
   "hasNext" : true,
@@ -1335,6 +1369,9 @@ Content-Length: 706
 <p>GLOBAL-003</p>
 </li>
 <li>
+<p>GLOBAL-005</p>
+</li>
+<li>
 <p>CURSOR-001</p>
 </li>
 </ul>
@@ -1373,8 +1410,8 @@ Host: api.moaon.site</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: clicked_articles=%7B%229%22%3A1754593586%7D; Max-Age=86014; Expires=Fri, 08 Aug 2025 19:00:00 GMT; Path=/article; Secure; HttpOnly
-Date: Thu, 07 Aug 2025 19:06:26 GMT
+Set-Cookie: clicked_articles=%7B%229%22%3A1754804618%7D; Path=/articles; Max-Age=47782; Expires=Sun, 10 Aug 2025 19:00:00 GMT; Secure; HttpOnly; SameSite=None
+Date: Sun, 10 Aug 2025 05:43:38 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1387,6 +1424,9 @@ Connection: keep-alive</code></pre>
 <ul>
 <li>
 <p>GLOBAL-001</p>
+</li>
+<li>
+<p>GLOBAL-005</p>
 </li>
 <li>
 <p>ARTICLE-001</p>
@@ -1402,7 +1442,7 @@ Connection: keep-alive</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2025-08-08 04:05:41 +0900
+Last updated 2025-08-10 14:08:11 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

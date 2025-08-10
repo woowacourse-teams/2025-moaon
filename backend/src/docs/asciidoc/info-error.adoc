@@ -5,8 +5,9 @@
 [source,json]
 ----
 {
-  "code": "ERROR-CODE",
+  "errorId": "ERROR-CODE",
   "message": "에러 메시지",
+  "detailMessage": "상세 에러 메시지 (Optional, 디버깅 용)",
   "timestamp": "2024-01-01T00:00:00.000Z"
 }
 ----

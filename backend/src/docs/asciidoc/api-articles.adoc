@@ -9,6 +9,7 @@ Error Codes
 
 - GLOBAL-001
 - GLOBAL-003
+- GLOBAL-005
 - CURSOR-001
 
 ====
@@ -21,5 +22,6 @@ operation::article-api-test/update-article-clicks[snippets='curl-request,http-re
 Error Codes
 
 - GLOBAL-001
+- GLOBAL-005
 - ARTICLE-001
 ====
