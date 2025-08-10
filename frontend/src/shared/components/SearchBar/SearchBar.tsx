@@ -1,5 +1,11 @@
 import searchIcon from "@assets/icons/search.svg";
-import { type ChangeEvent, type FormEvent, useRef, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import CloseIcon from "../Close/Close";
 import * as S from "./SearchBar.styled";
 
@@ -15,21 +21,24 @@ function SearchBar({
   defaultValue = "",
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hasSearchValue, setHasSearchValue] = useState(false);
+  const [hasSearchValue, setHasSearchValue] = useState(
+    defaultValue.trim() !== "",
+  );
 
-  const handleSearchFormSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  useEffect(() => {
+    const currentValue = inputRef.current?.value ?? "";
+    const newHasValue = currentValue.trim() !== "";
+    setHasSearchValue(newHasValue);
+  }, []);
+
+  const handleSearchFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
     const value = inputRef.current?.value || "";
     onSubmit(value);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setHasSearchValue(false);
-      return;
-    }
-
-    setHasSearchValue(true);
+    setHasSearchValue(e.target.value.trim() !== "");
   };
 
   const handleClearSearch = () => {
@@ -61,5 +70,4 @@ function SearchBar({
     </S.SearchForm>
   );
 }
-
 export default SearchBar;
