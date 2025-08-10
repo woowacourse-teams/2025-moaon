@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.domain.QueryModifier;
+import moaon.backend.global.repository.QueryModifier;
 import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor

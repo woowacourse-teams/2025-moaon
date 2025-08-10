@@ -5,7 +5,7 @@ import static moaon.backend.article.domain.QArticle.article;
 import com.querydsl.core.types.OrderSpecifier;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.domain.QueryModifier;
+import moaon.backend.global.repository.QueryModifier;
 
 public class SortByModifier implements QueryModifier<OrderSpecifier<?>[], ArticleQueryCondition> {
 

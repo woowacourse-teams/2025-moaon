@@ -6,7 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.global.domain.QueryModifier;
+import moaon.backend.global.repository.QueryModifier;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.util.CollectionUtils;
 

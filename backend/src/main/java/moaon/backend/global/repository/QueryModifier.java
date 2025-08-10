@@ -1,4 +1,4 @@
-package moaon.backend.global.domain;
+package moaon.backend.global.repository;
 
 /**
  * SOURCE 타입 파라미터를 받아서 RESULT 타입을 리턴합니다. <br>

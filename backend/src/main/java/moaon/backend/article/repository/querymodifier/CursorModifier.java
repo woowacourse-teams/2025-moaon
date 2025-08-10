@@ -2,11 +2,11 @@ package moaon.backend.article.repository.querymodifier;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.domain.ClickArticleCursor;
-import moaon.backend.article.domain.CreatedAtArticleCursor;
+import moaon.backend.article.domain.cursor.ClickArticleCursor;
+import moaon.backend.article.domain.cursor.CreatedAtArticleCursor;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.cursor.Cursor;
+import moaon.backend.global.repository.QueryModifier;
 
 @RequiredArgsConstructor
 public class CursorModifier implements QueryModifier<Void, ArticleQueryCondition> {

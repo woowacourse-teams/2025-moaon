@@ -3,6 +3,8 @@ package moaon.backend.article.domain;
 import java.util.Arrays;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.domain.cursor.ClickArticleCursor;
+import moaon.backend.article.domain.cursor.CreatedAtArticleCursor;
 import moaon.backend.global.domain.cursor.Cursor;
 import org.springframework.util.StringUtils;
 

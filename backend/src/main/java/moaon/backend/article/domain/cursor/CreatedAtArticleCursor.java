@@ -1,6 +1,7 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.domain.cursor;
 
 import java.time.LocalDateTime;
+import moaon.backend.article.domain.Article;
 import moaon.backend.global.domain.cursor.AbstractCursor;
 import moaon.backend.global.domain.cursor.formatter.CursorFormatter;
 import moaon.backend.global.domain.cursor.formatter.LocalDateTimeFormatter;

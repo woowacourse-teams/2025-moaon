@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.domain.cursor.Cursor;
+import moaon.backend.project.domain.cursor.CreatedAtCursor;
+import moaon.backend.project.domain.cursor.LovesProjectCursor;
+import moaon.backend.project.domain.cursor.ViewsProjectCursor;
 import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor

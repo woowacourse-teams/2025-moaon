@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import moaon.backend.global.domain.cursor.Cursor;
+import moaon.backend.project.domain.cursor.CreatedAtCursor;
+import moaon.backend.project.domain.cursor.LovesProjectCursor;
+import moaon.backend.project.domain.cursor.ViewsProjectCursor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

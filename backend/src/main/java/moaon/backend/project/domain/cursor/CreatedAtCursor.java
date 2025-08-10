@@ -1,9 +1,10 @@
-package moaon.backend.project.domain;
+package moaon.backend.project.domain.cursor;
 
 import java.time.LocalDateTime;
 import moaon.backend.global.domain.cursor.AbstractCursor;
 import moaon.backend.global.domain.cursor.formatter.CursorFormatter;
 import moaon.backend.global.domain.cursor.formatter.LocalDateTimeFormatter;
+import moaon.backend.project.domain.Project;
 
 public class CreatedAtCursor extends AbstractCursor<LocalDateTime> {
 

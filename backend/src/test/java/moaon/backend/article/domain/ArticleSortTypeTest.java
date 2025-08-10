@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
+import moaon.backend.article.domain.cursor.ClickArticleCursor;
+import moaon.backend.article.domain.cursor.CreatedAtArticleCursor;
 import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;

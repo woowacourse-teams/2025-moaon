@@ -5,7 +5,7 @@ import static moaon.backend.article.domain.QArticle.article;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.domain.QueryModifier;
+import moaon.backend.global.repository.QueryModifier;
 import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor

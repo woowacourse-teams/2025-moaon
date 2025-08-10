@@ -5,8 +5,8 @@ import static moaon.backend.project.domain.QProject.project;
 import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.cursor.Cursor;
+import moaon.backend.global.repository.QueryModifier;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
