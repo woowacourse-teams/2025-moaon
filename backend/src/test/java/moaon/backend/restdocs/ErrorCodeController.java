@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Profile("local")
+@Profile("test")
 @RestController
 public class ErrorCodeController {
 
