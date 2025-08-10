@@ -6,12 +6,12 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.QueryModifier;
 import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
-public final class CategoriesModifier implements QueryModifier<Void> {
+public final class CategoriesModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private final JPAQuery<?> query;
     private final BooleanBuilder whereBuilder;

@@ -3,11 +3,11 @@ package moaon.backend.project.repository.querymodifier;
 import static moaon.backend.project.domain.QProject.project;
 
 import com.querydsl.core.types.OrderSpecifier;
+import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.QueryModifier;
 
-public class SortByModifier implements QueryModifier<OrderSpecifier<?>[]> {
+public class SortByModifier implements QueryModifier<OrderSpecifier<?>[], ProjectQueryCondition> {
 
     @Override
     public OrderSpecifier<?>[] modify(ProjectQueryCondition condition) {

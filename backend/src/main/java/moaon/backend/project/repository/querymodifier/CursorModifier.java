@@ -2,15 +2,15 @@ package moaon.backend.project.repository.querymodifier;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.project.domain.CreatedAtCursor;
 import moaon.backend.project.domain.LovesCursor;
 import moaon.backend.project.domain.ViewsCursor;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.QueryModifier;
 
 @RequiredArgsConstructor
-public class CursorModifier implements QueryModifier<Void> {
+public class CursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 

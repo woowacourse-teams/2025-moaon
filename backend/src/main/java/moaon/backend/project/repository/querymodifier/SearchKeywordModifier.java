@@ -8,16 +8,16 @@ import com.querydsl.core.types.dsl.Expressions;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.QueryModifier;
 import org.hibernate.boot.model.FunctionContributions;
 import org.hibernate.boot.model.FunctionContributor;
 import org.hibernate.query.sqm.function.SqmFunctionRegistry;
 import org.hibernate.type.BasicType;
 
 @RequiredArgsConstructor
-public final class SearchKeywordModifier implements QueryModifier<Void> {
+public final class SearchKeywordModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
