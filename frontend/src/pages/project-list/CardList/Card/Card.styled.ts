@@ -1,10 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import {
-  flexCenter,
-  shimmerGradient,
-  textOverflowEllipsis,
-} from "@/styles/global.styled";
+import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
 
 export const Card = styled.li`
   width: 100%;
@@ -67,6 +63,7 @@ export const CardInfo = styled.div`
 
 export const CardTitle = styled.h2`
   font-size: 1.125rem;
+  line-height: 1.125;
   margin: 0.25rem 0;
   font-weight: 700;
   ${textOverflowEllipsis(1)}
