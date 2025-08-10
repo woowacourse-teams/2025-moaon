@@ -4,13 +4,13 @@ import moaon.backend.global.domain.cursor.AbstractCursor;
 import moaon.backend.global.domain.cursor.formatter.CursorFormatter;
 import moaon.backend.global.domain.cursor.formatter.IntegerFormatter;
 
-public class LovesCursor extends AbstractCursor<Integer> {
+public class LovesProjectCursor extends AbstractCursor<Integer> {
 
-    public LovesCursor(String rawCursor) {
+    public LovesProjectCursor(String rawCursor) {
         super(rawCursor);
     }
 
-    public LovesCursor(Project project) {
+    public LovesProjectCursor(Project project) {
         super(project.getLoveCount(), project.getId());
     }
 

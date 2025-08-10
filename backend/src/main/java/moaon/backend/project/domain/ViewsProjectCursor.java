@@ -4,13 +4,13 @@ import moaon.backend.global.domain.cursor.AbstractCursor;
 import moaon.backend.global.domain.cursor.formatter.CursorFormatter;
 import moaon.backend.global.domain.cursor.formatter.IntegerFormatter;
 
-public class ViewsCursor extends AbstractCursor<Integer> {
+public class ViewsProjectCursor extends AbstractCursor<Integer> {
 
-    public ViewsCursor(String rawCursor) {
+    public ViewsProjectCursor(String rawCursor) {
         super(rawCursor);
     }
 
-    public ViewsCursor(Project project) {
+    public ViewsProjectCursor(Project project) {
         super(project.getViews(), project.getId());
     }
 

@@ -11,9 +11,9 @@ public enum ProjectSortType {
 
     CREATED_AT("createdAt", CreatedAtCursor::new, CreatedAtCursor::new),
 
-    VIEWS("views", ViewsCursor::new, ViewsCursor::new),
+    VIEWS("views", ViewsProjectCursor::new, ViewsProjectCursor::new),
 
-    LOVES("loves", LovesCursor::new, LovesCursor::new);
+    LOVES("loves", LovesProjectCursor::new, LovesProjectCursor::new);
 
     private final String sortType;
     private final Function<String, Cursor<?>> stringToCursorFunction;

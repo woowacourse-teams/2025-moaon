@@ -53,7 +53,7 @@ class ProjectSortTypeTest {
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(LovesCursor.class),
+                () -> assertThat(actual).isInstanceOf(LovesProjectCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
@@ -71,7 +71,7 @@ class ProjectSortTypeTest {
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(ViewsCursor.class),
+                () -> assertThat(actual).isInstanceOf(ViewsProjectCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );

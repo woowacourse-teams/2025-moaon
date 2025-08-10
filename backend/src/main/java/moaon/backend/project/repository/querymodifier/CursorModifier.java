@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.project.domain.CreatedAtCursor;
-import moaon.backend.project.domain.LovesCursor;
-import moaon.backend.project.domain.ViewsCursor;
+import moaon.backend.project.domain.LovesProjectCursor;
+import moaon.backend.project.domain.ViewsProjectCursor;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
@@ -25,10 +25,10 @@ public class CursorModifier implements QueryModifier<Void, ProjectQueryCondition
         if (cursor instanceof CreatedAtCursor) {
             return new CreatedAtCursorModifier(whereBuilder).modify(condition);
         }
-        if (cursor instanceof ViewsCursor) {
+        if (cursor instanceof ViewsProjectCursor) {
             return new ViewsCursorModifier(whereBuilder).modify(condition);
         }
-        if (cursor instanceof LovesCursor) {
+        if (cursor instanceof LovesProjectCursor) {
             return new LovesCursorModifier(whereBuilder).modify(condition);
         }
 
