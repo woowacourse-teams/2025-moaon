@@ -17,8 +17,9 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.article.repository.querymodifier.CursorModifier;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.global.domain.cursor.Cursor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -48,9 +49,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         applyWhereAndHaving(whereBuilder, queryCondition, query);
 
-        if (articleCursor != null) {
-            articleCursor.applyCursor(whereBuilder);
-        }
+        new CursorModifier(whereBuilder).modify(queryCondition);
 
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);

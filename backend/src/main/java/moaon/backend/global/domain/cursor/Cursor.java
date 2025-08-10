@@ -1,6 +1,4 @@
-package moaon.backend.global.cursor;
-
-import com.querydsl.core.BooleanBuilder;
+package moaon.backend.global.domain.cursor;
 
 public interface Cursor<T extends Comparable<? super T>> {
 
@@ -9,6 +7,4 @@ public interface Cursor<T extends Comparable<? super T>> {
     Long getLastId();
 
     String getNextCursor();
-
-    void applyCursor(BooleanBuilder booleanBuilder);
 }

@@ -1,8 +1,8 @@
 package moaon.backend.project.dto;
 
 import java.util.List;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.project.domain.ProjectSortType;
 
 public record ProjectQueryCondition(

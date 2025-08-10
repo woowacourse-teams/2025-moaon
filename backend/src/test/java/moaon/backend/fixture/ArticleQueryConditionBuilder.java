@@ -3,8 +3,8 @@ package moaon.backend.fixture;
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.global.domain.cursor.Cursor;
 
 public class ArticleQueryConditionBuilder {
 

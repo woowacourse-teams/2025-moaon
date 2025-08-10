@@ -2,8 +2,8 @@ package moaon.backend.article.dto;
 
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.global.domain.cursor.Cursor;
 
 public record ArticleQueryCondition(
         SearchKeyword search,

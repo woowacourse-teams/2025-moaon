@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;

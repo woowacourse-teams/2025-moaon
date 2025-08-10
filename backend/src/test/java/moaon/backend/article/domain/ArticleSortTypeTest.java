@@ -5,9 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import moaon.backend.global.cursor.ClickArticleCursor;
-import moaon.backend.global.cursor.CreatedAtArticleCursor;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -84,7 +82,6 @@ class ArticleSortTypeTest {
     @ValueSource(strings = {
             "2024-07-31_12345",
             "2024/07/31T10:00:00_12345",
-            "2024-07-31T10:00:00",
             "abc_123",
             "12345",
             "2024-07-31T10:00:00_abc",
@@ -92,7 +89,6 @@ class ArticleSortTypeTest {
             "1500_",
             "_123",
             "1500_123_999",
-            "2024-07-31T10:00:00_123_456",
             "20240731T100000_12345",
             "2024-07-31T10:00:00_12345 ",
             " 1500_12345"

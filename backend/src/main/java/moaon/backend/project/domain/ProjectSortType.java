@@ -1,48 +1,33 @@
 package moaon.backend.project.domain;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import moaon.backend.global.cursor.CreatedAtProjectCursor;
-import moaon.backend.global.cursor.Cursor;
-import moaon.backend.global.cursor.LoveProjectCursor;
-import moaon.backend.global.cursor.ViewProjectCursor;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
+import lombok.RequiredArgsConstructor;
+import moaon.backend.global.domain.cursor.Cursor;
+import org.springframework.util.StringUtils;
 
+@RequiredArgsConstructor
 public enum ProjectSortType {
 
-    CREATED_AT("createdAt",
-            cursor -> parseCursor(cursor, ProjectSortType::toLocalDateTime, CreatedAtProjectCursor::new),
-            project -> new CreatedAtProjectCursor(project.getCreatedAt(), project.getId())
-    ),
+    CREATED_AT("createdAt", CreatedAtCursor::new, CreatedAtCursor::new),
 
-    VIEWS("views",
-            cursor -> parseCursor(cursor, ProjectSortType::toInt, ViewProjectCursor::new),
-            project -> new ViewProjectCursor(project.getViews(), project.getId())
-    ),
+    VIEWS("views", ViewsCursor::new, ViewsCursor::new),
 
-    LOVES("loves",
-            cursor -> parseCursor(cursor, ProjectSortType::toInt, LoveProjectCursor::new),
-            project -> new LoveProjectCursor(project.getLoveCount(), project.getId())
-    );
-
-    private static final String COUNT_BASED_CURSOR_REGEX = "[0-9]+_[0-9]+";
-    private static final String CREATED_AT_CURSOR_REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}_[0-9]+$";
+    LOVES("loves", LovesCursor::new, LovesCursor::new);
 
     private final String sortType;
-    private final Function<String, Cursor<?>> cursorFactory;
-    private final Function<Project, Cursor<?>> projectToCursorFactory;
+    private final Function<String, Cursor<?>> stringToCursorFunction;
+    private final Function<Project, Cursor<?>> projectToCursorFunction;
 
-    ProjectSortType(String sortType,
-                    Function<String, Cursor<?>> cursorFactory,
-                    Function<Project, Cursor<?>> projectToCursorFactory
-    ) {
-        this.sortType = sortType;
-        this.cursorFactory = cursorFactory;
-        this.projectToCursorFactory = projectToCursorFactory;
+    public Cursor<?> toCursor(String cursor) {
+        if (!StringUtils.hasText(cursor)) {
+            return null;
+        }
+        return stringToCursorFunction.apply(cursor);
+    }
+
+    public Cursor<?> toCursor(Project project) {
+        return projectToCursorFunction.apply(project);
     }
 
     public static ProjectSortType from(String sortType) {
@@ -50,67 +35,5 @@ public enum ProjectSortType {
                 .filter(sortBy -> sortBy.sortType.equals(sortType))
                 .findAny()
                 .orElse(CREATED_AT);
-    }
-
-    public Cursor<?> toCursor(String cursor) {
-        return cursorFactory.apply(cursor);
-    }
-
-    public Cursor<?> toCursor(Project project) {
-        return projectToCursorFactory.apply(project);
-    }
-
-    private static <T> Cursor<?> parseCursor(
-            String cursor,
-            Function<String, T> valueParser,
-            BiFunction<T, Long, Cursor<?>> constructor
-    ) {
-
-        if (isCursorEmpty(cursor)) {
-            return null;
-        }
-
-        String[] valueAndId = splitAndValidateCursor(cursor);
-
-        T sortValue = valueParser.apply(valueAndId[0]);
-        Long lastId = toLong(valueAndId[1]);
-
-        return constructor.apply(sortValue, lastId);
-    }
-
-    private static String[] splitAndValidateCursor(String cursor) {
-        if (!cursor.matches(COUNT_BASED_CURSOR_REGEX) && !cursor.matches(CREATED_AT_CURSOR_REGEX)) {
-            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
-        }
-
-        return cursor.split("_");
-    }
-
-    private static Integer toInt(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
-        }
-    }
-
-    private static Long toLong(String value) {
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException e) {
-            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
-        }
-    }
-
-    private static LocalDateTime toLocalDateTime(String value) {
-        try {
-            return LocalDateTime.parse(value);
-        } catch (DateTimeParseException e) {
-            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
-        }
-    }
-
-    private static boolean isCursorEmpty(String cursor) {
-        return cursor == null || cursor.isEmpty();
     }
 }

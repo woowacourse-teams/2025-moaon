@@ -3,8 +3,8 @@ package moaon.backend.fixture;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 

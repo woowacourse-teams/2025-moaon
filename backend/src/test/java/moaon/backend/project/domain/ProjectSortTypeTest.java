@@ -4,10 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import moaon.backend.global.cursor.CreatedAtProjectCursor;
-import moaon.backend.global.cursor.Cursor;
-import moaon.backend.global.cursor.LoveProjectCursor;
-import moaon.backend.global.cursor.ViewProjectCursor;
+import moaon.backend.global.domain.cursor.Cursor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,7 +35,7 @@ class ProjectSortTypeTest {
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(CreatedAtProjectCursor.class),
+                () -> assertThat(actual).isInstanceOf(CreatedAtCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(LocalDateTime.of(2024, 7, 31, 10, 0))
         );
@@ -56,7 +53,7 @@ class ProjectSortTypeTest {
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(LoveProjectCursor.class),
+                () -> assertThat(actual).isInstanceOf(LovesCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
@@ -74,7 +71,7 @@ class ProjectSortTypeTest {
 
         // then
         assertAll(
-                () -> assertThat(actual).isInstanceOf(ViewProjectCursor.class),
+                () -> assertThat(actual).isInstanceOf(ViewsCursor.class),
                 () -> assertThat(actual.getLastId()).isEqualTo(12345),
                 () -> assertThat(actual.getSortValue()).isEqualTo(1500)
         );
