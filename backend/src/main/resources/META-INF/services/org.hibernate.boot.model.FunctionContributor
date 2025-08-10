@@ -1,2 +1,2 @@
-moaon.backend.article.repository.ArticleFullTextSearchHQLFunction
+moaon.backend.article.repository.querymodifier.SearchKeywordModifier$ArticleFullTextSearchHQLFunction
 moaon.backend.project.repository.querymodifier.SearchKeywordModifier$ProjectFullTextSearchHQLFunction

@@ -6,11 +6,11 @@ import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.repository.QueryModifier;
+import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.cursor.Cursor;
 
 @RequiredArgsConstructor
-public class CreatedAtCursorModifier implements QueryModifier<Void> {
+public class CreatedAtCursorModifier implements QueryModifier<Void, ArticleQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 

@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ClickArticleCursor;
 import moaon.backend.article.domain.CreatedAtArticleCursor;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.repository.QueryModifier;
+import moaon.backend.global.domain.QueryModifier;
 import moaon.backend.global.domain.cursor.Cursor;
 
 @RequiredArgsConstructor
-public class CursorModifier implements QueryModifier<Void> {
+public class CursorModifier implements QueryModifier<Void, ArticleQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 

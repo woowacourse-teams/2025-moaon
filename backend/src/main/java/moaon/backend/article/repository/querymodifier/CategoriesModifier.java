@@ -6,22 +6,21 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.domain.QueryModifier;
-import moaon.backend.global.domain.cursor.Cursor;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
-public class ClicksCursorModifier implements QueryModifier<Void, ArticleQueryCondition> {
+public class CategoriesModifier implements QueryModifier<Void, ArticleQueryCondition> {
+
+    private static final String ALL = "all";
 
     private final BooleanBuilder whereBuilder;
 
     @Override
     public Void modify(ArticleQueryCondition condition) {
-        Cursor<Integer> cursor = (Cursor<Integer>) condition.articleCursor();
-        Integer sortValue = cursor.getSortValue();
-        Long lastId = cursor.getLastId();
-
-        whereBuilder.and(article.clicks.lt(sortValue)
-                .or(article.clicks.eq(sortValue).and(article.id.lt(lastId)))
-        );
+        String categoryName = condition.categoryName();
+        if (StringUtils.hasText(categoryName) && !categoryName.equals(ALL)) {
+            whereBuilder.and(article.category.name.eq(categoryName));
+        }
 
         return null;
     }
