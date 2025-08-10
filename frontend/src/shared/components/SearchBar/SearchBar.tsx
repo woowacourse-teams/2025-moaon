@@ -13,12 +13,14 @@ interface SearchBarProps {
   placeholder: string;
   onSubmit: (value: string) => void;
   defaultValue?: string;
+  maxLength: number;
 }
 
 function SearchBar({
   placeholder,
   onSubmit,
   defaultValue = "",
+  maxLength,
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasSearchValue, setHasSearchValue] = useState(
@@ -60,6 +62,7 @@ function SearchBar({
           defaultValue={defaultValue}
           id="search-input"
           onChange={handleInputChange}
+          maxLength={maxLength}
         />
         {hasSearchValue && (
           <S.CloseButton type="button" onClick={handleClearSearch}>
