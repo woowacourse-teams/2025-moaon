@@ -30,17 +30,12 @@ export const Button = styled.button`
   font-weight: 500;
   border-radius: 16px;
   background: #eceff2;
-  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem;
 
   &:hover {
     background-color: #007bff;
     color: #fff;
-    transition: all 0.2s ease-in-out;
-
-    & > img {
-      transform: rotate(180deg);
-      transition: transform 0.5s ease;
-    }
+    fill: #fff;
   }
 `;
 
@@ -56,11 +51,4 @@ export const IconBox = styled.div`
 export const Icon = styled.img`
   width: 1rem;
   aspect-ratio: 1/1;
-`;
-
-export const CloseIcon = styled.img`
-  width: 1.125rem;
-  aspect-ratio: 1/1;
-  background-color: #fff;
-  border-radius: 50%;
 `;

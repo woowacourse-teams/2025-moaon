@@ -11,17 +11,12 @@ export const NavLinkList = styled.ul`
 
 export const NavLinkItem = styled.li``;
 
-export const Link = styled(NavLink)`
-  color: #000;
-  font-weight: 400;
+export const Link = styled(NavLink)<{ isSelected: boolean }>`
+  color: ${({ isSelected }) => (isSelected ? "#007bff" : "#000")};
+  font-weight: ${({ isSelected }) => (isSelected ? 700 : 400)};
 
   &:hover {
     font-weight: 600;
-  }
-
-  &[aria-current="page"] {
-    color: #007bff;
-    font-weight: 700;
   }
 `;
 

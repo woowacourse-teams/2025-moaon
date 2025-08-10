@@ -25,7 +25,11 @@ const getFilteredListWithoutSelected = (
   );
 };
 
-function TechStackSearchBar() {
+interface TechStackSearchBarProps {
+  onSelect: () => void;
+}
+
+function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filterList, setFilterList] = useState<typeof TECH_STACK_ENTRY>([]);
@@ -36,6 +40,8 @@ function TechStackSearchBar() {
   const handleTechStackItemClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);
     setValue("");
+    setIsOpen(false);
+    onSelect();
   };
 
   const handleArrowUp = () => {
@@ -53,7 +59,6 @@ function TechStackSearchBar() {
   };
 
   const handleEnter = () => {
-    setIsOpen(false);
     handleTechStackItemClick(filterList[keyboardFocusIndex][0]);
   };
 

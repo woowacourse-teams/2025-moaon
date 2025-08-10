@@ -10,3 +10,12 @@ export const CardListContainer = styled.ul`
   grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
   gap: 1.375rem 2rem;
 `;
+
+export const EmptyContainer = styled.div`
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+`;

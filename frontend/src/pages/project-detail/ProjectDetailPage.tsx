@@ -24,9 +24,10 @@ function ProjectDetailPage() {
         <Carousel imageUrls={projectDetail.imageUrls} />
       )}
       <OverviewSection overview={projectDetail.description} />
-      {projectArticles && projectArticles.length > 0 && (
-        <ArticleSection projectArticles={projectArticles} refetch={refetch} />
-      )}
+      <ArticleSection
+        projectArticles={projectArticles ?? []}
+        refetch={refetch}
+      />
     </div>
   );
 }

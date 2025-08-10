@@ -1,6 +1,5 @@
 package moaon.backend.article.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -63,8 +62,7 @@ public class ArticleController {
         AccessHistory accessHistory = cookieManager.extractViewedMap(request);
         if (cookieManager.isCountIncreasable(id, accessHistory)) {
             articleService.increaseClicksCount(id);
-            Cookie cookie = cookieManager.createOrUpdateCookie(id, accessHistory);
-            response.addCookie(cookie);
+            cookieManager.createOrUpdateCookie(id, accessHistory, response);
         }
         return ResponseEntity.ok().build();
     }
