@@ -11,7 +11,7 @@ import moaon.backend.global.repository.QueryModifier;
 import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
-public class TechStacksModifier implements QueryModifier<Void, ArticleQueryCondition> {
+public class ArticleTechStacksModifier implements QueryModifier<Void, ArticleQueryCondition> {
 
     private final JPAQuery<?> query;
     private final BooleanBuilder whereBuilder;

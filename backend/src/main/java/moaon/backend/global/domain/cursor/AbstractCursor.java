@@ -12,12 +12,6 @@ public abstract class AbstractCursor<T extends Comparable<? super T>> implements
     protected final Long lastId;
 
     public AbstractCursor(String rawCursor) {
-        if (rawCursor == null) {
-            this.sortValue = null;
-            this.lastId = null;
-            return;
-        }
-
         this.sortValue = formatter().parseSortValue(rawCursor);
         this.lastId = formatter().parseLastId(rawCursor);
     }

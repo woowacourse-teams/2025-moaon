@@ -11,11 +11,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.querymodifier.CategoriesModifier;
-import moaon.backend.project.repository.querymodifier.CursorModifier;
-import moaon.backend.project.repository.querymodifier.SearchKeywordModifier;
-import moaon.backend.project.repository.querymodifier.SortByModifier;
-import moaon.backend.project.repository.querymodifier.TechStacksModifier;
+import moaon.backend.project.repository.querymodifier.ProjectCategoriesModifier;
+import moaon.backend.project.repository.querymodifier.ProjectCursorModifier;
+import moaon.backend.project.repository.querymodifier.ProjectSearchKeywordModifier;
+import moaon.backend.project.repository.querymodifier.ProjectSortByModifier;
+import moaon.backend.project.repository.querymodifier.ProjectTechStacksModifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,7 +35,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
         return query.groupBy(project.id)
                 .where(constructWhereClause(condition, query))
-                .orderBy(new SortByModifier().modify(condition))
+                .orderBy(new ProjectSortByModifier().modify(condition))
                 .limit(condition.limit() + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
@@ -59,10 +59,10 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     ) {
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
-        new TechStacksModifier(query, whereBuilder).modify(queryCondition);
-        new CategoriesModifier(query, whereBuilder).modify(queryCondition);
-        new SearchKeywordModifier(whereBuilder).modify(queryCondition);
-        new CursorModifier(whereBuilder).modify(queryCondition);
+        new ProjectTechStacksModifier(query, whereBuilder).modify(queryCondition);
+        new ProjectCategoriesModifier(query, whereBuilder).modify(queryCondition);
+        new ProjectSearchKeywordModifier(whereBuilder).modify(queryCondition);
+        new ProjectCursorModifier(whereBuilder).modify(queryCondition);
 
         return whereBuilder;
     }

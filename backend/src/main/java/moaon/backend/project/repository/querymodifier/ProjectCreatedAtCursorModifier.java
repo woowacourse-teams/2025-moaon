@@ -10,7 +10,7 @@ import moaon.backend.global.repository.QueryModifier;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
-public class CreatedAtCursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
+public class ProjectCreatedAtCursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 

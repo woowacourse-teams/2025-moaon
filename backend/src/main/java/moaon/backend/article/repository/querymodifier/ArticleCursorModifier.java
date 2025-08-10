@@ -9,7 +9,7 @@ import moaon.backend.global.domain.cursor.Cursor;
 import moaon.backend.global.repository.QueryModifier;
 
 @RequiredArgsConstructor
-public class CursorModifier implements QueryModifier<Void, ArticleQueryCondition> {
+public class ArticleCursorModifier implements QueryModifier<Void, ArticleQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 
@@ -21,10 +21,10 @@ public class CursorModifier implements QueryModifier<Void, ArticleQueryCondition
         }
 
         if (cursor instanceof CreatedAtArticleCursor) {
-            return new CreatedAtCursorModifier(whereBuilder).modify(condition);
+            return new ArticleCreatedAtCursorModifier(whereBuilder).modify(condition);
         }
         if (cursor instanceof ClickArticleCursor) {
-            return new ClicksCursorModifier(whereBuilder).modify(condition);
+            return new ArticleClicksCursorModifier(whereBuilder).modify(condition);
         }
 
         return null;

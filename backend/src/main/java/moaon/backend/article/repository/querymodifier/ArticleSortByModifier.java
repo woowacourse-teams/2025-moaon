@@ -7,7 +7,7 @@ import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.repository.QueryModifier;
 
-public class SortByModifier implements QueryModifier<OrderSpecifier<?>[], ArticleQueryCondition> {
+public class ArticleSortByModifier implements QueryModifier<OrderSpecifier<?>[], ArticleQueryCondition> {
 
     @Override
     public OrderSpecifier<?>[] modify(ArticleQueryCondition condition) {

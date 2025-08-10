@@ -9,7 +9,7 @@ import moaon.backend.global.repository.QueryModifier;
 import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
-public class CategoriesModifier implements QueryModifier<Void, ArticleQueryCondition> {
+public class ArticleCategoriesModifier implements QueryModifier<Void, ArticleQueryCondition> {
 
     private static final String ALL = "all";
 

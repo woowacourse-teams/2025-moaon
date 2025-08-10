@@ -9,7 +9,7 @@ import moaon.backend.global.repository.QueryModifier;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
-public class LovesCursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
+public class ProjectViewsCursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 
@@ -19,8 +19,8 @@ public class LovesCursorModifier implements QueryModifier<Void, ProjectQueryCond
         Integer sortValue = cursor.getSortValue();
         Long lastId = cursor.getLastId();
 
-        whereBuilder.and(project.lovedMembers.size().lt(sortValue)
-                .or(project.lovedMembers.size().eq(sortValue).and(project.id.lt(lastId)))
+        whereBuilder.and(project.views.lt(sortValue)
+                .or(project.views.eq(sortValue).and(project.id.lt(lastId)))
         );
 
         return null;

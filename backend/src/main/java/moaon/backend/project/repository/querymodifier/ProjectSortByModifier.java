@@ -7,7 +7,7 @@ import moaon.backend.global.repository.QueryModifier;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
-public class SortByModifier implements QueryModifier<OrderSpecifier<?>[], ProjectQueryCondition> {
+public class ProjectSortByModifier implements QueryModifier<OrderSpecifier<?>[], ProjectQueryCondition> {
 
     @Override
     public OrderSpecifier<?>[] modify(ProjectQueryCondition condition) {

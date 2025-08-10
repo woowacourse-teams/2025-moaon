@@ -1,6 +1,6 @@
 package moaon.backend.project.repository.querymodifier;
 
-import static moaon.backend.techStack.domain.QTechStack.techStack;
+import static moaon.backend.project.domain.QProjectCategory.projectCategory;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -11,17 +11,17 @@ import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
-public class TechStacksModifier implements QueryModifier<Void, ProjectQueryCondition> {
+public final class ProjectCategoriesModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private final JPAQuery<?> query;
     private final BooleanBuilder whereBuilder;
 
     @Override
     public Void modify(ProjectQueryCondition condition) {
-        List<String> techStackNames = condition.techStackNames();
-        if (!CollectionUtils.isEmpty(techStackNames)) {
-            whereBuilder.and(techStack.name.in(techStackNames));
-            query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
+        List<String> categoryNames = condition.categoryNames();
+        if (!CollectionUtils.isEmpty(categoryNames)) {
+            whereBuilder.and(projectCategory.name.in(categoryNames));
+            query.having(projectCategory.name.countDistinct().eq((long) categoryNames.size()));
         }
 
         return null;

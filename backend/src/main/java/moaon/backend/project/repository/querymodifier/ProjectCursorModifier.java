@@ -10,26 +10,25 @@ import moaon.backend.project.domain.cursor.ViewsProjectCursor;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
-public class CursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
+public class ProjectCursorModifier implements QueryModifier<Void, ProjectQueryCondition> {
 
     private final BooleanBuilder whereBuilder;
 
     @Override
     public Void modify(ProjectQueryCondition condition) {
         Cursor<?> cursor = condition.cursor();
-        System.out.println("cursor = " + cursor);
         if (cursor == null) {
             return null;
         }
 
         if (cursor instanceof CreatedAtCursor) {
-            return new CreatedAtCursorModifier(whereBuilder).modify(condition);
+            return new ProjectCreatedAtCursorModifier(whereBuilder).modify(condition);
         }
         if (cursor instanceof ViewsProjectCursor) {
-            return new ViewsCursorModifier(whereBuilder).modify(condition);
+            return new ProjectViewsCursorModifier(whereBuilder).modify(condition);
         }
         if (cursor instanceof LovesProjectCursor) {
-            return new LovesCursorModifier(whereBuilder).modify(condition);
+            return new ProjectLovesCursorModifier(whereBuilder).modify(condition);
         }
 
         return null;

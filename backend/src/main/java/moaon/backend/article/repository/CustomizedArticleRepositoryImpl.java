@@ -11,11 +11,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.repository.querymodifier.CategoriesModifier;
-import moaon.backend.article.repository.querymodifier.CursorModifier;
-import moaon.backend.article.repository.querymodifier.SearchKeywordModifier;
-import moaon.backend.article.repository.querymodifier.SortByModifier;
-import moaon.backend.article.repository.querymodifier.TechStacksModifier;
+import moaon.backend.article.repository.querymodifier.ArticleCategoriesModifier;
+import moaon.backend.article.repository.querymodifier.ArticleCursorModifier;
+import moaon.backend.article.repository.querymodifier.ArticleSearchKeywordModifier;
+import moaon.backend.article.repository.querymodifier.ArticleSortByModifier;
+import moaon.backend.article.repository.querymodifier.ArticleTechStacksModifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,7 +35,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         return query.groupBy(article.id)
                 .where(constructWhereClause(queryCondition, query))
-                .orderBy(new SortByModifier().modify(queryCondition))
+                .orderBy(new ArticleSortByModifier().modify(queryCondition))
                 .limit(queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
@@ -70,10 +70,10 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     ) {
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
-        new TechStacksModifier(query, whereBuilder).modify(queryCondition);
-        new CategoriesModifier(whereBuilder).modify(queryCondition);
-        new SearchKeywordModifier(whereBuilder).modify(queryCondition);
-        new CursorModifier(whereBuilder).modify(queryCondition);
+        new ArticleTechStacksModifier(query, whereBuilder).modify(queryCondition);
+        new ArticleCategoriesModifier(whereBuilder).modify(queryCondition);
+        new ArticleSearchKeywordModifier(whereBuilder).modify(queryCondition);
+        new ArticleCursorModifier(whereBuilder).modify(queryCondition);
 
         return whereBuilder;
     }
