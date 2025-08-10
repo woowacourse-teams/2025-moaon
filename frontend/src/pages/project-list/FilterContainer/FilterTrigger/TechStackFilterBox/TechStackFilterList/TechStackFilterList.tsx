@@ -4,7 +4,6 @@ import {
 } from "@domains/filter/techStack";
 import CloseIcon from "@shared/components/Close/Close";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
-import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import * as S from "./TechStackFilterList.styled";
 
 interface TechStackListProps {
