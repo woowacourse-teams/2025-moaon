@@ -4,16 +4,39 @@
 
 ====
 operation::project-api-test/get-paged-projects[snippets='curl-request,http-request,http-response,query-parameters,response-fields']
+
+**Error Codes **
+
+- GLOBAL-001
+- GLOBAL-003
+- GLOBAL-005
+- GLOBAL-007
+- CURSOR-001
+
 ====
 
 === GET /projects/{id}
 
 ====
 operation::project-api-test/get-project-by-id[snippets='curl-request,http-request,http-response,response-fields']
+
+**Error Codes **
+
+- GLOBAL-001
+- GLOBAL-005
+- PROJECT-001
+
 ====
 
 === GET /projects/{id}/articles
 
 ====
 operation::project-api-test/get-articles-by-project-id[snippets='curl-request,http-request,http-response,response-fields']
+
+**Error Codes **
+
+- GLOBAL-001
+- GLOBAL-005
+- PROJECT-001
+
 ====
