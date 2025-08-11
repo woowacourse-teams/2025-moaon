@@ -1,3 +1,4 @@
+import DelayUnmount from "@shared/components/DelayUnmount/DelayUnmount";
 import { SwitchCase } from "@shared/components/SwitchCase/SwitchCase";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import useSearchParams from "@shared/hooks/useSearchParams";
@@ -5,6 +6,7 @@ import { useState } from "react";
 import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
 import type { FilterLabel, FilterParam } from "../FilterContainer";
 import CategoryFilterBox from "./CategoryFilterBox/CategoryFilterBox";
+import FilterBox from "./FilterBox/FilterBox";
 import * as S from "./FilterTrigger.styled";
 import TechStackFilterBox from "./TechStackFilterBox/TechStackFilterBox";
 
@@ -35,15 +37,18 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
         </S.FilterTitle>
         <ArrowIcon direction={isOpen ? "up" : "down"} />
       </S.FilterButton>
-      {isOpen && (
-        <SwitchCase
-          value={label}
-          caseBy={{
-            주제: () => <CategoryFilterBox onSelect={onSelect} />,
-            "기술 스택": () => <TechStackFilterBox onSelect={onSelect} />,
-          }}
-        />
-      )}
+
+      <DelayUnmount visible={isOpen} delay={300}>
+        <FilterBox param={param} onSelect={onSelect} isOpen={isOpen}>
+          <SwitchCase
+            value={label}
+            caseBy={{
+              주제: () => <CategoryFilterBox onSelect={onSelect} />,
+              "기술 스택": () => <TechStackFilterBox onSelect={onSelect} />,
+            }}
+          />
+        </FilterBox>
+      </DelayUnmount>
     </S.Container>
   );
 }
