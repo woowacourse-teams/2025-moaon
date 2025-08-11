@@ -6,12 +6,14 @@ import * as S from "./FilterBox.styled";
 interface FilterBoxProps {
   param: FilterParam;
   onSelect: () => void;
+  isOpen: boolean;
 }
 
 function FilterBox({
   children,
   param,
   onSelect,
+  isOpen,
 }: PropsWithChildren<FilterBoxProps>) {
   const params = useSearchParams({ key: param, mode: "multi" });
 
@@ -22,7 +24,7 @@ function FilterBox({
 
   const disabledReset = params.get().length === 0;
   return (
-    <S.Container>
+    <S.Container isOpen={isOpen}>
       <S.Wrap>{children}</S.Wrap>
       <S.FilterResetButton
         type="button"
