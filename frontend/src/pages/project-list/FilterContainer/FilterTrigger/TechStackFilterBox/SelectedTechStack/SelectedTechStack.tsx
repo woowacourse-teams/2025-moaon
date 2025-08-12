@@ -1,17 +1,17 @@
-import type { TechStackKey } from "@domains/filter/techStack";
-
+import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import TechStackFilterList from "../TechStackFilterList/TechStackFilterList";
 
 interface SelectedTechStackProps {
-  techStacks: TechStackKey[];
   onSelect: () => void;
 }
 
-function SelectedTechStack({ techStacks, onSelect }: SelectedTechStackProps) {
+function SelectedTechStack({ onSelect }: SelectedTechStackProps) {
+  const { techStacks: selectedTechStacks } = useFilterParams();
+
   return (
     <TechStackFilterList
       title="선택된 기술 스택"
-      techStacks={techStacks}
+      techStacks={selectedTechStacks}
       onSelect={onSelect}
     />
   );

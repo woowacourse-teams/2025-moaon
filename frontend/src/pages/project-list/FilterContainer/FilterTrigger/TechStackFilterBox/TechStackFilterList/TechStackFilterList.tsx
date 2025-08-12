@@ -20,8 +20,6 @@ function TechStackFilterList({
   const { techStacks: selectedTechStacks, updateTechStackParam } =
     useFilterParams();
 
-  const isSelected = selectedTechStacks.length > 0;
-
   const handleTechStackClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);
     onSelect();
@@ -32,6 +30,7 @@ function TechStackFilterList({
       <S.Title>{title}</S.Title>
       <S.List>
         {techStacks.map((techStack) => {
+          const isSelected = selectedTechStacks.includes(techStack);
           const { label, imgUrl } = TECH_STACK_ICON_MAP[techStack];
           return (
             <S.Item key={techStack}>

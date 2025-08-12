@@ -5,16 +5,14 @@ export const Container = styled.div`
   top: 3.125rem;
   left: 0;
   z-index: 998;
-  min-width: 31.25rem;
-  max-height: 29.15rem;
-  overflow-y: auto;
+  min-width: 34.375rem;
   padding: 1.5rem;
   border-radius: 0.75rem;
   box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.09);
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.75rem;
   border: 1px solid #afafaf;
 `;
 

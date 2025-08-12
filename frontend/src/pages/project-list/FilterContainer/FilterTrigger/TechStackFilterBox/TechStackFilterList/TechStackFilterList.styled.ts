@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-  margin-top: 1.25rem;
   padding-left: 0.25rem;
-  min-height: 12rem;
+  min-width: 31.25rem;
 `;
 
 export const Title = styled.h3`

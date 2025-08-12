@@ -1,5 +1,5 @@
 import type { TechStackKey } from "@domains/filter/techStack";
-
+import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import TechStackFilterList from "../TechStackFilterList/TechStackFilterList";
 
 const RECOMMEND_TECH_STACKS = [
@@ -20,10 +20,16 @@ interface RecommendTechStackProps {
 }
 
 function RecommendTechStack({ onSelect }: RecommendTechStackProps) {
+  const { techStacks: selectedTechStacks } = useFilterParams();
+
+  const filteredTechStacks = RECOMMEND_TECH_STACKS.filter(
+    (techStack) => !selectedTechStacks.includes(techStack),
+  );
+
   return (
     <TechStackFilterList
       title="추천 기술 스택"
-      techStacks={RECOMMEND_TECH_STACKS}
+      techStacks={filteredTechStacks}
       onSelect={onSelect}
     />
   );
