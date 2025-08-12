@@ -13,6 +13,7 @@ function SelectedTechStack({ onSelect }: SelectedTechStackProps) {
       title="선택된 기술 스택"
       techStacks={selectedTechStacks}
       onSelect={onSelect}
+      emptyText="선택된 기술 스택이 없습니다."
     />
   );
 }

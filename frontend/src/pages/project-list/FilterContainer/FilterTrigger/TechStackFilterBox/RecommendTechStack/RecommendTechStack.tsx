@@ -31,6 +31,7 @@ function RecommendTechStack({ onSelect }: RecommendTechStackProps) {
       title="추천 기술 스택"
       techStacks={filteredTechStacks}
       onSelect={onSelect}
+      emptyText="추천 기술 스택이 모두 선택되었습니다."
     />
   );
 }

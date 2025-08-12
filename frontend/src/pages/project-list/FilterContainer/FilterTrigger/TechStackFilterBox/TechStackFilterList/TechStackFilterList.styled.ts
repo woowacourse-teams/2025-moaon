@@ -51,3 +51,12 @@ export const Icon = styled.img`
   width: 1rem;
   aspect-ratio: 1/1;
 `;
+
+export const EmptyBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #bdbdbd;
+  font-weight: 500;
+  margin: 2.5rem 0 1.25rem;
+`;
