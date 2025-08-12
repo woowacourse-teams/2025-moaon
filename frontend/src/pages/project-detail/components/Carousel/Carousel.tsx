@@ -39,10 +39,10 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
       {imageUrls.length > 1 && (
         <>
           <S.PrevButton onClick={handleSlidePrev}>
-            <ArrowIcon direction="right" />
+            <ArrowIcon direction="left" />
           </S.PrevButton>
           <S.NextButton onClick={handleSlideNext}>
-            <ArrowIcon direction="left" />
+            <ArrowIcon direction="right" />
           </S.NextButton>
         </>
       )}
