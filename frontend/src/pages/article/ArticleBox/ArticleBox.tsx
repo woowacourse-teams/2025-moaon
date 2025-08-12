@@ -1,8 +1,8 @@
 import useInfiniteScroll from "@shared/hooks/useInfiniteScroll";
 import useArticleList from "../hooks/useArticleList";
 import * as S from "./ArticleBox.styled";
-import ArticleBoxContent from "./components/ArticleBoxContent/ArticleBoxContent";
-import ArticleBoxHeader from "./components/ArticleBoxHeader/ArticleBoxHeader";
+import ArticleBoxHeader from "./ArticleBoxHeader/ArticleBoxHeader";
+import CardList from "./CardList/CardList";
 
 const DEFAULT_SORT_TYPE = "createdAt";
 
@@ -38,7 +38,7 @@ function ArticleBox() {
         onSelectSort={handleSelect}
         initialSort={DEFAULT_SORT_TYPE}
       />
-      <ArticleBoxContent
+      <CardList
         articles={articles}
         totalCount={totalCount}
         showSkeleton={showSkeleton}
