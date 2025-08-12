@@ -8,51 +8,23 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { StrictMode } from "react";
-import { createRoot, type RootOptions } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import App from "./App";
 import GAInitializer from "./libs/googleAnalytics/components/GAInitializer";
 import {
-  sentryMutationError,
-  sentryQueryError,
-  sentryRenderError,
-  sentryRenderRecoverable,
-} from "./libs/sentry/errorReporter";
-import { isProduction } from "./libs/sentry/initializeSentry";
+  mutationCacheErrorOptions,
+  queryCacheErrorOptions,
+  reactRootOptions,
+} from "./libs/sentry/initializeSentry";
 import { resetStyle } from "./styles/reset.styled";
 
-const createRootOptions: RootOptions | undefined = isProduction
-  ? {
-      onUncaughtError: (error, errorInfo) => {
-        sentryRenderError(error, errorInfo, "react-uncaught-error");
-      },
-      onCaughtError: (error, errorInfo) => {
-        sentryRenderError(error, errorInfo, "react-caught-error");
-      },
-      onRecoverableError: (error, errorInfo) => {
-        sentryRenderRecoverable(error, errorInfo);
-      },
-    }
-  : undefined;
-
 const container = document.getElementById("root");
-const root = createRoot(container!, createRootOptions);
+const root = createRoot(container!, reactRootOptions);
 
 const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: isProduction
-      ? (error, query) => {
-          sentryQueryError(error, query);
-        }
-      : undefined,
-  }),
-  mutationCache: new MutationCache({
-    onError: isProduction
-      ? (error, variables, _, mutation) => {
-          sentryMutationError(error, variables, mutation);
-        }
-      : undefined,
-  }),
+  queryCache: new QueryCache(queryCacheErrorOptions),
+  mutationCache: new MutationCache(mutationCacheErrorOptions),
 });
 
 root.render(
