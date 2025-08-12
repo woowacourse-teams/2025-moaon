@@ -11,7 +11,9 @@ function ProjectDetailPage() {
   const { id } = useParams();
 
   const { projectDetail, isLoading, error } = useProjectDetail(Number(id));
-  const { projectArticles, refetch } = useProjectArticles(Number(id));
+  const { projectArticles, refetch, isRefetching } = useProjectArticles(
+    Number(id),
+  );
 
   if (isLoading || !projectDetail) return <div>로딩 중...</div>;
   if (error) return <div>비상!</div>;
@@ -27,6 +29,7 @@ function ProjectDetailPage() {
       <ArticleSection
         projectArticles={projectArticles ?? []}
         refetch={refetch}
+        isRefetching={isRefetching}
       />
     </div>
   );
