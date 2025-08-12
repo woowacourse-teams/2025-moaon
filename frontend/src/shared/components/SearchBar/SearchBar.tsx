@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import CloseIcon from "../Close/Close";
+import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
 
 interface SearchBarProps {

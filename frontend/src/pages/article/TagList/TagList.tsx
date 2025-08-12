@@ -1,5 +1,5 @@
 import { TECH_STACK_ENTRY, type TechStackKey } from "@domains/filter/techStack";
-import CloseIcon from "@shared/components/Close/Close";
+import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useArticleList from "../hooks/useArticleList";
 import Tag from "./Tag/Tag";
