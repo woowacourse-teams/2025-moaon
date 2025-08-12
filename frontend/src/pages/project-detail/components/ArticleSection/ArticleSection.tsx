@@ -37,29 +37,38 @@ function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
       ? projectArticles
       : projectArticles.filter((a) => a.category === selectedCategory);
 
-  const showEmpty = selectedCategory !== "all" && filteredArticles.length === 0;
+  const showEmpty = filteredArticles.length <= 0;
+  const emptyResult =
+    selectedCategory === "all" && filteredArticles.length <= 0;
 
   return (
-    <S.ArticleSectionContainer>
-      <SectionTitle title="프로젝트 아티클" />
-      <Tab
-        items={articleCategories}
-        onSelect={handleTabSelect}
-        selected={selectedCategory}
-        width={100}
-      />
-      {showEmpty ? (
-        <S.EmptyContainer>
-          <EmptyState title="해당 카테고리의 아티클이 없어요." description="" />
-        </S.EmptyContainer>
-      ) : (
-        <S.CardListContainer>
-          {filteredArticles.map((article) => (
-            <Card key={article.id} article={article} />
-          ))}
-        </S.CardListContainer>
+    <>
+      {!emptyResult && (
+        <S.ArticleSectionContainer>
+          <SectionTitle title="프로젝트 아티클" />
+          <Tab
+            items={articleCategories}
+            onSelect={handleTabSelect}
+            selected={selectedCategory}
+            width={100}
+          />
+          {showEmpty ? (
+            <S.EmptyContainer>
+              <EmptyState
+                title="해당 카테고리의 아티클이 없어요."
+                description=""
+              />
+            </S.EmptyContainer>
+          ) : (
+            <S.CardListContainer>
+              {filteredArticles.map((article) => (
+                <Card key={article.id} article={article} />
+              ))}
+            </S.CardListContainer>
+          )}
+        </S.ArticleSectionContainer>
       )}
-    </S.ArticleSectionContainer>
+    </>
   );
 }
 
