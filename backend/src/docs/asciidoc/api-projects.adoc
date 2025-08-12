@@ -12,6 +12,7 @@ operation::project-api-test/get-paged-projects[snippets='curl-request,http-reque
 - GLOBAL-005
 - GLOBAL-007
 - CURSOR-001
+- SEARCH-001
 
 ====
 
