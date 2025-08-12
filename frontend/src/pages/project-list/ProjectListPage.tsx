@@ -13,7 +13,7 @@ const DEFAULT_SORT_TYPE = "createdAt";
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
-  const { refetch, projects } = useProjectList();
+  const { refetch, totalCount, isLoading } = useProjectList();
 
   const handleFilterResetButtonClick = () => {
     resetFilter();
@@ -25,7 +25,7 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
-  const hasItems = (projects?.length ?? 0) > 0;
+  const hasItems = (totalCount ?? 0) > 0;
 
   return (
     <S.Main>
@@ -47,7 +47,7 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        {hasItems && (
+        {(isLoading || hasItems) && (
           <SortList
             sortMap={PROJECT_SORT_MAP}
             onSelect={handleSelect}

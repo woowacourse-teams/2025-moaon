@@ -3,7 +3,7 @@ import { articlesQueries } from "@/apis/articles/articles.queries";
 
 const useArticleList = () => {
   const queryClient = useQueryClient();
-  const { data, isLoading, fetchNextPage, isFetchingNextPage, isRefetching } =
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(articlesQueries.fetchList());
 
   const articles = data?.pages.flatMap((page) => page.contents);
@@ -14,7 +14,7 @@ const useArticleList = () => {
   const nextCursor = data?.pages[data.pages.length - 1]?.nextCursor ?? "";
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
-  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+  const showSkeleton = isLoading || isFetchingNextPage;
 
   const refetch = async () => {
     await queryClient.resetQueries({
@@ -31,6 +31,7 @@ const useArticleList = () => {
     showSkeleton,
     scrollEnabled,
     refetch,
+    isLoading,
   };
 };
 

@@ -20,6 +20,7 @@ function ArticleBox() {
     showSkeleton,
     scrollEnabled,
     refetch,
+    isLoading,
   } = useArticleList();
 
   const { targetRef } = useInfiniteScroll({
@@ -33,29 +34,29 @@ function ArticleBox() {
     refetch();
   };
 
-  const hasTotalCount = totalCount !== undefined;
-  const hasCountToDisplay = hasTotalCount && totalCount > 0;
-  const hasItems = (articles?.length ?? 0) > 0;
+  const hasCountToDisplay = (totalCount ?? 0) > 0;
 
   return (
     <S.ArticleContainer>
       <S.ArticleHeader>
-        {hasCountToDisplay && (
-          <>
-            <S.ArticleIntro>
+        <S.ArticleIntro>
+          {hasCountToDisplay && (
+            <>
               <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
               모여있어요.
-            </S.ArticleIntro>
-            <SortList
-              sortMap={ARTICLE_SORT_MAP}
-              onSelect={handleSelect}
-              initialValue={DEFAULT_SORT_TYPE}
-            />
-          </>
+            </>
+          )}
+        </S.ArticleIntro>
+        {(isLoading || hasCountToDisplay) && (
+          <SortList
+            sortMap={ARTICLE_SORT_MAP}
+            onSelect={handleSelect}
+            initialValue={DEFAULT_SORT_TYPE}
+          />
         )}
       </S.ArticleHeader>
       {showSkeleton && <ArticleSkeletonList />}
-      {hasItems ? (
+      {hasCountToDisplay ? (
         <CardList>
           {articles?.map((article) => (
             <Card key={article.id} article={article} />
