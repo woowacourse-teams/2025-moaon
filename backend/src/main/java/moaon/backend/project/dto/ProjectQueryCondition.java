@@ -31,6 +31,4 @@ public record ProjectQueryCondition(
                 sortType.toCursor(cursor)
         );
     }
-
-    
 }
