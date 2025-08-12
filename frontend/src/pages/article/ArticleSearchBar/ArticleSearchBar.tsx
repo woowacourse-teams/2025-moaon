@@ -2,19 +2,21 @@ import SearchBar from "@shared/components/SearchBar/SearchBar";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useArticleList from "../hooks/useArticleList";
 
+const MIN_SEARCH_LENGTH = 2;
+
 function ArticleSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
   const { refetch } = useArticleList();
 
   const handleSearchSubmit = (value: string) => {
-    if (value.length <= 1) {
-      alert("검색어는 2글자 이상 입력해주세요.");
-      return;
-    }
-
     if (value === "") {
       params.deleteAll({ replace: true });
       refetch();
+      return;
+    }
+
+    if (value.length < MIN_SEARCH_LENGTH) {
+      alert(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
       return;
     }
 
