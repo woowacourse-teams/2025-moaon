@@ -1,35 +1,46 @@
 import searchIcon from "@assets/icons/search.svg";
-import { type ChangeEvent, type FormEvent, useRef, useState } from "react";
-import CloseIcon from "../Close/Close";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
 
 interface SearchBarProps {
   placeholder: string;
   onSubmit: (value: string) => void;
   defaultValue?: string;
+  maxLength: number;
 }
 
 function SearchBar({
   placeholder,
   onSubmit,
   defaultValue = "",
+  maxLength,
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hasSearchValue, setHasSearchValue] = useState(false);
+  const [hasSearchValue, setHasSearchValue] = useState(
+    defaultValue.trim() !== "",
+  );
 
-  const handleSearchFormSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  useEffect(() => {
+    const currentValue = inputRef.current?.value ?? "";
+    const newHasValue = currentValue.trim() !== "";
+    setHasSearchValue(newHasValue);
+  }, []);
+
+  const handleSearchFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
     const value = inputRef.current?.value || "";
     onSubmit(value);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setHasSearchValue(false);
-      return;
-    }
-
-    setHasSearchValue(true);
+    setHasSearchValue(e.target.value.trim() !== "");
   };
 
   const handleClearSearch = () => {
@@ -51,6 +62,7 @@ function SearchBar({
           defaultValue={defaultValue}
           id="search-input"
           onChange={handleInputChange}
+          maxLength={maxLength}
         />
         {hasSearchValue && (
           <S.CloseButton type="button" onClick={handleClearSearch}>
@@ -61,5 +73,4 @@ function SearchBar({
     </S.SearchForm>
   );
 }
-
 export default SearchBar;
