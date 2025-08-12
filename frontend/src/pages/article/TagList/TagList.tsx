@@ -24,9 +24,9 @@ function TagList() {
       <S.TagListHeader>
         <S.TagListTitle>태그</S.TagListTitle>
         {selectedTags.length > 0 && (
-          <S.CloseButton type="button" onClick={handleClearTags}>
+          <S.ResetButton type="button" onClick={handleClearTags}>
             <CloseIcon size={10} />
-          </S.CloseButton>
+          </S.ResetButton>
         )}
       </S.TagListHeader>
       <S.TagList>

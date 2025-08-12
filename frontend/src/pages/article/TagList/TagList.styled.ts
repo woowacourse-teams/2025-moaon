@@ -28,4 +28,4 @@ export const TagListHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const CloseButton = styled.button``;
+export const ResetButton = styled.button``;
