@@ -23,7 +23,7 @@ public enum ErrorCode {
 
     INVALID_SEARCH_KEYWORD_LENGTH(
             "SEARCH-001",
-            String.format("검색어는 %d자 이상 %d자 이하여야 합니다.", SearchKeyword.MIN_LENGTH, SearchKeyword.MAX_LENGTH),
+            String.format("검색어는 %d자 이상 %d자 이하여야 합니다.", SearchKeyword.getMinLength(), SearchKeyword.getMaxLength()),
             HttpStatus.BAD_REQUEST
     );
 

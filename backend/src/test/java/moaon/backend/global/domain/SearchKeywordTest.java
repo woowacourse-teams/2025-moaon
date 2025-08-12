@@ -23,7 +23,7 @@ class SearchKeywordTest {
     @DisplayName("검색어의 길이가 최대 길이를 초과한 경우 예외를 발생시킨다.")
     @Test
     void greaterThanMaxLength() {
-        String overMaxLength = "A".repeat(SearchKeyword.MAX_LENGTH) + "A";
+        String overMaxLength = "A".repeat(SearchKeyword.getMaxLength()) + "A";
         assertThatThrownBy(() -> new SearchKeyword(overMaxLength))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.INVALID_SEARCH_KEYWORD_LENGTH.getMessage());
