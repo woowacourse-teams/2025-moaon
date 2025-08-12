@@ -114,8 +114,15 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     private String formatSearchKeyword(SearchKeyword searchKeyword) {
         String search = searchKeyword.replaceSpecialCharacters(BLANK);
         return Arrays.stream(search.split(BLANK))
-                .map(keyword -> String.format("+%s*", keyword.toLowerCase()))
+                .map(this::applyExpressions)
                 .collect(Collectors.joining(BLANK));
+    }
+
+    private String applyExpressions(String keyword) {
+        if (keyword.length() == 1) {
+            return String.format("%s*", keyword);
+        }
+        return String.format("+%s*", keyword.toLowerCase());
     }
 
     private OrderSpecifier<?>[] toOrderBy(ProjectSortType sortBy) {
