@@ -34,20 +34,18 @@ function ArticleBox() {
     refetch();
   };
 
-  const hasCountToDisplay = (totalCount ?? 0) > 0;
-
   return (
     <S.ArticleContainer>
       <S.ArticleHeader>
         <S.ArticleIntro>
-          {hasCountToDisplay && (
+          {totalCount > 0 && (
             <>
               <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
               모여있어요.
             </>
           )}
         </S.ArticleIntro>
-        {(isLoading || hasCountToDisplay) && (
+        {(isLoading || totalCount > 0) && (
           <SortList
             sortMap={ARTICLE_SORT_MAP}
             onSelect={handleSelect}
@@ -56,7 +54,7 @@ function ArticleBox() {
         )}
       </S.ArticleHeader>
       {showSkeleton && <ArticleSkeletonList />}
-      {hasCountToDisplay ? (
+      {totalCount > 0 ? (
         <CardList>
           {articles?.map((article) => (
             <Card key={article.id} article={article} />

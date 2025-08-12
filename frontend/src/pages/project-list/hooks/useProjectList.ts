@@ -8,7 +8,7 @@ const useProjectList = () => {
 
   const projects = data?.pages.flatMap((page) => page.contents);
 
-  const totalCount = data?.pages[0]?.totalCount;
+  const totalCount = data?.pages[0]?.totalCount ?? 0;
 
   const hasNext = data?.pages[data.pages.length - 1]?.hasNext ?? false;
   const nextCursor = data?.pages[data.pages.length - 1]?.nextCursor ?? "";
