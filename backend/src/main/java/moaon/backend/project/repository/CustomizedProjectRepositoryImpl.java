@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,7 +29,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
     private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
-    private static final String RESERVED_CHARACTERS = "[+-><()~*:\"&|]";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -45,8 +44,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
         applyWhereAndHaving(whereBuilder, condition, query);
-
-        toContainsSearch(condition.search(), whereBuilder);
 
         if (cursor != null) {
             cursor.applyCursor(whereBuilder);
@@ -72,8 +69,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
         applyWhereAndHaving(whereBuilder, condition, query);
-
-        toContainsSearch(condition.search(), whereBuilder);
 
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
@@ -101,29 +96,33 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             whereBuilder.and(projectCategory.name.in(categoryNames));
             query.having(projectCategory.name.countDistinct().eq((long) categoryNames.size()));
         }
-    }
 
-    private void toContainsSearch(String search, BooleanBuilder whereBuilder) {
-        if (!StringUtils.hasText(search)) {
-            return;
+        SearchKeyword searchKeyword = queryCondition.search();
+        if (searchKeyword.hasValue()) {
+            whereBuilder.and(satisfiesMatchScore(searchKeyword));
         }
-
-        whereBuilder.and(satisfiesMatchScore(search));
     }
 
-
-    private BooleanExpression satisfiesMatchScore(String search) {
+    private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         return Expressions.numberTemplate(
                 Double.class,
                 ProjectFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
-                formatSearchKeyword(search)
+                formatSearchKeyword(searchKeyword)
         ).gt(MINIMUM_MATCH_SCORE);
     }
 
-    private String formatSearchKeyword(String search) {
+    private String formatSearchKeyword(SearchKeyword searchKeyword) {
+        String search = searchKeyword.replaceSpecialCharacters(BLANK);
         return Arrays.stream(search.split(BLANK))
-                .map(keyword -> String.format("+%s*", keyword.replaceAll(RESERVED_CHARACTERS, "").toLowerCase()))
+                .map(this::applyExpressions)
                 .collect(Collectors.joining(BLANK));
+    }
+
+    private String applyExpressions(String keyword) {
+        if (keyword.length() == 1) {
+            return String.format("%s*", keyword);
+        }
+        return String.format("+%s*", keyword.toLowerCase());
     }
 
     private OrderSpecifier<?>[] toOrderBy(ProjectSortType sortBy) {

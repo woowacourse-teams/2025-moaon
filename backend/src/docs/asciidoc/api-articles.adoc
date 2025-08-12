@@ -11,6 +11,7 @@ Error Codes
 - GLOBAL-003
 - GLOBAL-005
 - CURSOR-001
+- SEARCH-001
 
 ====
 
