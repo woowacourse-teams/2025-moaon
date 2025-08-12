@@ -1,12 +1,8 @@
-import SortList from "@domains/components/SortList/SortList";
-import { ARTICLE_SORT_MAP } from "@domains/sort/article";
-import EmptyState from "@shared/components/EmptyState/EmptyState";
 import useInfiniteScroll from "@shared/hooks/useInfiniteScroll";
 import useArticleList from "../hooks/useArticleList";
 import * as S from "./ArticleBox.styled";
-import ArticleSkeletonList from "./ArticleSkeletonList/ArticleSkeletonList";
-import Card from "./CardList/Card/Card";
-import CardList from "./CardList/CardList";
+import ArticleBoxContent from "./components/ArticleBoxContent/ArticleBoxContent";
+import ArticleBoxHeader from "./components/ArticleBoxHeader/ArticleBoxHeader";
 
 const DEFAULT_SORT_TYPE = "createdAt";
 
@@ -35,40 +31,21 @@ function ArticleBox() {
   };
 
   return (
-    <S.ArticleContainer>
-      <S.ArticleHeader>
-        <S.ArticleIntro>
-          {totalCount > 0 && (
-            <>
-              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
-              모여있어요.
-            </>
-          )}
-        </S.ArticleIntro>
-        {(isLoading || totalCount > 0) && (
-          <SortList
-            sortMap={ARTICLE_SORT_MAP}
-            onSelect={handleSelect}
-            initialValue={DEFAULT_SORT_TYPE}
-          />
-        )}
-      </S.ArticleHeader>
-      {showSkeleton && <ArticleSkeletonList />}
-      {totalCount > 0 ? (
-        <CardList>
-          {articles?.map((article) => (
-            <Card key={article.id} article={article} />
-          ))}
-          {scrollEnabled && <div ref={targetRef} />}
-        </CardList>
-      ) : (
-        !showSkeleton && (
-          <S.EmptyContainer>
-            <EmptyState title="조건에 맞는 아티클이 없어요." />
-          </S.EmptyContainer>
-        )
-      )}
-    </S.ArticleContainer>
+    <S.ArticleBoxContainer>
+      <ArticleBoxHeader
+        totalCount={totalCount}
+        isLoading={isLoading}
+        onSelectSort={handleSelect}
+        initialSort={DEFAULT_SORT_TYPE}
+      />
+      <ArticleBoxContent
+        articles={articles}
+        totalCount={totalCount}
+        showSkeleton={showSkeleton}
+        scrollEnabled={scrollEnabled}
+        targetRef={targetRef}
+      />
+    </S.ArticleBoxContainer>
   );
 }
 
