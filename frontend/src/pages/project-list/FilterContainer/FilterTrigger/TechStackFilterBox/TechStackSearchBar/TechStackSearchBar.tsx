@@ -59,6 +59,10 @@ function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
   };
 
   const handleEnter = () => {
+    if (!filterList[keyboardFocusIndex]) {
+      return;
+    }
+
     handleTechStackItemClick(filterList[keyboardFocusIndex][0]);
   };
 
