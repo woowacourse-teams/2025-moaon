@@ -1,7 +1,6 @@
 package moaon.backend.project.dto;
 
 import java.util.List;
-import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.ProjectSortType;
@@ -30,7 +29,7 @@ public record ProjectQueryCondition(
                 techStacks,
                 sortType,
                 limit,
-                CursorParser.toCursor(cursor, sortType)
+                sortType.toCursor(cursor)
         );
     }
 }

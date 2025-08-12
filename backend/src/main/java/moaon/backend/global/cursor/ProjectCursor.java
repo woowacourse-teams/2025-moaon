@@ -1,7 +1,6 @@
 package moaon.backend.global.cursor;
 
 import com.querydsl.core.BooleanBuilder;
-import moaon.backend.project.dto.ProjectQueryCondition;
 
 public interface ProjectCursor<T extends Comparable<? super T>> {
 
@@ -11,8 +10,5 @@ public interface ProjectCursor<T extends Comparable<? super T>> {
 
     String getNextCursor();
 
-    void applyCursor(
-            ProjectQueryCondition queryCondition,
-            BooleanBuilder booleanBuilder
-    );
+    void applyCursor(BooleanBuilder booleanBuilder);
 }

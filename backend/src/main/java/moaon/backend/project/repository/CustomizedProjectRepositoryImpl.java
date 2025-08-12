@@ -46,7 +46,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         applyWhereAndHaving(whereBuilder, condition, query);
 
         if (cursor != null) {
-            cursor.applyCursor(condition, whereBuilder);
+            cursor.applyCursor(whereBuilder);
         }
 
         if (whereBuilder.hasValue()) {
