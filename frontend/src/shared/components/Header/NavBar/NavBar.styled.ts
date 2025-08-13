@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { NavLink } from "react-router";
 
 export const NavBar = styled.nav``;
 
@@ -11,11 +10,12 @@ export const NavLinkList = styled.ul`
 
 export const NavLinkItem = styled.li``;
 
-export const Link = styled(NavLink)<{ isSelected: boolean }>`
+export const Link = styled.button<{ isSelected: boolean }>`
   color: ${({ isSelected }) => (isSelected ? "#007bff" : "#000")};
   font-weight: ${({ isSelected }) => (isSelected ? 700 : 400)};
   padding: 1.75rem 0;
   display: inline-block;
+  font-size: 1rem;
 
   &:hover {
     font-weight: 600;
