@@ -15,9 +15,14 @@ const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 interface ArticleSectionProps {
   projectArticles: ProjectArticle[];
   refetch: () => void;
+  isRefetching: boolean;
 }
 
-function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
+function ArticleSection({
+  projectArticles,
+  refetch,
+  isRefetching,
+}: ArticleSectionProps) {
   const { selectedCategory, updateCategory } = useArticleCategory(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
@@ -28,38 +33,43 @@ function ArticleSection({ projectArticles, refetch }: ArticleSectionProps) {
   }));
 
   const handleTabSelect = (key: ArticleCategoryKey) => {
-    updateCategory(key);
-    refetch();
+    if (key !== selectedCategory) {
+      updateCategory(key);
+      refetch();
+    }
   };
 
-  const filteredArticles =
-    selectedCategory === "all"
-      ? projectArticles
-      : projectArticles.filter((a) => a.category === selectedCategory);
-
-  const showEmpty = selectedCategory !== "all" && filteredArticles.length === 0;
+  const showEmpty = projectArticles.length <= 0 && !isRefetching;
+  const emptyResult = selectedCategory === "all" && projectArticles.length <= 0;
 
   return (
-    <S.ArticleSectionContainer>
-      <SectionTitle title="프로젝트 아티클" />
-      <Tab
-        items={articleCategories}
-        onSelect={handleTabSelect}
-        selected={selectedCategory}
-        width={100}
-      />
-      {showEmpty ? (
-        <S.EmptyContainer>
-          <EmptyState title="해당 카테고리의 아티클이 없어요." description="" />
-        </S.EmptyContainer>
-      ) : (
-        <S.CardListContainer>
-          {filteredArticles.map((article) => (
-            <Card key={article.id} article={article} />
-          ))}
-        </S.CardListContainer>
+    <>
+      {!emptyResult && (
+        <S.ArticleSectionContainer>
+          <SectionTitle title="프로젝트 아티클" />
+          <Tab
+            items={articleCategories}
+            onSelect={handleTabSelect}
+            selected={selectedCategory}
+            width={100}
+          />
+          <S.CardListContainer>
+            {showEmpty ? (
+              <S.EmptyContainer>
+                <EmptyState
+                  title="해당 카테고리의 아티클이 없어요."
+                  description=""
+                />
+              </S.EmptyContainer>
+            ) : (
+              projectArticles.map((article) => (
+                <Card key={article.id} article={article} />
+              ))
+            )}
+          </S.CardListContainer>
+        </S.ArticleSectionContainer>
       )}
-    </S.ArticleSectionContainer>
+    </>
   );
 }
 

@@ -6,9 +6,10 @@ const useProjectArticles = (id: number) => {
     data: projectArticles,
     error,
     refetch,
+    isRefetching,
   } = useQuery(projectArticleQueries.fetchList(id));
 
-  return { projectArticles, error, refetch };
+  return { projectArticles, error, refetch, isRefetching };
 };
 
 export default useProjectArticles;
