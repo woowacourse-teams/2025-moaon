@@ -4,7 +4,6 @@ import static moaon.backend.article.domain.QArticle.article;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleQueryCondition;
 
 @RequiredArgsConstructor
 public class ClickArticleCursor implements ArticleCursor<Integer> {
@@ -28,7 +27,7 @@ public class ClickArticleCursor implements ArticleCursor<Integer> {
     }
 
     @Override
-    public void applyCursor(ArticleQueryCondition queryCondition, BooleanBuilder whereBuilder) {
+    public void applyCursor(BooleanBuilder whereBuilder) {
         whereBuilder.and(
                 article.clicks.lt(getSortValue())
                         .or(

@@ -4,7 +4,6 @@ import static moaon.backend.project.domain.QProject.project;
 
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.project.dto.ProjectQueryCondition;
 
 @RequiredArgsConstructor
 public class LoveProjectCursor implements ProjectCursor<Integer> {
@@ -29,7 +28,7 @@ public class LoveProjectCursor implements ProjectCursor<Integer> {
     }
 
     @Override
-    public void applyCursor(ProjectQueryCondition queryCondition, BooleanBuilder whereBuilder) {
+    public void applyCursor(BooleanBuilder whereBuilder) {
         whereBuilder.and(
                 project.lovedMembers.size().lt(getSortValue())
                         .or(

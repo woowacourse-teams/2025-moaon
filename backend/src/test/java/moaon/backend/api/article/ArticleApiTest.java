@@ -18,14 +18,22 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.fixture.RepositoryHelper;
+import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
 
+@Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ArticleApiTest extends BaseApiTest {
+
+    @Autowired
+    protected RepositoryHelper repositoryHelper;
 
     @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
     @Test
@@ -187,6 +195,7 @@ public class ArticleApiTest extends BaseApiTest {
                 fieldWithPath("contents").description("아티클 목록"),
                 fieldWithPath("contents[].id").description("아티클 ID"),
                 fieldWithPath("contents[].projectId").description("프로젝트 ID"),
+                fieldWithPath("contents[].projectTitle").description("프로젝트 제목"),
                 fieldWithPath("contents[].clicks").description("클릭수"),
                 fieldWithPath("contents[].title").description("아티클 제목"),
                 fieldWithPath("contents[].summary").description("아티클 요약"),

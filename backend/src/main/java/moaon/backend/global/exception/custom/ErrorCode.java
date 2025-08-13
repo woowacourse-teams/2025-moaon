@@ -1,6 +1,7 @@
 package moaon.backend.global.exception.custom;
 
 import lombok.Getter;
+import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -18,7 +19,13 @@ public enum ErrorCode {
 
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
-    INVALID_CURSOR_FORMAT("CURSOR-001", "커서 파라미터 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+    INVALID_CURSOR_FORMAT("CURSOR-001", "커서 파라미터 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
+
+    INVALID_SEARCH_KEYWORD_LENGTH(
+            "SEARCH-001",
+            String.format("검색어는 %d자 이상 %d자 이하여야 합니다.", SearchKeyword.getMinLength(), SearchKeyword.getMaxLength()),
+            HttpStatus.BAD_REQUEST
+    );
 
     private final String id;
     private final String message;
