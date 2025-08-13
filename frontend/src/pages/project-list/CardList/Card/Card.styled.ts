@@ -6,6 +6,29 @@ import {
   textOverflowEllipsis,
 } from "@/styles/global.styled";
 
+export const CardImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+
+  /* 처음에는 투명하게 시작 */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  /* 로드 완료 시 나타나기 */
+  &.loaded {
+    opacity: 1;
+  }
+`;
+
+export const CardTitle = styled.h2`
+  font-size: 1.125rem;
+  margin: 0.25rem 0;
+  font-weight: 700;
+  ${textOverflowEllipsis(1)}
+`;
+
 export const Card = styled.li`
   width: 100%;
   overflow: hidden;
@@ -14,12 +37,13 @@ export const Card = styled.li`
     transition: 0.25s linear;
     box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
 
-    & > a > div > img {
-      transform: scale(1.1);
+
+    & ${CardImage} {
+      transform: scale(1.2);
       transition: 0.25s linear;
     }
 
-    & h2 {
+    & ${CardTitle} {
       text-decoration: underline;
       text-underline-offset: 0.125rem;
     }
@@ -45,31 +69,8 @@ export const CardImageBox = styled.div`
   }
 `;
 
-export const CardImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-
-  /* 처음에는 투명하게 시작 */
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-
-  /* 로드 완료 시 나타나기 */
-  &.loaded {
-    opacity: 1;
-  }
-`;
-
 export const CardInfo = styled.div`
   padding: 0.875rem 1.25rem 0.75rem;
-`;
-
-export const CardTitle = styled.h2`
-  font-size: 1.125rem;
-  margin: 0.25rem 0;
-  font-weight: 700;
-  ${textOverflowEllipsis(1)}
 `;
 
 export const CardSummary = styled.p`
