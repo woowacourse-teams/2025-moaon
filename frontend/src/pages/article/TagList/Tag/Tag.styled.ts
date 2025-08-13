@@ -18,8 +18,3 @@ export const TagBox = styled.li<{ isSelected: boolean }>`
     }
   }
 `;
-
-export const TagText = styled.span<{ isSelected: boolean }>`
-  font-size: 0.875rem;
-  color: ${({ isSelected }) => (isSelected ? "#ffffff" : "#555555")};
-`;
