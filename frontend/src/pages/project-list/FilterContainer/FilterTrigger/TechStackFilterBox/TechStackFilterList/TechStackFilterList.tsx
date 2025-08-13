@@ -30,7 +30,9 @@ function TechStackFilterList({
   return (
     <S.Container>
       <S.Title>{title}</S.Title>
-      {techStacks.length > 0 ? (
+      {techStacks.length < 1 ? (
+        <S.EmptyBox>{emptyText}</S.EmptyBox>
+      ) : (
         <S.List>
           {techStacks.map((techStack) => {
             const isSelected = selectedTechStacks.includes(techStack);
@@ -51,8 +53,6 @@ function TechStackFilterList({
             );
           })}
         </S.List>
-      ) : (
-        <S.EmptyBox>{emptyText}</S.EmptyBox>
       )}
     </S.Container>
   );
