@@ -22,7 +22,7 @@ public record ArticleContent(
         return new ArticleContent(
                 article.getId(),
                 article.getProject().getId(),
-                article.getTitle(),
+                article.getProject().getTitle(),
                 article.getClicks(),
                 article.getTitle(),
                 article.getSummary(),
