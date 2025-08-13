@@ -12,10 +12,13 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCategory;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
+import moaon.backend.fixture.RepositoryHelper;
+import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.dto.PagedProjectResponse;
@@ -23,10 +26,16 @@ import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
 
+@Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ProjectApiTest extends BaseApiTest {
+
+    @Autowired
+    protected RepositoryHelper repositoryHelper;
 
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
@@ -150,22 +159,25 @@ public class ProjectApiTest extends BaseApiTest {
     @Test
     void getArticlesByProjectId() {
         // given
-        Project targetProject = new ProjectFixtureBuilder().build();
+        Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        ArticleCategory filterCategory = Fixture.anyArticleCategory();
+        ArticleCategory unfilterCategory = Fixture.anyArticleCategory();
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).build()
+                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
         );
 
-        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().category(unfilterCategory).build());
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
+                .queryParams("category", filterCategory.getName())
                 .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
@@ -236,7 +248,7 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("[].summary").description("아티클 요약"),
                 fieldWithPath("[].clicks").description("아티클 클릭수"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
-                fieldWithPath("[].articleUrl").description("아티클 URL"),
+                fieldWithPath("[].url").description("아티클 URL"),
                 fieldWithPath("[].category").description("아티클 카테고리"),
                 fieldWithPath("[].createdAt").description("생성일시")
         );

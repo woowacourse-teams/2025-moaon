@@ -1,6 +1,5 @@
 package moaon.backend.project.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -31,7 +30,8 @@ public class ProjectController {
     public ProjectController(
             @Qualifier("projectViewCookieManager") TrackingCookieManager cookieManager,
             ProjectService projectService,
-            ArticleService articleService) {
+            ArticleService articleService
+    ) {
         this.cookieManager = cookieManager;
         this.projectService = projectService;
         this.articleService = articleService;
@@ -46,8 +46,7 @@ public class ProjectController {
         AccessHistory accessHistory = cookieManager.extractViewedMap(request);
         if (cookieManager.isCountIncreasable(id, accessHistory)) {
             ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
-            Cookie cookie = cookieManager.createOrUpdateCookie(id, accessHistory);
-            response.addCookie(cookie);
+            cookieManager.createOrUpdateCookie(id, accessHistory, response);
             return ResponseEntity.ok(projectDetailResponse);
         }
 
@@ -77,8 +76,11 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/articles")
-    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(@PathVariable("id") long id) {
-        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectId(id);
+    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(
+            @PathVariable("id") long id,
+            @RequestParam(value = "category", required = false, defaultValue = "all") String category
+    ) {
+        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndCategory(id, category);
         return ResponseEntity.ok(articleDetailResponses);
     }
 }

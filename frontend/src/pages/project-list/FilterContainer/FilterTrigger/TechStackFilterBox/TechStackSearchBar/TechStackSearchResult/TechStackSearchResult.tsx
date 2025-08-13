@@ -1,26 +1,29 @@
 import type { TechStackKey } from "@domains/filter/techStack";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
-import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
+import { useRef } from "react";
+import { useAutoScrollOnFocus } from "../hooks/useAutoScrollOnFocus";
 import * as S from "./TechStackSearchResult.styled";
 
 interface TechStackSearchResultProps {
   filterList: [TechStackKey, { imgUrl: string; label: string }][];
-  resetSearchInput: () => void;
-  closeSearchResults: () => void;
+  closeSearchResult: () => void;
+  keyboardFocusIndex: number;
+  onTechStackSelect: (techStack: TechStackKey) => void;
 }
 
 function TechStackSearchResult({
   filterList,
-  resetSearchInput,
-  closeSearchResults,
+  onTechStackSelect,
+  closeSearchResult,
+  keyboardFocusIndex,
 }: TechStackSearchResultProps) {
-  const { updateTechStackParam } = useFilterParams();
-  const addToSafeZone = useOutsideClick(closeSearchResults);
+  const addToSafeZone = useOutsideClick(closeSearchResult);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const handleFilterItemClick = (techStack: TechStackKey) => {
-    updateTechStackParam(techStack);
-    resetSearchInput();
-  };
+  useAutoScrollOnFocus({
+    focusIndex: keyboardFocusIndex,
+    itemRefs,
+  });
 
   if (filterList.length === 0) {
     return (
@@ -32,9 +35,16 @@ function TechStackSearchResult({
 
   return (
     <S.List ref={addToSafeZone}>
-      {filterList.map(([key, { imgUrl, label }]) => (
+      {filterList.map(([key, { imgUrl, label }], index) => (
         <S.Item key={key}>
-          <S.Button type="button" onClick={() => handleFilterItemClick(key)}>
+          <S.Button
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
+            type="button"
+            onClick={() => onTechStackSelect(key)}
+            isOver={keyboardFocusIndex === index}
+          >
             <S.Icon src={imgUrl} alt={label} />
             {label}
           </S.Button>

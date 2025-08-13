@@ -3,10 +3,10 @@ package moaon.backend.article.dto;
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.global.cursor.ArticleCursor;
-import moaon.backend.global.cursor.CursorParser;
+import moaon.backend.global.domain.SearchKeyword;
 
 public record ArticleQueryCondition(
-        String search,
+        SearchKeyword search,
         String categoryName,
         List<String> techStackNames,
         ArticleSortType sortBy,
@@ -24,12 +24,12 @@ public record ArticleQueryCondition(
     ) {
         ArticleSortType sortBy = ArticleSortType.from(sortType);
         return new ArticleQueryCondition(
-                search,
+                new SearchKeyword(search),
                 categoryName,
                 techStackNames,
                 sortBy,
                 limit,
-                CursorParser.toCursor(cursor, sortBy)
+                sortBy.toCursor(cursor)
         );
     }
 }

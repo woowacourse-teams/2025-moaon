@@ -16,7 +16,6 @@ import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.global.cursor.ArticleCursor;
-import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -60,8 +59,6 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
-        ArticleCursor<?> articleCursor = CursorParser.toCursor(article2, ArticleSortType.CREATED_AT);
-
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
@@ -73,6 +70,8 @@ class ArticleServiceTest {
                 2,
                 null
         );
+
+        ArticleCursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
 
         Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
@@ -143,12 +142,14 @@ class ArticleServiceTest {
     @DisplayName("프로젝트가 존재하지 않다면 예외가 발생한다.")
     @Test
     void getByProjectId() {
-        // Given
+        // given
         long projectId = 1L;
+        String category = "all";
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
 
-        // When & Then
-        assertThatThrownBy(() -> articleService.getByProjectId(projectId))
+        // when
+        // then
+        assertThatThrownBy(() -> articleService.getByProjectIdAndCategory(projectId, category))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
@@ -156,11 +157,12 @@ class ArticleServiceTest {
     @DisplayName("click을 증가시킬 아티클이 존재하지 않다면 예외가 발생한다.")
     @Test
     void increaseClicksCount() {
-        // Given
+        // given
         long articleId = 1L;
         given(articleRepository.findById(articleId)).willReturn(Optional.empty());
 
-        // When & Then
+        // when
+        // then
         assertThatThrownBy(() -> articleService.increaseClicksCount(articleId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());

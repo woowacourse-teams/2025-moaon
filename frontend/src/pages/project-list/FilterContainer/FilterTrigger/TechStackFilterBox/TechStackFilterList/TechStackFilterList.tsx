@@ -2,25 +2,29 @@ import {
   TECH_STACK_ICON_MAP,
   type TechStackKey,
 } from "@domains/filter/techStack";
-import closeIcon from "@/assets/icons/close.svg";
+import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
-import useProjectList from "@/pages/project-list/hooks/useProjectList";
 import * as S from "./TechStackFilterList.styled";
 
 interface TechStackListProps {
   title: string;
   techStacks: TechStackKey[];
+  onSelect: () => void;
 }
 
-function TechStackFilterList({ title, techStacks }: TechStackListProps) {
+function TechStackFilterList({
+  title,
+  techStacks,
+  onSelect,
+}: TechStackListProps) {
   const { techStacks: selectedTechStacks, updateTechStackParam } =
     useFilterParams();
-  const { refetch } = useProjectList();
+
   const isSelected = selectedTechStacks.length > 0;
 
   const handleTechStackClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);
-    refetch();
+    onSelect();
   };
 
   return (
@@ -39,7 +43,7 @@ function TechStackFilterList({ title, techStacks }: TechStackListProps) {
                   <S.Icon src={imgUrl} alt={techStack} />
                 </S.IconBox>
                 {label}
-                {isSelected && <S.CloseIcon src={closeIcon} alt="선택 해제" />}
+                {isSelected && <CloseIcon />}
               </S.Button>
             </S.Item>
           );

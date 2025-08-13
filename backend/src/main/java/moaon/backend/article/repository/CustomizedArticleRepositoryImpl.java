@@ -18,6 +18,7 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -29,7 +30,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
-    private static final String RESERVED_CHARACTERS = "[+-><()~*:\"&|]";
+    private static final String ALL = "all";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -47,7 +48,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         applyWhereAndHaving(whereBuilder, queryCondition, query);
 
         if (articleCursor != null) {
-            articleCursor.applyCursor(queryCondition, whereBuilder);
+            articleCursor.applyCursor(whereBuilder);
         }
 
         if (whereBuilder.hasValue()) {
@@ -81,6 +82,24 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .size();
     }
 
+    @Override
+    public List<Article> findAllByProjectIdAndCategory(long id, String category) {
+        JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
+                .distinct()
+                .leftJoin(article.category, articleCategory)
+                .leftJoin(article.techStacks, techStack);
+
+        BooleanBuilder whereBuilder = new BooleanBuilder();
+
+        whereBuilder.and(article.project.id.eq(id));
+
+        applyWhereCategory(whereBuilder, category);
+        if (whereBuilder.hasValue()) {
+            query.where(whereBuilder);
+        }
+        return query.fetch();
+    }
+
     private void applyWhereAndHaving(
             BooleanBuilder whereBuilder,
             ArticleQueryCondition queryCondition,
@@ -88,34 +107,46 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     ) {
         String categoryName = queryCondition.categoryName();
         List<String> techStackNames = queryCondition.techStackNames();
-        String search = queryCondition.search();
+        SearchKeyword searchKeyword = queryCondition.search();
 
-        if (!categoryName.equals("all")) {
-            whereBuilder.and(article.category.name.eq(categoryName));
-        }
+        applyWhereCategory(whereBuilder, categoryName);
 
         if (!CollectionUtils.isEmpty(techStackNames)) {
             whereBuilder.and(techStack.name.in(techStackNames));
             query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
         }
 
-        if (StringUtils.hasText(search)) {
-            whereBuilder.and(satisfiesMatchScore(search));
+        if (searchKeyword.hasValue()) {
+            whereBuilder.and(satisfiesMatchScore(searchKeyword));
         }
     }
 
-    private BooleanExpression satisfiesMatchScore(String search) {
+    private void applyWhereCategory(BooleanBuilder whereBuilder, String category) {
+        if (StringUtils.hasText(category) && !category.equals(ALL)) {
+            whereBuilder.and(article.category.name.eq(category));
+        }
+    }
+
+    private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         return Expressions.numberTemplate(
                 Double.class,
                 ArticleFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
-                formatSearchKeyword(search)
+                formatSearchKeyword(searchKeyword)
         ).gt(MINIMUM_MATCH_SCORE);
     }
 
-    private String formatSearchKeyword(String search) {
+    private String formatSearchKeyword(SearchKeyword searchKeyword) {
+        String search = searchKeyword.replaceSpecialCharacters(BLANK);
         return Arrays.stream(search.split(BLANK))
-                .map(keyword -> String.format("+%s*", keyword.replaceAll(RESERVED_CHARACTERS, "").toLowerCase()))
+                .map(this::applyExpressions)
                 .collect(Collectors.joining(BLANK));
+    }
+
+    private String applyExpressions(String keyword) {
+        if (keyword.length() == 1) {
+            return String.format("%s*", keyword);
+        }
+        return String.format("+%s*", keyword.toLowerCase());
     }
 
     private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {

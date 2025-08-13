@@ -7,7 +7,7 @@ interface MoveTopButtonProps {
 export const MoveTopButton = styled.button<MoveTopButtonProps>`
   display: flex;
   position: fixed;
-  bottom: 2.5rem;
+  bottom: 5rem;
   right: 5rem;
   z-index: 5;
   flex-direction: column;

@@ -4,16 +4,23 @@ import RecommendTechStack from "./RecommendTechStack/RecommendTechStack";
 import SelectedTechStack from "./SelectedTechStack/SelectedTechStack";
 import TechStackSearchBar from "./TechStackSearchBar/TechStackSearchBar";
 
-function TechStackFilterBox() {
+interface TechStackFilterBoxProps {
+  onSelect: () => void;
+}
+
+function TechStackFilterBox({ onSelect }: TechStackFilterBoxProps) {
   const { techStacks: selectedTechStacks } = useFilterParams();
 
   return (
-    <FilterBox param="techStacks">
-      <TechStackSearchBar />
+    <FilterBox param="techStacks" onSelect={onSelect}>
+      <TechStackSearchBar onSelect={onSelect} />
       {selectedTechStacks.length > 0 ? (
-        <SelectedTechStack techStacks={selectedTechStacks} />
+        <SelectedTechStack
+          techStacks={selectedTechStacks}
+          onSelect={onSelect}
+        />
       ) : (
-        <RecommendTechStack />
+        <RecommendTechStack onSelect={onSelect} />
       )}
     </FilterBox>
   );

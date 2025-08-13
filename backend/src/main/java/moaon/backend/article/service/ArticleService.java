@@ -8,7 +8,6 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.global.cursor.ArticleCursor;
-import moaon.backend.global.cursor.CursorParser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.repository.ProjectRepository;
@@ -31,7 +30,7 @@ public class ArticleService {
             List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
             Article lastArticle = articlesToReturn.getLast();
 
-            ArticleCursor<?> articleCursor = CursorParser.toCursor(lastArticle, queryCondition.sortBy());
+            ArticleCursor<?> articleCursor = queryCondition.sortBy().toCursor(lastArticle);
 
             return ArticleResponse.from(
                     articlesToReturn,
@@ -43,10 +42,10 @@ public class ArticleService {
         return ArticleResponse.from(articles, totalCount, false, null);
     }
 
-    public List<ArticleDetailResponse> getByProjectId(long id) {
+    public List<ArticleDetailResponse> getByProjectIdAndCategory(long id, String category) {
         projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        List<Article> articles = articleRepository.findAllByProjectId(id);
+        List<Article> articles = articleRepository.findAllByProjectIdAndCategory(id, category);
         return ArticleDetailResponse.from(articles);
     }
 

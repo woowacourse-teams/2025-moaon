@@ -23,16 +23,18 @@ class HTTPClient {
     const response = await fetch(this.baseUrl + url, {
       method: "GET",
       headers: this.getHeaders(),
+      credentials: "include",
     });
 
     return response;
   }
 
-  async post<T>(url: string, data: T) {
+  async post<T>(url: string, data?: T) {
     const response = await fetch(this.baseUrl + url, {
       method: "POST",
       headers: this.getHeaders(),
-      body: JSON.stringify(data),
+      ...(data && { body: JSON.stringify(data) }),
+      credentials: "include",
     });
 
     return response;
@@ -42,6 +44,7 @@ class HTTPClient {
     const response = await fetch(this.baseUrl + url, {
       method: "DELETE",
       headers: this.getHeaders(),
+      credentials: "include",
     });
 
     return response;
@@ -52,6 +55,7 @@ class HTTPClient {
       method: "PATCH",
       headers: this.getHeaders(),
       body: JSON.stringify(data),
+      credentials: "include",
     });
 
     return response;

@@ -1,5 +1,6 @@
 import resetIcon from "@assets/icons/reset.svg";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
+import MoveTop from "@/shared/components/MoveTop/MoveTop";
 import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
 import FilterContainer from "./FilterContainer/FilterContainer";
@@ -7,13 +8,12 @@ import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
 import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
-import MoveTop from "@/shared/components/MoveTop/MoveTop";
 
 const DEFAULT_SORT_TYPE = "createdAt";
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
-  const { refetch } = useProjectList();
+  const { refetch, projects } = useProjectList();
 
   const handleFilterResetButtonClick = () => {
     resetFilter();
@@ -25,6 +25,8 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
+  const hasItems = (projects?.length ?? 0) > 0;
+
   return (
     <S.Main>
       <S.MainBox>
@@ -38,18 +40,20 @@ function ProjectListPage() {
       </S.MainBox>
       <S.Box>
         <S.Wrap>
-          <FilterContainer />
+          <FilterContainer onSelect={handleSelect} />
           {isSelected && (
             <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
               <S.ResetIcon src={resetIcon} alt="필터 초기화" />
             </S.ResetButton>
           )}
         </S.Wrap>
-        <SortList<typeof PROJECT_SORT_MAP>
-          sortMap={PROJECT_SORT_MAP}
-          onSelect={handleSelect}
-          initialValue={DEFAULT_SORT_TYPE}
-        />
+        {hasItems && (
+          <SortList
+            sortMap={PROJECT_SORT_MAP}
+            onSelect={handleSelect}
+            initialValue={DEFAULT_SORT_TYPE}
+          />
+        )}
       </S.Box>
       <CardList />
       <MoveTop />
