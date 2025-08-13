@@ -33,7 +33,6 @@ export const Card = styled.li`
     transition: 0.25s linear;
     box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
 
-
     & ${CardImage} {
       transform: scale(1.2);
       transition: 0.25s linear;
@@ -67,14 +66,6 @@ export const CardImageBox = styled.div`
 
 export const CardInfo = styled.div`
   padding: 0.875rem 1.25rem 0.75rem;
-`;
-
-export const CardTitle = styled.h2`
-  font-size: 1.125rem;
-  line-height: 1.125;
-  margin: 0.25rem 0;
-  font-weight: 700;
-  ${textOverflowEllipsis(1)}
 `;
 
 export const CardSummary = styled.p`
