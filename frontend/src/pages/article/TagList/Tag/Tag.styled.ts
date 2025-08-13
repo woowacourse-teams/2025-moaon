@@ -11,7 +11,7 @@ export const TagBox = styled.li<{ isSelected: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: #007bff;
+    ${({ isSelected }) => !isSelected && "background-color: #49a0fcff;"}
 
     & > ${TagText} {
       color: #fff;

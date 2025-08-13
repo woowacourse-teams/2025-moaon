@@ -1,10 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import {
-  flexCenter,
-  shimmerGradient,
-  textOverflowEllipsis,
-} from "@/styles/global.styled";
+import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
 
 export const CardImage = styled.img`
   width: 100%;
@@ -71,6 +67,14 @@ export const CardImageBox = styled.div`
 
 export const CardInfo = styled.div`
   padding: 0.875rem 1.25rem 0.75rem;
+`;
+
+export const CardTitle = styled.h2`
+  font-size: 1.125rem;
+  line-height: 1.125;
+  margin: 0.25rem 0;
+  font-weight: 700;
+  ${textOverflowEllipsis(1)}
 `;
 
 export const CardSummary = styled.p`

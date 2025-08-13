@@ -2,6 +2,7 @@ import SearchBar from "@shared/components/SearchBar/SearchBar";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useProjectList from "../hooks/useProjectList";
 
+const MIN_SEARCH_LENGTH = 2;
 const MAX_SEARCH_LENGTH = 50;
 
 function ProjectSearchBar() {
@@ -12,6 +13,11 @@ function ProjectSearchBar() {
     if (value === "") {
       params.deleteAll({ replace: true });
       refetch();
+      return;
+    }
+
+    if (value.length < MIN_SEARCH_LENGTH) {
+      alert(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
       return;
     }
 
