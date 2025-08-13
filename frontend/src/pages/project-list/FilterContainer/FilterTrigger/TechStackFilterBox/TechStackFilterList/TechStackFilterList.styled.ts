@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-  margin-top: 1.25rem;
-  padding-left: 0.25rem;
-  min-height: 12rem;
+  padding: 0 0.5rem;
+  min-width: 31.25rem;
 `;
 
 export const Title = styled.h3`
@@ -51,4 +50,13 @@ export const IconBox = styled.div`
 export const Icon = styled.img`
   width: 1rem;
   aspect-ratio: 1/1;
+`;
+
+export const EmptyBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #bdbdbd;
+  font-weight: 500;
+  margin: 2.5rem 0 1.25rem;
 `;

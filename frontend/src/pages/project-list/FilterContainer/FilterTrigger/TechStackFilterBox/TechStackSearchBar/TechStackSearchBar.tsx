@@ -4,6 +4,7 @@ import {
   TECH_STACK_ICON_MAP,
   type TechStackKey,
 } from "@domains/filter/techStack";
+import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { type ChangeEvent, useRef, useState } from "react";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import { useListKeyboardNavigation } from "./hooks/useListKeyboardNavigation";
@@ -36,6 +37,9 @@ function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
   const { techStacks: selectedTechStacks } = useFilterParams();
   const { updateTechStackParam } = useFilterParams();
   const inputRef = useRef<HTMLInputElement>(null);
+  useKeyDown({
+    Escape: () => setIsOpen(false),
+  });
 
   const handleTechStackItemClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);
@@ -59,6 +63,10 @@ function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
   };
 
   const handleEnter = () => {
+    if (!filterList[keyboardFocusIndex]) {
+      return;
+    }
+
     handleTechStackItemClick(filterList[keyboardFocusIndex][0]);
   };
 
