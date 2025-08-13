@@ -6,6 +6,5 @@ export const projectArticleQueries = {
     queryOptions({
       queryKey: ["projectArticles", id] as const,
       queryFn: () => getProjectArticles(id),
-      staleTime: 5 * 60 * 1000,
     }),
 };
