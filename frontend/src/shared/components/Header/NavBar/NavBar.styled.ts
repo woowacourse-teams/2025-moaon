@@ -14,6 +14,8 @@ export const NavLinkItem = styled.li``;
 export const Link = styled(NavLink)<{ isSelected: boolean }>`
   color: ${({ isSelected }) => (isSelected ? "#007bff" : "#000")};
   font-weight: ${({ isSelected }) => (isSelected ? 700 : 400)};
+  padding: 1.75rem 0;
+  display: inline-block;
 
   &:hover {
     font-weight: 600;
@@ -22,7 +24,7 @@ export const Link = styled(NavLink)<{ isSelected: boolean }>`
 
 export const Underline = styled.div<{ left: number; width: number }>`
   position: absolute;
-  bottom: -1.6875rem;
+  bottom: 0;
   left: ${({ left }) => left}px;
   width: ${({ width }) => width}px;
   height: 0.125rem;
