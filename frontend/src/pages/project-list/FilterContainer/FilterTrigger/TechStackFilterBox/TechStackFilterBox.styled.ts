@@ -7,6 +7,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: #cfcfcf #f1f1f1;
 
   &::-webkit-scrollbar {
     width: 0.5rem;
