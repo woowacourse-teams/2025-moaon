@@ -1,45 +1,23 @@
 services:
-  db:
-    image: mysql:8.4
-    container_name: moaon-db
+  nginx:
+    image: nginx:stable-alpine
+    container_name: moaon-nginx
     restart: always
     ports:
-      - "13306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      TZ: Asia/Seoul
-      LANG: C.UTF-8
+      - "80:80"
+      - "443:443"
     volumes:
-      - db-data:/var/lib/mysql
-      - ./db/mysql/init:/docker-entrypoint-initdb.d
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-  app:
-    build: .
-    container_name: moaon-app
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    logging:
-      driver: "awslogs"
-      options:
-        awslogs-group: "moaon"
-        awslogs-region: "ap-northeast-2"
-        awslogs-stream: "dev-docker"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL_DEV}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - certbot-web:/var/www/certbot
+      - certbot-etc:/etc/letsencrypt
+
+  certbot:
+    image: certbot/certbot
+    container_name: moaon-certbot
+    volumes:
+      - certbot-web:/var/www/certbot
+      - certbot-etc:/etc/letsencrypt
 
 volumes:
-  db-data:
+  certbot-etc:
+  certbot-web:

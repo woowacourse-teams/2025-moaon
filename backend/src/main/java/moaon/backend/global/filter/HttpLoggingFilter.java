@@ -56,7 +56,7 @@ public class HttpLoggingFilter implements Filter {
     }
 
     private void doResponseLogging(int status, long responseTime) {
-        log.info("[RESPONSE] Status: {} | Time: {}ms",
+        log.info("[RESPONSE] Status: {} | Time(ms): {}",
                 status,
                 responseTime
         );
