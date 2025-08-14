@@ -1,6 +1,6 @@
-import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import RecommendTechStack from "./RecommendTechStack/RecommendTechStack";
 import SelectedTechStack from "./SelectedTechStack/SelectedTechStack";
+import * as S from "./TechStackFilterBox.styled";
 import TechStackSearchBar from "./TechStackSearchBar/TechStackSearchBar";
 
 interface TechStackFilterBoxProps {
@@ -8,19 +8,13 @@ interface TechStackFilterBoxProps {
 }
 
 function TechStackFilterBox({ onSelect }: TechStackFilterBoxProps) {
-  const { techStacks: selectedTechStacks } = useFilterParams();
-
   return (
     <>
       <TechStackSearchBar onSelect={onSelect} />
-      {selectedTechStacks.length > 0 ? (
-        <SelectedTechStack
-          techStacks={selectedTechStacks}
-          onSelect={onSelect}
-        />
-      ) : (
+      <S.Container>
         <RecommendTechStack onSelect={onSelect} />
-      )}
+        <SelectedTechStack onSelect={onSelect} />
+      </S.Container>
     </>
   );
 }

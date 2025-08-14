@@ -8,6 +8,7 @@ import moaon.backend.techStack.domain.TechStack;
 public record ArticleContent(
         Long id,
         Long projectId,
+        String projectTitle,
         int clicks,
         String title,
         String summary,
@@ -21,6 +22,7 @@ public record ArticleContent(
         return new ArticleContent(
                 article.getId(),
                 article.getProject().getId(),
+                article.getProject().getTitle(),
                 article.getClicks(),
                 article.getTitle(),
                 article.getSummary(),

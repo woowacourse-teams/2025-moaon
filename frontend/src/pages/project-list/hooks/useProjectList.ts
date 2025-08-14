@@ -3,12 +3,12 @@ import { projectQueries } from "@/apis/projects/project.queries";
 
 const useProjectList = () => {
   const queryClient = useQueryClient();
-  const { data, isLoading, fetchNextPage, isFetchingNextPage, isRefetching } =
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(projectQueries.fetchList());
 
   const projects = data?.pages.flatMap((page) => page.contents);
 
-  const totalCount = data?.pages[0]?.totalCount;
+  const totalCount = data?.pages[0]?.totalCount ?? 0;
 
   const hasNext = data?.pages[data.pages.length - 1]?.hasNext ?? false;
   const nextCursor = data?.pages[data.pages.length - 1]?.nextCursor ?? "";
@@ -20,7 +20,7 @@ const useProjectList = () => {
   };
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
-  const showSkeleton = isLoading || isFetchingNextPage || isRefetching;
+  const showSkeleton = isLoading || isFetchingNextPage;
 
   return {
     projects,
@@ -29,7 +29,7 @@ const useProjectList = () => {
     fetchNextPage,
     refetch,
     hasNext,
-    isRefetching,
+    isLoading,
     scrollEnabled,
     showSkeleton,
   };

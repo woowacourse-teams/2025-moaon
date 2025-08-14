@@ -1,11 +1,12 @@
 import { TECH_STACK_ENTRY, type TechStackKey } from "@domains/filter/techStack";
+import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useArticleList from "../hooks/useArticleList";
 import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
 function TagList() {
-  const tagParams = useSearchParams({ key: "techStacks", mode: "multi" }); // TODO: 쿼리파라미터를 "tag"로 변경하는것이 유지보수에 적절함
+  const tagParams = useSearchParams({ key: "techStacks", mode: "multi" });
   const selectedTags = tagParams.get();
   const { refetch } = useArticleList();
 
@@ -14,9 +15,20 @@ function TagList() {
     refetch();
   };
 
+  const handleClearTags = () => {
+    tagParams.deleteAll({ replace: true });
+    refetch();
+  };
   return (
     <S.TagListContainer>
-      <S.TagListTitle>태그</S.TagListTitle>
+      <S.TagListHeader>
+        <S.TagListTitle>태그</S.TagListTitle>
+        {selectedTags.length > 0 && (
+          <S.ResetButton type="button" onClick={handleClearTags}>
+            <CloseIcon size={10} />
+          </S.ResetButton>
+        )}
+      </S.TagListHeader>
       <S.TagList>
         {TECH_STACK_ENTRY.map(([key, { label }]) => {
           const isSelected = selectedTags.includes(key);

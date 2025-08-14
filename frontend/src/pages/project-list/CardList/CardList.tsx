@@ -23,18 +23,16 @@ function CardList() {
     scrollEnabled,
   });
 
-  const hasItems = (projects?.length ?? 0) > 0;
-
   return (
     <section aria-label="프로젝트 목록">
-      {hasItems && (
+      {totalCount > 0 && (
         <S.ProjectIntro>
           <S.ProjectIntroText>{totalCount}개</S.ProjectIntroText>의 프로젝트가
           모여있어요.
         </S.ProjectIntro>
       )}
       {showSkeleton && <CardSkeletonList />}
-      {hasItems ? (
+      {totalCount > 0 ? (
         <S.CardList>
           {projects?.map((project) => (
             <Card key={project.id} project={project} />

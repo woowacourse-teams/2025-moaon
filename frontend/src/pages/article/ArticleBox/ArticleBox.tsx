@@ -1,11 +1,7 @@
-import SortList from "@domains/components/SortList/SortList";
-import { ARTICLE_SORT_MAP } from "@domains/sort/article";
-import EmptyState from "@shared/components/EmptyState/EmptyState";
 import useInfiniteScroll from "@shared/hooks/useInfiniteScroll";
 import useArticleList from "../hooks/useArticleList";
 import * as S from "./ArticleBox.styled";
-import ArticleSkeletonList from "./ArticleSkeletonList/ArticleSkeletonList";
-import Card from "./CardList/Card/Card";
+import ArticleBoxHeader from "./ArticleBoxHeader/ArticleBoxHeader";
 import CardList from "./CardList/CardList";
 
 const DEFAULT_SORT_TYPE = "createdAt";
@@ -20,6 +16,7 @@ function ArticleBox() {
     showSkeleton,
     scrollEnabled,
     refetch,
+    isLoading,
   } = useArticleList();
 
   const { targetRef } = useInfiniteScroll({
@@ -33,43 +30,22 @@ function ArticleBox() {
     refetch();
   };
 
-  const hasTotalCount = totalCount !== undefined;
-  const hasCountToDisplay = hasTotalCount && totalCount > 0;
-  const hasItems = (articles?.length ?? 0) > 0;
-
   return (
-    <S.ArticleContainer>
-      <S.ArticleHeader>
-        {hasCountToDisplay && (
-          <>
-            <S.ArticleIntro>
-              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
-              모여있어요.
-            </S.ArticleIntro>
-            <SortList
-              sortMap={ARTICLE_SORT_MAP}
-              onSelect={handleSelect}
-              initialValue={DEFAULT_SORT_TYPE}
-            />
-          </>
-        )}
-      </S.ArticleHeader>
-      {showSkeleton && <ArticleSkeletonList />}
-      {hasItems ? (
-        <CardList>
-          {articles?.map((article) => (
-            <Card key={article.id} article={article} />
-          ))}
-          {scrollEnabled && <div ref={targetRef} />}
-        </CardList>
-      ) : (
-        !showSkeleton && (
-          <S.EmptyContainer>
-            <EmptyState title="조건에 맞는 아티클이 없어요." />
-          </S.EmptyContainer>
-        )
-      )}
-    </S.ArticleContainer>
+    <S.ArticleBoxContainer>
+      <ArticleBoxHeader
+        totalCount={totalCount}
+        isLoading={isLoading}
+        onSelectSort={handleSelect}
+        initialSort={DEFAULT_SORT_TYPE}
+      />
+      <CardList
+        articles={articles}
+        totalCount={totalCount}
+        showSkeleton={showSkeleton}
+        scrollEnabled={scrollEnabled}
+        targetRef={targetRef}
+      />
+    </S.ArticleBoxContainer>
   );
 }
 

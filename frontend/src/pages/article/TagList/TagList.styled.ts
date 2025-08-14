@@ -21,3 +21,11 @@ export const TagList = styled.ul`
   justify-content: flex-start;
   gap: 0.8rem 0.4rem;
 `;
+
+export const TagListHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ResetButton = styled.button``;
