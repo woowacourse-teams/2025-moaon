@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { projectQueries } from "@/apis/projects/project.queries";
+import useDelayedVisibility from "@/shared/hooks/useDelayedVisibility";
 
 const useProjectList = () => {
   const queryClient = useQueryClient();
@@ -20,7 +21,12 @@ const useProjectList = () => {
   };
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
-  const showSkeleton = isLoading || isFetchingNextPage;
+  // 짧은 로딩에는 스켈레톤을 숨기고, 일정 시간(300ms) 이상 지속될 때만 노출
+  const showInitialSkeleton = useDelayedVisibility(isLoading, { delayMs: 300 });
+  const showNextSkeleton = useDelayedVisibility(isFetchingNextPage, {
+    delayMs: 300,
+  });
+  const showSkeleton = showInitialSkeleton || showNextSkeleton;
 
   return {
     projects,

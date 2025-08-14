@@ -14,6 +14,7 @@ function CardList() {
     fetchNextPage,
     scrollEnabled,
     showSkeleton,
+    isLoading,
   } = useProjectList();
 
   const { targetRef } = useInfiniteScroll({
@@ -40,6 +41,7 @@ function CardList() {
           {scrollEnabled && <div ref={targetRef} />}
         </S.CardList>
       ) : (
+        !isLoading &&
         !showSkeleton && <EmptyState title="조건에 맞는 프로젝트가 없어요." />
       )}
     </section>
