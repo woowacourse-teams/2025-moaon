@@ -25,7 +25,7 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
-  const hasItems = (totalCount ?? 0) > 0;
+  const hasItems = totalCount > 0;
 
   return (
     <S.Main>
