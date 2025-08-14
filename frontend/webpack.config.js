@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { sentryWebpackPlugin } from "@sentry/webpack-plugin";
 import Dotenv from "dotenv-webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -29,8 +30,10 @@ export default {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: "ts-loader",
         exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.(png|jpe?g|gif|svg|webp)$/i,
@@ -47,9 +50,17 @@ export default {
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({ path: ".env.local", systemvars: true }),
+    sentryWebpackPlugin({
+      org: "moaon",
+      project: "moaon",
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+    }),
   ],
   devServer: {
-    static: "./dist",
+    static: {
+      directory: path.resolve(__dirname, "dist"),
+      publicPath: "/",
+    },
     port: 3000,
     open: true,
     hot: true,
