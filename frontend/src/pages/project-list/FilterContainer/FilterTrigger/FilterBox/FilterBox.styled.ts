@@ -9,7 +9,7 @@ export const Container = styled.div<{ isOpen: boolean }>`
   max-height: 29.15rem;
   overflow-y: auto;
   padding: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 12px;
   box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.09);
   background-color: #fff;
   display: flex;
@@ -18,7 +18,7 @@ export const Container = styled.div<{ isOpen: boolean }>`
   border: 1px solid #afafaf;
 
   animation: ${({ isOpen }) => (isOpen ? "dropdown-down" : "dropdown-up")} 0.3s
-    cubic-bezier(0.4, 0, 0.2, 1);
+    cubic-bezier(0.4, 0, 0.2, 1) forwards;
 
   @keyframes dropdown-down {
     0% {
