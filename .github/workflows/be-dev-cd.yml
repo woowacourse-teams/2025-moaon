@@ -41,4 +41,4 @@ jobs:
       - name: Run Docker Compose
         run: |
           sudo docker compose down --rmi all
-          sudo docker compose --build -d -f compose.yaml -f compose.dev.yaml
+          sudo docker compose -f compose.yaml -f compose.dev.yaml up --build -d
