@@ -10,8 +10,8 @@ interface IconBadgeProps {
 function IconBadge({
   label,
   imgUrl,
-  fontSize = 20.8,
-  iconsSize = 24,
+  fontSize = 16,
+  iconsSize = 20,
 }: IconBadgeProps) {
   return (
     <S.IconBadge fontSize={fontSize}>

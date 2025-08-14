@@ -1,6 +1,4 @@
-import type { CategoryKey } from "@domains/filter/category";
-import type { OrganizationKey } from "@domains/filter/organization";
-import type { PlatformKey } from "@domains/filter/platform";
+import type { ProjectCategoryKey } from "@domains/filter/projectCategory";
 import type { TechStackKey } from "@domains/filter/techStack";
 
 export interface ProjectDetail {
@@ -9,10 +7,8 @@ export interface ProjectDetail {
   title: string;
   summary: string;
   description: string;
-  organization: OrganizationKey;
   techStacks: TechStackKey[];
-  platforms: PlatformKey[];
-  categories: CategoryKey[];
+  categories: ProjectCategoryKey[];
   imageUrls: string[];
   isLoved: boolean;
   loves: number;

@@ -1,56 +1,76 @@
-import SearchIcon from "@assets/icons/search.svg";
-import useSearchParams from "@shared/hooks/useSearchParams";
-import { type ChangeEvent, type FormEvent, useState } from "react";
-import useProjectList from "@/pages/list/hooks/useProjectList";
+import searchIcon from "@assets/icons/search.svg";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
 
 interface SearchBarProps {
-  width?: "full" | "fixed";
-  shape?: "default" | "rounded";
-  icon: {
-    size: number;
-    position: "left" | "right";
-  };
-  onChange?: (keyword: string) => void;
+  placeholder: string;
+  onSubmit: (value: string) => void;
+  defaultValue?: string;
+  maxLength: number;
 }
 
 function SearchBar({
-  width = "full",
-  shape = "default",
-  icon,
-  onChange,
+  placeholder,
+  onSubmit,
+  defaultValue = "",
+  maxLength,
 }: SearchBarProps) {
-  const [value, setValue] = useState("");
-  const params = useSearchParams({ key: "search", mode: "single" });
-  const { refetch } = useProjectList();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [hasSearchValue, setHasSearchValue] = useState(
+    defaultValue.trim() !== "",
+  );
 
-  const handleSearchValueChange = (event: ChangeEvent) => {
-    const target = event.target as HTMLInputElement;
-    setValue(target.value);
-    onChange?.(target.value);
+  useEffect(() => {
+    const currentValue = inputRef.current?.value ?? "";
+    const newHasValue = currentValue.trim() !== "";
+    setHasSearchValue(newHasValue);
+  }, []);
+
+  const handleSearchFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const value = inputRef.current?.value || "";
+    onSubmit(value);
   };
 
-  const handleSearchFormSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    params.update(value);
-    refetch();
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setHasSearchValue(e.target.value.trim() !== "");
+  };
+
+  const handleClearSearch = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      setHasSearchValue(false);
+      onSubmit("");
+    }
   };
 
   return (
     <S.SearchForm onSubmit={handleSearchFormSubmit}>
-      <S.SearchBox position={icon.position} shape={shape} width={width}>
+      <S.SearchLabel htmlFor="search-input">
+        <S.SearchIcon src={searchIcon} alt="검색" />
         <S.SearchInput
           type="text"
-          placeholder="검색어를 입력해 주세요"
-          value={value}
-          onChange={handleSearchValueChange}
+          placeholder={placeholder}
+          ref={inputRef}
+          defaultValue={defaultValue}
+          id="search-input"
+          onChange={handleInputChange}
+          maxLength={maxLength}
         />
-        <S.Button type="submit">
-          <S.SearchIcon src={SearchIcon} alt="검색" size={icon.size} />
-        </S.Button>
-      </S.SearchBox>
+        {hasSearchValue && (
+          <S.CloseButton type="button" onClick={handleClearSearch}>
+            <CloseIcon size={15} />
+          </S.CloseButton>
+        )}
+      </S.SearchLabel>
     </S.SearchForm>
   );
 }
-
 export default SearchBar;

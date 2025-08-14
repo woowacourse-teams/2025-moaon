@@ -1,30 +1,29 @@
 package moaon.backend.project.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import moaon.backend.category.domain.Category;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.SortBy;
+import moaon.backend.project.domain.ProjectCategory;
+import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
+@Transactional
+@SpringBootTest
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 class CustomizedProjectRepositoryImplTest {
 
@@ -51,120 +50,42 @@ class CustomizedProjectRepositoryImplTest {
         assertThat(projects.size()).isEqualTo(3);
     }
 
-    @DisplayName("검색어로 모든 프로젝트를 조회한다.")
-    @Test
-    void findWithSearch() {
-        // given
-        Project moaon = repositoryHelper.save(new ProjectFixtureBuilder()
-                .title("모아온")
-                .summary("여러 플랫폼에 흩어진 포트폴리오를 한 곳에 정리할 수 있는 서비스입니다.")
-                .description("GitHub, Notion, Velog 등 다양한 출처의 링크들을 카드 형태로 시각화하여 보여줍니다.")
-                .build()
-        );
-        Project share = repositoryHelper.save(new ProjectFixtureBuilder()
-                .title("공유공유")
-                .summary("개발자와 디자이너의 작업물을 쉽게 공유하고 검색할 수 있도록 도와줍니다.")
-                .description("사용자 맞춤 검색 기능과 태그 필터링을 통해 필요한 작업물을 빠르게 찾을 수 있습니다.")
-                .build()
-        );
-        Project hub = repositoryHelper.save(new ProjectFixtureBuilder()
-                .title("허브허브")
-                .summary("링크 하나로 모든 프로젝트를 소개할 수 있는 포트폴리오 허브 플랫폼입니다.")
-                .description("SNS 공유 최적화 및 모바일 반응형 UI를 제공하여 접근성과 확장성을 높였습니다.")
-                .build()
-        );
-
-        // when
-        List<Project> projectsWithMoaon = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .search("모아온")
-                        .build()
-        );
-        List<Project> projectsWithShare = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .search("개발자")
-                        .build()
-        );
-        List<Project> projectsWithHub = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .search("SNS")
-                        .build()
-        );
-
-        // then
-        assertAll(
-                () -> assertThat(projectsWithMoaon).containsOnly(moaon),
-                () -> assertThat(projectsWithShare).containsOnly(share),
-                () -> assertThat(projectsWithHub).containsOnly(hub)
-        );
-    }
-
-    @DisplayName("조직 필터를 이용해 프로젝트를 조회한다.")
-    @Test
-    void findWithOrganizationFilter() {
-        // given
-        Organization organization1 = Fixture.anyOrganization();
-        Organization organization2 = Fixture.anyOrganization();
-        Organization organization3 = Fixture.anyOrganization();
-        Project projectWithOrganization1 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .organization(organization1)
-                .build()
-        );
-        Project projectWithOrganization2 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .organization(organization2)
-                .build()
-        );
-        repositoryHelper.save(new ProjectFixtureBuilder()
-                .organization(organization3)
-                .build()
-        );
-
-        // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .organizationNames(organization1.getName(), organization2.getName())
-                        .build()
-        );
-
-        // then
-        assertAll(
-                () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(projectWithOrganization1, projectWithOrganization2)
-        );
-    }
-
     @DisplayName("카테고리 필터를 이용해 프로젝트를 조회한다.")
     @Test
     void findWithCategoryFilter() {
         // given
-        Category category1 = Fixture.anyCategory();
-        Category category2 = Fixture.anyCategory();
-        Category category3 = Fixture.anyCategory();
-        Category category4 = Fixture.anyCategory();
-        Category category5 = Fixture.anyCategory();
+        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory4 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory5 = Fixture.anyProjectCategory();
 
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(category1, category2)
+                .categories(projectCategory1, projectCategory2)
                 .build()
         );
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(category2, category3)
+                .categories(projectCategory2, projectCategory3)
                 .build()
         );
-        Project projectWithCategory4 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(category4, category5)
+        Project projectWantToFind = repositoryHelper.save(new ProjectFixtureBuilder()
+                .categories(projectCategory1, projectCategory3, projectCategory4, projectCategory5)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .categoryNames(category4.getName())
+                        .categoryNames(
+                                projectCategory1.getName(),
+                                projectCategory3.getName(),
+                                projectCategory4.getName(),
+                                projectCategory5.getName())
                         .build()
         );
 
         // then
-        assertThat(projects).containsOnly(projectWithCategory4);
+        assertThat(projects).containsOnlyOnce(projectWantToFind);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
@@ -181,62 +102,69 @@ class CustomizedProjectRepositoryImplTest {
                 .techStacks(techStack1, techStack2)
                 .build());
 
-        Project projectWithTechStack3 = repositoryHelper.save(new ProjectFixtureBuilder()
+        repositoryHelper.save(new ProjectFixtureBuilder()
                 .techStacks(techStack3, techStack5)
                 .build()
         );
-        Project projectWithTechStack4 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .techStacks(techStack1, techStack4)
+        Project projectWantToFind = repositoryHelper.save(new ProjectFixtureBuilder()
+                .techStacks(techStack1, techStack2, techStack3, techStack4)
                 .build()
         );
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder().
-                        techStackNames(techStack3.getName(), techStack4.getName())
+                        techStackNames(techStack1.getName(), techStack2.getName(), techStack3.getName(),
+                                techStack4.getName())
                         .build()
         );
 
         // then
-        assertAll(
-                () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(projectWithTechStack3, projectWithTechStack4)
-        );
+        assertThat(projects).containsExactlyInAnyOrder(projectWantToFind);
     }
 
-    @DisplayName("플랫폼 필터를 이용해 프로젝트를 조회한다.")
+    @DisplayName("카테고리 기술스택 필터를 모두 이용하여 조회한다.")
     @Test
-    void findWithPlatformFilter() {
+    void findWithTechStackFilterAndCategory() {
         // given
-        Platform platform1 = Fixture.anyPlatform();
-        Platform platform2 = Fixture.anyPlatform();
-        Platform platform3 = Fixture.anyPlatform();
+        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
 
-        repositoryHelper.save(new ProjectFixtureBuilder()
-                .platforms(platform1)
-                .build()
-        );
-        Project projectWithPlatform2 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .platforms(platform2)
-                .build()
-        );
-        Project projectWithPlatform3 = repositoryHelper.save(new ProjectFixtureBuilder()
-                .platforms(platform3)
-                .build()
-        );
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
 
-        // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .platformNames(platform2.getName(), platform3.getName())
+        Project wantToFindProject = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
                         .build()
         );
 
-        // then
-        assertAll(
-                () -> assertThat(projects).hasSize(2),
-                () -> assertThat(projects).contains(projectWithPlatform2, projectWithPlatform3)
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2)
+                        .techStacks(techStack1, techStack2)
+                        .build()
         );
+
+        repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1)
+                        .build()
+        );
+
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .techStackNames(techStack1.getName(), techStack2.getName())
+                .build();
+
+        // when
+        List<Project> actual = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
+
+        // then
+        assertThat(actual).containsOnlyOnce(wantToFindProject);
     }
 
     @DisplayName("프로젝트를 조회순을 기준으로 정렬한다.")
@@ -256,12 +184,12 @@ class CustomizedProjectRepositoryImplTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(SortBy.VIEWS)
+                        .sortBy(ProjectSortType.VIEWS)
                         .build()
         );
 
         // then
-        assertThat(projects).containsSequence(high, middle, low);
+        assertThat(projects).containsExactly(high, middle, low);
     }
 
     @DisplayName("프로젝트를 생성일자 기준으로 정렬한다.")
@@ -287,12 +215,12 @@ class CustomizedProjectRepositoryImplTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(SortBy.CREATED_AT)
+                        .sortBy(ProjectSortType.CREATED_AT)
                         .build()
         );
 
         // then
-        assertThat(projects).containsSequence(tomorrowProject, todayProject, yesterdayProject);
+        assertThat(projects).containsExactly(tomorrowProject, todayProject, yesterdayProject);
     }
 
     @DisplayName("프로젝트를 좋아요 순으로 정렬한다.")
@@ -314,11 +242,55 @@ class CustomizedProjectRepositoryImplTest {
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(SortBy.LOVES)
+                        .sortBy(ProjectSortType.LOVES)
                         .build()
         );
 
         // then
-        assertThat(projects).containsSequence(high, middle, low);
+        assertThat(projects).containsExactly(high, middle, low);
+    }
+
+    @DisplayName("필터링을 거친 프로젝트의 개수를 가져온다.")
+    @Test
+    void countWithSearchCondition() {
+        // given
+        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
+        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+
+        Project wantToFindProject1 = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+
+        Project wantToFindProject2 = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+
+        Project wantToFindProject3 = repositoryHelper.save(
+                new ProjectFixtureBuilder()
+                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .techStackNames(techStack1.getName(), techStack2.getName())
+                .build();
+
+        // when
+        long count = customizedProjectRepositoryImpl.countWithSearchCondition(queryCondition);
+
+        // then
+        assertThat(count).isEqualTo(3);
     }
 }

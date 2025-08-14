@@ -1,5 +1,3 @@
-import Logo from "@assets/icons/logo.svg";
-import SearchBar from "../SearchBar/SearchBar";
 import * as S from "./Header.styled";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
@@ -9,15 +7,10 @@ function Header() {
     <S.Header>
       <S.HeaderBox>
         <S.Wrap>
-          <img src={Logo} alt="123" />
+          <S.LogoLink to="/project">모아온</S.LogoLink>
           <NavBar />
         </S.Wrap>
         <S.Wrap>
-          <SearchBar
-            width="fixed"
-            shape="rounded"
-            icon={{ size: 16, position: "left" }}
-          />
           <RegisterProjectButton />
         </S.Wrap>
       </S.HeaderBox>

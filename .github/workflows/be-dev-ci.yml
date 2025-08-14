@@ -16,34 +16,63 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-    
+
     permissions:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'corretto'
+      - uses: actions/checkout@v4
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: 'gradle'
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle Wrapper using cache
+        run: ./gradlew build --build-cache --no-daemon
+
+  check-dependencies-changed:
+    outputs:
+      dependencies-changed: ${{ steps.filter.outputs.dependencies }}
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check if dependency files changed
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            dependencies:
+              - 'build.gradle'
+              - 'settings.gradle'
+              - '**/build.gradle'
+              - '**/settings.gradle'
 
   dependency-submission:
+    needs: check-dependencies-changed
     if: |
-      github.actor == 'yesjuhee' || 
-      github.actor == 'Minuring' ||
-      github.actor == 'eueo8259' ||
-      github.actor == 'minjae8563'
-    needs: build
-    
+      needs.check-dependencies-changed.outputs.dependencies-changed == 'true' &&
+      (
+        github.actor == 'yesjuhee' || 
+        github.actor == 'Minuring' ||
+        github.actor == 'eueo8259' ||
+        github.actor == 'minjae8563'
+      )
+
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./backend
@@ -52,14 +81,14 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'corretto'
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
 
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-      with:
-        build-root-directory: backend
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+        with:
+          build-root-directory: backend

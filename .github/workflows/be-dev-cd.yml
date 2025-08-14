@@ -11,7 +11,6 @@ jobs:
       github.actor == 'Minuring' ||
       github.actor == 'eueo8259' ||
       github.actor == 'minjae8563'
-    name: Deploy to EC2
     runs-on: self-hosted
 
     defaults:

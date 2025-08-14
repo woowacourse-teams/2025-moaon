@@ -1,0 +1,28 @@
+== /articles
+
+=== GET /articles
+
+====
+operation::article-api-test/get-paged-articles[snippets='curl-request,http-request,http-response,query-parameters,response-fields']
+
+Error Codes
+
+- GLOBAL-001
+- GLOBAL-003
+- GLOBAL-005
+- CURSOR-001
+- SEARCH-001
+
+====
+
+=== POST /articles/{id}/clicks
+
+====
+operation::article-api-test/update-article-clicks[snippets='curl-request,http-request,http-response']
+
+Error Codes
+
+- GLOBAL-001
+- GLOBAL-005
+- ARTICLE-001
+====

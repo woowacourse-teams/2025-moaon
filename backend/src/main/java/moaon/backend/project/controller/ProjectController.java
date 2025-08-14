@@ -1,11 +1,17 @@
 package moaon.backend.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.article.service.ArticleService;
+import moaon.backend.global.cookie.AccessHistory;
+import moaon.backend.global.cookie.TrackingCookieManager;
+import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.service.ProjectService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,33 +21,66 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/projects")
-@RequiredArgsConstructor
 public class ProjectController {
 
+    private final TrackingCookieManager cookieManager;
     private final ProjectService projectService;
+    private final ArticleService articleService;
+
+    public ProjectController(
+            @Qualifier("projectViewCookieManager") TrackingCookieManager cookieManager,
+            ProjectService projectService,
+            ArticleService articleService
+    ) {
+        this.cookieManager = cookieManager;
+        this.projectService = projectService;
+        this.articleService = articleService;
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDetailResponse> getProjectById(@PathVariable("id") long id) {
-        return ResponseEntity.ok(projectService.getById(id));
+    public ResponseEntity<ProjectDetailResponse> getProjectById(
+            @PathVariable("id") long id,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        AccessHistory accessHistory = cookieManager.extractViewedMap(request);
+        if (cookieManager.isCountIncreasable(id, accessHistory)) {
+            ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
+            cookieManager.createOrUpdateCookie(id, accessHistory, response);
+            return ResponseEntity.ok(projectDetailResponse);
+        }
+
+        ProjectDetailResponse projectDetailResponse = projectService.getById(id);
+
+        return ResponseEntity.ok(projectDetailResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectSummaryResponse>> getAllProjects(
+    public ResponseEntity<PagedProjectResponse> getPagedProjects(
             @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "platforms", required = false) List<String> platforms,
             @RequestParam(value = "categories", required = false) List<String> categories,
-            @RequestParam(value = "organizations", required = false) List<String> organizations,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
-            @RequestParam(value = "sort", required = false) String sortType
+            @RequestParam(value = "sort", required = false) String sortType,
+            @RequestParam(value = "limit") int limit,
+            @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
                 search,
-                platforms,
                 categories,
-                organizations,
                 techStacks,
-                sortType
+                sortType,
+                limit,
+                cursor
         );
-        return ResponseEntity.ok(projectService.getAllProjects(projectQueryCondition));
+        return ResponseEntity.ok(projectService.getPagedProjects(projectQueryCondition));
+    }
+
+    @GetMapping("/{id}/articles")
+    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(
+            @PathVariable("id") long id,
+            @RequestParam(value = "category", required = false, defaultValue = "all") String category
+    ) {
+        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndCategory(id, category);
+        return ResponseEntity.ok(articleDetailResponses);
     }
 }

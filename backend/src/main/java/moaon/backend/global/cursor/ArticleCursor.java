@@ -1,0 +1,14 @@
+package moaon.backend.global.cursor;
+
+import com.querydsl.core.BooleanBuilder;
+
+public interface ArticleCursor<T extends Comparable<? super T>> {
+
+    T getSortValue();
+
+    Long getLastId();
+
+    String getNextCursor();
+
+    void applyCursor(BooleanBuilder whereBuilder);
+}

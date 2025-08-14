@@ -1,0 +1,45 @@
+import EmptyState from "@shared/components/EmptyState/EmptyState";
+import type { Ref } from "react";
+import type { Article } from "@/apis/articles/articles.type";
+import ArticleSkeletonList from "../ArticleSkeletonList/ArticleSkeletonList";
+import Card from "./Card/Card";
+import * as S from "./CardList.styled";
+
+interface CardListProps {
+  articles?: Article[];
+  totalCount: number;
+  showSkeleton: boolean;
+  scrollEnabled: boolean;
+  targetRef: Ref<HTMLDivElement>;
+}
+
+function CardList({
+  articles,
+  totalCount,
+  showSkeleton,
+  scrollEnabled,
+  targetRef,
+}: CardListProps) {
+  if (showSkeleton) {
+    return <ArticleSkeletonList />;
+  }
+
+  if (totalCount === 0) {
+    return (
+      <S.EmptyContainer>
+        <EmptyState title="조건에 맞는 아티클이 없어요." />
+      </S.EmptyContainer>
+    );
+  }
+
+  return (
+    <S.CardListContainer>
+      {articles?.map((article) => (
+        <Card key={article.id} article={article} />
+      ))}
+      {scrollEnabled && <div ref={targetRef} />}
+    </S.CardListContainer>
+  );
+}
+
+export default CardList;

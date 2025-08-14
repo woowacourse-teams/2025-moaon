@@ -1,34 +1,29 @@
 package moaon.backend.fixture;
 
 import java.util.concurrent.atomic.AtomicLong;
-import moaon.backend.category.domain.Category;
+import moaon.backend.article.domain.ArticleCategory;
 import moaon.backend.member.domain.Member;
-import moaon.backend.organization.domain.Organization;
-import moaon.backend.platform.domain.Platform;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
 
 public class Fixture {
 
     private static final AtomicLong SEQUENCE = new AtomicLong(0L);
 
-    public static Organization anyOrganization() {
-        return new Organization(nameWithSequence("그룹명"));
-    }
-
     public static Member anyMember() {
-        return new Member(nameWithSequence("멤버"));
+        return new Member(nameWithSequence("testMember"));
     }
 
     public static TechStack anyTechStack() {
-        return new TechStack(nameWithSequence("기술스택"));
+        return new TechStack(nameWithSequence("testTechStack"));
     }
 
-    public static Category anyCategory() {
-        return new Category(nameWithSequence("카테고리"));
+    public static ProjectCategory anyProjectCategory() {
+        return new ProjectCategory(nameWithSequence("testProjectCategory"));
     }
 
-    public static Platform anyPlatform() {
-        return new Platform(nameWithSequence("플랫폼"));
+    public static ArticleCategory anyArticleCategory() {
+        return new ArticleCategory(nameWithSequence("testArticleCategory"));
     }
 
     protected static String nameWithSequence(String name) {

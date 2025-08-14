@@ -1,0 +1,38 @@
+import useSearchParams from "@shared/hooks/useSearchParams";
+import type { PropsWithChildren } from "react";
+import type { FilterParam } from "../../FilterContainer";
+import * as S from "./FilterBox.styled";
+
+interface FilterBoxProps {
+  param: FilterParam;
+  onSelect: () => void;
+}
+
+function FilterBox({
+  children,
+  param,
+  onSelect,
+}: PropsWithChildren<FilterBoxProps>) {
+  const params = useSearchParams({ key: param, mode: "multi" });
+
+  const handelFilterResetButtonClick = () => {
+    params.deleteAll({ replace: true });
+    onSelect();
+  };
+
+  const disabledReset = params.get().length === 0;
+  return (
+    <S.Container>
+      <S.Wrap>{children}</S.Wrap>
+      <S.FilterResetButton
+        type="button"
+        onClick={handelFilterResetButtonClick}
+        disabled={disabledReset}
+      >
+        초기화
+      </S.FilterResetButton>
+    </S.Container>
+  );
+}
+
+export default FilterBox;

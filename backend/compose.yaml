@@ -9,12 +9,13 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       TZ: Asia/Seoul
+      LANG: C.UTF-8
     volumes:
       - db-data:/var/lib/mysql
       - ./db/mysql/init:/docker-entrypoint-initdb.d
     command:
       - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_bin
+      - --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
       interval: 10s
@@ -27,7 +28,13 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "80:8080"
+      - "8080:8080"
+    logging:
+      driver: "awslogs"
+      options:
+        awslogs-group: "moaon"
+        awslogs-region: "ap-northeast-2"
+        awslogs-stream: "dev-docker"
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL_DEV}
