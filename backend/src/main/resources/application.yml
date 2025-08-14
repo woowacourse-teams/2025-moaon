@@ -6,13 +6,13 @@ spring:
     name: backend
 
   jpa:
-    database: mysql
     show-sql: false
     properties:
       hibernate:
         format_sql: true
     hibernate:
       ddl-auto: update
+    open-in-view: false
 
 logging:
   pattern:
