@@ -3,6 +3,8 @@ name: BE Dev CD
 on:
   push:
     branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
 
 jobs:
   deploy:
@@ -37,12 +39,12 @@ jobs:
           EOF
 
       - name: Create nginx.conf file from Secrets
+        env:
+          NGINX_CONF: ${{ secrets.DEV_NGINX_CONF }}
         run: |
           echo "Creating nginx/nginx.conf file from GitHub Secrets"
           mkdir -p ./nginx
-          cat <<EOF > ./nginx/nginx.conf
-          ${{ secrets.DEV_NGINX_CONF }}
-          EOF
+          echo "$NGINX_CONF" > ./nginx/nginx.conf
 
       - name: Run Docker Compose
         run: |
