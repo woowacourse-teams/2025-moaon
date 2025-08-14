@@ -20,7 +20,10 @@ const NAV_LIST = [
 function NavBar() {
   const pathname = useLocation().pathname;
   const linkRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+  const [underlineStyle, setUnderlineStyle] = useState({
+    translateX: 0,
+    width: 0,
+  });
   const activeIndex = NAV_LIST.findIndex((item) => item.href === pathname);
   const navigate = useNavigate();
   const { refetch: projectListRefetch } = useProjectList();
@@ -30,7 +33,7 @@ function NavBar() {
     const activeRef = linkRefs.current[activeIndex];
     if (activeRef) {
       const { offsetLeft, clientWidth } = activeRef;
-      setUnderlineStyle({ left: offsetLeft, width: clientWidth });
+      setUnderlineStyle({ translateX: offsetLeft, width: clientWidth });
     }
   }, [activeIndex]);
 
@@ -74,7 +77,7 @@ function NavBar() {
         ))}
         {hasActive && (
           <S.Underline
-            left={underlineStyle.left}
+            translateX={underlineStyle.translateX}
             width={underlineStyle.width}
           />
         )}
