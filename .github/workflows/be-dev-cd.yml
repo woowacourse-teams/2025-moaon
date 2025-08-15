@@ -14,12 +14,15 @@ jobs:
       github.actor == 'Minuring' ||
       github.actor == 'eueo8259' ||
       github.actor == 'minjae8563'
-    runs-on: macos-15
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
