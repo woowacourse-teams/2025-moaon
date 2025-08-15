@@ -1,0 +1,71 @@
+name: Prepare Release
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Update version and lockfile
+        id: update_files
+        run: |
+          cd frontend
+
+          BUMP=$(npx -y \
+            -p conventional-recommended-bump@9 \
+            -p conventional-changelog-conventionalcommits@7 \
+            conventional-recommended-bump -p conventionalcommits)
+
+          if [ -z "$BUMP" ]; then BUMP=patch; fi
+
+          pnpm version "$BUMP" --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          pnpm install --lockfile-only
+
+      - name: Commit & push to PR branch
+        run: |
+          if git diff --quiet -- frontend/package.json frontend/pnpm-lock.yaml; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add frontend/package.json frontend/pnpm-lock.yaml
+
+          if git diff --cached --quiet; then
+            echo "No staged changes."
+            exit 0
+          fi
+
+          git commit -m "chore(release): prepare for v${{ steps.update_files.outputs.version }}"
+          git push origin HEAD:${{ github.head_ref }}
