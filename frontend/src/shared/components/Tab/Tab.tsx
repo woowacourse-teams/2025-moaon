@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useTabAnimation } from "@shared/hooks/useTabAnimation";
 import * as S from "./Tab.styled";
 
 interface TabItem<K extends string> {
@@ -20,20 +20,8 @@ function Tab<K extends string>({
   onSelect,
   width,
 }: TabProps<K>) {
-  const tabRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [selectedStyle, setSelectedStyle] = useState({
-    translateX: 0,
-    width: 0,
-  });
   const selectedIndex = items.findIndex(({ key }) => key === selected);
-
-  useLayoutEffect(() => {
-    const active = tabRefs.current[selectedIndex];
-    if (active) {
-      const { offsetLeft, clientWidth } = active;
-      setSelectedStyle({ translateX: offsetLeft, width: clientWidth });
-    }
-  }, [selectedIndex]);
+  const { setTabElementsRef, selectedStyle } = useTabAnimation(selectedIndex);
 
   const animationDuration = 0.075 * items.length;
   return (
@@ -48,13 +36,7 @@ function Tab<K extends string>({
           const isSelected = selected === key;
           return (
             <S.TabItem
-              ref={(el) => {
-                tabRefs.current[idx] = el;
-
-                return () => {
-                  tabRefs.current[idx] = null;
-                };
-              }}
+              ref={(el) => setTabElementsRef(el, idx)}
               key={key}
               isSelected={isSelected}
               onClick={() => onSelect(key)}
