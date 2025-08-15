@@ -1,4 +1,3 @@
-import FilterBox from "../FilterBox/FilterBox";
 import RecommendTechStack from "./RecommendTechStack/RecommendTechStack";
 import SelectedTechStack from "./SelectedTechStack/SelectedTechStack";
 import * as S from "./TechStackFilterBox.styled";
@@ -10,13 +9,13 @@ interface TechStackFilterBoxProps {
 
 function TechStackFilterBox({ onSelect }: TechStackFilterBoxProps) {
   return (
-    <FilterBox param="techStacks" onSelect={onSelect}>
+    <>
       <TechStackSearchBar onSelect={onSelect} />
       <S.Container>
         <RecommendTechStack onSelect={onSelect} />
         <SelectedTechStack onSelect={onSelect} />
       </S.Container>
-    </FilterBox>
+    </>
   );
 }
 

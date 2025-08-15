@@ -1,19 +1,44 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.div`
+export const Container = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 3.125rem;
   left: 0;
   z-index: 998;
   min-width: 34.375rem;
   padding: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 12px;
   box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.09);
   background-color: #fff;
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
   border: 1px solid #afafaf;
+
+  animation: ${({ isOpen }) => (isOpen ? "dropdown-down" : "dropdown-up")} 0.3s
+    cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @keyframes dropdown-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes dropdown-up {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+  }
 `;
 
 export const Wrap = styled.div``;

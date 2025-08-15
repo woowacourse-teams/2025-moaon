@@ -21,6 +21,7 @@ function ArrowIcon({ direction }: ArrowIconProps) {
       fill="none"
       style={{
         transform: `rotate(${rotationDegrees[direction]}deg)`,
+        transition: "transform 0.3s ease-in-out",
       }}
       role="img"
       aria-label="방향"
