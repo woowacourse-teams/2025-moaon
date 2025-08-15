@@ -1,19 +1,37 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useIsMounted } from "./useIsMounted";
 
-export const useTabAnimation = (selectedIndex: number) => {
+interface TabAnimationParams {
+  selectedIndex: number;
+  duration: number;
+}
+
+export const useTabAnimation = ({
+  selectedIndex,
+  duration,
+}: TabAnimationParams) => {
   const elementRefs = useRef<(HTMLElement | null)[]>([]);
   const [selectedStyle, setSelectedStyle] = useState({
     translateX: 0,
     width: 0,
+    duration: 0,
   });
+  const isMounted = useIsMounted();
 
   useLayoutEffect(() => {
     const targetRef = elementRefs.current[selectedIndex];
-    if (targetRef) {
-      const { offsetLeft, clientWidth } = targetRef;
-      setSelectedStyle({ translateX: offsetLeft, width: clientWidth });
+    if (!targetRef) {
+      return;
     }
-  }, [selectedIndex]);
+
+    const { offsetLeft, clientWidth } = targetRef;
+
+    setSelectedStyle({
+      translateX: offsetLeft,
+      width: clientWidth,
+      duration: isMounted() ? duration : 0,
+    });
+  }, [selectedIndex, duration, isMounted]);
 
   const setTabElementsRef = useCallback(
     (element: HTMLElement | null, index: number) => {

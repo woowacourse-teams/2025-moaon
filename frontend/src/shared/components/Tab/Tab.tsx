@@ -21,16 +21,18 @@ function Tab<K extends string>({
   width,
 }: TabProps<K>) {
   const selectedIndex = items.findIndex(({ key }) => key === selected);
-  const { setTabElementsRef, selectedStyle } = useTabAnimation(selectedIndex);
+  const { setTabElementsRef, selectedStyle } = useTabAnimation({
+    selectedIndex,
+    duration: 0.065 * items.length,
+  });
 
-  const animationDuration = 0.075 * items.length;
   return (
     <S.TabContainer width={width}>
       <S.TabItemList>
         <S.SlidingBG
           translateX={selectedStyle.translateX}
           width={selectedStyle.width}
-          duration={animationDuration}
+          duration={selectedStyle.duration}
         />
         {items.map(({ key, label }, idx) => {
           const isSelected = selected === key;
@@ -41,7 +43,7 @@ function Tab<K extends string>({
               isSelected={isSelected}
               onClick={() => onSelect(key)}
               width={width ? width / items.length : undefined}
-              duration={animationDuration}
+              duration={selectedStyle.duration}
             >
               {label}
             </S.TabItem>

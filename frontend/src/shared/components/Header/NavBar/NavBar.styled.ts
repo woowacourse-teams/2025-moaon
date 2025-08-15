@@ -22,7 +22,11 @@ export const Link = styled.button<{ isSelected: boolean }>`
   }
 `;
 
-export const Underline = styled.div<{ translateX: number; width: number }>`
+export const Underline = styled.div<{
+  translateX: number;
+  width: number;
+  duration: number;
+}>`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -31,6 +35,7 @@ export const Underline = styled.div<{ translateX: number; width: number }>`
   height: 0.125rem;
   background-color: #007bff;
   border-radius: 62.5rem 62.5rem 0rem 0rem;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform ${({ duration }) => duration}s
+      cubic-bezier(0.4, 0, 0.2, 1),
+    width ${({ duration }) => duration}s cubic-bezier(0.4, 0, 0.2, 1);
 `;
