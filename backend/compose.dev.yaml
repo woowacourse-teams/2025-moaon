@@ -22,7 +22,7 @@ services:
       timeout: 5s
       retries: 5
   app:
-    build: .
+    image: ${secrets.DOCKERHUB_USERNAME}/moaon-backend:latest-dev
     container_name: moaon-app
     depends_on:
       db:
