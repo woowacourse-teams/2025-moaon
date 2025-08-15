@@ -1,4 +1,5 @@
 import { memo, useCallback } from "react";
+import { DEFAULT_POSITION } from "../../constants/toast.constants";
 import { useDistributedToasts } from "../../hooks/useToast";
 import { hideToast } from "../../store/toastActions";
 import type { ToastData, ToastPosition } from "../../types/toast.type";
@@ -14,7 +15,7 @@ export const ToastContainer = memo(function ToastContainer() {
 
   const groupedToasts = filteredToasts.reduce(
     (groups: Record<ToastPosition, ToastData[]>, toast: ToastData) => {
-      const position = toast.position || "bottom-center";
+      const position = toast.position || DEFAULT_POSITION;
       if (!groups[position]) groups[position] = [];
       groups[position].push(toast);
       return groups;

@@ -11,14 +11,14 @@ export function useToast() {
 }
 
 export function useDistributedToasts() {
-  const state = useToast();
-  const { filteredToasts, queue } = getDistributedToasts(state);
+  const { toasts, defaultPosition, limit } = useToast();
+  const { filteredToasts, queue } = getDistributedToasts({ toasts, defaultPosition, limit });
 
   return {
-    allToasts: state.toasts,
+    allToasts: toasts,
     filteredToasts,
     queue,
-    defaultPosition: state.defaultPosition,
-    limit: state.limit,
+    defaultPosition: defaultPosition,
+    limit: limit,
   };
 }

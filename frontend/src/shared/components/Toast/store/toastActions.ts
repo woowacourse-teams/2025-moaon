@@ -1,8 +1,6 @@
+import { DEFAULT_DURATION_MS, DEFAULT_TYPE } from "../constants/toast.constants";
 import type { ToastData, ToastOptions, ToastsState } from "../types/toast.type";
 import { toastStore } from "./toastStore";
-
-let toastIdCounter = 0;
-const generateId = () => `toast-${++toastIdCounter}-${Date.now()}`;
 
 const getDistributedToasts = (state: ToastsState) => {
   const { toasts, defaultPosition, limit } = state;
@@ -26,9 +24,9 @@ const getDistributedToasts = (state: ToastsState) => {
 };
 
 export const showToast = (options: ToastOptions) => {
-  const { message, type = "info", position, duration = 4000 } = options;
+  const { message, type = DEFAULT_TYPE, position, duration = DEFAULT_DURATION_MS } = options;
 
-  const id = generateId();
+  const id = crypto.randomUUID();
   const toast: ToastData = {
     id,
     message,
@@ -40,7 +38,7 @@ export const showToast = (options: ToastOptions) => {
 
   const currentState = toastStore.getState();
 
-  const isDuplicate = currentState.toasts.some((t) => t.message === message && t.type === type);
+  const isDuplicate = currentState.toasts.some(({ message: toastMessage, type: toastType }) => toastMessage === message && toastType === type);
 
   if (isDuplicate) return id;
 
@@ -90,15 +88,15 @@ const processQueue = () => {
   const { queue } = getDistributedToasts(state);
 
   if (queue.length > 0) {
-    const nextToast = queue[0];
+    const { message, type, position, duration } = queue[0];
     setTimeout(() => {
       showToast({
-        message: nextToast.message,
-        type: nextToast.type,
-        position: nextToast.position,
-        duration: nextToast.duration,
+        message: message,
+        type: type,
+        position: position,
+        duration: duration,
       });
-    }, 100);
+    }, 10000);
   }
 };
 
