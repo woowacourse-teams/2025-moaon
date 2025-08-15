@@ -23,7 +23,7 @@ function Tab<K extends string>({
   const selectedIndex = items.findIndex(({ key }) => key === selected);
   const { setTabElementsRef, selectedStyle } = useTabAnimation({
     selectedIndex,
-    duration: 0.065 * items.length,
+    duration: 0.075 * items.length,
   });
 
   return (
