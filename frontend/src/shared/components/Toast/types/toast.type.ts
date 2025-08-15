@@ -23,3 +23,5 @@ export interface ToastOptions {
   position?: ToastPosition;
   duration?: number;
 }
+
+export type ToastCustomOptions = Omit<ToastOptions, "message" | "type">;
