@@ -1,6 +1,7 @@
 import "./libs/sentry/initializeSentry";
 import { Global } from "@emotion/react";
 import { ErrorBoundary } from "@sentry/react";
+import { ToastContainer } from "@shared/components/Toast/components/ToastContainer/ToastContainer";
 import {
   MutationCache,
   QueryCache,
@@ -35,6 +36,7 @@ root.render(
           <Global styles={resetStyle} />
           <GAInitializer />
           <App />
+          <ToastContainer />
         </BrowserRouter>
       </QueryClientProvider>
     </ErrorBoundary>
