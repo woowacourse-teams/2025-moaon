@@ -3,6 +3,9 @@ name: BE Prod CD
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches:
+      - "develop"
 
 jobs:
   build-and-push-image:
