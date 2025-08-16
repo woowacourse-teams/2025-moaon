@@ -12,16 +12,41 @@ export const TabContainer = styled.div<{ width?: number }>`
 export const TabItemList = styled.ul`
   display: flex;
   gap: 0.25rem;
+  position: relative;
 `;
 
-export const TabItem = styled.li<{ isSelected: boolean; width?: number }>`
-  padding: 0.4375rem 1.875rem;
+export const TabItem = styled.li<{
+  isSelected: boolean;
+  width?: number;
+  duration: number;
+}>`
+  padding: 0.5rem 1.875rem;
   font-size: 0.875rem;
   font-weight: 500;
   border-radius: 5px;
   color: ${({ isSelected }) => (isSelected ? "#fff" : "#000000")};
-  background-color: ${({ isSelected }) => (isSelected ? "#007bff" : "#fff")};
   cursor: pointer;
   width: ${({ width }) => width}%;
   text-align: center;
+  position: relative;
+  z-index: 1;
+  transition: color ${({ duration }) => duration}s linear;
+`;
+
+export const SlidingBG = styled.div<{
+  translateX: number;
+  width: number;
+  duration: number;
+}>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  background-color: #007bff;
+  z-index: 0;
+  transform: translateX(${({ translateX }) => translateX}px);
+  width: ${({ width }) => width}px;
+  transition: transform ${({ duration }) => duration}s ease-in-out,
+    width ${({ duration }) => duration}s ease-out;
 `;

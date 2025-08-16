@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useTabAnimation } from "@shared/hooks/useTabAnimation";
 import { useLocation, useNavigate } from "react-router";
 import useArticleList from "@/pages/article/hooks/useArticleList";
 import useProjectList from "@/pages/project-list/hooks/useProjectList";
@@ -19,22 +19,15 @@ const NAV_LIST = [
 
 function NavBar() {
   const pathname = useLocation().pathname;
-  const linkRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
-  const activeIndex = NAV_LIST.findIndex((item) => item.href === pathname);
+  const selectedIndex = NAV_LIST.findIndex((item) => item.href === pathname);
+  const { setTabElementsRef, selectedStyle } = useTabAnimation({
+    selectedIndex,
+    duration: 0.3,
+  });
   const navigate = useNavigate();
   const { refetch: projectListRefetch } = useProjectList();
   const { refetch: articleListRefetch } = useArticleList();
-
-  useLayoutEffect(() => {
-    const activeRef = linkRefs.current[activeIndex];
-    if (activeRef) {
-      const { offsetLeft, clientWidth } = activeRef;
-      setUnderlineStyle({ left: offsetLeft, width: clientWidth });
-    }
-  }, [activeIndex]);
-
-  const hasActive = activeIndex > -1;
+  const hasActive = selectedIndex > -1;
 
   const handleNavigation = (href: string) => {
     navigate(href);
@@ -53,19 +46,10 @@ function NavBar() {
     <S.NavBar>
       <S.NavLinkList>
         {NAV_LIST.map(({ id, href, text }, idx) => (
-          <S.NavLinkItem
-            key={id}
-            ref={(el) => {
-              linkRefs.current[idx] = el;
-
-              return () => {
-                linkRefs.current[idx] = null;
-              };
-            }}
-          >
+          <S.NavLinkItem key={id} ref={(el) => setTabElementsRef(el, idx)}>
             <S.Link
               type="button"
-              isSelected={activeIndex === idx}
+              isSelected={selectedIndex === idx}
               onClick={() => handleNavigation(href)}
             >
               {text}
@@ -74,8 +58,9 @@ function NavBar() {
         ))}
         {hasActive && (
           <S.Underline
-            left={underlineStyle.left}
-            width={underlineStyle.width}
+            translateX={selectedStyle.translateX}
+            width={selectedStyle.width}
+            duration={selectedStyle.duration}
           />
         )}
       </S.NavLinkList>
