@@ -7,7 +7,7 @@ services:
     logging:
       driver: "awslogs"
       options:
-        awslogs-group: "moaon"
+        awslogs-group: "moaon-prod"
         awslogs-region: "ap-northeast-2"
         awslogs-stream: "prod-docker"
     environment:
