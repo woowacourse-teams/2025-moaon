@@ -1,12 +1,13 @@
-name: BE Dev CI
+name: BE CI
 
 on:
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "develop", "main" ]
 
 jobs:
   build:
     if: |
+      github.base_ref == 'main' ||
       github.actor == 'yesjuhee' || 
       github.actor == 'Minuring' ||
       github.actor == 'eueo8259' ||
@@ -65,6 +66,7 @@ jobs:
     if: |
       needs.check-dependencies-changed.outputs.dependencies-changed == 'true' &&
       (
+        github.base_ref == 'main' ||
         github.actor == 'yesjuhee' || 
         github.actor == 'Minuring' ||
         github.actor == 'eueo8259' ||
