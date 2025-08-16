@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches: main
+
+permissions:
+  contents: write
+
+jobs:
+  tag_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Read version from package.json
+        id: read
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Tag to create: v$VERSION"
+        working-directory: ./frontend
+
+      - name: Skip if tag already exists
+        id: check
+        run: |
+          git fetch --tags
+          if git rev-parse "v${{ steps.read.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create tag
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ steps.read.outputs.version }}" -m "Release v${{ steps.read.outputs.version }}"
+          git push origin "v${{ steps.read.outputs.version }}"
+
+      - name: Generate Release notes and publish
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.read.outputs.version }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
