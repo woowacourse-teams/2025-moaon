@@ -52,5 +52,6 @@ export const FilterResetButton = styled.button`
 
   &:disabled {
     color: #bdbdbd;
+    cursor: not-allowed;
   }
 `;
