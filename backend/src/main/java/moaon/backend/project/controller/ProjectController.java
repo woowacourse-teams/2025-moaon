@@ -80,7 +80,7 @@ public class ProjectController {
             @PathVariable("id") long id,
             @RequestParam(value = "category", required = false, defaultValue = "all") String category
     ) {
-        System.out.println("테스트");
+        System.out.println("테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트");
         List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndCategory(id, category);
         return ResponseEntity.ok(articleDetailResponses);
     }
