@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL_DEV}
+    username: ${SPRING_DATASOURCE_USERNAME_DEV}
+    password: ${SPRING_DATASOURCE_PASSWORD_DEV}
 
 logging:
   pattern:
