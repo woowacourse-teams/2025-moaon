@@ -81,6 +81,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Pull latest image and deploy
-        run: | # force-recreate 추가
-          sudo docker compose -f compose.dev.yaml up -d
+        run: |
+          sudo docker compose -f compose.dev.yaml up -d --force-recreate
           sudo docker image prune -af
