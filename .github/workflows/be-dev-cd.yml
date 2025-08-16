@@ -3,8 +3,6 @@ name: BE Dev CD
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ] # TODO 삭제 예정
 
 jobs:
   build-and-push-image:
@@ -82,5 +80,5 @@ jobs:
 
       - name: Pull latest image and deploy
         run: |
-          sudo docker compose -f compose.dev.yaml up -d --force-recreate
+          sudo docker compose -f compose.dev.yaml up -d
           sudo docker image prune -af
