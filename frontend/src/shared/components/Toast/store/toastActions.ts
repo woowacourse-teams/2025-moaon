@@ -2,7 +2,7 @@ import { DEFAULT_DURATION_MS, DEFAULT_TYPE } from "../constants/toast.constants"
 import type { ToastData, ToastOptions, ToastPosition, ToastsState } from "../types/toast.type";
 import { toastStore } from "./toastStore";
 
-const getDistributedToasts = (state: ToastsState) => {
+export const getDistributedToasts = (state: ToastsState) => {
   const { toasts, defaultPosition, limit } = state;
   const pendingQueue: ToastData[] = [];
   const activeToasts: ToastData[] = [];
@@ -24,7 +24,7 @@ const getDistributedToasts = (state: ToastsState) => {
 };
 
 export const showToast = (options: ToastOptions) => {
-  const { message, type = DEFAULT_TYPE, position, duration = DEFAULT_DURATION_MS } = options;
+  const { type = DEFAULT_TYPE, duration = DEFAULT_DURATION_MS, message, position } = options;
 
   const id = crypto.randomUUID();
   const toast: ToastData = {
@@ -40,7 +40,9 @@ export const showToast = (options: ToastOptions) => {
 
   const isDuplicate = currentState.toasts.some((current) => current.message === message && current.type === type);
 
-  if (isDuplicate) return id;
+  if (isDuplicate) {
+    return id;
+  }
 
   toastStore.setState({
     ...currentState,
@@ -99,5 +101,3 @@ const processQueue = () => {
     }, 10000);
   }
 };
-
-export { getDistributedToasts };
