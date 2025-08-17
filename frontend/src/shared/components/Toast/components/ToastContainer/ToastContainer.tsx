@@ -1,5 +1,5 @@
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
-import { DEFAULT_POSITION } from "../../constants/toast.constants";
+import { TOAST_DEFAULT_POSITION } from "../../constants/toast.constants";
 import { useDistributedToasts } from "../../hooks/useDistributedToasts";
 import type { ToastData, ToastPosition } from "../../types/toast.type";
 import { ToastItem } from "../ToastItem/ToastItem";
@@ -10,7 +10,7 @@ export const ToastContainer = () => {
 
   const groupedToasts = filteredToasts.reduce(
     (groups: Record<ToastPosition, ToastData[]>, toast: ToastData) => {
-      const position = toast.position || DEFAULT_POSITION;
+      const position = toast.position || TOAST_DEFAULT_POSITION;
       if (!groups[position]) groups[position] = [];
       groups[position].push(toast);
       return groups;

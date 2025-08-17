@@ -1,4 +1,4 @@
-import { DEFAULT_DURATION_MS, DEFAULT_TYPE, MIN_DURATION_MS } from "../constants/toast.constants";
+import { TOAST_DEFAULT_DURATION_MS, TOAST_DEFAULT_TYPE, TOAST_MIN_DURATION_MS } from "../constants/toast.constants";
 import type { ToastData, ToastOptions, ToastPosition, ToastsState } from "../types/toast.type";
 import { toastStore } from "./toastStore";
 
@@ -24,7 +24,7 @@ export const getDistributedToasts = (state: ToastsState) => {
 };
 
 export const showToast = (options: ToastOptions) => {
-  const { type = DEFAULT_TYPE, duration = DEFAULT_DURATION_MS, message, position } = options;
+  const { type = TOAST_DEFAULT_TYPE, duration = TOAST_DEFAULT_DURATION_MS, message, position } = options;
 
   const id = crypto.randomUUID();
   const toast: ToastData = {
@@ -36,7 +36,7 @@ export const showToast = (options: ToastOptions) => {
     createdAt: Date.now(),
   };
 
-  if (duration < MIN_DURATION_MS) {
+  if (duration < TOAST_MIN_DURATION_MS) {
     throw new Error("토스트 팝업은 최소 1초 이상 유지되어야 합니다.");
   }
 

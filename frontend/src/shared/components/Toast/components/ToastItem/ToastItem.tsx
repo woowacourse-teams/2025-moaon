@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import {
-  DEFAULT_DURATION_MS,
-  MILLISECONDS_IN_SECOND,
+  TOAST_DEFAULT_DURATION_MS,
   TOAST_ICONS,
+  TOAST_MILLISECONDS_IN_SECOND,
 } from "../../constants/toast.constants";
 import { removeToast } from "../../store/toastActions";
 import type { ToastData } from "../../types/toast.type";
@@ -14,7 +14,7 @@ interface ToastItemProps {
 
 export function ToastItem({ toast }: ToastItemProps) {
   const { duration: customDuration, type, message, id } = toast;
-  const duration = customDuration ?? DEFAULT_DURATION_MS;
+  const duration = customDuration ?? TOAST_DEFAULT_DURATION_MS;
 
   const handleRemoveToast = useCallback((id: string) => {
     removeToast(id);
@@ -23,7 +23,7 @@ export function ToastItem({ toast }: ToastItemProps) {
   return (
     <S.ToastItem
       type={type}
-      duration={duration / MILLISECONDS_IN_SECOND}
+      duration={duration / TOAST_MILLISECONDS_IN_SECOND}
       onClick={() => handleRemoveToast(id)}
     >
       <S.ToastIcon src={TOAST_ICONS[type]} />
