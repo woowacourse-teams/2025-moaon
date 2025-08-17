@@ -64,8 +64,6 @@ export const removeToast = (id: string) => {
     ...currentState,
     toasts: updatedToasts,
   });
-
-  processQueue();
 };
 
 export const updateToast = (id: string, updates: Partial<ToastData>) => {
@@ -83,21 +81,4 @@ export const clearAllToasts = () => {
     ...toastStore.getState(),
     toasts: [],
   });
-};
-
-const processQueue = () => {
-  const state = toastStore.getState();
-  const { pendingQueue } = getDistributedToasts(state);
-
-  if (pendingQueue.length > 0) {
-    const { message, type, position, duration } = pendingQueue[0];
-    setTimeout(() => {
-      showToast({
-        message,
-        type,
-        position,
-        duration,
-      });
-    }, 10000);
-  }
 };
