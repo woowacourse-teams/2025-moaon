@@ -1,24 +1,18 @@
 import searchIcon from "@assets/icons/search.svg";
-import {
-  type ChangeEvent,
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
 
 interface SearchBarProps {
   placeholder: string;
-  onSubmit: (value: string) => void;
+  onChange: (value: string) => void;
   defaultValue?: string;
   maxLength: number;
 }
 
 function SearchBar({
   placeholder,
-  onSubmit,
+  onChange,
   defaultValue = "",
   maxLength,
 }: SearchBarProps) {
@@ -34,26 +28,22 @@ function SearchBar({
     }
   }, [defaultValue]);
 
-  const handleSearchFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const value = inputRef.current?.value || "";
-    onSubmit(value);
-  };
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setHasSearchValue(e.target.value.trim() !== "");
+    const value = e.target.value;
+    setHasSearchValue(value.trim() !== "");
+    onChange(value);
   };
 
   const handleClearSearch = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
       setHasSearchValue(false);
-      onSubmit("");
+      onChange("");
     }
   };
 
   return (
-    <S.SearchForm onSubmit={handleSearchFormSubmit}>
+    <S.SearchWrapper>
       <S.SearchLabel htmlFor="search-input">
         <S.SearchIcon src={searchIcon} alt="검색" />
         <S.SearchInput
@@ -71,7 +61,7 @@ function SearchBar({
           </S.CloseButton>
         )}
       </S.SearchLabel>
-    </S.SearchForm>
+    </S.SearchWrapper>
   );
 }
 export default SearchBar;

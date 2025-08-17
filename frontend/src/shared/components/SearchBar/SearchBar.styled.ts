@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const SearchForm = styled.form``;
+export const SearchWrapper = styled.div``;
 
 export const SearchLabel = styled.label`
   width: 100%;

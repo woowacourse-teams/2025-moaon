@@ -9,15 +9,8 @@ function ProjectSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
   const { refetch } = useProjectList();
 
-  const handleSearchSubmit = (value: string) => {
-    if (value === "") {
-      params.deleteAll({ replace: true });
-      refetch();
-      return;
-    }
-
+  const handleSearchChange = (value: string) => {
     if (value.length < MIN_SEARCH_LENGTH) {
-      alert(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
       return;
     }
 
@@ -29,7 +22,7 @@ function ProjectSearchBar() {
   return (
     <SearchBar
       placeholder="프로젝트 제목, 한 줄 설명, 개요를 검색해 보세요"
-      onSubmit={handleSearchSubmit}
+      onChange={handleSearchChange}
       defaultValue={searchValue}
       maxLength={MAX_SEARCH_LENGTH}
     />

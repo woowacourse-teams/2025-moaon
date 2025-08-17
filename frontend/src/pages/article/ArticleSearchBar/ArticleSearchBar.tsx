@@ -9,15 +9,8 @@ function ArticleSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
   const { refetch } = useArticleList();
 
-  const handleSearchSubmit = (value: string) => {
-    if (value === "") {
-      params.deleteAll({ replace: true });
-      refetch();
-      return;
-    }
-
+  const handleSearchChange = (value: string) => {
     if (value.length < MIN_SEARCH_LENGTH) {
-      alert(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
       return;
     }
 
@@ -29,7 +22,7 @@ function ArticleSearchBar() {
   return (
     <SearchBar
       placeholder="아티클 제목, 내용을 검색해 보세요"
-      onSubmit={handleSearchSubmit}
+      onChange={handleSearchChange}
       defaultValue={searchValue}
       maxLength={MAX_SEARCH_LENGTH}
     />
