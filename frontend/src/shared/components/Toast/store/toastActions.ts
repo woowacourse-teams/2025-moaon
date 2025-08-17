@@ -37,8 +37,7 @@ export const showToast = (options: ToastOptions) => {
   };
 
   if (duration < MIN_DURATION_MS) {
-    console.warn("토스트 팝업은 최소 1초 이상 유지되어야 합니다.");
-    return;
+    throw new Error("토스트 팝업은 최소 1초 이상 유지되어야 합니다.");
   }
 
   const currentState = toastStore.getState();
