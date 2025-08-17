@@ -10,9 +10,7 @@ function ArticleSearchBar() {
   const { refetch } = useArticleList();
 
   const handleSearchChange = (value: string) => {
-    if (value.length < MIN_SEARCH_LENGTH) {
-      return;
-    }
+    if (value.length < MIN_SEARCH_LENGTH) return;
 
     params.update(value, { replace: true });
     refetch();
