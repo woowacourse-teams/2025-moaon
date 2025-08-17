@@ -50,13 +50,13 @@ export const showToast = (options: ToastOptions) => {
   });
 
   if (duration > 0) {
-    setTimeout(() => hideToast(id), duration);
+    setTimeout(() => removeToast(id), duration);
   }
 
   return id;
 };
 
-export const hideToast = (id: string) => {
+export const removeToast = (id: string) => {
   const currentState = toastStore.getState();
   const updatedToasts = currentState.toasts.filter((t) => t.id !== id);
 

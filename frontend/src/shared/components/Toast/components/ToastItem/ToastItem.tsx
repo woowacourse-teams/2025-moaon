@@ -4,7 +4,7 @@ import {
   MILLISECONDS_IN_SECOND,
   TOAST_ICONS,
 } from "../../constants/toast.constants";
-import { hideToast } from "../../store/toastActions";
+import { removeToast } from "../../store/toastActions";
 import type { ToastData } from "../../types/toast.type";
 import * as S from "./ToastItem.styled";
 
@@ -17,7 +17,7 @@ export function ToastItem({ toast }: ToastItemProps) {
   const duration = customDuration ?? DEFAULT_DURATION_MS;
 
   const handleRemoveToast = useCallback((id: string) => {
-    hideToast(id);
+    removeToast(id);
   }, []);
 
   return (
