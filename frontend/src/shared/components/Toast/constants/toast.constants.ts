@@ -6,6 +6,7 @@ import warningIcon from "@assets/icons/warning.svg";
 export const DEFAULT_TYPE = "info";
 export const DEFAULT_POSITION = "bottom-center";
 export const DEFAULT_DURATION_MS = 4000;
+export const MIN_DURATION_MS = 1000;
 export const TOAST_LIMIT = 3;
 export const TOAST_ICONS = {
   success: successIcon,

@@ -1,4 +1,4 @@
-import { DEFAULT_DURATION_MS, DEFAULT_TYPE } from "../constants/toast.constants";
+import { DEFAULT_DURATION_MS, DEFAULT_TYPE, MIN_DURATION_MS } from "../constants/toast.constants";
 import type { ToastData, ToastOptions, ToastPosition, ToastsState } from "../types/toast.type";
 import { toastStore } from "./toastStore";
 
@@ -36,6 +36,11 @@ export const showToast = (options: ToastOptions) => {
     createdAt: Date.now(),
   };
 
+  if (duration < MIN_DURATION_MS) {
+    console.warn("토스트 팝업은 최소 1초 이상 유지되어야 합니다.");
+    return;
+  }
+
   const currentState = toastStore.getState();
 
   const isDuplicate = currentState.toasts.some((current) => current.message === message && current.type === type);
@@ -49,9 +54,7 @@ export const showToast = (options: ToastOptions) => {
     toasts: [...currentState.toasts, toast],
   });
 
-  if (duration > 0) {
-    setTimeout(() => removeToast(id), duration);
-  }
+  setTimeout(() => removeToast(id), duration);
 
   return id;
 };
