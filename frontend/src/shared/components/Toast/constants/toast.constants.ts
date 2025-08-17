@@ -1,7 +1,7 @@
-import errorIcon from "@assets/icons/error-icon.svg";
-import infoIcon from "@assets/icons/info-icon.svg";
-import successIcon from "@assets/icons/successful-icon.svg";
-import warningIcon from "@assets/icons/warning-icon.svg";
+import errorIcon from "@assets/icons/error.svg";
+import infoIcon from "@assets/icons/info.svg";
+import successIcon from "@assets/icons/successful.svg";
+import warningIcon from "@assets/icons/warning.svg";
 
 export const DEFAULT_TYPE = "info";
 export const DEFAULT_POSITION = "bottom-center";
