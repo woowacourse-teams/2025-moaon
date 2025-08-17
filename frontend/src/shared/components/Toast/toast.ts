@@ -6,15 +6,11 @@ export { useDistributedToasts, useToast } from "./hooks/useToast";
 export { toastStore } from "./store/toastStore";
 
 export const toast = {
-  success: (message: string, options?: ToastCustomOptions) =>
-    showToast({ message, type: "success", ...options }),
+  success: (message: string, options?: ToastCustomOptions) => showToast({ type: "success", message, ...options }),
 
-  error: (message: string, options?: ToastCustomOptions) =>
-    showToast({ message, type: "error", ...options }),
+  error: (message: string, options?: ToastCustomOptions) => showToast({ type: "error", message, ...options }),
 
-  warning: (message: string, options?: ToastCustomOptions) =>
-    showToast({ message, type: "warning", ...options }),
+  warning: (message: string, options?: ToastCustomOptions) => showToast({ type: "warning", message, ...options }),
 
-  info: (message: string, options?: ToastCustomOptions) =>
-    showToast({ message, type: "info", ...options }),
+  info: (message: string, options?: ToastCustomOptions) => showToast({ type: "info", message, ...options }),
 } as const;
