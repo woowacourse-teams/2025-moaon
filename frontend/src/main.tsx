@@ -1,6 +1,7 @@
 import "./libs/sentry/initializeSentry";
 import { Global } from "@emotion/react";
-import { ErrorBoundary } from "@sentry/react";
+import { ErrorBoundary as SentryErrorBoundary } from "@sentry/react";
+import { FallbackErrorUi } from "@shared/components/FallbackErrorUi/FallbackErrorUi";
 import {
   MutationCache,
   QueryCache,
@@ -29,7 +30,15 @@ const queryClient = new QueryClient({
 
 root.render(
   <StrictMode>
-    <ErrorBoundary fallback={<h1>에러가 발생했습니다.</h1>}>
+    <SentryErrorBoundary
+      fallback={
+        <FallbackErrorUi
+          scope="viewport"
+          title="오류 발생"
+          message="페이지를 새로고침해주세요."
+        />
+      }
+    >
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Global styles={resetStyle} />
@@ -37,6 +46,6 @@ root.render(
           <App />
         </BrowserRouter>
       </QueryClientProvider>
-    </ErrorBoundary>
+    </SentryErrorBoundary>
   </StrictMode>,
 );
