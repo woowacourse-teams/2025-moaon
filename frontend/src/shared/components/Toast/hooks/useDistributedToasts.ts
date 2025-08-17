@@ -6,10 +6,10 @@ export function useDistributedToasts() {
   const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, limit });
 
   return {
-    allToasts: toasts,
+    limit,
     filteredToasts,
     pendingQueue,
+    allToasts: toasts,
     defaultPosition: defaultPosition,
-    limit: limit,
   };
 }
