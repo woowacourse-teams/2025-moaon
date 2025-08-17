@@ -46,7 +46,7 @@ export const ToastItem = styled.div<{ type: ToastType; duration: number }>`
     height: 2px;
     background: currentColor;
     width: 100%;
-    animation: ${progressShrink} var(--duration, ${({ duration }) => duration}s) linear forwards;
+    animation: ${progressShrink} ${({ duration }) => duration}s linear forwards;
   }
 `;
 
