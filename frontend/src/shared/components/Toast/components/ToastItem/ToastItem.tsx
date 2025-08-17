@@ -13,7 +13,8 @@ interface ToastItemProps {
 }
 
 export function ToastItem({ toast }: ToastItemProps) {
-  const { type, duration, message, id } = toast;
+  const { duration: customDuration, type, message, id } = toast;
+  const duration = customDuration ?? DEFAULT_DURATION_MS;
 
   const handleRemoveToast = useCallback((id: string) => {
     hideToast(id);
@@ -22,11 +23,7 @@ export function ToastItem({ toast }: ToastItemProps) {
   return (
     <S.ToastItem
       type={type}
-      duration={
-        duration
-          ? duration / MILLISECONDS_IN_SECOND
-          : DEFAULT_DURATION_MS / MILLISECONDS_IN_SECOND
-      }
+      duration={duration / MILLISECONDS_IN_SECOND}
       onClick={() => handleRemoveToast(id)}
     >
       <S.ToastIcon src={TOAST_ICONS[type]} />
