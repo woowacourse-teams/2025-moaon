@@ -1,6 +1,6 @@
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 import { DEFAULT_POSITION } from "../../constants/toast.constants";
-import { useDistributedToasts } from "../../hooks/useToast";
+import { useDistributedToasts } from "../../hooks/useDistributedToasts";
 import type { ToastData, ToastPosition } from "../../types/toast.type";
 import { ToastItem } from "../ToastItem/ToastItem";
 import * as S from "./ToastContainer.styled";
