@@ -1,4 +1,5 @@
-import { memo, useCallback } from "react";
+import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
+import { useCallback } from "react";
 import { DEFAULT_POSITION } from "../../constants/toast.constants";
 import { useDistributedToasts } from "../../hooks/useToast";
 import { hideToast } from "../../store/toastActions";
@@ -6,7 +7,7 @@ import type { ToastData, ToastPosition } from "../../types/toast.type";
 import { ToastItem } from "../ToastItem/ToastItem";
 import * as S from "./ToastContainer.styled";
 
-export const ToastContainer = memo(function ToastContainer() {
+export const ToastContainer = () => {
   const { filteredToasts } = useDistributedToasts();
 
   const handleRemove = useCallback((id: string) => {
@@ -25,13 +26,15 @@ export const ToastContainer = memo(function ToastContainer() {
 
   return (
     <>
-      {Object.entries(groupedToasts).map(([position, positionToasts]) => (
-        <S.ToastContainer key={position} position={position as ToastPosition}>
-          {(positionToasts as ToastData[]).map((toast: ToastData) => (
-            <ToastItem key={toast.id} toast={toast} onRemove={handleRemove} />
-          ))}
-        </S.ToastContainer>
-      ))}
+      {typeSafeObjectEntries(groupedToasts).map(
+        ([position, positionToasts]) => (
+          <S.ToastContainer key={position} position={position as ToastPosition}>
+            {(positionToasts as ToastData[]).map((toast: ToastData) => (
+              <ToastItem key={toast.id} toast={toast} onRemove={handleRemove} />
+            ))}
+          </S.ToastContainer>
+        ),
+      )}
     </>
   );
-});
+};
