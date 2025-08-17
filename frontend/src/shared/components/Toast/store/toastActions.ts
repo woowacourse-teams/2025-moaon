@@ -38,7 +38,7 @@ export const showToast = (options: ToastOptions) => {
 
   const currentState = toastStore.getState();
 
-  const isDuplicate = currentState.toasts.some(({ message: toastMessage, type: toastType }) => toastMessage === message && toastType === type);
+  const isDuplicate = currentState.toasts.some((current) => current.message === message && current.type === type);
 
   if (isDuplicate) return id;
 
