@@ -17,11 +17,12 @@ export interface ToastsState {
   limit: number;
 }
 
-export interface ToastOptions {
-  message: string;
-  type?: ToastType;
+export interface ToastStyleOptions {
   position?: ToastPosition;
   duration?: number;
 }
 
-export type ToastCustomOptions = Omit<ToastOptions, "message" | "type">;
+export interface ToastOptions extends ToastStyleOptions {
+  message: string;
+  type?: ToastType;
+}
