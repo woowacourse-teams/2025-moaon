@@ -3,12 +3,12 @@ import { useToast } from "./useToast";
 
 export function useDistributedToasts() {
   const { toasts, defaultPosition, limit } = useToast();
-  const { filteredToasts, queue } = getDistributedToasts({ toasts, defaultPosition, limit });
+  const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, limit });
 
   return {
     allToasts: toasts,
     filteredToasts,
-    queue,
+    pendingQueue,
     defaultPosition: defaultPosition,
     limit: limit,
   };

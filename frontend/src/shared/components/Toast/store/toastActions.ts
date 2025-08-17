@@ -4,7 +4,7 @@ import { toastStore } from "./toastStore";
 
 const getDistributedToasts = (state: ToastsState) => {
   const { toasts, defaultPosition, limit } = state;
-  const queue: ToastData[] = [];
+  const pendingQueue: ToastData[] = [];
   const activeToasts: ToastData[] = [];
   const count: Record<string, number> = {};
 
@@ -16,11 +16,11 @@ const getDistributedToasts = (state: ToastsState) => {
     if (count[position] <= limit) {
       activeToasts.push(toast);
     } else {
-      queue.push(toast);
+      pendingQueue.push(toast);
     }
   });
 
-  return { filteredToasts: activeToasts, queue };
+  return { filteredToasts: activeToasts, pendingQueue };
 };
 
 export const showToast = (options: ToastOptions) => {
@@ -85,10 +85,10 @@ export const clearAllToasts = () => {
 
 const processQueue = () => {
   const state = toastStore.getState();
-  const { queue } = getDistributedToasts(state);
+  const { pendingQueue } = getDistributedToasts(state);
 
-  if (queue.length > 0) {
-    const { message, type, position, duration } = queue[0];
+  if (pendingQueue.length > 0) {
+    const { message, type, position, duration } = pendingQueue[0];
     setTimeout(() => {
       showToast({
         message: message,
