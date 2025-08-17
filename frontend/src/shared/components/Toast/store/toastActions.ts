@@ -1,12 +1,12 @@
 import { DEFAULT_DURATION_MS, DEFAULT_TYPE } from "../constants/toast.constants";
-import type { ToastData, ToastOptions, ToastsState } from "../types/toast.type";
+import type { ToastData, ToastOptions, ToastPosition, ToastsState } from "../types/toast.type";
 import { toastStore } from "./toastStore";
 
 const getDistributedToasts = (state: ToastsState) => {
   const { toasts, defaultPosition, limit } = state;
   const pendingQueue: ToastData[] = [];
   const activeToasts: ToastData[] = [];
-  const count: Record<string, number> = {};
+  const count: Partial<Record<ToastPosition, number>> = {};
 
   toasts.forEach((toast) => {
     const position = toast.position || defaultPosition;
