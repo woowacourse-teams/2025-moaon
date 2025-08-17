@@ -93,10 +93,10 @@ const processQueue = () => {
     const { message, type, position, duration } = pendingQueue[0];
     setTimeout(() => {
       showToast({
-        message: message,
-        type: type,
-        position: position,
-        duration: duration,
+        message,
+        type,
+        position,
+        duration,
       });
     }, 10000);
   }
