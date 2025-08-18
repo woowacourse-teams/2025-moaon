@@ -3,7 +3,7 @@ import { useToast } from "./useToast";
 
 export function useDistributedToasts() {
   const { toasts, defaultPosition, maxVisibleToasts } = useToast();
-  const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, maxVisibleToasts: limit });
+  const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, maxVisibleToasts });
 
   return {
     maxVisibleToasts,
