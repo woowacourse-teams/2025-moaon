@@ -14,7 +14,7 @@ export interface ToastData {
 export interface ToastsState {
   toasts: ToastData[];
   defaultPosition: ToastPosition;
-  limit: number;
+  maxVisibleToasts: number;
 }
 
 export interface ToastStyleOptions {

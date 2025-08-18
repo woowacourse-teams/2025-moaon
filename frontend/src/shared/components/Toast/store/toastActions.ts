@@ -3,7 +3,7 @@ import type { ToastData, ToastOptions, ToastPosition, ToastsState } from "../typ
 import { toastStore } from "./toastStore";
 
 export const getDistributedToasts = (state: ToastsState) => {
-  const { toasts, defaultPosition, limit } = state;
+  const { toasts, defaultPosition, maxVisibleToasts } = state;
   const pendingQueue: ToastData[] = [];
   const activeToasts: ToastData[] = [];
   const count: Partial<Record<ToastPosition, number>> = {};
@@ -13,7 +13,7 @@ export const getDistributedToasts = (state: ToastsState) => {
     count[position] = count[position] || 0;
     count[position] += 1;
 
-    if (count[position] <= limit) {
+    if (count[position] <= maxVisibleToasts) {
       activeToasts.push(toast);
     } else {
       pendingQueue.push(toast);

@@ -5,5 +5,5 @@ import { createStore } from "./createStore";
 export const toastStore = createStore<ToastsState>({
   toasts: [],
   defaultPosition: TOAST_DEFAULT_POSITION,
-  limit: TOAST_LIMIT,
+  maxVisibleToasts: TOAST_LIMIT,
 });

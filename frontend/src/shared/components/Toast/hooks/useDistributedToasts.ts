@@ -2,11 +2,11 @@ import { getDistributedToasts } from "../store/toastActions";
 import { useToast } from "./useToast";
 
 export function useDistributedToasts() {
-  const { toasts, defaultPosition, limit } = useToast();
-  const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, limit });
+  const { toasts, defaultPosition, maxVisibleToasts } = useToast();
+  const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, maxVisibleToasts: limit });
 
   return {
-    limit,
+    maxVisibleToasts,
     filteredToasts,
     pendingQueue,
     allToasts: toasts,
