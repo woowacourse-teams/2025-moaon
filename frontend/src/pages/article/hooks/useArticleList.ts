@@ -15,6 +15,7 @@ const useArticleList = () => {
   const nextCursor = data?.pages[data.pages.length - 1]?.nextCursor ?? "";
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
+
   const showInitialSkeleton = useDelayedVisibility(isLoading, { delayMs: 300 });
   const showNextSkeleton = useDelayedVisibility(isFetchingNextPage, {
     delayMs: 300,

@@ -21,7 +21,7 @@ const useProjectList = () => {
   };
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
-  // 짧은 로딩에는 스켈레톤을 숨기고, 일정 시간(300ms) 이상 지속될 때만 노출
+
   const showInitialSkeleton = useDelayedVisibility(isLoading, { delayMs: 300 });
   const showNextSkeleton = useDelayedVisibility(isFetchingNextPage, {
     delayMs: 300,
@@ -35,9 +35,9 @@ const useProjectList = () => {
     fetchNextPage,
     refetch,
     hasNext,
-    isLoading,
     scrollEnabled,
     showSkeleton,
+    isLoading,
   };
 };
 
