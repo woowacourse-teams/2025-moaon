@@ -1,5 +1,7 @@
 import resetIcon from "@assets/icons/reset.svg";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
+import setMetaTag from "@shared/utils/meta";
+import { useEffect } from "react";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
 import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
@@ -10,10 +12,21 @@ import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 
 const DEFAULT_SORT_TYPE = "createdAt";
+const PROJECT_LIST_PAGE_DESCRIPTION =
+  "다양한 개발자들의 프로젝트를 탐색하고 학습하세요";
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount, isLoading } = useProjectList();
+
+  useEffect(() => {
+    document.title = "모아온  |  프로젝트 탐색";
+
+    setMetaTag({
+      name: "description",
+      content: PROJECT_LIST_PAGE_DESCRIPTION,
+    });
+  }, []);
 
   const handleFilterResetButtonClick = () => {
     resetFilter();
@@ -32,9 +45,7 @@ function ProjectListPage() {
       <S.MainBox>
         <S.TitleBox>
           <S.MainTitle>프로젝트 탐색</S.MainTitle>
-          <S.MainDescription>
-            다양한 개발자들의 프로젝트를 탐색하고 학습하세요
-          </S.MainDescription>
+          <S.MainDescription>{PROJECT_LIST_PAGE_DESCRIPTION}</S.MainDescription>
         </S.TitleBox>
         <ProjectSearchBar />
       </S.MainBox>

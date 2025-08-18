@@ -1,3 +1,5 @@
+import setMetaTag from "@shared/utils/meta";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import ArticleSection from "./components/ArticleSection/ArticleSection";
 import Carousel from "./components/Carousel/Carousel";
@@ -14,6 +16,16 @@ function ProjectDetailPage() {
   const { projectArticles, refetch, isRefetching } = useProjectArticles(
     Number(id),
   );
+  useEffect(() => {
+    if (!projectDetail) return;
+
+    document.title = projectDetail.title;
+
+    setMetaTag({
+      name: "description",
+      content: projectDetail.summary,
+    });
+  }, [projectDetail]);
 
   if (isLoading || !projectDetail) return <div>로딩 중...</div>;
   if (error) return <div>비상!</div>;
