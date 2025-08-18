@@ -24,13 +24,13 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
     githubUrl,
     productionUrl,
   } = projectDetail;
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [loveCount, setLoveCount] = useState<number>(loves);
+  // const [isLiked, setIsLiked] = useState<boolean>(false);
+  // const [loveCount, setLoveCount] = useState<number>(loves);
 
-  const handleLikeToggle = () => {
-    setIsLiked(!isLiked);
-    setLoveCount(isLiked ? loveCount - 1 : loveCount + 1);
-  };
+  // const handleLikeToggle = () => {
+  //   setIsLiked(!isLiked);
+  //   setLoveCount(isLiked ? loveCount - 1 : loveCount + 1);
+  // };
 
   return (
     <S.TitleSectionContainer>
@@ -52,10 +52,10 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
           {views}
         </S.View>
         <S.OverlineSection>
-          <S.LoveButton isLiked={isLiked} onClick={handleLikeToggle}>
+          {/* <S.LoveButton isLiked={isLiked} onClick={handleLikeToggle}>
             <img src={isLiked ? heartIcon : emptyHeartIcon} alt="좋아요 버튼" />
             <S.LoveCount>{loveCount}</S.LoveCount>
-          </S.LoveButton>
+          </S.LoveButton> */}
           <S.ButtonBar>
             {githubUrl && (
               <S.GithubLink
