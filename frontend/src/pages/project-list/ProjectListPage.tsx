@@ -1,7 +1,6 @@
 import resetIcon from "@assets/icons/reset.svg";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
-import setMetaTag from "@shared/utils/meta";
-import { useEffect } from "react";
+import { useMeta } from "@shared/hooks/useMeta";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
 import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
@@ -19,14 +18,10 @@ function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount, isLoading } = useProjectList();
 
-  useEffect(() => {
-    document.title = "모아온  |  프로젝트 탐색";
-
-    setMetaTag({
-      name: "description",
-      content: PROJECT_LIST_PAGE_DESCRIPTION,
-    });
-  }, []);
+  useMeta({
+    title: "모아온 | 프로젝트 탐색",
+    description: PROJECT_LIST_PAGE_DESCRIPTION,
+  });
 
   const handleFilterResetButtonClick = () => {
     resetFilter();

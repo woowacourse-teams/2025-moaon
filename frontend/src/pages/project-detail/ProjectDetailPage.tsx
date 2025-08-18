@@ -1,5 +1,4 @@
-import setMetaTag from "@shared/utils/meta";
-import { useEffect } from "react";
+import { useMeta } from "@shared/hooks/useMeta";
 import { useParams } from "react-router";
 import ArticleSection from "./components/ArticleSection/ArticleSection";
 import Carousel from "./components/Carousel/Carousel";
@@ -16,16 +15,12 @@ function ProjectDetailPage() {
   const { projectArticles, refetch, isRefetching } = useProjectArticles(
     Number(id),
   );
-  useEffect(() => {
-    if (!projectDetail) return;
 
-    document.title = projectDetail.title;
-
-    setMetaTag({
-      name: "description",
-      content: projectDetail.summary,
-    });
-  }, [projectDetail]);
+  useMeta({
+    title: projectDetail?.title || "프로젝트 상세",
+    description:
+      projectDetail?.summary || "프로젝트와 관련된 상세 정보를 확인하세요",
+  });
 
   if (isLoading || !projectDetail) return <div>로딩 중...</div>;
   if (error) return <div>비상!</div>;

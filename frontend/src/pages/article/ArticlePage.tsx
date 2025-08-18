@@ -4,8 +4,7 @@ import {
 } from "@domains/filter/articleCategory";
 import MoveTop from "@shared/components/MoveTop/MoveTop";
 import Tab from "@shared/components/Tab/Tab";
-import setMetaTag from "@shared/utils/meta";
-import { useEffect } from "react";
+import { useMeta } from "@shared/hooks/useMeta";
 import ArticleBox from "./ArticleBox/ArticleBox";
 import * as S from "./ArticlePage.styled";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
@@ -28,14 +27,10 @@ function ArticlePage() {
     label,
   }));
 
-  useEffect(() => {
-    document.title = "모아온  |  아티클 탐색";
-
-    setMetaTag({
-      name: "description",
-      content: ARTICLE_PAGE_DESCRIPTION,
-    });
-  }, []);
+  useMeta({
+    title: "모아온 | 아티클 탐색",
+    description: ARTICLE_PAGE_DESCRIPTION,
+  });
 
   const handleTabSelect = (key: ArticleCategoryKey) => {
     updateCategory(key);
