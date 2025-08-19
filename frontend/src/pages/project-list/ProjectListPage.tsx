@@ -26,7 +26,7 @@ function ProjectListPage() {
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
   const shouldShowSort = isLoading || totalCount > 0;
-
+  
   return (
     <S.Main>
       <S.MainBox>
