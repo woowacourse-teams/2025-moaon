@@ -30,22 +30,22 @@ const queryClient = new QueryClient({
 
 root.render(
   <StrictMode>
-    <SentryErrorBoundary
-      fallback={
-        <FallbackErrorUi
-          scope="viewport"
-          title="오류 발생"
-          message="페이지를 새로고침해주세요."
-        />
-      }
-    >
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Global styles={resetStyle} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Global styles={resetStyle} />
+        <SentryErrorBoundary
+          fallback={
+            <FallbackErrorUi
+              scope="viewport"
+              title="오류 발생"
+              message="페이지를 새로고침해주세요."
+            />
+          }
+        >
           <GAInitializer />
           <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </SentryErrorBoundary>
+        </SentryErrorBoundary>
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>,
 );
