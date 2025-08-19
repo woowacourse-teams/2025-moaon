@@ -9,6 +9,7 @@ export default merge(common, {
     chunkFilename: "[name].[contenthash].js",
   },
   optimization: {
+    minimize: true,
     runtimeChunk: "single",
     splitChunks: {
       cacheGroups: {
