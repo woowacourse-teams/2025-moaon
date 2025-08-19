@@ -55,7 +55,7 @@ export const ToastItem = styled.div<{ type: ToastType; duration: number }>`
 `;
 
 export const ToastIcon = styled.img`
-  width: 1.5rem;
+  width: 1.125rem;
 `;
 
 export const ToastMessage = styled.span`

@@ -34,5 +34,9 @@ export const ToastContainer = styled.div<{ position: ToastPosition }>`
   position: fixed;
   z-index: 1002;
   max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   ${({ position }) => TOAST_POSITION_STYLES[position]};
 `;
