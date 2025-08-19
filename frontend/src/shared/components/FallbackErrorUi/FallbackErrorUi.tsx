@@ -10,14 +10,14 @@ interface FallbackErrorBoundaryProps {
   scope?: "viewport" | "parent";
   title: string;
   message: string;
-  buttonOptions?: ButtonOption;
+  buttonOption?: ButtonOption;
 }
 
 export function FallbackErrorUi({
   scope = "parent",
   title,
   message,
-  buttonOptions: button,
+  buttonOption: button,
 }: FallbackErrorBoundaryProps) {
   const navigate = useNavigate();
 
