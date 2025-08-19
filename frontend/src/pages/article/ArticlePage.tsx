@@ -1,3 +1,4 @@
+import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import {
   ARTICLE_CATEGORY_ENTRY,
   type ArticleCategoryKey,
@@ -28,7 +29,7 @@ function ArticlePage() {
   }));
 
   useMeta({
-    title: "모아온 | 아티클 탐색",
+    title: `${META_TITLE_PREFIX}아티클 탐색`,
     description: ARTICLE_PAGE_DESCRIPTION,
   });
 

@@ -1,4 +1,5 @@
 import resetIcon from "@assets/icons/reset.svg";
+import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
 import { useMeta } from "@shared/hooks/useMeta";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
@@ -19,7 +20,7 @@ function ProjectListPage() {
   const { refetch, totalCount, isLoading } = useProjectList();
 
   useMeta({
-    title: "모아온 | 프로젝트 탐색",
+    title: `${META_TITLE_PREFIX}프로젝트 탐색`,
     description: PROJECT_LIST_PAGE_DESCRIPTION,
   });
 
