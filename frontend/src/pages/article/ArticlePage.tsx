@@ -47,7 +47,7 @@ function ArticlePage() {
       />
       <S.Box>
         <ArticleBox />
-        <TagList />
+        <TagList selectedCategory={selectedCategory} />
       </S.Box>
       <MoveTop />
     </S.Main>
