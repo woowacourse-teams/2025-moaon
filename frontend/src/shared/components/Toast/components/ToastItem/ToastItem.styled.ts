@@ -48,6 +48,10 @@ export const ToastItem = styled.div<{ type: ToastType; duration: number }>`
     width: 100%;
     animation: ${progressShrink} ${({ duration }) => duration}s linear forwards;
   }
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export const ToastIcon = styled.img`
