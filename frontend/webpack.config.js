@@ -11,10 +11,23 @@ const __dirname = path.dirname(__filename);
 export default {
   entry: "./src/main.tsx",
   output: {
-    filename: "bundle.js",
+    filename: "[name].[contenthash].js",
+    chunkFilename: "[name].[contenthash].js",
     publicPath: "/",
     path: path.resolve(__dirname, "dist"),
     clean: true,
+    optimization: {
+      splitChunks: {
+        runtimeChunk: "single",
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            chunks: "all",
+          },
+        },
+      },
+    },
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
