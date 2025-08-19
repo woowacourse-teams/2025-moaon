@@ -1,14 +1,14 @@
 import * as S from "./Badge.styled";
 
 interface BadgeProps {
-  text: string;
-  bgColor?: string;
+  bgColor: string;
+  children: React.ReactNode;
 }
 
-function Badge({ text, bgColor = "#d9d9d9" }: BadgeProps) {
+function Badge({ bgColor, children }: BadgeProps) {
   return (
     <S.BadgeContainer bgColor={bgColor}>
-      <S.BadgeText>{text}</S.BadgeText>
+      <S.BadgeText>{children}</S.BadgeText>
     </S.BadgeContainer>
   );
 }

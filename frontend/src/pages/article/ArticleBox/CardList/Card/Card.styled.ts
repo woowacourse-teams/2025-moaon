@@ -95,3 +95,9 @@ export const ProjectLink = styled(Link)`
   border: 1px solid #fff;
   border-radius: 4px;
 `;
+
+export const ArrowText = styled.span`
+  position: relative;
+  top: -1px;
+  display: inline-block;
+`;

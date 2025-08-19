@@ -11,15 +11,27 @@ interface CardProps {
 }
 
 function Card({ article }: CardProps) {
-  const { title, summary, techStacks, url, category, projectId, clicks, id } =
-    article;
+  const {
+    title,
+    summary,
+    techStacks,
+    url,
+    category,
+    projectId,
+    projectTitle,
+    clicks,
+    id,
+  } = article;
+
   const isArticleList = !!projectId;
   const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
 
   return (
     <S.CardContainer>
-      <Badge text={label} bgColor={bgColor} />
+      <Badge bgColor={bgColor}>
+        {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
+      </Badge>
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardSummary>{summary}</S.CardSummary>
       <S.CardInfoBox>
