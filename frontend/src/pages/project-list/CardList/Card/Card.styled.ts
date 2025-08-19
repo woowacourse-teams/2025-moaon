@@ -9,7 +9,7 @@ import {
 export const CardImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 
   /* 처음에는 투명하게 시작 */
@@ -53,7 +53,7 @@ export const CardLink = styled(Link)``;
 
 export const CardImageBox = styled.div`
   width: 100%;
-  height: 10.9375rem;
+  aspect-ratio: 14/8;
   overflow: hidden;
   position: relative;
   border: 1px solid #e9e9e9;
