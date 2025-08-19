@@ -1,8 +1,9 @@
+import { toast } from "@shared/components/Toast/toast";
 import * as S from "./RegisterProjectButton.styled";
 
 function RegisterProjectButton() {
   const handleClick = () => {
-    alert("프로젝트 등록은 추후에 추가될 예정입니다.");
+    toast.info("프로젝트 등록은 추후에 추가될 예정입니다.");
   };
 
   return (
