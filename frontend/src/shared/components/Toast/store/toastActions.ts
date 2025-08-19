@@ -37,8 +37,6 @@ export const showToast = (options: ToastOptions) => {
 
   toastStore.setState([...currentState.toasts, toast]);
 
-  setTimeout(() => removeToast(id), duration);
-
   return id;
 };
 

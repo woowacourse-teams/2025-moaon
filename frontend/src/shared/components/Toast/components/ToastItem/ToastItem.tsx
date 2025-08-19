@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
   TOAST_DEFAULT_DURATION_MS,
   TOAST_ICONS,
@@ -19,6 +19,13 @@ export function ToastItem({ toast }: ToastItemProps) {
   const handleRemoveToast = useCallback((id: string) => {
     removeToast(id);
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      removeToast(id);
+    }, duration);
+    return () => clearTimeout(timer);
+  }, [id, duration]);
 
   return (
     <S.ToastItem
