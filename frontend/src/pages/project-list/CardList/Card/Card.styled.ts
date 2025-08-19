@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
+import {
+  flexCenter,
+  shimmerGradient,
+  textOverflowEllipsis,
+} from "@/styles/global.styled";
 
 export const CardImage = styled.img`
   width: 100%;
@@ -79,6 +83,7 @@ export const CardSummary = styled.p`
 
 export const CardFooter = styled.div`
   ${flexCenter}
+  justify-content: right;
   margin-top: 0.75rem;
   gap: 1rem;
 `;

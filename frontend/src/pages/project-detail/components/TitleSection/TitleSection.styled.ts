@@ -90,7 +90,7 @@ export const LoveButton = styled.button<{ isLiked: boolean }>`
 export const ButtonBar = styled.div`
   display: flex;
   gap: 0.625rem;
-  border-left: 1px solid #535353;
+  /* border-left: 1px solid #535353; */
   padding-left: 1.5rem;
 `;
 
