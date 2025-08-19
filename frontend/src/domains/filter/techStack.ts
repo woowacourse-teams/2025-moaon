@@ -1,6 +1,6 @@
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 
-export const TECH_STACK_ICON_MAP = {
+export const FRONTEND_STACK_ICON_MAP = {
   react: {
     label: "React",
     imgUrl:
@@ -26,11 +26,6 @@ export const TECH_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Svelte.svg",
   },
-  jquery: {
-    label: "JQuery",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/jQuery.svg",
-  },
   typescript: {
     label: "TypeScript",
     imgUrl:
@@ -51,6 +46,64 @@ export const TECH_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Redux.svg",
   },
+  vite: {
+    label: "Vite",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Vite.svg",
+  },
+  tanstackQuery: {
+    label: "Tanstack Query",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Tanstack-Query.svg",
+  },
+  jotai: {
+    label: "Jotai",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jotai.svg",
+  },
+  zustand: {
+    label: "Zustand",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Zustand.svg",
+  },
+  styledComponents: {
+    label: "Styled Components",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Styled-Components.svg",
+  },
+  emotion: {
+    label: "Emotion",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Emotion.svg",
+  },
+  recoil: {
+    label: "Recoil",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Recoil.svg",
+  },
+  nuxtjs: {
+    label: "Nuxt.js",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nuxt.js.svg",
+  },
+  astro: {
+    label: "Astro",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Astro.svg",
+  },
+  solidjs: {
+    label: "SolidJS",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SolidJS.svg",
+  },
+  remix: {
+    label: "Remix",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Remix.svg",
+  },
+} as const;
+
+export const BACKEND_STACK_ICON_MAP = {
   nodejs: {
     label: "Node.js",
     imgUrl:
@@ -136,95 +189,20 @@ export const TECH_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Python.svg",
   },
-  c: {
-    label: "C",
+  go: {
+    label: "Go",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/C.svg",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Go.svg",
   },
-  cpp: {
-    label: "C++",
+  rust: {
+    label: "Rust",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/C%2B%2B.svg",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Rust.svg",
   },
-  kotlin: {
-    label: "Kotlin",
+  deno: {
+    label: "Deno",
     imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
-  },
-  swift: {
-    label: "Swift",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Swift.svg",
-  },
-  flutter: {
-    label: "Flutter",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flutter.svg",
-  },
-  tanstackQuery: {
-    label: "Tanstack-Query",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Tanstack-Query.svg",
-  },
-  jotai: {
-    label: "Jotai",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jotai.svg",
-  },
-  reactNative: {
-    label: "React Native",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
-  },
-  zustand: {
-    label: "Zustand",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Zustand.svg",
-  },
-  styledComponents: {
-    label: "Styled-Components",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Styled-Components.svg",
-  },
-  emotion: {
-    label: "Emotion",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Emotion.svg",
-  },
-  recoil: {
-    label: "Recoil",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Recoil.svg",
-  },
-  nuxtjs: {
-    label: "Nuxt.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nuxt.js.svg",
-  },
-  vite: {
-    label: "Vite",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Vite.svg",
-  },
-  astro: {
-    label: "Astro",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Astro.svg",
-  },
-  solidjs: {
-    label: "SolidJS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SolidJS.svg",
-  },
-  remix: {
-    label: "Remix",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Remix.svg",
-  },
-  springboot: {
-    label: "Spring Boot",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringBoot.svg",
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Deno.svg",
   },
   supabase: {
     label: "Supabase",
@@ -241,53 +219,8 @@ export const TECH_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/tRPC.svg",
   },
-  go: {
-    label: "Go",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Go.svg",
-  },
-  rust: {
-    label: "Rust",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Rust.svg",
-  },
-  deno: {
-    label: "Deno",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Deno.svg",
-  },
-  compose: {
-    label: "Jetpack Compose",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JetpackCompose.svg",
-  },
-  rxswift: {
-    label: "RxSwift",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RxSwift.svg",
-  },
-  alamofire: {
-    label: "Alamofire",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Alamofire.svg",
-  },
-  swiftui: {
-    label: "SwiftUI",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SwiftUI.svg",
-  },
-  githubAction: {
-    label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
-  },
-  git: {
-    label: "Git",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
-  },
   elasticsearch: {
-    label: "ElasticSearch",
+    label: "Elasticsearch",
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ElasticSearch.svg",
   },
@@ -313,5 +246,89 @@ export const TECH_STACK_ICON_MAP = {
   },
 } as const;
 
-export type TechStackKey = keyof typeof TECH_STACK_ICON_MAP;
+export const ANDROID_STACK_ICON_MAP = {
+  kotlin: {
+    label: "Kotlin",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
+  },
+  compose: {
+    label: "Jetpack Compose",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JetpackCompose.svg",
+  },
+  java: {
+    label: "Java",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Java.svg",
+  },
+  rxswift: {
+    label: "RxSwift",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RxSwift.svg",
+  },
+  flutter: {
+    label: "Flutter",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flutter.svg",
+  },
+} as const;
+
+export const IOS_STACK_ICON_MAP = {
+  swift: {
+    label: "Swift",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Swift.svg",
+  },
+  swiftui: {
+    label: "SwiftUI",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SwiftUI.svg",
+  },
+  rxswift: {
+    label: "RxSwift",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RxSwift.svg",
+  },
+  alamofire: {
+    label: "Alamofire",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Alamofire.svg",
+  },
+  flutter: {
+    label: "Flutter",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flutter.svg",
+  },
+} as const;
+
+export const TECH_STACK_ICON_MAP = {
+  ...FRONTEND_STACK_ICON_MAP,
+  ...BACKEND_STACK_ICON_MAP,
+  ...ANDROID_STACK_ICON_MAP,
+  ...IOS_STACK_ICON_MAP,
+} as const;
+
+export type FrontendStackKey = keyof typeof FRONTEND_STACK_ICON_MAP;
+export type BackendStackKey = keyof typeof BACKEND_STACK_ICON_MAP;
+export type AndroidStackKey = keyof typeof ANDROID_STACK_ICON_MAP;
+export type IosStackKey = keyof typeof IOS_STACK_ICON_MAP;
+
+export type TechStackKey =
+  | FrontendStackKey
+  | BackendStackKey
+  | AndroidStackKey
+  | IosStackKey;
+
+export const FRONTEND_STACK_ENTRY = typeSafeObjectEntries(
+  FRONTEND_STACK_ICON_MAP
+);
+export const BACKEND_STACK_ENTRY = typeSafeObjectEntries(
+  BACKEND_STACK_ICON_MAP
+);
+export const ANDROID_STACK_ENTRY = typeSafeObjectEntries(
+  ANDROID_STACK_ICON_MAP
+);
+export const IOS_STACK_ENTRY = typeSafeObjectEntries(IOS_STACK_ICON_MAP);
+
 export const TECH_STACK_ENTRY = typeSafeObjectEntries(TECH_STACK_ICON_MAP);
