@@ -7,7 +7,7 @@ function Header() {
     <S.Header>
       <S.HeaderBox>
         <S.Wrap>
-          <S.LogoLink to="/project">모아온</S.LogoLink>
+          <S.LogoLink to="/">모아온</S.LogoLink>
           <NavBar />
         </S.Wrap>
         <S.Wrap>
