@@ -22,10 +22,6 @@ function CardList({
   targetRef,
   isLoading,
 }: CardListProps) {
-  if (showSkeleton) {
-    return <ArticleSkeletonList />;
-  }
-
   if (totalCount === 0 && !isLoading) {
     return (
       <S.EmptyContainer>
@@ -40,6 +36,7 @@ function CardList({
         <Card key={article.id} article={article} />
       ))}
       {scrollEnabled && <div ref={targetRef} />}
+      {showSkeleton && <ArticleSkeletonList />}
     </S.CardListContainer>
   );
 }
