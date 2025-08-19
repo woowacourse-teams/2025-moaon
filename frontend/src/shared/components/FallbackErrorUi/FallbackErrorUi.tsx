@@ -21,14 +21,18 @@ export function FallbackErrorUi({
 }: FallbackErrorBoundaryProps) {
   const navigate = useNavigate();
 
-  const handleClick = button?.onClick ?? navigate(0);
+  const defaultEventHandler = () => {
+    navigate(0);
+  };
+
+  const handleClick = button?.onClick ?? defaultEventHandler;
   const label = button?.text ?? "새로고침";
 
   return (
     <S.ErrorContainer scope={scope}>
       <S.ErrorTitle>{title}</S.ErrorTitle>
       <S.ErrorMessage>{message}</S.ErrorMessage>
-      <S.RetryButton type="button" onClick={() => handleClick}>
+      <S.RetryButton type="button" onClick={handleClick}>
         {label}
       </S.RetryButton>
     </S.ErrorContainer>
