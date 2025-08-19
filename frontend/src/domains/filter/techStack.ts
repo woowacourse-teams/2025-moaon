@@ -322,13 +322,20 @@ export type TechStackKey =
 
 export const FRONTEND_STACK_ENTRY = typeSafeObjectEntries(
   FRONTEND_STACK_ICON_MAP
-);
+).sort(([a], [b]) => a.localeCompare(b));
+
 export const BACKEND_STACK_ENTRY = typeSafeObjectEntries(
   BACKEND_STACK_ICON_MAP
-);
+).sort(([a], [b]) => a.localeCompare(b));
+
 export const ANDROID_STACK_ENTRY = typeSafeObjectEntries(
   ANDROID_STACK_ICON_MAP
-);
-export const IOS_STACK_ENTRY = typeSafeObjectEntries(IOS_STACK_ICON_MAP);
+).sort(([a], [b]) => a.localeCompare(b));
 
-export const TECH_STACK_ENTRY = typeSafeObjectEntries(TECH_STACK_ICON_MAP);
+export const IOS_STACK_ENTRY = typeSafeObjectEntries(IOS_STACK_ICON_MAP).sort(
+  ([a], [b]) => a.localeCompare(b)
+);
+
+export const TECH_STACK_ENTRY = typeSafeObjectEntries(TECH_STACK_ICON_MAP).sort(
+  ([a], [b]) => a.localeCompare(b)
+);
