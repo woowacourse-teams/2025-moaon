@@ -1,24 +1,11 @@
 import { TOAST_DEFAULT_DURATION_MS, TOAST_DEFAULT_TYPE, TOAST_MIN_DURATION_MS } from "../constants/toast.constants";
-import type { ToastData, ToastOptions, ToastPosition, ToastsState } from "../types/toast.type";
+import type { ToastData, ToastOptions, ToastsState } from "../types/toast.type";
 import { toastStore } from "./toastStore";
 
 export const getDistributedToasts = (state: ToastsState) => {
-  const { toasts, defaultPosition, maxVisibleToasts } = state;
-  const pendingQueue: ToastData[] = [];
-  const activeToasts: ToastData[] = [];
-  const count: Partial<Record<ToastPosition, number>> = {};
-
-  toasts.forEach((toast) => {
-    const position = toast.position || defaultPosition;
-    count[position] = count[position] || 0;
-    count[position] += 1;
-
-    if (count[position] <= maxVisibleToasts) {
-      activeToasts.push(toast);
-    } else {
-      pendingQueue.push(toast);
-    }
-  });
+  const { toasts, maxVisibleToasts } = state;
+  const activeToasts = toasts.slice(0, maxVisibleToasts);
+  const pendingQueue = toasts.slice(maxVisibleToasts);
 
   return { filteredToasts: activeToasts, pendingQueue };
 };
@@ -48,10 +35,7 @@ export const showToast = (options: ToastOptions) => {
     return id;
   }
 
-  toastStore.setState({
-    ...currentState,
-    toasts: [...currentState.toasts, toast],
-  });
+  toastStore.setState([...currentState.toasts, toast]);
 
   setTimeout(() => removeToast(id), duration);
 
@@ -62,25 +46,16 @@ export const removeToast = (id: string) => {
   const currentState = toastStore.getState();
   const updatedToasts = currentState.toasts.filter((t) => t.id !== id);
 
-  toastStore.setState({
-    ...currentState,
-    toasts: updatedToasts,
-  });
+  toastStore.setState(updatedToasts);
 };
 
 export const updateToast = (id: string, updates: Partial<ToastData>) => {
   const currentState = toastStore.getState();
   const updatedToasts = currentState.toasts.map((toast) => (toast.id === id ? { ...toast, ...updates } : toast));
 
-  toastStore.setState({
-    ...currentState,
-    toasts: updatedToasts,
-  });
+  toastStore.setState(updatedToasts);
 };
 
 export const clearAllToasts = () => {
-  toastStore.setState({
-    ...toastStore.getState(),
-    toasts: [],
-  });
+  toastStore.setState([]);
 };
