@@ -1,15 +1,9 @@
 import { getDistributedToasts } from "../store/toastActions";
 import { useToast } from "./useToast";
 
-export function useDistributedToasts() {
-  const { toasts, defaultPosition, maxVisibleToasts } = useToast();
-  const { filteredToasts, pendingQueue } = getDistributedToasts({ toasts, defaultPosition, maxVisibleToasts });
+export function useDistributedToasts(limit: number) {
+  const toasts = useToast();
+  const { filteredToasts } = getDistributedToasts({ toasts, limit });
 
-  return {
-    maxVisibleToasts,
-    filteredToasts,
-    pendingQueue,
-    allToasts: toasts,
-    defaultPosition: defaultPosition,
-  };
+  return filteredToasts;
 }

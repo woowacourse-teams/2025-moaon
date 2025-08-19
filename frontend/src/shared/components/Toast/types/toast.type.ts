@@ -6,23 +6,20 @@ export interface ToastData {
   id: string;
   message: string;
   type: ToastType;
-  position?: ToastPosition;
   duration?: number;
   createdAt: number;
 }
 
-export interface ToastsState {
-  toasts: ToastData[];
-  defaultPosition: ToastPosition;
-  maxVisibleToasts: number;
-}
-
 export interface ToastStyleOptions {
-  position?: ToastPosition;
   duration?: number;
 }
 
 export interface ToastOptions extends ToastStyleOptions {
   message: string;
   type?: ToastType;
+}
+
+export interface ToastDataWithLimit {
+  toasts: ToastData[];
+  limit: number;
 }

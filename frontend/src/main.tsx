@@ -3,6 +3,10 @@ import { Global } from "@emotion/react";
 import { ErrorBoundary } from "@sentry/react";
 import { ToastContainer } from "@shared/components/Toast/components/ToastContainer/ToastContainer";
 import {
+  TOAST_DEFAULT_POSITION,
+  TOAST_LIMIT,
+} from "@shared/components/Toast/constants/toast.constants";
+import {
   MutationCache,
   QueryCache,
   QueryClient,
@@ -36,7 +40,10 @@ root.render(
           <Global styles={resetStyle} />
           <GAInitializer />
           <App />
-          <ToastContainer />
+          <ToastContainer
+            position={TOAST_DEFAULT_POSITION}
+            limit={TOAST_LIMIT}
+          />
         </BrowserRouter>
       </QueryClientProvider>
     </ErrorBoundary>

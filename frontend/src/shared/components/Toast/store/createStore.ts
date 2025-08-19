@@ -1,21 +1,21 @@
-import type { ToastData, ToastsState } from "../types/toast.type";
+import type { ToastData } from "../types/toast.type";
 
-type StoreSubscriber = (state: ToastsState) => void;
+type StoreSubscriber = (state: ToastData[]) => void;
 
 export interface Store {
-  getState: () => ToastsState;
+  getState: () => ToastData[];
   setState: (value: ToastData[]) => void;
   subscribe: (callback: StoreSubscriber) => () => void;
 }
 
-export const createStore = (initialState: ToastsState): Store => {
+export const createStore = (initialState: ToastData[]): Store => {
   let state = initialState;
   const listeners = new Set<StoreSubscriber>();
 
   return {
     getState: () => state,
     setState: (value) => {
-      state = { ...state, toasts: value };
+      state = value;
       listeners.forEach((listener) => listener(state));
     },
     subscribe: (callback) => {

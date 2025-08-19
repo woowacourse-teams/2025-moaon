@@ -18,7 +18,7 @@ function ProjectSearchBar() {
     }
 
     if (value.length < MIN_SEARCH_LENGTH) {
-      toast.error(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
+      toast.warning(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
       return;
     }
 

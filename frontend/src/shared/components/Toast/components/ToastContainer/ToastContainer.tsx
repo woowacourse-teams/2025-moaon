@@ -1,13 +1,18 @@
-import { TOAST_DEFAULT_POSITION } from "../../constants/toast.constants";
 import { useDistributedToasts } from "../../hooks/useDistributedToasts";
+import type { ToastPosition } from "../../types/toast.type";
 import { ToastItem } from "../ToastItem/ToastItem";
 import * as S from "./ToastContainer.styled";
 
-export const ToastContainer = () => {
-  const { filteredToasts } = useDistributedToasts();
+export interface ToastContainerProps {
+  position: ToastPosition;
+  limit: number;
+}
+
+export const ToastContainer = ({ position, limit }: ToastContainerProps) => {
+  const filteredToasts = useDistributedToasts(limit);
 
   return (
-    <S.ToastContainer position={TOAST_DEFAULT_POSITION}>
+    <S.ToastContainer position={position}>
       {filteredToasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} />
       ))}
