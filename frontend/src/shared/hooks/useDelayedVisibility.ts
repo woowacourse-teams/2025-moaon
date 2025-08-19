@@ -21,8 +21,9 @@ const useDelayedVisibility = (
 
   useEffect(() => {
     if (!isActive) {
+      clearTimer();
       setVisible(false);
-      return clearTimer;
+      return;
     }
 
     if (timerRef.current != null) {
@@ -34,7 +35,9 @@ const useDelayedVisibility = (
       timerRef.current = null;
     }, delayMs);
 
-    return clearTimer;
+    return () => {
+      clearTimer();
+    };
   }, [isActive, delayMs, clearTimer]);
 
   return visible;
