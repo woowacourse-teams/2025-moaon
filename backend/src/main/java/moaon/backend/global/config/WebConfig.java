@@ -13,6 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "https://moaon.site",
                         "https://www.moaon.site",
+                        "https://moaon.co.kr",
+                        "https://www.moaon.co.kr",
                         "http://localhost:3000"
                 )
                 .allowedOriginPatterns("https://moaon-preview-*.vercel.app")

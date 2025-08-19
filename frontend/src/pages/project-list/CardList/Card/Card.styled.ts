@@ -1,11 +1,15 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { flexCenter, shimmerGradient, textOverflowEllipsis } from "@/styles/global.styled";
+import {
+  flexCenter,
+  shimmerGradient,
+  textOverflowEllipsis,
+} from "@/styles/global.styled";
 
 export const CardImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 
   /* 처음에는 투명하게 시작 */
@@ -49,7 +53,7 @@ export const CardLink = styled(Link)``;
 
 export const CardImageBox = styled.div`
   width: 100%;
-  height: 10.9375rem;
+  aspect-ratio: 14/8;
   overflow: hidden;
   position: relative;
   border: 1px solid #e9e9e9;
@@ -79,6 +83,7 @@ export const CardSummary = styled.p`
 
 export const CardFooter = styled.div`
   ${flexCenter}
+  justify-content: right;
   margin-top: 0.75rem;
   gap: 1rem;
 `;

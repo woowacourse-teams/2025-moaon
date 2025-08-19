@@ -44,6 +44,7 @@ function ArticleBox() {
         showSkeleton={showSkeleton}
         scrollEnabled={scrollEnabled}
         targetRef={targetRef}
+        isLoading={isLoading}
       />
     </S.ArticleBoxContainer>
   );

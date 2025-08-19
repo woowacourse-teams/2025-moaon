@@ -25,8 +25,8 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
-  const hasItems = (totalCount ?? 0) > 0;
-
+  const shouldShowSort = isLoading || totalCount > 0;
+  
   return (
     <S.Main>
       <S.MainBox>
@@ -47,7 +47,7 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        {(isLoading || hasItems) && (
+        {shouldShowSort && (
           <SortList
             sortMap={PROJECT_SORT_MAP}
             onSelect={handleSelect}

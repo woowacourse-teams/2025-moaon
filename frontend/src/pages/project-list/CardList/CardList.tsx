@@ -14,6 +14,7 @@ function CardList() {
     fetchNextPage,
     scrollEnabled,
     showSkeleton,
+    isLoading,
   } = useProjectList();
 
   const { targetRef } = useInfiniteScroll({
@@ -23,25 +24,31 @@ function CardList() {
     scrollEnabled,
   });
 
+  if (totalCount === 0 && !isLoading) {
+    return (
+      <section aria-label="프로젝트 목록">
+        <EmptyState title="조건에 맞는 프로젝트가 없어요." />
+      </section>
+    );
+  }
+
   return (
     <section aria-label="프로젝트 목록">
       {totalCount > 0 && (
-        <S.ProjectIntro>
-          <S.ProjectIntroText>{totalCount}개</S.ProjectIntroText>의 프로젝트가
-          모여있어요.
-        </S.ProjectIntro>
+        <>
+          <S.ProjectIntro>
+            <S.ProjectIntroText>{totalCount}개</S.ProjectIntroText>의 프로젝트가
+            모여있어요.
+          </S.ProjectIntro>
+          <S.CardList>
+            {projects?.map((project) => (
+              <Card key={project.id} project={project} />
+            ))}
+            {scrollEnabled && <div ref={targetRef} />}
+          </S.CardList>
+        </>
       )}
       {showSkeleton && <CardSkeletonList />}
-      {totalCount > 0 ? (
-        <S.CardList>
-          {projects?.map((project) => (
-            <Card key={project.id} project={project} />
-          ))}
-          {scrollEnabled && <div ref={targetRef} />}
-        </S.CardList>
-      ) : (
-        !showSkeleton && <EmptyState title="조건에 맞는 프로젝트가 없어요." />
-      )}
     </section>
   );
 }
