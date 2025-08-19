@@ -9,6 +9,7 @@ export const IconBadge = styled.li<{ fontSize: number }>`
   border-radius: 25px;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: ${({ fontSize }) => fontSize}px;
   gap: 0.5rem;
   color: #464646;
