@@ -30,7 +30,7 @@ function Card({ article }: CardProps) {
   return (
     <S.CardContainer>
       <Badge bgColor={bgColor}>
-        {projectTitle ? (
+        {isArticleList ? (
           <>
             {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
           </>
