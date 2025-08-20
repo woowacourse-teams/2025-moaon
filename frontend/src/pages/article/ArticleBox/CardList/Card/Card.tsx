@@ -9,10 +9,9 @@ import * as S from "./Card.styled";
 
 interface CardProps {
   article: Article;
-  showProjectTitleInBadge?: boolean;
 }
 
-function Card({ article, showProjectTitleInBadge = false }: CardProps) {
+function Card({ article }: CardProps) {
   const {
     title,
     summary,
@@ -31,7 +30,7 @@ function Card({ article, showProjectTitleInBadge = false }: CardProps) {
   return (
     <S.CardContainer>
       <Badge bgColor={bgColor}>
-        {showProjectTitleInBadge ? (
+        {projectTitle ? (
           <>
             {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
           </>

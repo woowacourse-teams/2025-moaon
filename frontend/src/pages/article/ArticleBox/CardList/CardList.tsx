@@ -33,11 +33,7 @@ function CardList({
   return (
     <S.CardListContainer>
       {articles?.map((article) => (
-        <Card
-          key={article.id}
-          article={article}
-          showProjectTitleInBadge={true}
-        />
+        <Card key={article.id} article={article} />
       ))}
       {scrollEnabled && <div ref={targetRef} />}
       {showSkeleton && <ArticleSkeletonList />}
