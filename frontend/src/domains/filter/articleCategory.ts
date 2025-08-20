@@ -23,11 +23,11 @@ export const ARTICLE_CATEGORY_MAP = {
   },
   ss: {
     label: "소프트스킬",
-    bgColor: "#62cc47ff",
+    bgColor: "#47ccab",
   },
   etc: {
     label: "기타",
-    bgColor: "#868888ff",
+    bgColor: "#868888",
   },
 } as const;
 

@@ -1,4 +1,5 @@
 import eyeIcon from "@assets/icons/eye.svg";
+import OutgoingLinkIcon from "@assets/icons/outgoing-link.svg";
 import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
 import type { Article } from "@/apis/articles/articles.type";
 import useArticleClick from "@/pages/article/hooks/useArticleClick";
@@ -48,11 +49,11 @@ function Card({ article }: CardProps) {
           rel="noopener noreferrer"
           onClick={() => postArticleClick(id)}
         >
-          아티클 보러가기
+          아티클 <img src={OutgoingLinkIcon} alt="아웃고잉 링크 아이콘" />
         </S.ArticleLink>
         {isArticleList && (
           <S.ProjectLink to={`/project/${projectId}`}>
-            프로젝트 보러가기
+            프로젝트 <img src={OutgoingLinkIcon} alt="아웃고잉 링크 아이콘" />
           </S.ProjectLink>
         )}
       </S.BackDropBox>
