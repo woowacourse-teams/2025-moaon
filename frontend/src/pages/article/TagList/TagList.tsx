@@ -1,11 +1,23 @@
-import { TECH_STACK_ENTRY, type TechStackKey } from "@domains/filter/techStack";
+import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import {
+  ANDROID_STACK_ENTRY,
+  BACKEND_STACK_ENTRY,
+  FRONTEND_STACK_ENTRY,
+  IOS_STACK_ENTRY,
+  TECH_STACK_ENTRY,
+  type TechStackKey,
+} from "@domains/filter/techStack";
 import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useArticleList from "../hooks/useArticleList";
 import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
-function TagList() {
+interface TagListProps {
+  selectedCategory: ArticleCategoryKey;
+}
+
+function TagList({ selectedCategory }: TagListProps) {
   const tagParams = useSearchParams({ key: "techStacks", mode: "multi" });
   const selectedTags = tagParams.get();
   const { refetch } = useArticleList();
@@ -19,6 +31,33 @@ function TagList() {
     tagParams.deleteAll({ replace: true });
     refetch();
   };
+
+  const getTagEntries = () => {
+    switch (selectedCategory) {
+      case "all":
+        return TECH_STACK_ENTRY;
+      case "fe":
+        return FRONTEND_STACK_ENTRY;
+      case "be":
+        return BACKEND_STACK_ENTRY;
+      case "android":
+        return ANDROID_STACK_ENTRY;
+      case "ios":
+        return IOS_STACK_ENTRY;
+      case "ss":
+      case "etc":
+        return [];
+      default:
+        return TECH_STACK_ENTRY;
+    }
+  };
+
+  const tagEntries = getTagEntries();
+
+  if (selectedCategory === "ss" || selectedCategory === "etc") {
+    return null;
+  }
+
   return (
     <S.TagListContainer>
       <S.TagListHeader>
@@ -30,7 +69,7 @@ function TagList() {
         )}
       </S.TagListHeader>
       <S.TagList>
-        {TECH_STACK_ENTRY.map(([key, { label }]) => {
+        {tagEntries.map(([key, { label }]) => {
           const isSelected = selectedTags.includes(key);
 
           return (
