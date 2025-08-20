@@ -261,7 +261,7 @@ export const BACKEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/OAuth2.svg",
   },
   apachezookeeper: {
-    label: "ApacheZookeeper",
+    label: "Apache Zookeeper",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ApacheZookeeper.svg",
   },
   restdocs: {
