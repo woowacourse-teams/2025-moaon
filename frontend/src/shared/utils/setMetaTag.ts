@@ -1,29 +1,18 @@
 interface setMetaTagProps {
-  nameOrProperty: string;
+  attr: { key: "name" | "property"; value: string };
   content: string;
-  isProperty?: boolean;
 }
 
-const setMetaTag = ({
-  nameOrProperty,
-  content,
-  isProperty = false,
-}: setMetaTagProps) => {
-  const selector = isProperty
-    ? `meta[property="${nameOrProperty}"]`
-    : `meta[name="${nameOrProperty}"]`;
+const setMetaTag = ({ attr, content }: setMetaTagProps) => {
+  const selector = `meta[${attr.key}="${attr.value}"]`;
 
   const metaElement =
     document.querySelector(selector) ?? document.createElement("meta");
 
-  if (isProperty) {
-    metaElement.setAttribute("property", nameOrProperty);
-  } else {
-    metaElement.setAttribute("name", nameOrProperty);
-  }
-  document.head.appendChild(metaElement);
-
+  metaElement.setAttribute(attr.key, attr.value);
   metaElement.setAttribute("content", content);
+
+  document.head.appendChild(metaElement);
 };
 
 export default setMetaTag;

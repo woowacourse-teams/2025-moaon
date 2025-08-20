@@ -18,37 +18,45 @@ export function useMeta({
   imageUrl = DEFAULT_IMAGE_URL,
 }: MetaOptions) {
   useEffect(() => {
-    const setTags = (key: string, content: string) => {
-      setMetaTag({ nameOrProperty: key, content });
-      setMetaTag({ nameOrProperty: `og:${key}`, content, isProperty: true });
-      setMetaTag({ nameOrProperty: `twitter:${key}`, content });
+    const setTags = (metaName: string, content: string) => {
+      setMetaTag({ attr: { key: "name", value: metaName }, content });
+      setMetaTag({
+        attr: { key: "property", value: `og:${metaName}` },
+        content,
+      });
+      setMetaTag({
+        attr: { key: "name", value: `twitter:${metaName}` },
+        content,
+      });
     };
 
     document.title = title;
     setTags("title", title);
-
     setTags("description", description);
-
     setTags("image", imageUrl);
 
     setMetaTag({
-      nameOrProperty: "og:image:alt",
+      attr: { key: "property", value: "og:image:alt" },
       content: title,
-      isProperty: true,
     });
-    setMetaTag({ nameOrProperty: "twitter:image:alt", content: title });
-    setMetaTag({ nameOrProperty: "keywords", content: DEFAULT_KEYWORDS });
     setMetaTag({
-      nameOrProperty: "og:type",
+      attr: { key: "name", value: "twitter:image:alt" },
+      content: title,
+    });
+    setMetaTag({
+      attr: { key: "name", value: "keywords" },
+      content: DEFAULT_KEYWORDS,
+    });
+    setMetaTag({
+      attr: { key: "property", value: "og:type" },
       content: "website",
-      isProperty: true,
     });
     setMetaTag({
-      nameOrProperty: "twitter:card",
+      attr: { key: "name", value: "twitter:card" },
       content: "summary_large_image",
     });
 
-    setMetaTag({ nameOrProperty: "og:url", content: URL, isProperty: true });
-    setMetaTag({ nameOrProperty: "twitter:url", content: URL });
+    setMetaTag({ attr: { key: "property", value: "og:url" }, content: URL });
+    setMetaTag({ attr: { key: "name", value: "twitter:url" }, content: URL });
   }, [title, description, imageUrl]);
 }
