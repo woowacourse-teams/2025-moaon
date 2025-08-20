@@ -12,7 +12,7 @@ export const BackDropBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: 2rem;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease-in-out;
@@ -81,17 +81,31 @@ export const CardClickCount = styled.span`
   color: #595858;
 `;
 
-export const ArticleLink = styled.a`
-  padding: 0.5rem 1rem;
+const LinkStyle = `
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid transparent;
   color: #fff;
-  border: 1px solid #fff;
-  border-radius: 4px;
+  background-image: linear-gradient(to right, white 0 100%);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0% 1px;
+  transition: color .25s ease, background-size .25s ease;
+
+  &:hover {
+    color: darkgray;
+    background-size: 100% 1px;
+  }
+`;
+
+export const ArticleLink = styled.a`
   cursor: pointer;
+  ${LinkStyle}
 `;
 
 export const ProjectLink = styled(Link)`
-  padding: 0.5rem 1rem;
-  color: #fff;
-  border: 1px solid #fff;
-  border-radius: 4px;
+  ${LinkStyle}
 `;

@@ -1,5 +1,6 @@
 import eyeIcon from "@assets/icons/eye.svg";
 import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
+import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import type { Article } from "@/apis/articles/articles.type";
 import useArticleClick from "@/pages/article/hooks/useArticleClick";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
@@ -36,11 +37,11 @@ function Card({ article }: CardProps) {
           rel="noopener noreferrer"
           onClick={() => postArticleClick(id)}
         >
-          아티클 보러가기
+          아티클 보러가기 <ArrowIcon direction="right" color="white" />
         </S.ArticleLink>
         {isArticleList && (
           <S.ProjectLink to={`/project/${projectId}`}>
-            프로젝트 보러가기
+            프로젝트 보러가기 <ArrowIcon direction="right" color="white" />
           </S.ProjectLink>
         )}
       </S.BackDropBox>
