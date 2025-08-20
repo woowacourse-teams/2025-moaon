@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 const Body = styled.p`
   font-size: 1.125rem;
   font-weight: 400;
+  line-height: 1.5;
 `;
 
 const Overline = styled.p`
@@ -24,6 +25,7 @@ export const TitleSectionLeft = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
+  width: calc(100% - 14.375rem);
 `;
 
 export const TitleSectionRight = styled.div`
