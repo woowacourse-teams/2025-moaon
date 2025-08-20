@@ -1,4 +1,4 @@
-import setMetaTag from "@shared/utils/setMetaTag";
+import setMetaTags from "@shared/utils/setMetaTags";
 import { useEffect } from "react";
 
 const DEFAULT_IMAGE_URL =
@@ -18,45 +18,38 @@ export function useMeta({
   imageUrl = DEFAULT_IMAGE_URL,
 }: MetaOptions) {
   useEffect(() => {
-    const setTags = (metaName: string, content: string) => {
-      setMetaTag({ attr: { key: "name", value: metaName }, content });
-      setMetaTag({
-        attr: { key: "property", value: `og:${metaName}` },
-        content,
-      });
-      setMetaTag({
-        attr: { key: "name", value: `twitter:${metaName}` },
-        content,
-      });
-    };
-
     document.title = title;
-    setTags("title", title);
-    setTags("description", description);
-    setTags("image", imageUrl);
 
-    setMetaTag({
-      attr: { key: "property", value: "og:image:alt" },
-      content: title,
-    });
-    setMetaTag({
-      attr: { key: "name", value: "twitter:image:alt" },
-      content: title,
-    });
-    setMetaTag({
-      attr: { key: "name", value: "keywords" },
-      content: DEFAULT_KEYWORDS,
-    });
-    setMetaTag({
-      attr: { key: "property", value: "og:type" },
-      content: "website",
-    });
-    setMetaTag({
-      attr: { key: "name", value: "twitter:card" },
-      content: "summary_large_image",
+    const createTag = (
+      keyType: "name" | "property",
+      keyName: string,
+      content: string
+    ) => ({
+      attr: { key: keyType, value: keyName },
+      content,
     });
 
-    setMetaTag({ attr: { key: "property", value: "og:url" }, content: URL });
-    setMetaTag({ attr: { key: "name", value: "twitter:url" }, content: URL });
+    const metaConfigs = [
+      createTag("name", "title", title),
+      createTag("name", "description", description),
+      createTag("name", "image", imageUrl),
+      createTag("name", "keywords", DEFAULT_KEYWORDS),
+
+      createTag("property", "og:title", title),
+      createTag("property", "og:description", description),
+      createTag("property", "og:image", imageUrl),
+      createTag("property", "og:image:alt", title),
+      createTag("property", "og:type", "website"),
+      createTag("property", "og:url", URL),
+
+      createTag("name", "twitter:title", title),
+      createTag("name", "twitter:description", description),
+      createTag("name", "twitter:image", imageUrl),
+      createTag("name", "twitter:image:alt", title),
+      createTag("name", "twitter:card", "summary_large_image"),
+      createTag("name", "twitter:url", URL),
+    ];
+
+    setMetaTags(metaConfigs);
   }, [title, description, imageUrl]);
 }
