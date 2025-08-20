@@ -12,5 +12,4 @@ export const BadgeText = styled.span`
   font-size: 0.875rem;
   color: #fff;
   line-height: 1;
-  vertical-align: middle;
 `;

@@ -98,6 +98,6 @@ export const ProjectLink = styled(Link)`
 
 export const ArrowText = styled.span`
   position: relative;
-  top: -1px;
+  top: -0.0625rem;
   display: inline-block;
 `;
