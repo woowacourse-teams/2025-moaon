@@ -1,14 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { projectDetailQueries } from "@/apis/projectDetail/projectDetail.queries";
 
 const useProjectDetail = (id: number) => {
-  const {
-    data: projectDetail,
-    isLoading,
-    error,
-  } = useQuery(projectDetailQueries.fetchDetail(id));
+  const { data: projectDetail } = useSuspenseQuery(projectDetailQueries.fetchDetail(id));
 
-  return { projectDetail, isLoading, error };
+  return { projectDetail };
 };
 
 export default useProjectDetail;
