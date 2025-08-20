@@ -37,11 +37,11 @@ function Card({ article }: CardProps) {
           rel="noopener noreferrer"
           onClick={() => postArticleClick(id)}
         >
-          아티클 보러가기 <ArrowIcon direction="right" color="white" />
+          아티클 <ArrowIcon direction="right" color="white" />
         </S.ArticleLink>
         {isArticleList && (
           <S.ProjectLink to={`/project/${projectId}`}>
-            프로젝트 보러가기 <ArrowIcon direction="right" color="white" />
+            프로젝트 <ArrowIcon direction="right" color="white" />
           </S.ProjectLink>
         )}
       </S.BackDropBox>
