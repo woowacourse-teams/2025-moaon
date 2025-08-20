@@ -11,7 +11,7 @@ import TitleSection from "./components/TitleSection/TitleSection";
 function ProjectDetailPage() {
   const { id } = useParams();
 
-  const { projectDetail, isLoading, error } = useProjectDetail(Number(id));
+  const { projectDetail } = useProjectDetail(Number(id));
   const { projectArticles, refetch, isRefetching } = useProjectArticles(
     Number(id),
   );
@@ -23,9 +23,6 @@ function ProjectDetailPage() {
     description:
       projectDetail?.summary || "프로젝트와 관련된 상세 정보를 확인하세요",
   });
-
-  if (isLoading || !projectDetail) return <div>로딩 중...</div>;
-  if (error) return <div>비상!</div>;
 
   return (
     <div>
