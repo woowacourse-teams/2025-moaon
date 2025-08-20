@@ -1,11 +1,11 @@
+import type { PropsWithChildren } from "react";
 import * as S from "./Badge.styled";
 
 interface BadgeProps {
   bgColor: string;
-  children: React.ReactNode;
 }
 
-function Badge({ bgColor, children }: BadgeProps) {
+function Badge({ bgColor, children }: PropsWithChildren<BadgeProps>) {
   return (
     <S.BadgeContainer bgColor={bgColor}>
       <S.BadgeText>{children}</S.BadgeText>
