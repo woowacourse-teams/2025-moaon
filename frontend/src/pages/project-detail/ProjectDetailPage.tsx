@@ -17,7 +17,9 @@ function ProjectDetailPage() {
   );
 
   useMeta({
-    title: projectDetail?.title || "프로젝트 상세",
+    title: projectDetail
+      ? `${projectDetail?.title} | 프로젝트 상세`
+      : "프로젝트 상세",
     description:
       projectDetail?.summary || "프로젝트와 관련된 상세 정보를 확인하세요",
   });
