@@ -13,19 +13,17 @@ const setMetaTag = ({
     ? `meta[property="${nameOrProperty}"]`
     : `meta[name="${nameOrProperty}"]`;
 
-  let el = document.querySelector(selector) as HTMLMetaElement | null;
+  const metaElement =
+    document.querySelector(selector) ?? document.createElement("meta");
 
-  if (!el) {
-    el = document.createElement("meta");
-    if (isProperty) {
-      el.setAttribute("property", nameOrProperty);
-    } else {
-      el.setAttribute("name", nameOrProperty);
-    }
-    document.head.appendChild(el);
+  if (isProperty) {
+    metaElement.setAttribute("property", nameOrProperty);
+  } else {
+    metaElement.setAttribute("name", nameOrProperty);
   }
+  document.head.appendChild(metaElement);
 
-  el.setAttribute("content", content);
+  metaElement.setAttribute("content", content);
 };
 
 export default setMetaTag;
