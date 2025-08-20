@@ -9,8 +9,6 @@ const setMetaTag = ({
   content,
   isProperty = false,
 }: setMetaTagProps) => {
-  if (typeof document === "undefined") return;
-
   const selector = isProperty
     ? `meta[property="${nameOrProperty}"]`
     : `meta[name="${nameOrProperty}"]`;
