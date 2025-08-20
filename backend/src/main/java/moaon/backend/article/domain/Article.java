@@ -35,7 +35,6 @@ import moaon.backend.techStack.domain.TechStack;
         @Index(name = "idx_article_created_at_id", columnList = "createdAt DESC, id DESC"),
         @Index(name = "idx_article_clicks_id", columnList = "clicks DESC, id DESC")
 })
-
 public class Article extends BaseTimeEntity {
 
     @Id

@@ -5,10 +5,6 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME_PROD}
     password: ${SPRING_DATASOURCE_PASSWORD_PROD}
 
-  jpa:
-    hibernate:
-      ddl-auto: none
-
 logging:
   pattern:
     console: "[%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
