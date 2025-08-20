@@ -14,7 +14,7 @@ type MetaOptions = {
 
 export function useMeta({
   title,
-  description,
+  description = "프로젝트를 모아모아, 모아온 📦",
   image = DEFAULT_IMAGE,
 }: MetaOptions) {
   useEffect(() => {
@@ -27,9 +27,7 @@ export function useMeta({
     document.title = title;
     setTags("title", title);
 
-    if (description) {
-      setTags("description", description);
-    }
+    setTags("description", description);
 
     setTags("image", image);
 
