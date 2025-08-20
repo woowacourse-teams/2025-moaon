@@ -1,7 +1,7 @@
 import setMetaTag from "@shared/utils/setMetaTag";
 import { useEffect } from "react";
 
-const DEFAULT_IMAGE =
+const DEFAULT_IMAGE_URL =
   "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/images/logo.png";
 const DEFAULT_KEYWORDS = "프로젝트, 개발자, 탐색, 학습";
 const URL = "https://moaon.co.kr/";
@@ -9,13 +9,13 @@ const URL = "https://moaon.co.kr/";
 type MetaOptions = {
   title: string;
   description?: string;
-  image?: string;
+  imageUrl?: string;
 };
 
 export function useMeta({
   title,
   description = "프로젝트를 모아모아, 모아온 📦",
-  image = DEFAULT_IMAGE,
+  imageUrl = DEFAULT_IMAGE_URL,
 }: MetaOptions) {
   useEffect(() => {
     const setTags = (key: string, content: string) => {
@@ -29,7 +29,7 @@ export function useMeta({
 
     setTags("description", description);
 
-    setTags("image", image);
+    setTags("image", imageUrl);
 
     setMetaTag({
       nameOrProperty: "og:image:alt",
@@ -50,5 +50,5 @@ export function useMeta({
 
     setMetaTag({ nameOrProperty: "og:url", content: URL, isProperty: true });
     setMetaTag({ nameOrProperty: "twitter:url", content: URL });
-  }, [title, description, image]);
+  }, [title, description, imageUrl]);
 }
