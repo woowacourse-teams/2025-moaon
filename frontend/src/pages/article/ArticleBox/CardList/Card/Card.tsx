@@ -9,9 +9,10 @@ import * as S from "./Card.styled";
 
 interface CardProps {
   article: Article;
+  showProjectTitleInBadge?: boolean;
 }
 
-function Card({ article }: CardProps) {
+function Card({ article, showProjectTitleInBadge = false }: CardProps) {
   const {
     title,
     summary,
@@ -27,11 +28,16 @@ function Card({ article }: CardProps) {
   const isArticleList = !!projectId;
   const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
-
   return (
     <S.CardContainer>
       <Badge bgColor={bgColor}>
-        {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
+        {showProjectTitleInBadge ? (
+          <>
+            {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
+          </>
+        ) : (
+          label
+        )}
       </Badge>
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardSummary>{summary}</S.CardSummary>
