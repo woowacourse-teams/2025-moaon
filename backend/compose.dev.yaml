@@ -22,7 +22,7 @@ services:
       timeout: 5s
       retries: 5
   app:
-    build: .
+    image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
     depends_on:
       db:
@@ -37,9 +37,9 @@ services:
         awslogs-stream: "dev-docker"
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL_DEV}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_URL_DEV: ${SPRING_DATASOURCE_URL_DEV}
+      SPRING_DATASOURCE_USERNAME_DEV: ${SPRING_DATASOURCE_USERNAME_DEV}
+      SPRING_DATASOURCE_PASSWORD_DEV: ${SPRING_DATASOURCE_PASSWORD_DEV}
 
 volumes:
   db-data:

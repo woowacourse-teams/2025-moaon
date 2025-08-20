@@ -1,0 +1,17 @@
+services:
+  app:
+    image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
+    container_name: moaon-app
+    ports:
+      - "8080:8080"
+    logging:
+      driver: "awslogs"
+      options:
+        awslogs-group: "moaon-prod"
+        awslogs-region: "ap-northeast-2"
+        awslogs-stream: "prod-docker"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL_PROD: ${SPRING_DATASOURCE_URL_PROD}
+      SPRING_DATASOURCE_USERNAME_PROD: ${SPRING_DATASOURCE_USERNAME_PROD}
+      SPRING_DATASOURCE_PASSWORD_PROD: ${SPRING_DATASOURCE_PASSWORD_PROD}

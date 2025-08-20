@@ -11,6 +11,7 @@ interface CardListProps {
   showSkeleton: boolean;
   scrollEnabled: boolean;
   targetRef: Ref<HTMLDivElement>;
+  isLoading: boolean;
 }
 
 function CardList({
@@ -19,12 +20,9 @@ function CardList({
   showSkeleton,
   scrollEnabled,
   targetRef,
+  isLoading,
 }: CardListProps) {
-  if (showSkeleton) {
-    return <ArticleSkeletonList />;
-  }
-
-  if (totalCount === 0) {
+  if (totalCount === 0 && !isLoading) {
     return (
       <S.EmptyContainer>
         <EmptyState title="조건에 맞는 아티클이 없어요." />
@@ -38,6 +36,7 @@ function CardList({
         <Card key={article.id} article={article} />
       ))}
       {scrollEnabled && <div ref={targetRef} />}
+      {showSkeleton && <ArticleSkeletonList />}
     </S.CardListContainer>
   );
 }

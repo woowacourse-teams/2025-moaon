@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { projectQueries } from "@/apis/projects/project.queries";
+import useDelayedVisibility from "@/shared/hooks/useDelayedVisibility";
 
 const useProjectList = () => {
   const queryClient = useQueryClient();
@@ -20,7 +21,10 @@ const useProjectList = () => {
   };
 
   const scrollEnabled = !isLoading && hasNext && !isFetchingNextPage;
-  const showSkeleton = isLoading || isFetchingNextPage;
+
+  const showInitialSkeleton = useDelayedVisibility(isLoading);
+  const showNextSkeleton = useDelayedVisibility(isFetchingNextPage);
+  const showSkeleton = showInitialSkeleton || showNextSkeleton;
 
   return {
     projects,
@@ -29,9 +33,9 @@ const useProjectList = () => {
     fetchNextPage,
     refetch,
     hasNext,
-    isLoading,
     scrollEnabled,
     showSkeleton,
+    isLoading,
   };
 };
 

@@ -1,5 +1,7 @@
 import resetIcon from "@assets/icons/reset.svg";
+import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
+import { useMeta } from "@shared/hooks/useMeta";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
 import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
@@ -10,10 +12,17 @@ import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 
 const DEFAULT_SORT_TYPE = "createdAt";
+const PROJECT_LIST_PAGE_DESCRIPTION =
+  "다양한 개발자들의 프로젝트를 탐색하고 학습하세요";
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount, isLoading } = useProjectList();
+
+  useMeta({
+    title: `${META_TITLE_PREFIX}프로젝트 탐색`,
+    description: PROJECT_LIST_PAGE_DESCRIPTION,
+  });
 
   const handleFilterResetButtonClick = () => {
     resetFilter();
@@ -25,16 +34,14 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
-  const hasItems = (totalCount ?? 0) > 0;
+  const shouldShowSort = isLoading || totalCount > 0;
 
   return (
     <S.Main>
       <S.MainBox>
         <S.TitleBox>
           <S.MainTitle>프로젝트 탐색</S.MainTitle>
-          <S.MainDescription>
-            다양한 개발자들의 프로젝트를 탐색하고 학습하세요
-          </S.MainDescription>
+          <S.MainDescription>{PROJECT_LIST_PAGE_DESCRIPTION}</S.MainDescription>
         </S.TitleBox>
         <ProjectSearchBar />
       </S.MainBox>
@@ -47,7 +54,7 @@ function ProjectListPage() {
             </S.ResetButton>
           )}
         </S.Wrap>
-        {(isLoading || hasItems) && (
+        {shouldShowSort && (
           <SortList
             sortMap={PROJECT_SORT_MAP}
             onSelect={handleSelect}

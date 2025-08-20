@@ -55,7 +55,7 @@ function Card({ project }: CardProps) {
           <S.CardSummary>{summary}</S.CardSummary>
           <TechStackList techStacks={techStacks} />
           <S.CardFooter>
-            <StatBox
+            {/* <StatBox
               icon={
                 <S.HeartIcon
                   src={isLoved ? redHeartIcon : grayHeartIcon}
@@ -63,7 +63,7 @@ function Card({ project }: CardProps) {
                 />
               }
               count={loves}
-            />
+            /> */}
             <StatBox
               icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
               count={views}

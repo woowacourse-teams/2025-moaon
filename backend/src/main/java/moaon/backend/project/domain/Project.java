@@ -6,8 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,10 @@ import moaon.backend.techStack.domain.TechStack;
 @ToString
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Table(indexes = {
+        @Index(name = "idx_project_created_at_id", columnList = "createdAt DESC, id DESC"),
+        @Index(name = "idx_project_views_id", columnList = "views DESC, id DESC")
+})
 public class Project extends BaseTimeEntity {
 
     @Id

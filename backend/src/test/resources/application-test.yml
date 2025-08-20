@@ -2,6 +2,9 @@ spring:
   application:
     name: backend
 
+  flyway:
+    enabled: false
+
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:mysql:8.4://testDB

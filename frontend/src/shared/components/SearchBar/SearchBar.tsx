@@ -28,10 +28,11 @@ function SearchBar({
   );
 
   useEffect(() => {
-    const currentValue = inputRef.current?.value ?? "";
-    const newHasValue = currentValue.trim() !== "";
-    setHasSearchValue(newHasValue);
-  }, []);
+    if (inputRef.current) {
+      inputRef.current.value = defaultValue;
+      setHasSearchValue(defaultValue.trim() !== "");
+    }
+  }, [defaultValue]);
 
   const handleSearchFormSubmit = (e: FormEvent) => {
     e.preventDefault();

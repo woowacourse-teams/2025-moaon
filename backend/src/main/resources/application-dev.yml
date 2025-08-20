@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: update
+    url: ${SPRING_DATASOURCE_URL_DEV}
+    username: ${SPRING_DATASOURCE_USERNAME_DEV}
+    password: ${SPRING_DATASOURCE_PASSWORD_DEV}
 
 logging:
   pattern:
     console: "[%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
+  level:
+    org.hibernate.SQL: off
+    org.hibernate.orm.jdbc.bind: off

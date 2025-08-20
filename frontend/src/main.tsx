@@ -1,6 +1,12 @@
 import "./libs/sentry/initializeSentry";
 import { Global } from "@emotion/react";
-import { ErrorBoundary } from "@sentry/react";
+import { ErrorBoundary as SentryErrorBoundary } from "@sentry/react";
+import { FallbackErrorUi } from "@shared/components/FallbackErrorUi/FallbackErrorUi";
+import { ToastContainer } from "@shared/components/Toast/components/ToastContainer/ToastContainer";
+import {
+  TOAST_DEFAULT_POSITION,
+  TOAST_LIMIT,
+} from "@shared/components/Toast/constants/toast.constants";
 import {
   MutationCache,
   QueryCache,
@@ -29,14 +35,26 @@ const queryClient = new QueryClient({
 
 root.render(
   <StrictMode>
-    <ErrorBoundary fallback={<h1>에러가 발생했습니다.</h1>}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Global styles={resetStyle} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Global styles={resetStyle} />
+        <SentryErrorBoundary
+          fallback={
+            <FallbackErrorUi
+              scope="viewport"
+              title="오류 발생"
+              message="페이지를 새로고침해주세요."
+            />
+          }
+        >
           <GAInitializer />
           <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </ErrorBoundary>
+          <ToastContainer
+            position={TOAST_DEFAULT_POSITION}
+            limit={TOAST_LIMIT}
+          />
+        </SentryErrorBoundary>
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>,
 );

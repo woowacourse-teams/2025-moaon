@@ -4,7 +4,7 @@ import {
 } from "@domains/filter/articleCategory";
 import EmptyState from "@shared/components/EmptyState/EmptyState";
 import Tab from "@shared/components/Tab/Tab";
-import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
+import type { Article } from "@/apis/articles/articles.type";
 import Card from "@/pages/article/ArticleBox/CardList/Card/Card";
 import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
 import SectionTitle from "../SectionTitle";
@@ -13,13 +13,13 @@ import * as S from "./ArticleSection.styled";
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 
 interface ArticleSectionProps {
-  projectArticles: ProjectArticle[];
+  articles: Article[];
   refetch: () => void;
   isRefetching: boolean;
 }
 
 function ArticleSection({
-  projectArticles,
+  articles,
   refetch,
   isRefetching,
 }: ArticleSectionProps) {
@@ -39,8 +39,8 @@ function ArticleSection({
     }
   };
 
-  const showEmpty = projectArticles.length <= 0 && !isRefetching;
-  const emptyResult = selectedCategory === "all" && projectArticles.length <= 0;
+  const showEmpty = articles.length <= 0 && !isRefetching;
+  const emptyResult = selectedCategory === "all" && articles.length <= 0;
 
   return (
     <>
@@ -62,7 +62,7 @@ function ArticleSection({
                 />
               </S.EmptyContainer>
             ) : (
-              projectArticles.map((article) => (
+              articles.map((article) => (
                 <Card key={article.id} article={article} />
               ))
             )}
