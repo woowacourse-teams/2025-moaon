@@ -6,5 +6,6 @@ export const projectDetailQueries = {
     queryOptions({
       queryKey: ["projectDetail", id] as const,
       queryFn: () => getProjectDetail(id),
+      throwOnError: true,
     }),
 };
