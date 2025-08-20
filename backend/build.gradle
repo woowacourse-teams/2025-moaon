@@ -63,6 +63,9 @@ dependencies {
     // rest docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    // flyway
+    implementation 'org.flywaydb:flyway-mysql'
 }
 
 clean {
