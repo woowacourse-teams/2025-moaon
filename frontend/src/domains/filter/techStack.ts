@@ -86,8 +86,8 @@ export const FRONTEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Biome.svg",
   },
   msw: {
-    label: "Msw",
-    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Msw.svg",
+    label: "MSW",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MSW.svg",
   },
   jest: {
     label: "Jest",
@@ -257,11 +257,11 @@ export const BACKEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Querydsl.svg",
   },
   oauth2: {
-    label: "Oauth2",
-    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Oauth2.svg",
+    label: "OAuth2",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/OAuth2.svg",
   },
   apachezookeeper: {
-    label: "Apachezookeeper",
+    label: "ApacheZookeeper",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ApacheZookeeper.svg",
   },
   restdocs: {
