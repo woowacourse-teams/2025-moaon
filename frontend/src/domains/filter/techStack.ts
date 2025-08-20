@@ -141,6 +141,14 @@ export const FRONTEND_STACK_ICON_MAP = {
     label: "Webpack",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Webpack.svg",
   },
+  githubAction: {
+    label: "Github Action",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+  git: {
+    label: "Git",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
 } as const;
 
 export const BACKEND_STACK_ICON_MAP = {
@@ -167,6 +175,10 @@ export const BACKEND_STACK_ICON_MAP = {
   spring: {
     label: "Spring",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Spring.svg",
+  },
+  springboot: {
+    label: "SpringBoot",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringBoot.svg",
   },
   rubyonrails: {
     label: "Ruby on Rails",
@@ -380,6 +392,18 @@ export const BACKEND_STACK_ICON_MAP = {
     label: "Lombok",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Lombok.svg",
   },
+  githubAction: {
+    label: "Github Action",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+  git: {
+    label: "Git",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
+  elasticSearch: {
+    label: "ElasticSearch",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ElasticSearch.svg",
+  },
 } as const;
 
 export const ANDROID_STACK_ICON_MAP = {
@@ -459,6 +483,14 @@ export const ANDROID_STACK_ICON_MAP = {
     label: "Okhttp3",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Okhttp3.svg",
   },
+  githubAction: {
+    label: "Github Action",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+  git: {
+    label: "Git",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
 } as const;
 
 export const IOS_STACK_ICON_MAP = {
@@ -485,6 +517,14 @@ export const IOS_STACK_ICON_MAP = {
   restClient: {
     label: "Restclient",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RestClient.svg",
+  },
+  githubAction: {
+    label: "Github Action",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+  git: {
+    label: "Git",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
   },
 } as const;
 
