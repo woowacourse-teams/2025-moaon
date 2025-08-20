@@ -1,8 +1,6 @@
 import { sentryWebpackPlugin } from "@sentry/webpack-plugin";
-import { merge } from "webpack-merge";
-import common from "./webpack.common.js";
 
-export default merge(common, {
+export default {
   mode: "production",
   output: {
     filename: "[name].[contenthash].js",
@@ -28,4 +26,4 @@ export default merge(common, {
       authToken: process.env.SENTRY_AUTH_TOKEN,
     }),
   ],
-});
+};

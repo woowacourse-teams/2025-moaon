@@ -1,8 +1,7 @@
 import path from "node:path";
-import { merge } from "webpack-merge";
-import common, { __dirname } from "./webpack.common.js";
+import { __dirname } from "./webpack.common.js";
 
-export default merge(common, {
+export default {
   mode: "development",
   devServer: {
     static: {
@@ -14,4 +13,4 @@ export default merge(common, {
     hot: true,
     historyApiFallback: true,
   },
-});
+};
