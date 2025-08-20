@@ -4,6 +4,7 @@ import { useEffect } from "react";
 const DEFAULT_IMAGE =
   "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/images/logo.png";
 const DEFAULT_KEYWORDS = "프로젝트, 개발자, 탐색, 학습";
+const URL = "https://moaon.co.kr/";
 
 type MetaOptions = {
   title: string;
@@ -48,5 +49,8 @@ export function useMeta({
       nameOrProperty: "twitter:card",
       content: "summary_large_image",
     });
+
+    setMetaTag({ nameOrProperty: "og:url", content: URL, isProperty: true });
+    setMetaTag({ nameOrProperty: "twitter:url", content: URL });
   }, [title, description, image]);
 }
