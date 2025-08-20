@@ -5,7 +5,6 @@ export const Header = styled.header`
   width: 100%;
   position: sticky;
   top: 0;
-  padding: 1rem 0;
   background-color: #fff;
   border-bottom: 1px solid #dfdfdf;
   z-index: 999;
