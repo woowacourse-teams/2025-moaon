@@ -36,7 +36,7 @@ function ProjectDetailPage() {
       )}
       <OverviewSection overview={projectDetail.description} />
       <ArticleSection
-        projectArticles={projectArticles ?? []}
+        articles={projectArticles}
         refetch={refetch}
         isRefetching={isRefetching}
       />
