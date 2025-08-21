@@ -16,15 +16,17 @@ interface ArticleSectionProps {
   articles: Article[];
   refetch: () => void;
   isRefetching: boolean;
+  isLoading: boolean;
 }
 
 function ArticleSection({
   articles,
   refetch,
   isRefetching,
+  isLoading,
 }: ArticleSectionProps) {
   const { selectedCategory, updateCategory } = useArticleCategory(
-    DEFAULT_ARTICLE_CATEGORY_TYPE,
+    DEFAULT_ARTICLE_CATEGORY_TYPE
   );
 
   const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
@@ -40,11 +42,12 @@ function ArticleSection({
   };
 
   const showEmpty = articles.length <= 0 && !isRefetching;
-  const emptyResult = selectedCategory === "all" && articles.length <= 0;
+  const hasResult =
+    (selectedCategory !== "all" && articles.length > 0) || !isLoading;
 
   return (
     <>
-      {!emptyResult && (
+      {hasResult && (
         <S.ArticleSectionContainer>
           <SectionTitle title="프로젝트 아티클" />
           <Tab
