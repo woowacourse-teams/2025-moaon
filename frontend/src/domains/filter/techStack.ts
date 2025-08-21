@@ -260,10 +260,6 @@ export const BACKEND_STACK_ICON_MAP = {
     label: "tRPC",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/tRPC.svg",
   },
-  elasticsearch: {
-    label: "Elasticsearch",
-    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ElasticSearch.svg",
-  },
   grafana: {
     label: "Grafana",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Grafana.svg",
@@ -418,7 +414,7 @@ export const BACKEND_STACK_ICON_MAP = {
   },
   springWebFlux: {
     label: "Spring WebFlux",
-    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ElasticSearch.svg",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringWebFlux.svg",
   },
   log4j2: {
     label: "log4j2",
