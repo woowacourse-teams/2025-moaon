@@ -535,6 +535,10 @@ export const ANDROID_STACK_ICON_MAP = {
     label: "React Native",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
   },
+  recyclerView: {
+    label: "RecyclerView",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+  },
 } as const;
 
 export const IOS_STACK_ICON_MAP = {
