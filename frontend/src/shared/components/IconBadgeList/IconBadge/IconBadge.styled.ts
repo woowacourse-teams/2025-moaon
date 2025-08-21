@@ -23,7 +23,7 @@ export const IconBadge = styled.li<{ fontSize: number }>`
     linear-gradient(135deg, ${VAR1} 0%, ${VAR2} 60%, ${VAR3} 100%) border-box;
   border: 2px solid transparent;
   backdrop-filter: blur(14px) saturate(160%);
-  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.12),
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(255, 255, 255, 0.16);
 `;
