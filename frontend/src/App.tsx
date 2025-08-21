@@ -1,4 +1,5 @@
 import { LoadingSpinner } from "@shared/components/LoadingSpinner/LoadingSpinner";
+import { ScrollToTop } from "@shared/components/ScrollToTop/ScrollToTop";
 import { Suspense } from "react";
 import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
@@ -13,6 +14,7 @@ function App() {
   useTrackPageTimeGA();
   return (
     <>
+      <ScrollToTop />
       <Header />
       <GlobalLayout>
         <Suspense fallback={<LoadingSpinner />}>
