@@ -531,6 +531,10 @@ export const ANDROID_STACK_ICON_MAP = {
     label: "Serialization",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
   },
+  reactNative: {
+    label: "React Native",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
+  },
 } as const;
 
 export const IOS_STACK_ICON_MAP = {
@@ -565,6 +569,10 @@ export const IOS_STACK_ICON_MAP = {
   git: {
     label: "Git",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
+  reactNative: {
+    label: "React Native",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
   },
 } as const;
 
