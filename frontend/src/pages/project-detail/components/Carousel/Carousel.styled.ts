@@ -13,7 +13,8 @@ export const CarouselContainer = styled.div`
 
 const CarouselImage = styled.img`
   border-radius: 25px;
-  background-color: black;
+  border: 1px solid #ddd;
+  background-color: #fff;
   object-fit: contain;
 
   -webkit-user-drag: none;
