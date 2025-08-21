@@ -12,9 +12,8 @@ function ProjectDetailPage() {
   const { id } = useParams();
 
   const { projectDetail } = useProjectDetail(Number(id));
-  const { projectArticles, refetch, isRefetching } = useProjectArticles(
-    Number(id),
-  );
+  const { projectArticles, refetch, isRefetching, isLoading } =
+    useProjectArticles(Number(id));
 
   useMeta({
     title: projectDetail
@@ -36,6 +35,7 @@ function ProjectDetailPage() {
         articles={projectArticles}
         refetch={refetch}
         isRefetching={isRefetching}
+        isLoading={isLoading}
       />
     </div>
   );
