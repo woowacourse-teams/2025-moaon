@@ -94,7 +94,7 @@ export const FRONTEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jest.svg",
   },
   reacttestinglibrary: {
-    label: "ReactTestingLibrary",
+    label: "RTL",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactTestingLibrary.svg",
   },
   storybook: {
@@ -150,7 +150,7 @@ export const FRONTEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
   },
   css: {
-    label: "css",
+    label: "CSS",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CSS.svg",
   },
   lighthouse: {
@@ -526,6 +526,10 @@ export const ANDROID_STACK_ICON_MAP = {
   locationManager: {
     label: "locationManager",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+  },
+  serialization: {
+    label: "Serialization",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
   },
 } as const;
 
