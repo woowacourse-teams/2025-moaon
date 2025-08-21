@@ -161,6 +161,14 @@ export const FRONTEND_STACK_ICON_MAP = {
     label: "react-router",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactRouter.svg",
   },
+  sentry: {
+    label: "Sentry",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Sentry.svg",
+  },
+  googleAnalytics: {
+    label: "Google Analytics",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GoogleAnalytics.svg",
+  },
 } as const;
 
 export const BACKEND_STACK_ICON_MAP = {
@@ -420,6 +428,10 @@ export const BACKEND_STACK_ICON_MAP = {
     label: "log4j2",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Log4j2.svg",
   },
+  locust: {
+    label: "Locust",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Locust.svg",
+  },
 } as const;
 
 export const ANDROID_STACK_ICON_MAP = {
@@ -506,6 +518,14 @@ export const ANDROID_STACK_ICON_MAP = {
   git: {
     label: "Git",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
+  fusedLocationProviderClient: {
+    label: "FusedLocationProviderClient",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+  },
+  locationManager: {
+    label: "locationManager",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
   },
 } as const;
 
