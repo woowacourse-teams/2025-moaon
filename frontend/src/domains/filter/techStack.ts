@@ -94,7 +94,7 @@ export const FRONTEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jest.svg",
   },
   reacttestinglibrary: {
-    label: "ReactTestingLibrary",
+    label: "RTL",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactTestingLibrary.svg",
   },
   storybook: {
@@ -150,7 +150,7 @@ export const FRONTEND_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
   },
   css: {
-    label: "css",
+    label: "CSS",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CSS.svg",
   },
   lighthouse: {
@@ -160,6 +160,14 @@ export const FRONTEND_STACK_ICON_MAP = {
   reactRouter: {
     label: "react-router",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactRouter.svg",
+  },
+  sentry: {
+    label: "Sentry",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Sentry.svg",
+  },
+  googleAnalytics: {
+    label: "Google Analytics",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GoogleAnalytics.svg",
   },
 } as const;
 
@@ -420,6 +428,14 @@ export const BACKEND_STACK_ICON_MAP = {
     label: "log4j2",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Log4j2.svg",
   },
+  locust: {
+    label: "Locust",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Locust.svg",
+  },
+  springSecurity: {
+    label: "Spring Security",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringSecurity.svg",
+  },
 } as const;
 
 export const ANDROID_STACK_ICON_MAP = {
@@ -484,7 +500,7 @@ export const ANDROID_STACK_ICON_MAP = {
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Glide.svg",
   },
   mockk: {
-    label: "Mockk",
+    label: "MockK",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Mockk.svg",
   },
   turbine: {
@@ -506,6 +522,38 @@ export const ANDROID_STACK_ICON_MAP = {
   git: {
     label: "Git",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
+  fusedLocationProviderClient: {
+    label: "FusedLocationProviderClient",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+  },
+  locationManager: {
+    label: "locationManager",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+  },
+  serialization: {
+    label: "Serialization",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
+  },
+  reactNative: {
+    label: "React Native",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
+  },
+  recyclerView: {
+    label: "RecyclerView",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+  },
+  coil: {
+    label: "Coil",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Coil.svg",
+  },
+  timber: {
+    label: "Timber",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Timber.svg",
+  },
+  lottie: {
+    label: "Lottie",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Lottie.svg",
   },
 } as const;
 
@@ -541,6 +589,10 @@ export const IOS_STACK_ICON_MAP = {
   git: {
     label: "Git",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+  },
+  reactNative: {
+    label: "React Native",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
   },
 } as const;
 
