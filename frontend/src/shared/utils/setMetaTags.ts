@@ -5,19 +5,9 @@ interface MetaTagConfig {
 
 const setMetaTags = (configs: MetaTagConfig[]) => {
   const fragment = document.createDocumentFragment();
-  const existingTags = new Set<string>();
-
-  const allMetaTags = document.head.querySelectorAll("meta");
-  allMetaTags.forEach((tag) => {
-    const name = tag.getAttribute("name");
-    const property = tag.getAttribute("property");
-    if (name) existingTags.add(`name:${name}`);
-    if (property) existingTags.add(`property:${property}`);
-  });
 
   configs.forEach(({ attr, content }) => {
     const selector = `meta[${attr.key}="${attr.value}"]`;
-
     let metaElement = document.querySelector(selector) as HTMLMetaElement;
 
     if (metaElement) {
