@@ -432,6 +432,10 @@ export const BACKEND_STACK_ICON_MAP = {
     label: "Locust",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Locust.svg",
   },
+  springSecurity: {
+    label: "Spring Security",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringSecurity.svg",
+  },
 } as const;
 
 export const ANDROID_STACK_ICON_MAP = {
