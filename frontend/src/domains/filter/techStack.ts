@@ -539,6 +539,18 @@ export const ANDROID_STACK_ICON_MAP = {
     label: "RecyclerView",
     imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
   },
+  coil: {
+    label: "Coil",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Coil.svg",
+  },
+  timber: {
+    label: "Timber",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Timber.svg",
+  },
+  lottie: {
+    label: "Lottie",
+    imgUrl: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Lottie.svg",
+  },
 } as const;
 
 export const IOS_STACK_ICON_MAP = {
