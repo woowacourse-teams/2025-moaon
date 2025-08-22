@@ -6,8 +6,11 @@ export const OverviewSectionContainer = styled.section`
 `;
 
 export const OverviewContent = styled.div`
+  width: 50rem;
   font-size: 1rem;
   font-weight: 500;
   white-space: pre-wrap;
   line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
