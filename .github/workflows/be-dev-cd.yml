@@ -3,14 +3,13 @@ name: BE Dev CD
 on:
   push:
     branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
 
 jobs:
   build-and-push-image:
     if: |
-      github.actor == 'yesjuhee' ||
-      github.actor == 'Minuring' ||
-      github.actor == 'eueo8259' ||
-      github.actor == 'minjae8563'
+      github.actor == 'Minuring'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,6 +26,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -43,42 +43,42 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
-    needs: build-and-push-image
-    runs-on: dev-self-hosted
-
-    defaults:
-      run:
-        working-directory: ./backend
-
-    steps:
-      - name: change permission
-        run: |
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Create .env file from Secrets
-        run: |
-          echo "Creating .env file from GitHub Secrets"
-          cat <<EOF > .env
-          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
-          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
-          SPRING_DATASOURCE_URL_DEV=${{ secrets.SPRING_DATASOURCE_URL_DEV }}
-          SPRING_DATASOURCE_USERNAME_DEV=${{ secrets.SPRING_DATASOURCE_USERNAME_DEV }}
-          SPRING_DATASOURCE_PASSWORD_DEV=${{ secrets.SPRING_DATASOURCE_PASSWORD_DEV }}
-          IMAGE_TAG=${{ github.sha }}
-          EOF
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Pull latest image and deploy
-        run: |
-          sudo docker compose -f compose.dev.yaml up -d
-          sudo docker image prune -af
+#  deploy:
+#    needs: build-and-push-image
+#    runs-on: dev-self-hosted
+#
+#    defaults:
+#      run:
+#        working-directory: ./backend
+#
+#    steps:
+#      - name: change permission
+#        run: |
+#          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
+#
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Create .env file from Secrets
+#        run: |
+#          echo "Creating .env file from GitHub Secrets"
+#          cat <<EOF > .env
+#          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+#          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+#          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+#          SPRING_DATASOURCE_URL_DEV=${{ secrets.SPRING_DATASOURCE_URL_DEV }}
+#          SPRING_DATASOURCE_USERNAME_DEV=${{ secrets.SPRING_DATASOURCE_USERNAME_DEV }}
+#          SPRING_DATASOURCE_PASSWORD_DEV=${{ secrets.SPRING_DATASOURCE_PASSWORD_DEV }}
+#          IMAGE_TAG=${{ github.sha }}
+#          EOF
+#
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Pull latest image and deploy
+#        run: |
+#          sudo docker compose -f compose.dev.yaml up -d
+#          sudo docker image prune -af
