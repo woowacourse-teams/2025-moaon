@@ -6,31 +6,38 @@ import {
 } from "react";
 import Polymorphic from "../Polymorphic/Polymorphic";
 
-interface DelayUnmountProps<T extends ElementType = "div"> {
+interface UnmountAfterAnimationProps<T extends ElementType = "div"> {
   visible: boolean;
   as?: T;
 }
 
-function UnmountAnimation({
+function UnmountAfterAnimation({
   visible,
   children,
   as = "div",
-}: PropsWithChildren<DelayUnmountProps>) {
+}: PropsWithChildren<UnmountAfterAnimationProps>) {
   const [mounted, setMounted] = useState(visible);
 
   useEffect(() => {
     if (visible) {
       setMounted(true);
-      return;
     }
   }, [visible]);
 
-  const unmount = () => {
-    if (visible) {
+  const refCallback = (element: HTMLElement | null) => {
+    if (!element || visible) {
       return;
     }
 
-    setMounted(false);
+    const animations = element.getAnimations({ subtree: true });
+    Promise.all(animations.map((animation) => animation.finished))
+      .then(() => {
+        setMounted(false);
+      })
+      .catch(() => {
+        // 애니메이션 중단 처리(abort error)
+        setMounted(false);
+      });
   };
 
   if (!mounted) {
@@ -38,10 +45,10 @@ function UnmountAnimation({
   }
 
   return (
-    <Polymorphic as={as} onTransitionEnd={unmount} onAnimationEnd={unmount}>
+    <Polymorphic as={as} ref={refCallback}>
       {children}
     </Polymorphic>
   );
 }
 
-export default UnmountAnimation;
+export default UnmountAfterAnimation;
