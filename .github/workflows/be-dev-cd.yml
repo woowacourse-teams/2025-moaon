@@ -29,6 +29,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Gradle cache for Docker
+        id: gradle_cache
+        uses: actions/cache@v4
+        with:
+          path: ./gradle-cache-home
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('build.gradle', 'settings.gradle', 'gradle/wrapper/**') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-cache-
+
+      - name: Restore Gradle cache mounts to BuildKit
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: ./gradle-cache-home
+          dockerfile: ./backend/Dockerfile
+          skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
+
+
       - name: Build and push Docker image
         id: build
         uses: docker/build-push-action@v5
