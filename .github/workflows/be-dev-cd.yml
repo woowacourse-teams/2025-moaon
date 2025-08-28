@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
@@ -45,7 +46,6 @@ jobs:
           cache-dir: ./gradle-cache-dev-home
           dockerfile: ./backend/Dockerfile
           skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
-
 
       - name: Build and push Docker image
         id: build
