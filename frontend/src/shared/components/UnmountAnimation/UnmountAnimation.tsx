@@ -30,14 +30,11 @@ function UnmountAfterAnimation({
     }
 
     const animations = element.getAnimations({ subtree: true });
-    Promise.all(animations.map((animation) => animation.finished))
-      .then(() => {
+    Promise.all(animations.map((animation) => animation.finished)).finally(
+      () => {
         setMounted(false);
-      })
-      .catch(() => {
-        // 애니메이션 중단 처리(abort error)
-        setMounted(false);
-      });
+      },
+    );
   };
 
   if (!mounted) {
