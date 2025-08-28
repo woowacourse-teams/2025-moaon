@@ -44,7 +44,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           cache-dir: ./gradle-cache-dev-home
           dockerfile: ./backend/Dockerfile
-          skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
+#          skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
 
 
       - name: Build and push Docker image
