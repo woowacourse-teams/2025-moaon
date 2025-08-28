@@ -33,16 +33,16 @@ jobs:
         id: gradle_cache
         uses: actions/cache@v4
         with:
-          path: ./gradle-cache-home
-          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('build.gradle', 'settings.gradle', 'gradle/wrapper/**') }}
+          path: ./gradle-cache-dev-home
+          key: ${{ runner.os }}-gradle-cache-dev-${{ hashFiles('build.gradle', 'settings.gradle', 'gradle/wrapper/**') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-cache-
+            ${{ runner.os }}-gradle-cache-dev-
 
       - name: Restore Gradle cache mounts to BuildKit
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          cache-dir: ./gradle-cache-home
+          cache-dir: ./gradle-cache-dev-home
           dockerfile: ./backend/Dockerfile
           skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
 
