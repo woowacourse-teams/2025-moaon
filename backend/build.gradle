@@ -112,4 +112,3 @@ bootJar {
 tasks.named('build') {
     dependsOn asciidoctor
 }
-
