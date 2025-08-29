@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import moaon.backend.global.cursor.CreatedAtProjectCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.cursor.LoveProjectCursor;
-import moaon.backend.global.cursor.ProjectCursor;
 import moaon.backend.global.cursor.ViewProjectCursor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class ProjectSortTypeTest {
         ProjectSortType sortBy = ProjectSortType.CREATED_AT;
 
         // when
-        ProjectCursor<?> actual = sortBy.toCursor(cursor);
+        Cursor<?> actual = sortBy.toCursor(cursor);
 
         // then
         assertAll(
@@ -52,7 +52,7 @@ class ProjectSortTypeTest {
         ProjectSortType sortBy = ProjectSortType.LOVES;
 
         // when
-        ProjectCursor<?> actual = sortBy.toCursor(cursor);
+        Cursor<?> actual = sortBy.toCursor(cursor);
 
         // then
         assertAll(
@@ -70,7 +70,7 @@ class ProjectSortTypeTest {
         ProjectSortType sortBy = ProjectSortType.VIEWS;
 
         // when
-        ProjectCursor<?> actual = sortBy.toCursor(cursor);
+        Cursor<?> actual = sortBy.toCursor(cursor);
 
         // then
         assertAll(

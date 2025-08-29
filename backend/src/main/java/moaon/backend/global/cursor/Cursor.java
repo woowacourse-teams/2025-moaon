@@ -2,7 +2,7 @@ package moaon.backend.global.cursor;
 
 import com.querydsl.core.BooleanBuilder;
 
-public interface ArticleCursor<T extends Comparable<? super T>> {
+public interface Cursor<T extends Comparable<? super T>> {
 
     T getSortValue();
 

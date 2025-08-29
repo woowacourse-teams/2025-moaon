@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectSortType;
@@ -34,7 +34,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     @Override
     public List<Project> findWithSearchConditions(ProjectQueryCondition condition) {
-        ProjectCursor<?> cursor = condition.cursor();
+        Cursor<?> cursor = condition.cursor();
 
         JPAQuery<Project> query = jpaQueryFactory.selectFrom(project)
                 .distinct()

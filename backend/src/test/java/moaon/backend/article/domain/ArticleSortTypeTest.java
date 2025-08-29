@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
-import moaon.backend.global.cursor.ArticleCursor;
 import moaon.backend.global.cursor.ClickArticleCursor;
 import moaon.backend.global.cursor.CreatedAtArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +37,7 @@ class ArticleSortTypeTest {
         ArticleSortType sortBy = ArticleSortType.CREATED_AT;
 
         // when
-        ArticleCursor<?> actual = sortBy.toCursor(cursor);
+        Cursor<?> actual = sortBy.toCursor(cursor);
 
         // then
         assertAll(
@@ -55,7 +55,7 @@ class ArticleSortTypeTest {
         ArticleSortType sortBy = ArticleSortType.CLICKS;
 
         // when
-        ArticleCursor<?> actual = sortBy.toCursor(cursor);
+        Cursor<?> actual = sortBy.toCursor(cursor);
 
         // then
         assertAll(
@@ -73,7 +73,7 @@ class ArticleSortTypeTest {
         ArticleSortType sortType = ArticleSortType.CREATED_AT;
 
         //when
-        ArticleCursor<?> actual = sortType.toCursor(cursor);
+        Cursor<?> actual = sortType.toCursor(cursor);
 
         // then
         assertThat(actual).isNull();

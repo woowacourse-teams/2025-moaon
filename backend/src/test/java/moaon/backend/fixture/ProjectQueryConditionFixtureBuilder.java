@@ -3,7 +3,7 @@ package moaon.backend.fixture;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
@@ -15,7 +15,7 @@ public class ProjectQueryConditionFixtureBuilder {
     private List<String> techStackNames;
     private ProjectSortType projectSortType;
     private int limit;
-    private ProjectCursor<?> cursor;
+    private Cursor<?> cursor;
 
     public ProjectQueryConditionFixtureBuilder() {
         this.search = new SearchKeyword(null);
@@ -51,7 +51,7 @@ public class ProjectQueryConditionFixtureBuilder {
         return this;
     }
 
-    public ProjectQueryConditionFixtureBuilder cursor(ProjectCursor<?> cursor) {
+    public ProjectQueryConditionFixtureBuilder cursor(Cursor<?> cursor) {
         this.cursor = cursor;
         return this;
     }
