@@ -1,7 +1,6 @@
 package moaon.backend.article.domain;
 
 import java.util.Arrays;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cursor.ClickArticleCursor;
@@ -10,17 +9,18 @@ import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.parser.CursorParser;
 import moaon.backend.global.parser.IntegerParser;
 import moaon.backend.global.parser.LocalDateTimeParser;
-import moaon.backend.global.parser.LongParser;
 
 @RequiredArgsConstructor
 public enum ArticleSortType {
 
-    CREATED_AT("createdAt",
-            cursor -> parseCursor(cursor, LocalDateTimeParser::toLocalDateTime, CreatedAtArticleCursor::new),
+    CREATED_AT(
+            "createdAt",
+            cursor -> CursorParser.toCursor(cursor, LocalDateTimeParser::toLocalDateTime, CreatedAtArticleCursor::new),
             article -> new CreatedAtArticleCursor(article.getCreatedAt(), article.getId())
     ),
-    CLICKS("clicks",
-            cursor -> parseCursor(cursor, IntegerParser::toInt, ClickArticleCursor::new),
+    CLICKS(
+            "clicks",
+            cursor -> CursorParser.toCursor(cursor, IntegerParser::toInt, ClickArticleCursor::new),
             article -> new ClickArticleCursor(article.getClicks(), article.getId())
     );
 
@@ -41,23 +41,5 @@ public enum ArticleSortType {
 
     public Cursor<?> toCursor(Article article) {
         return articleToCursorFactory.apply(article);
-    }
-
-    private static <T> Cursor<?> parseCursor(
-            String cursor,
-            Function<String, T> valueParser,
-            BiFunction<T, Long, Cursor<?>> constructor
-    ) {
-
-        if (CursorParser.isCursorEmpty(cursor)) {
-            return null;
-        }
-
-        String[] valueAndId = CursorParser.splitAndValidateFormat(cursor);
-
-        T sortValue = valueParser.apply(valueAndId[0]);
-        Long lastId = LongParser.toLong(valueAndId[1]);
-
-        return constructor.apply(sortValue, lastId);
     }
 }

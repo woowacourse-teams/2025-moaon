@@ -1,7 +1,6 @@
 package moaon.backend.project.domain;
 
 import java.util.Arrays;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import moaon.backend.global.cursor.CreatedAtProjectCursor;
 import moaon.backend.global.cursor.Cursor;
@@ -10,22 +9,21 @@ import moaon.backend.global.cursor.ViewProjectCursor;
 import moaon.backend.global.parser.CursorParser;
 import moaon.backend.global.parser.IntegerParser;
 import moaon.backend.global.parser.LocalDateTimeParser;
-import moaon.backend.global.parser.LongParser;
 
 public enum ProjectSortType {
 
     CREATED_AT("createdAt",
-            cursor -> parseCursor(cursor, LocalDateTimeParser::toLocalDateTime, CreatedAtProjectCursor::new),
+            cursor -> CursorParser.toCursor(cursor, LocalDateTimeParser::toLocalDateTime, CreatedAtProjectCursor::new),
             project -> new CreatedAtProjectCursor(project.getCreatedAt(), project.getId())
     ),
 
     VIEWS("views",
-            cursor -> parseCursor(cursor, IntegerParser::toInt, ViewProjectCursor::new),
+            cursor -> CursorParser.toCursor(cursor, IntegerParser::toInt, ViewProjectCursor::new),
             project -> new ViewProjectCursor(project.getViews(), project.getId())
     ),
 
     LOVES("loves",
-            cursor -> parseCursor(cursor, IntegerParser::toInt, LoveProjectCursor::new),
+            cursor -> CursorParser.toCursor(cursor, IntegerParser::toInt, LoveProjectCursor::new),
             project -> new LoveProjectCursor(project.getLoveCount(), project.getId())
     );
 
@@ -56,23 +54,5 @@ public enum ProjectSortType {
 
     public Cursor<?> toCursor(Project project) {
         return projectToCursorFactory.apply(project);
-    }
-
-    private static <T> Cursor<?> parseCursor(
-            String cursor,
-            Function<String, T> valueParser,
-            BiFunction<T, Long, Cursor<?>> constructor
-    ) {
-
-        if (CursorParser.isCursorEmpty(cursor)) {
-            return null;
-        }
-
-        String[] valueAndId = CursorParser.splitAndValidateFormat(cursor);
-
-        T sortValue = valueParser.apply(valueAndId[0]);
-        Long lastId = LongParser.toLong(valueAndId[1]);
-
-        return constructor.apply(sortValue, lastId);
     }
 }
