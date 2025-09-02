@@ -11,6 +11,9 @@ public class CursorParser {
     private static final String COUNT_BASED_CURSOR_REGEX = "[0-9]+_[0-9]+";
     private static final String CREATED_AT_CURSOR_REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}_[0-9]+$";
 
+    private CursorParser() {
+    }
+
     public static <T> Cursor<?> toCursor(
             String cursor,
             Function<String, T> valueParser,

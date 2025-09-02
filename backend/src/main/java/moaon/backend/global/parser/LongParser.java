@@ -5,6 +5,9 @@ import moaon.backend.global.exception.custom.ErrorCode;
 
 public class LongParser {
 
+    private LongParser() {
+    }
+
     public static Long toLong(String value) {
         if (value == null || value.isEmpty()) {
             throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);

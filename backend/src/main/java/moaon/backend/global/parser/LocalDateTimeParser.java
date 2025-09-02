@@ -7,6 +7,9 @@ import moaon.backend.global.exception.custom.ErrorCode;
 
 public class LocalDateTimeParser {
 
+    private LocalDateTimeParser() {
+    }
+
     public static LocalDateTime toLocalDateTime(String value) {
         if (value == null || value.isEmpty()) {
             throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
