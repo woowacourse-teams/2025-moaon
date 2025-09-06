@@ -3,15 +3,15 @@ package moaon.backend.global.parser;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 
-public class LongParser {
+public class LongParser extends Parser<Long> {
 
-    private LongParser() {
+    @Override
+    Long parse(String value) {
+        return toLong(value);
     }
 
     public static Long toLong(String value) {
-        if (value == null || value.isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
-        }
+        validateValueEmpty(value);
 
         try {
             return Long.parseLong(value);

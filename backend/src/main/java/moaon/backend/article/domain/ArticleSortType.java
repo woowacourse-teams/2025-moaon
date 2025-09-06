@@ -15,12 +15,12 @@ public enum ArticleSortType {
 
     CREATED_AT(
             "createdAt",
-            cursor -> CursorParser.toCursor(cursor, LocalDateTimeParser::toLocalDateTime, CreatedAtArticleCursor::new),
+            cursor -> CursorParser.toCursor(cursor, new LocalDateTimeParser(), CreatedAtArticleCursor::new),
             article -> new CreatedAtArticleCursor(article.getCreatedAt(), article.getId())
     ),
     CLICKS(
             "clicks",
-            cursor -> CursorParser.toCursor(cursor, IntegerParser::toInt, ClickArticleCursor::new),
+            cursor -> CursorParser.toCursor(cursor, new IntegerParser(), ClickArticleCursor::new),
             article -> new ClickArticleCursor(article.getClicks(), article.getId())
     );
 

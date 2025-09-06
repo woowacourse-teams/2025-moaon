@@ -5,15 +5,11 @@ import java.time.format.DateTimeParseException;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 
-public class LocalDateTimeParser {
+public class LocalDateTimeParser extends Parser<LocalDateTime> {
 
-    private LocalDateTimeParser() {
-    }
-
-    public static LocalDateTime toLocalDateTime(String value) {
-        if (value == null || value.isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
-        }
+    @Override
+    LocalDateTime parse(String value) {
+        validateValueEmpty(value);
 
         try {
             return LocalDateTime.parse(value);

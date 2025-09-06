@@ -13,17 +13,17 @@ import moaon.backend.global.parser.LocalDateTimeParser;
 public enum ProjectSortType {
 
     CREATED_AT("createdAt",
-            cursor -> CursorParser.toCursor(cursor, LocalDateTimeParser::toLocalDateTime, CreatedAtProjectCursor::new),
+            cursor -> CursorParser.toCursor(cursor, new LocalDateTimeParser(), CreatedAtProjectCursor::new),
             project -> new CreatedAtProjectCursor(project.getCreatedAt(), project.getId())
     ),
 
     VIEWS("views",
-            cursor -> CursorParser.toCursor(cursor, IntegerParser::toInt, ViewProjectCursor::new),
+            cursor -> CursorParser.toCursor(cursor, new IntegerParser(), ViewProjectCursor::new),
             project -> new ViewProjectCursor(project.getViews(), project.getId())
     ),
 
     LOVES("loves",
-            cursor -> CursorParser.toCursor(cursor, IntegerParser::toInt, LoveProjectCursor::new),
+            cursor -> CursorParser.toCursor(cursor, new IntegerParser(), LoveProjectCursor::new),
             project -> new LoveProjectCursor(project.getLoveCount(), project.getId())
     );
 

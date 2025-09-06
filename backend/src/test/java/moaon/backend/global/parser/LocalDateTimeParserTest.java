@@ -16,8 +16,10 @@ class LocalDateTimeParserTest {
     @NullSource
     @ValueSource(strings = {""})
     void shouldThrowException_whenValueIsNullOrEmpty(String invalidValue) {
+        // given
+        LocalDateTimeParser localDateTimeParser = new LocalDateTimeParser();
         // when then
-        assertThatThrownBy(() -> LocalDateTimeParser.toLocalDateTime(invalidValue))
+        assertThatThrownBy(() -> localDateTimeParser.parse(invalidValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(INVALID_CURSOR_FORMAT.getMessage());
     }

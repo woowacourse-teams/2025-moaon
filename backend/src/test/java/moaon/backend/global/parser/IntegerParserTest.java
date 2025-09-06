@@ -16,8 +16,10 @@ class IntegerParserTest {
     @NullSource
     @ValueSource(strings = {""})
     void shouldThrowException_whenValueIsNullOrEmpty(String invalidValue) {
+        // given
+        IntegerParser integerParser = new IntegerParser();
         // when then
-        assertThatThrownBy(() -> IntegerParser.toInt(invalidValue))
+        assertThatThrownBy(() -> integerParser.parse(invalidValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(INVALID_CURSOR_FORMAT.getMessage());
     }
