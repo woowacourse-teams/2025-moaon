@@ -5,7 +5,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 
 public abstract class Parser<T> {
 
-    abstract T parse(String value);
+    public abstract T parse(String value);
 
     public static void validateValueEmpty(String value) {
         if (value == null || value.isEmpty()) {

@@ -6,7 +6,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public class LongParser extends Parser<Long> {
 
     @Override
-    Long parse(String value) {
+    public Long parse(String value) {
         return toLong(value);
     }
 
