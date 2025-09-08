@@ -7,11 +7,15 @@ COPY gradle ./gradle
 COPY build.gradle .
 COPY settings.gradle .
 
-RUN chmod +x ./gradlew && ./gradlew dependencies --no-daemon
+RUN chmod +x ./gradlew
+
+RUN --mount=type=cache,target=/root/.gradle,id=gradle-home,sharing=locked \
+    ./gradlew --no-daemon dependencies
 
 COPY src ./src
 
-RUN ./gradlew bootJar --no-daemon
+RUN --mount=type=cache,target=/root/.gradle,id=gradle-home,sharing=locked \
+    ./gradlew --no-daemon bootJar
 
 FROM amazoncorretto:21-alpine
 
