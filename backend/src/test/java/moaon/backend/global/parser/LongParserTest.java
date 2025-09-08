@@ -16,8 +16,11 @@ class LongParserTest {
     @NullSource
     @ValueSource(strings = {""})
     void shouldThrowException_whenValueIsNullOrEmpty(String invalidValue) {
+        // given
+        LongParser longParser = new LongParser();
+
         // when then
-        assertThatThrownBy(() -> LongParser.toLong(invalidValue))
+        assertThatThrownBy(() -> longParser.parse(invalidValue))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(INVALID_CURSOR_FORMAT.getMessage());
     }

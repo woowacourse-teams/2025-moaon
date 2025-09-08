@@ -9,13 +9,14 @@ public class CursorParser {
 
     private static final String COUNT_BASED_CURSOR_REGEX = "[0-9]+_[0-9]+";
     private static final String CREATED_AT_CURSOR_REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}_[0-9]+$";
+    private static final LongParser LONG_PARSER = new LongParser();
 
     private CursorParser() {
     }
 
     public static <T> Cursor<?> toCursor(
             String cursor,
-            Parser<T> parser,
+            Parser<T> valueParser,
             BiFunction<T, Long, Cursor<?>> constructor
     ) {
 
@@ -25,8 +26,8 @@ public class CursorParser {
 
         String[] valueAndId = splitAndValidateFormat(cursor);
 
-        T sortValue = parser.parse(valueAndId[0]);
-        Long lastId = LongParser.toLong(valueAndId[1]);
+        T sortValue = valueParser.parse(valueAndId[0]);
+        Long lastId = LONG_PARSER.parse(valueAndId[1]);
 
         return constructor.apply(sortValue, lastId);
     }

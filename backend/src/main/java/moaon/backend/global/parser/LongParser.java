@@ -7,10 +7,6 @@ public class LongParser extends Parser<Long> {
 
     @Override
     public Long parse(String value) {
-        return toLong(value);
-    }
-
-    public static Long toLong(String value) {
         validateValueEmpty(value);
 
         try {
