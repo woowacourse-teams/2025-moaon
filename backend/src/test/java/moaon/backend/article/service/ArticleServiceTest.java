@@ -15,7 +15,7 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -71,7 +71,7 @@ class ArticleServiceTest {
                 null
         );
 
-        ArticleCursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
+        Cursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
 
         Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 

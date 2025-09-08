@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreatedAtArticleCursor implements ArticleCursor<LocalDateTime> {
+public class CreatedAtArticleCursor implements Cursor<LocalDateTime> {
 
     private final LocalDateTime createdAt;
     private final Long id;
