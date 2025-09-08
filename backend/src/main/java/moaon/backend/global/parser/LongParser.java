@@ -6,9 +6,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public class LongParser extends Parser<Long> {
 
     @Override
-    public Long parse(String value) {
-        validateValueEmpty(value);
-
+    protected Long doParse(String value) {
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException e) {

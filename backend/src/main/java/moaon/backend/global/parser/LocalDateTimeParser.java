@@ -8,9 +8,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public class LocalDateTimeParser extends Parser<LocalDateTime> {
 
     @Override
-    public LocalDateTime parse(String value) {
-        validateValueEmpty(value);
-
+    protected LocalDateTime doParse(String value) {
         try {
             return LocalDateTime.parse(value);
         } catch (DateTimeParseException e) {

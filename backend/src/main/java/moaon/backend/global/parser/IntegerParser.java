@@ -6,9 +6,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public class IntegerParser extends Parser<Integer> {
 
     @Override
-    public Integer parse(String value) {
-        validateValueEmpty(value);
-
+    protected Integer doParse(String value) {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
