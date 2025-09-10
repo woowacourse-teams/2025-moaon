@@ -13,6 +13,7 @@ import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
@@ -41,6 +42,8 @@ public class ArticleApiTest extends BaseApiTest {
         // given
         Sector filteredSector = Sector.BE;
         Sector unfilteredSector = Sector.FE;
+        Topic filteredTopic = Topic.DATABASE;
+        Topic unfilteredTopic = Topic.API_DESIGN;
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
         String filteredSearch = "moa";
@@ -58,6 +61,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(4)
+                        .topics(filteredTopic)
                         .build()
         );
         repositoryHelper.save(
@@ -67,6 +71,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .sector(filteredSector)
                         .project(project)
                         .clicks(4)
+                        .topics(filteredTopic)
                         .build()
         );
         repositoryHelper.save(
@@ -76,6 +81,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
+                        .topics(filteredTopic)
                         .build()
         );
         repositoryHelper.save(
@@ -85,6 +91,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
+                        .topics(filteredTopic)
                         .build()
         );
         repositoryHelper.save(
@@ -92,6 +99,17 @@ public class ArticleApiTest extends BaseApiTest {
                         .content(unfilteredSearch)
                         .sector(filteredSector)
                         .techStacks(List.of(unfilteredTechStack))
+                        .project(project)
+                        .clicks(4)
+                        .topics(filteredTopic)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .topics(unfilteredTopic)
+                        .content(filteredSearch)
+                        .sector(filteredSector)
+                        .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(4)
                         .build()
@@ -103,6 +121,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
+                        .topics(filteredTopic)
                         .build()
         );
         Article articleClickRankSecond = repositoryHelper.save(
@@ -112,6 +131,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(2)
+                        .topics(filteredTopic)
                         .build()
         );
         Article articleClickRankFirst = repositoryHelper.save(
@@ -121,6 +141,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(3)
+                        .topics(filteredTopic)
                         .build()
         );
 
@@ -129,6 +150,7 @@ public class ArticleApiTest extends BaseApiTest {
                 .queryParams("sort", "clicks")
                 .queryParams("search", filteredSearch)
                 .queryParams("sector", filteredSector.getName())
+                .queryParams("topics", List.of(filteredTopic.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
@@ -183,7 +205,8 @@ public class ArticleApiTest extends BaseApiTest {
         return queryParameters(
                 parameterWithName("sort").description("정렬 기준 (clicks, createdAt)").optional(),
                 parameterWithName("search").description("검색어").optional(),
-                parameterWithName("sector").description("카테고리").optional(),
+                parameterWithName("sector").description("직군").optional(),
+                parameterWithName("topics").description("아티클 주제").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
                 parameterWithName("limit").description("요청 데이터 개수"),
                 parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
@@ -201,7 +224,8 @@ public class ArticleApiTest extends BaseApiTest {
                 fieldWithPath("contents[].summary").description("아티클 요약"),
                 fieldWithPath("contents[].techStacks").description("기술 스택 목록"),
                 fieldWithPath("contents[].url").description("아티클 URL"),
-                fieldWithPath("contents[].sector").description("아티클 카테고리"),
+                fieldWithPath("contents[].sector").description("직군"),
+                fieldWithPath("contents[].topics").description("아티클 주제"),
                 fieldWithPath("contents[].createdAt").description("생성일시"),
                 fieldWithPath("totalCount").description("필터링 걸린 데이터의 전체 개수"),
                 fieldWithPath("hasNext").description("다음 페이지 존재 여부"),

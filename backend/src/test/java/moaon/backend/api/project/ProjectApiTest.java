@@ -250,6 +250,7 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
                 fieldWithPath("[].url").description("아티클 URL"),
                 fieldWithPath("[].sector").description("직군"),
+                fieldWithPath("[].topics").description("아티클 주제"),
                 fieldWithPath("[].createdAt").description("생성일시")
         );
     }

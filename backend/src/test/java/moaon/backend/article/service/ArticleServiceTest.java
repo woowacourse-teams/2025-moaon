@@ -14,6 +14,7 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
+import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
@@ -62,14 +63,10 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
-                null,
-                null,
-                null,
-                ArticleSortType.CREATED_AT,
-                2,
-                null
-        );
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortType.CREATED_AT)
+                .limit(2)
+                .build();
 
         Cursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
 
@@ -112,14 +109,10 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
-                null,
-                null,
-                null,
-                ArticleSortType.CREATED_AT,
-                3,
-                null
-        );
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortType.CREATED_AT)
+                .limit(3)
+                .build();
 
         Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
@@ -149,7 +142,7 @@ class ArticleServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> articleService.getByProjectIdAndCategory(projectId, category))
+        assertThatThrownBy(() -> articleService.getByProjectIdAndSector(projectId, category))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }

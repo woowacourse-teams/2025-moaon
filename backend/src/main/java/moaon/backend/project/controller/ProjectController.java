@@ -80,7 +80,7 @@ public class ProjectController {
             @PathVariable("id") long id,
             @RequestParam(value = "sector", required = false) String sector
     ) {
-        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndCategory(id, sector);
+        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndSector(id, sector);
         return ResponseEntity.ok(articleDetailResponses);
     }
 }

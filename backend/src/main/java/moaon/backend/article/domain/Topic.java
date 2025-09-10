@@ -1,33 +1,36 @@
 package moaon.backend.article.domain;
 
+import java.util.Arrays;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Getter
 public enum Topic {
 
     // 공통
-    TECHNOLOGY_ADOPTION("technologyAdoption"),
-    TROUBLESHOOTING("troubleShooting"),
-    PERFORMANCE_OPTIMIZATION("performanceOptimization"),
+    TECHNOLOGY_ADOPTION("adoption"),
+    TROUBLESHOOTING("trouble"),
+    PERFORMANCE_OPTIMIZATION("performance"),
     TESTING("testing"),
-    CODE_QUALITY("codeQuality"),
+    CODE_QUALITY("code"),
     SECURITY("security"),
     ETC("etc"),
 
     // FE,
-    STATE_MANAGEMENT("stateManagement"),
-    UI_UX_IMPROVEMENT("uiUxImprovement"),
+    STATE_MANAGEMENT(" state"),
+    UI_UX_IMPROVEMENT("uiux"),
     BUNDLING("bundling"),
 
     // BE,
-    ARCHITECTURE_DESIGN("architectureDesign"),
-    API_DESIGN("apiDesign"),
+    ARCHITECTURE_DESIGN("architecture"),
+    API_DESIGN("api"),
     DATABASE("db"),
-    DEPLOYMENT_AND_OPERATION("deploymentAndOperation"),
+    DEPLOYMENT_AND_OPERATION("deployment"),
 
     // infra
-    CI_CD("ciCd"),
-    MONITORING_AND_LOGGING("monitoringAndLogging"),
+    CI_CD("cicd"),
+    MONITORING_AND_LOGGING("monitoring"),
     NETWORK("network"),
 
     // 비개발
@@ -39,4 +42,11 @@ public enum Topic {
     // todo ios, android 추가
 
     private final String name;
+
+    public static Topic of(String name) {
+        return Arrays.stream(Topic.values())
+                .filter(topic -> topic.getName().equals(name))
+                .findAny()
+                .orElse(null);
+    }
 }

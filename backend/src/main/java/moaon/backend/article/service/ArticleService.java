@@ -43,10 +43,10 @@ public class ArticleService {
         return ArticleResponse.from(articles, totalCount, false, null);
     }
 
-    public List<ArticleDetailResponse> getByProjectIdAndCategory(long id, String sector) {
+    public List<ArticleDetailResponse> getByProjectIdAndSector(long id, String sector) {
         projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        List<Article> articles = articleRepository.findAllByProjectIdAndCategory(id, Sector.of(sector));
+        List<Article> articles = articleRepository.findAllByProjectIdAndSector(id, Sector.of(sector));
         return ArticleDetailResponse.from(articles);
     }
 

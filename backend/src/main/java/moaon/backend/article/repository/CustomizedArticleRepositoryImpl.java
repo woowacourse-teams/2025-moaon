@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
@@ -79,7 +80,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     @Override
-    public List<Article> findAllByProjectIdAndCategory(long id, Sector sector) {
+    public List<Article> findAllByProjectIdAndSector(long id, Sector sector) {
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
                 .leftJoin(article.techStacks, techStack);
@@ -88,7 +89,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         whereBuilder.and(article.project.id.eq(id));
 
-        applyWhereCategory(whereBuilder, sector);
+        applyWhereSector(whereBuilder, sector);
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
         }
@@ -101,10 +102,16 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
             JPAQuery<?> query
     ) {
         Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
         List<String> techStackNames = queryCondition.techStackNames();
         SearchKeyword searchKeyword = queryCondition.search();
 
-        applyWhereCategory(whereBuilder, sector);
+        applyWhereSector(whereBuilder, sector);
+        if (!CollectionUtils.isEmpty(topics)) {
+            for (Topic topic : topics) {
+                whereBuilder.and(article.topics.contains(topic));
+            }
+        }
 
         if (!CollectionUtils.isEmpty(techStackNames)) {
             whereBuilder.and(techStack.name.in(techStackNames));
@@ -116,7 +123,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
     }
 
-    private void applyWhereCategory(BooleanBuilder whereBuilder, Sector sector) {
+    private void applyWhereSector(BooleanBuilder whereBuilder, Sector sector) {
         if (sector != null) {
             whereBuilder.and(article.sector.eq(sector));
         }

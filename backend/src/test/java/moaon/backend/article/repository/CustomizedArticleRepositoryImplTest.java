@@ -438,7 +438,7 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         // when
-        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndCategory(
+        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndSector(
                 project.getId(),
                 filteredSector
         );

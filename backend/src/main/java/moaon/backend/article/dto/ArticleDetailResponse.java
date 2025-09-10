@@ -3,6 +3,7 @@ package moaon.backend.article.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.techStack.domain.TechStack;
 
 public record ArticleDetailResponse(
@@ -13,6 +14,7 @@ public record ArticleDetailResponse(
         List<String> techStacks,
         String url,
         String sector,
+        List<String> topics,
         LocalDateTime createdAt
 ) {
 
@@ -27,6 +29,9 @@ public record ArticleDetailResponse(
                         .toList(),
                 article.getArticleUrl(),
                 article.getSector().getName(),
+                article.getTopics().stream()
+                        .map(Topic::getName)
+                        .toList(),
                 article.getCreatedAt()
         );
     }
