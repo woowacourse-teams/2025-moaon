@@ -43,3 +43,8 @@ CREATE TABLE `article_topics`
 ALTER TABLE `article_topics`
     ADD CONSTRAINT `FK_article_topics_article`
         FOREIGN KEY (`article_id`) REFERENCES `article` (`id`);
+
+-- ### 7단계: 모든 기존 article에 대해 'ETC' 토픽 추가 ###
+INSERT INTO `article_topics` (`article_id`, `topics`)
+SELECT `id`, 'ETC'
+FROM `article`;
