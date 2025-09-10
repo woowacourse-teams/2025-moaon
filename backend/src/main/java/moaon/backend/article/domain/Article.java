@@ -75,7 +75,7 @@ public class Article extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private List<Topic> topics;
 
-    // todo topic과 sctor의 포함 관계 확인?
+    // todo topic과 sector의 포함 관계 확인?
     public Article(
             String title,
             String summary,
