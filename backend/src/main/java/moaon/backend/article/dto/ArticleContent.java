@@ -30,7 +30,7 @@ public record ArticleContent(
                         .map(TechStack::getName)
                         .toList(),
                 article.getArticleUrl(),
-                article.getCategory().getName(),
+                article.getSector().getName(),
                 article.getCreatedAt()
         );
     }

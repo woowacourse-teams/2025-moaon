@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 
@@ -17,7 +17,7 @@ public class ArticleFixtureBuilder {
     private String articleUrl;
     private LocalDateTime createdAt;
     private Project project;
-    private ArticleCategory category;
+    private Sector sector;
     private List<TechStack> techStacks;
     private int clicks;
 
@@ -28,7 +28,7 @@ public class ArticleFixtureBuilder {
         this.articleUrl = "https://test-product.com";
         this.createdAt = LocalDateTime.now();
         this.project = new ProjectFixtureBuilder().build();
-        this.category = Fixture.anyArticleCategory();
+        this.sector = Fixture.anySector();
         this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
         this.clicks = 0;
     }
@@ -63,8 +63,8 @@ public class ArticleFixtureBuilder {
         return this;
     }
 
-    public ArticleFixtureBuilder category(ArticleCategory category) {
-        this.category = category;
+    public ArticleFixtureBuilder sector(Sector sector) {
+        this.sector = sector;
         return this;
     }
 
@@ -93,7 +93,7 @@ public class ArticleFixtureBuilder {
                 .clicks(this.clicks)
                 .createdAt(this.createdAt)
                 .project(this.project)
-                .category(this.category)
+                .sector(this.sector)
                 .techStacks(this.techStacks)
                 .build();
     }

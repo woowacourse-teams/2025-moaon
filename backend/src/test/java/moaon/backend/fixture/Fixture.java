@@ -1,7 +1,8 @@
 package moaon.backend.fixture;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
-import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
@@ -22,8 +23,8 @@ public class Fixture {
         return new ProjectCategory(nameWithSequence("testProjectCategory"));
     }
 
-    public static ArticleCategory anyArticleCategory() {
-        return new ArticleCategory(nameWithSequence("testArticleCategory"));
+    public static Sector anySector() {
+        return Sector.values()[new Random().nextInt(Sector.values().length)];
     }
 
     protected static String nameWithSequence(String name) {

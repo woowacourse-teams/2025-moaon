@@ -12,7 +12,7 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
@@ -160,24 +160,24 @@ public class ProjectApiTest extends BaseApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        ArticleCategory filterCategory = Fixture.anyArticleCategory();
-        ArticleCategory unfilterCategory = Fixture.anyArticleCategory();
+        Sector filterSector = Sector.BE;
+        Sector unfilterSector = Sector.FE;
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
+                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
+                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
+                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
         );
 
-        repositoryHelper.save(new ArticleFixtureBuilder().category(unfilterCategory).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().sector(unfilterSector).build());
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
-                .queryParams("category", filterCategory.getName())
+                .queryParams("category", filterSector.getName())
                 .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()

@@ -3,6 +3,7 @@ package moaon.backend.article.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -42,10 +43,10 @@ public class ArticleService {
         return ArticleResponse.from(articles, totalCount, false, null);
     }
 
-    public List<ArticleDetailResponse> getByProjectIdAndCategory(long id, String category) {
+    public List<ArticleDetailResponse> getByProjectIdAndCategory(long id, String sector) {
         projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        List<Article> articles = articleRepository.findAllByProjectIdAndCategory(id, category);
+        List<Article> articles = articleRepository.findAllByProjectIdAndCategory(id, Sector.of(sector));
         return ArticleDetailResponse.from(articles);
     }
 

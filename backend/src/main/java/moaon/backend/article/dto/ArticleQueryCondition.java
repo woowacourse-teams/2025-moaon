@@ -2,12 +2,13 @@ package moaon.backend.article.dto;
 
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 
 public record ArticleQueryCondition(
         SearchKeyword search,
-        String categoryName,
+        Sector sector,
         List<String> techStackNames,
         ArticleSortType sortBy,
         int limit,
@@ -16,7 +17,7 @@ public record ArticleQueryCondition(
 
     public static ArticleQueryCondition from(
             String search,
-            String categoryName,
+            String sector,
             List<String> techStackNames,
             String sortType,
             int limit,
@@ -25,7 +26,7 @@ public record ArticleQueryCondition(
         ArticleSortType sortBy = ArticleSortType.from(sortType);
         return new ArticleQueryCondition(
                 new SearchKeyword(search),
-                categoryName,
+                Sector.of(sector),
                 techStackNames,
                 sortBy,
                 limit,

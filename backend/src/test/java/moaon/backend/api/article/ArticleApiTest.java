@@ -12,7 +12,7 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
@@ -39,8 +39,8 @@ public class ArticleApiTest extends BaseApiTest {
     @Test
     void getPagedArticles() {
         // given
-        ArticleCategory filteredArticleCategory = Fixture.anyArticleCategory();
-        ArticleCategory unfilteredArticleCategory = Fixture.anyArticleCategory();
+        Sector filteredSector = Sector.BE;
+        Sector unfilteredSector = Sector.FE;
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
         String filteredSearch = "moa";
@@ -53,7 +53,7 @@ public class ArticleApiTest extends BaseApiTest {
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .category(unfilteredArticleCategory)
+                        .sector(unfilteredSector)
                         .content(filteredSearch)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
@@ -64,7 +64,7 @@ public class ArticleApiTest extends BaseApiTest {
                 new ArticleFixtureBuilder()
                         .techStacks(List.of(unfilteredTechStack))
                         .content(filteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .project(project)
                         .clicks(4)
                         .build()
@@ -72,7 +72,7 @@ public class ArticleApiTest extends BaseApiTest {
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .title(unfilteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
@@ -81,7 +81,7 @@ public class ArticleApiTest extends BaseApiTest {
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .summary(unfilteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
@@ -90,7 +90,7 @@ public class ArticleApiTest extends BaseApiTest {
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .content(unfilteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .techStacks(List.of(unfilteredTechStack))
                         .project(project)
                         .clicks(4)
@@ -99,7 +99,7 @@ public class ArticleApiTest extends BaseApiTest {
         Article articleClickRankThird = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .content(filteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(1)
@@ -108,7 +108,7 @@ public class ArticleApiTest extends BaseApiTest {
         Article articleClickRankSecond = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .title(filteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(2)
@@ -117,7 +117,7 @@ public class ArticleApiTest extends BaseApiTest {
         Article articleClickRankFirst = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .content(filteredSearch)
-                        .category(filteredArticleCategory)
+                        .sector(filteredSector)
                         .techStacks(List.of(filteredTechStack))
                         .project(project)
                         .clicks(3)
@@ -128,7 +128,7 @@ public class ArticleApiTest extends BaseApiTest {
         ArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
                 .queryParams("sort", "clicks")
                 .queryParams("search", filteredSearch)
-                .queryParams("category", filteredArticleCategory.getName())
+                .queryParams("category", filteredSector.getName())
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
