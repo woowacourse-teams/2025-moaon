@@ -172,12 +172,12 @@ public class ProjectApiTest extends BaseApiTest {
         Article targetProjectArticle3 = repositoryHelper.save(
                 new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
         );
-
-        repositoryHelper.save(new ArticleFixtureBuilder().sector(unfilterSector).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(targetProject).sector(unfilterSector).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().sector(filterSector).build());
 
         // when
         ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
-                .queryParams("category", filterSector.getName())
+                .queryParams("sector", filterSector.getName())
                 .filter(document(projectArticlesResponseFields()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
@@ -249,7 +249,7 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("[].clicks").description("아티클 클릭수"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
                 fieldWithPath("[].url").description("아티클 URL"),
-                fieldWithPath("[].category").description("아티클 카테고리"),
+                fieldWithPath("[].sector").description("직군"),
                 fieldWithPath("[].createdAt").description("생성일시")
         );
     }

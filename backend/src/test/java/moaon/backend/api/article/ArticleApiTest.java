@@ -128,7 +128,7 @@ public class ArticleApiTest extends BaseApiTest {
         ArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
                 .queryParams("sort", "clicks")
                 .queryParams("search", filteredSearch)
-                .queryParams("category", filteredSector.getName())
+                .queryParams("sector", filteredSector.getName())
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
@@ -183,7 +183,7 @@ public class ArticleApiTest extends BaseApiTest {
         return queryParameters(
                 parameterWithName("sort").description("정렬 기준 (clicks, createdAt)").optional(),
                 parameterWithName("search").description("검색어").optional(),
-                parameterWithName("category").description("카테고리").optional(),
+                parameterWithName("sector").description("카테고리").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
                 parameterWithName("limit").description("요청 데이터 개수"),
                 parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
@@ -201,7 +201,7 @@ public class ArticleApiTest extends BaseApiTest {
                 fieldWithPath("contents[].summary").description("아티클 요약"),
                 fieldWithPath("contents[].techStacks").description("기술 스택 목록"),
                 fieldWithPath("contents[].url").description("아티클 URL"),
-                fieldWithPath("contents[].category").description("아티클 카테고리"),
+                fieldWithPath("contents[].sector").description("아티클 카테고리"),
                 fieldWithPath("contents[].createdAt").description("생성일시"),
                 fieldWithPath("totalCount").description("필터링 걸린 데이터의 전체 개수"),
                 fieldWithPath("hasNext").description("다음 페이지 존재 여부"),
