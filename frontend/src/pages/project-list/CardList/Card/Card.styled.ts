@@ -32,13 +32,14 @@ export const CardTitle = styled.h2`
 export const Card = styled.li`
   width: 100%;
   overflow: hidden;
+  border-radius: 10px;
 
   &:hover {
     transition: 0.25s linear;
     box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
 
     & ${CardImage} {
-      transform: scale(1.2);
+      transform: scale(1.1);
       transition: 0.25s linear;
     }
 
@@ -56,7 +57,8 @@ export const CardImageBox = styled.div`
   aspect-ratio: 14/8;
   overflow: hidden;
   position: relative;
-  border: 1px solid #e9e9e9;
+  border: 1px solid #cececeff;
+  border-radius: 10px 10px 0 0;
 
   /* 기본 스켈레톤 배경 */
   ${shimmerGradient}
