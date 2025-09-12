@@ -280,7 +280,7 @@ public class ProjectApiTest extends BaseApiTest {
     private QueryParametersSnippet projectQueryParameters() {
         return queryParameters(
                 parameterWithName("search").description("검색어").optional(),
-                parameterWithName("sort").description("정렬 기준 (views, loves, createdAt)").optional(),
+                parameterWithName("sort").description("정렬 기준 (views, loves, createdAt, articleCount)").optional(),
                 parameterWithName("categories").description("카테고리 목록").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
                 parameterWithName("limit").description("요청 데이터 개수 | Max: 100"),

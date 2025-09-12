@@ -17,8 +17,8 @@ const bounceAnimation = keyframes`
 export const MoveTopButton = styled.button<MoveTopButtonProps>`
   display: flex;
   position: fixed;
-  bottom: 5rem;
-  right: 5rem;
+  bottom: 2rem;
+  right: 2rem;
   z-index: 5;
   flex-direction: column;
   align-items: center;
@@ -27,8 +27,8 @@ export const MoveTopButton = styled.button<MoveTopButtonProps>`
   height: 3.5rem;
   padding-bottom: 0.25rem;
   border-radius: 50%;
-  border: 1px solid #d2d2d2;
-  background-color: #fff;
+  border: 1.5px solid #e4e4e4;
+  background-color: #007bff;
 
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transform: ${({ isVisible }) =>
@@ -37,5 +37,12 @@ export const MoveTopButton = styled.button<MoveTopButtonProps>`
 
   &:hover {
     animation: ${bounceAnimation} 1.2s ease-in-out infinite;
+    background-color: #f9f9f9;
   }
+`;
+
+export const MoveTopIcon = styled.img`
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-top: 0.2rem;
 `;
