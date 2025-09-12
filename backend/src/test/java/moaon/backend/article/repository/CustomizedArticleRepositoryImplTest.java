@@ -11,12 +11,14 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
+import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.global.cursor.ClickArticleCursor;
 import moaon.backend.global.cursor.CreatedAtArticleCursor;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -410,7 +412,7 @@ class CustomizedArticleRepositoryImplTest {
 
     @DisplayName("상세페이지에서 직군 필터를 이용하여 아티클을 조회한다.")
     @Test
-    void getByProjectIdAndCategory() {
+    void getByProjectIdAndSector() {
         // given
         Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
         Sector filteredSector = Sector.BE;
@@ -438,10 +440,11 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         // when
-        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndSector(
-                project.getId(),
-                filteredSector
-        );
+        ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
+                .id(project.getId())
+                .sector(filteredSector)
+                .build();
+        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndSector(condition);
 
         // then
         assertThat(articles).containsExactlyInAnyOrder(filterArticle1, filterArticle2);

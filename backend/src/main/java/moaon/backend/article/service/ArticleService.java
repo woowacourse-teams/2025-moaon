@@ -1,5 +1,6 @@
 package moaon.backend.article.service;
 
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
@@ -7,10 +8,13 @@ import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.dto.ArticleSectorCount;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
+import moaon.backend.project.dto.ProjectArticleResponse;
 import moaon.backend.project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,11 +47,20 @@ public class ArticleService {
         return ArticleResponse.from(articles, totalCount, false, null);
     }
 
-    public List<ArticleDetailResponse> getByProjectIdAndSector(long id, String sector) {
+    public ProjectArticleResponse getByProjectIdAndSector(ProjectArticleQueryCondition condition) {
+        long id = condition.id();
+
         projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        List<Article> articles = articleRepository.findAllByProjectIdAndSector(id, Sector.of(sector));
-        return ArticleDetailResponse.from(articles);
+
+        List<Article> articles = articleRepository.findAllByProjectIdAndSector(condition);
+        List<ArticleDetailResponse> data = ArticleDetailResponse.from(articles);
+
+        List<ArticleSectorCount> count = Arrays.stream(Sector.values())
+                .map(sector -> ArticleSectorCount.of(sector, articleRepository.countByProjectIdAndSector(id, sector)))
+                .toList();
+
+        return ProjectArticleResponse.of(count, data);
     }
 
     @Transactional

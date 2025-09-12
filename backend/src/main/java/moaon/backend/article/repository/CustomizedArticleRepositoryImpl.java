@@ -20,6 +20,7 @@ import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -80,16 +81,22 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     @Override
-    public List<Article> findAllByProjectIdAndSector(long id, Sector sector) {
+    public List<Article> findAllByProjectIdAndSector(ProjectArticleQueryCondition condition) {
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
                 .leftJoin(article.techStacks, techStack);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
-        whereBuilder.and(article.project.id.eq(id));
+        whereBuilder.and(article.project.id.eq(condition.id()));
 
-        applyWhereSector(whereBuilder, sector);
+        applyWhereSector(whereBuilder, condition.sector());
+
+        SearchKeyword searchKeyword = condition.search();
+        if (searchKeyword.hasValue()) {
+            whereBuilder.and(satisfiesMatchScore(condition.search()));
+        }
+
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
         }
