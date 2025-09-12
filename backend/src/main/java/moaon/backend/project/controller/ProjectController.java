@@ -84,7 +84,7 @@ public class ProjectController {
             @RequestParam(value = "sector", required = false) String sector,
             @RequestParam(value = "search", required = false) String search
     ) {
-        ProjectArticleResponse projectArticleResponse = articleService.getByProjectIdAndSector(
+        ProjectArticleResponse projectArticleResponse = articleService.getByProjectId(
                 id,
                 ProjectArticleQueryCondition.from(sector, search)
         );

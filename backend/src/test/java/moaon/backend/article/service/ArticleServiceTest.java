@@ -146,7 +146,7 @@ class ArticleServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> articleService.getByProjectIdAndSector(projectId, condition))
+        assertThatThrownBy(() -> articleService.getByProjectId(projectId, condition))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }

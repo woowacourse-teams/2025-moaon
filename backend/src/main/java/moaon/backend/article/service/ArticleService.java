@@ -47,11 +47,11 @@ public class ArticleService {
         return ArticleResponse.from(articles, totalCount, false, null);
     }
 
-    public ProjectArticleResponse getByProjectIdAndSector(long id, ProjectArticleQueryCondition condition) {
+    public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
         projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
-        List<Article> articles = articleRepository.findAllByProjectIdAndSector(id, condition);
+        List<Article> articles = articleRepository.findAllByProjectIdAndCondition(id, condition);
         List<ArticleDetailResponse> data = ArticleDetailResponse.from(articles);
 
         List<ArticleSectorCount> count = Arrays.stream(Sector.values())
