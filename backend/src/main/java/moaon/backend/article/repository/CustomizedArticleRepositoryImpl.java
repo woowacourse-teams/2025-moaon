@@ -81,14 +81,14 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     @Override
-    public List<Article> findAllByProjectIdAndSector(ProjectArticleQueryCondition condition) {
+    public List<Article> findAllByProjectIdAndSector(long id, ProjectArticleQueryCondition condition) {
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
                 .leftJoin(article.techStacks, techStack);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
-        whereBuilder.and(article.project.id.eq(condition.id()));
+        whereBuilder.and(article.project.id.eq(id));
 
         applyWhereSector(whereBuilder, condition.sector());
 

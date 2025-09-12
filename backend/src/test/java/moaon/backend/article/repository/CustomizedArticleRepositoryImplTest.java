@@ -441,10 +441,9 @@ class CustomizedArticleRepositoryImplTest {
 
         // when
         ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
-                .id(project.getId())
                 .sector(filteredSector)
                 .build();
-        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndSector(condition);
+        List<Article> articles = customizedArticleRepository.findAllByProjectIdAndSector(project.getId(), condition);
 
         // then
         assertThat(articles).containsExactlyInAnyOrder(filterArticle1, filterArticle2);

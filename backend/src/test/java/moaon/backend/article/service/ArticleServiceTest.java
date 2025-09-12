@@ -142,12 +142,11 @@ class ArticleServiceTest {
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
 
         ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
-                .id(projectId)
                 .build();
 
         // when
         // then
-        assertThatThrownBy(() -> articleService.getByProjectIdAndSector(condition))
+        assertThatThrownBy(() -> articleService.getByProjectIdAndSector(projectId, condition))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }
