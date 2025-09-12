@@ -163,25 +163,58 @@ public class ProjectApiTest extends BaseApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Sector filterSector = Sector.BE;
-        Sector unfilterSector = Sector.FE;
+        Sector filteredSector = Sector.BE;
+        Sector unfilteredSector = Sector.FE;
+        String filteredSearch = "모아온";
+        String unfilteredSearch = "핏토링";
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .summary(filteredSearch)
+                        .build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .content(filteredSearch)
+                        .build()
         );
-        repositoryHelper.save(new ArticleFixtureBuilder().project(targetProject).sector(unfilterSector).build());
-        repositoryHelper.save(new ArticleFixtureBuilder().sector(filterSector).build());
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(unfilteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .title(unfilteredSearch)
+                        .build()
+        );
 
         // when
         ProjectArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
-                .queryParams("sector", filterSector.getName())
-                .filter(document(projectArticlesResponseFields()))
+                .queryParams("sector", filteredSector.getName())
+                .queryParams("search", filteredSearch)
+                .filter(document(projectArticlesResponseFields(), projectArticleQueryParameters()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)
@@ -191,7 +224,7 @@ public class ProjectApiTest extends BaseApiTest {
         assertAll(
                 () -> assertThat(actualResponse.count())
                         .containsExactlyInAnyOrder(
-                                ArticleSectorCount.of(Sector.BE, 3),
+                                ArticleSectorCount.of(Sector.BE, 4),
                                 ArticleSectorCount.of(Sector.FE, 1),
                                 ArticleSectorCount.of(Sector.IOS, 0),
                                 ArticleSectorCount.of(Sector.ANDROID, 0),
@@ -274,4 +307,10 @@ public class ProjectApiTest extends BaseApiTest {
         );
     }
 
+    private QueryParametersSnippet projectArticleQueryParameters() {
+        return queryParameters(
+                parameterWithName("search").description("검색어").optional(),
+                parameterWithName("sector").description("직군").optional()
+        );
+    }
 }
