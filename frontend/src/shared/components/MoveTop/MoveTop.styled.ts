@@ -28,7 +28,7 @@ export const MoveTopButton = styled.button<MoveTopButtonProps>`
   padding-bottom: 0.25rem;
   border-radius: 50%;
   border: 1.5px solid #e4e4e4;
-  background-color: #fff;
+  background-color: #007bff;
 
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transform: ${({ isVisible }) =>
@@ -42,7 +42,7 @@ export const MoveTopButton = styled.button<MoveTopButtonProps>`
 `;
 
 export const MoveTopIcon = styled.img`
-  width: 1.5rem;
-  height: 1.4rem;
+  width: 1.7rem;
+  height: 1.7rem;
   margin-top: 0.2rem;
 `;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import ArrowUp from "@/assets/icons/top-arrow.svg";
 import useScrollPosition from "@/shared/hooks/useScrollPosition";
-import ArrowUp from "@/assets/icons/top-button.svg";
 import * as S from "./MoveTop.styled";
 
 function MoveTop() {
