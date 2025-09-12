@@ -197,17 +197,17 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void toOrderByArticleCount() {
         // given
-        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
-        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
-        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(low).build());
 
         Project middle = repositoryHelper.save(new ProjectFixtureBuilder().build());
         repositoryHelper.save(new ArticleFixtureBuilder().project(middle).build());
         repositoryHelper.save(new ArticleFixtureBuilder().project(middle).build());
 
-        Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        repositoryHelper.save(new ArticleFixtureBuilder().project(low).build());
+        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
 
         // when
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
