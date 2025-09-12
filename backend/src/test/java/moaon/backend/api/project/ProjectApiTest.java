@@ -250,7 +250,7 @@ public class ProjectApiTest extends BaseApiTest {
                 parameterWithName("sort").description("정렬 기준 (views, loves, createdAt)").optional(),
                 parameterWithName("categories").description("카테고리 목록").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
-                parameterWithName("limit").description("요청 데이터 개수"),
+                parameterWithName("limit").description("요청 데이터 개수 | Max: 100"),
                 parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
         );
     }
