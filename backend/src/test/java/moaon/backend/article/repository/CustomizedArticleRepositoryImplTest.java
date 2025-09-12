@@ -112,7 +112,7 @@ class CustomizedArticleRepositoryImplTest {
         TechStack techStack1 = Fixture.anyTechStack();
         TechStack techStack2 = Fixture.anyTechStack();
 
-        Sector sector = Fixture.anySector();
+        Sector sector = Fixture.randomSector();
 
         Article articleWithTechStacksAndCategory = repositoryHelper.save(
                 new ArticleFixtureBuilder()

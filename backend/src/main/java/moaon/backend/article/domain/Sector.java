@@ -55,8 +55,8 @@ public enum Sector {
             DEPLOYMENT_AND_OPERATION,
             ETC
     )),
-    ANDROID("android", List.of()),
-    IOS("ios", List.of()),
+    ANDROID("android", List.of(ETC)),
+    IOS("ios", List.of(ETC)),
     INFRA("infra", List.of(
             TECHNOLOGY_ADOPTION,
             TROUBLESHOOTING,
@@ -80,7 +80,7 @@ public enum Sector {
 
     public static Sector of(String name) {
         return Arrays.stream(Sector.values())
-                .filter(sector -> sector.getName().equals(name))
+                .filter(sector -> sector.getName().equalsIgnoreCase(name))
                 .findAny()
                 .orElse(null);
     }

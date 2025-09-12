@@ -23,7 +23,7 @@ public class Fixture {
         return new ProjectCategory(nameWithSequence("testProjectCategory"));
     }
 
-    public static Sector anySector() {
+    public static Sector randomSector() {
         return Sector.values()[new Random().nextInt(Sector.values().length)];
     }
 

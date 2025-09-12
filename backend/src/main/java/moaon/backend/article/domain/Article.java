@@ -69,6 +69,7 @@ public class Article extends BaseTimeEntity {
     private List<TechStack> techStacks;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Sector sector;
 
     @ElementCollection

@@ -18,7 +18,7 @@ public enum Topic {
     ETC("etc"),
 
     // FE,
-    STATE_MANAGEMENT(" state"),
+    STATE_MANAGEMENT("state"),
     UI_UX_IMPROVEMENT("uiux"),
     BUNDLING("bundling"),
 

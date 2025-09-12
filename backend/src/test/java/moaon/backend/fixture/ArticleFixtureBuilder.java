@@ -31,7 +31,7 @@ public class ArticleFixtureBuilder {
         this.articleUrl = "https://test-product.com";
         this.createdAt = LocalDateTime.now();
         this.project = new ProjectFixtureBuilder().build();
-        this.sector = Fixture.anySector();
+        this.sector = Fixture.randomSector();
         this.topics = new ArrayList<>(List.of(Topic.ETC));
         this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
         this.clicks = 0;
