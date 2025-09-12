@@ -134,6 +134,10 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             return new OrderSpecifier<?>[]{project.views.desc(), project.id.desc()};
         }
 
+        if (sortBy == ProjectSortType.ARTICLE_COUNT) {
+            return new OrderSpecifier<?>[]{project.articles.size().desc(), project.id.desc()};
+        }
+
         return new OrderSpecifier<?>[]{project.lovedMembers.size().desc(), project.id.desc()};
     }
 }
