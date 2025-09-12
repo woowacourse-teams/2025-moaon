@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, CustomizedArticleRepository {
 
-    Integer countByProjectIdAndSector(Long id, Sector sector);
+    Long countByProjectIdAndSector(long id, Sector sector);
 }

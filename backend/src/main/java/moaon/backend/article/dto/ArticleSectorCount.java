@@ -4,10 +4,10 @@ import moaon.backend.article.domain.Sector;
 
 public record ArticleSectorCount(
         String sector,
-        int count
+        long count
 ) {
 
-    public static ArticleSectorCount of(Sector sector, int count) {
+    public static ArticleSectorCount of(Sector sector, long count) {
         return new ArticleSectorCount(sector.getName(), count);
     }
 }
