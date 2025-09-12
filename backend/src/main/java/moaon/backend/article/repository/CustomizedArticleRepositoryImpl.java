@@ -1,7 +1,6 @@
 package moaon.backend.article.repository;
 
 import static moaon.backend.article.domain.QArticle.article;
-import static moaon.backend.article.domain.QArticleCategory.articleCategory;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.BooleanBuilder;
@@ -16,12 +15,13 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,7 +30,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
     private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
-    private static final String ALL = "all";
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -40,7 +39,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
-                .leftJoin(article.category, articleCategory)
                 .leftJoin(article.techStacks, techStack);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
@@ -66,7 +64,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
         JPAQuery<Long> query = jpaQueryFactory.select(article.countDistinct())
                 .from(article)
-                .leftJoin(article.category, articleCategory)
                 .leftJoin(article.techStacks, techStack);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
@@ -83,17 +80,16 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     @Override
-    public List<Article> findAllByProjectIdAndCategory(long id, String category) {
+    public List<Article> findAllByProjectIdAndSector(long id, Sector sector) {
         JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
                 .distinct()
-                .leftJoin(article.category, articleCategory)
                 .leftJoin(article.techStacks, techStack);
 
         BooleanBuilder whereBuilder = new BooleanBuilder();
 
         whereBuilder.and(article.project.id.eq(id));
 
-        applyWhereCategory(whereBuilder, category);
+        applyWhereSector(whereBuilder, sector);
         if (whereBuilder.hasValue()) {
             query.where(whereBuilder);
         }
@@ -105,11 +101,17 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
             ArticleQueryCondition queryCondition,
             JPAQuery<?> query
     ) {
-        String categoryName = queryCondition.categoryName();
+        Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
         List<String> techStackNames = queryCondition.techStackNames();
         SearchKeyword searchKeyword = queryCondition.search();
 
-        applyWhereCategory(whereBuilder, categoryName);
+        applyWhereSector(whereBuilder, sector);
+        if (!CollectionUtils.isEmpty(topics)) {
+            for (Topic topic : topics) {
+                whereBuilder.and(article.topics.contains(topic));
+            }
+        }
 
         if (!CollectionUtils.isEmpty(techStackNames)) {
             whereBuilder.and(techStack.name.in(techStackNames));
@@ -121,9 +123,9 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
     }
 
-    private void applyWhereCategory(BooleanBuilder whereBuilder, String category) {
-        if (StringUtils.hasText(category) && !category.equals(ALL)) {
-            whereBuilder.and(article.category.name.eq(category));
+    private void applyWhereSector(BooleanBuilder whereBuilder, Sector sector) {
+        if (sector != null) {
+            whereBuilder.and(article.sector.eq(sector));
         }
     }
 

@@ -50,10 +50,10 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Column(length = 500)
     private String githubUrl;
 
-    @Column
+    @Column(length = 500)
     private String productionUrl;
 
     @Embedded
@@ -64,6 +64,7 @@ public class Project extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
     @ManyToOne
     private Member author;
 

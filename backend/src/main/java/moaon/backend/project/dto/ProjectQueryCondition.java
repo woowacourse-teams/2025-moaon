@@ -25,8 +25,8 @@ public record ProjectQueryCondition(
         ProjectSortType sortType = ProjectSortType.from(sortBy);
         return new ProjectQueryCondition(
                 new SearchKeyword(search),
-                categories,
-                techStacks,
+                categories == null ? List.of() : categories,
+                techStacks == null ? List.of() : techStacks,
                 sortType,
                 limit,
                 sortType.toCursor(cursor)
