@@ -17,7 +17,7 @@ function Card({ article }: CardProps) {
     summary,
     techStacks,
     url,
-    category,
+    sector,
     projectId,
     projectTitle,
     clicks,
@@ -26,7 +26,8 @@ function Card({ article }: CardProps) {
 
   const isArticleList = !!projectId;
   const { postArticleClick } = useArticleClick();
-  const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
+  console.log(sector);
+  const { label, bgColor } = ARTICLE_CATEGORY_MAP[sector];
   return (
     <S.CardContainer>
       <Badge bgColor={bgColor}>

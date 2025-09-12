@@ -44,8 +44,8 @@ function TagList({ selectedCategory }: TagListProps) {
         return ANDROID_STACK_ENTRY;
       case "ios":
         return IOS_STACK_ENTRY;
-      case "ss":
-      case "etc":
+      case "infra":
+      case "nonTech":
         return [];
       default:
         return TECH_STACK_ENTRY;
@@ -54,7 +54,7 @@ function TagList({ selectedCategory }: TagListProps) {
 
   const tagEntries = getTagEntries();
 
-  if (selectedCategory === "ss" || selectedCategory === "etc") {
+  if (selectedCategory === "infra" || selectedCategory === "nonTech") {
     return null;
   }
 

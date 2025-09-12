@@ -3,7 +3,7 @@ import useSearchParams from "@shared/hooks/useSearchParams";
 
 export const useArticleCategory = (defaultValue: ArticleCategoryKey) => {
   const categoryParams = useSearchParams({
-    key: "category",
+    key: "sector",
     mode: "single",
   });
 

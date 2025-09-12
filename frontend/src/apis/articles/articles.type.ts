@@ -17,6 +17,6 @@ export interface Article {
   summary: string;
   techStacks: TechStackKey[];
   url: string;
-  category: ArticleCategoryKey;
+  sector: ArticleCategoryKey;
   createdAt: string;
 }
