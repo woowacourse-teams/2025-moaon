@@ -2,6 +2,7 @@ package moaon.backend.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Max;
 import java.util.List;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.service.ArticleService;
@@ -13,6 +14,7 @@ import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +63,7 @@ public class ProjectController {
             @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
             @RequestParam(value = "sort", required = false) String sortType,
-            @RequestParam(value = "limit") int limit,
+            @RequestParam(value = "limit") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(

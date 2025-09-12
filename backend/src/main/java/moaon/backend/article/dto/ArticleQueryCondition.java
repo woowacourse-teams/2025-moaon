@@ -31,11 +31,11 @@ public record ArticleQueryCondition(
         return new ArticleQueryCondition(
                 new SearchKeyword(search),
                 Sector.of(sector),
-                topics.stream()
+                topics == null ? List.of() : topics.stream()
                         .map(Topic::of)
                         .filter(Objects::nonNull)
                         .toList(),
-                techStackNames,
+                techStackNames == null ? List.of() : techStackNames,
                 sortBy,
                 limit,
                 sortBy.toCursor(cursor)

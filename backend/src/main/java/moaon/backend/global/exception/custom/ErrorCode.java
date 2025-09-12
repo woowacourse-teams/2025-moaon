@@ -14,6 +14,7 @@ public enum ErrorCode {
     TYPE_MISMATCH("GLOBAL-005", "요청 데이터의 자료형이 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
     HTTP_MESSAGE_NOT_READABLE("GLOBAL-006", "요청 본문을 파싱하지 못했습니다. 형식을 확인해 주세요.", HttpStatus.BAD_REQUEST),
     ARGUMENT_NOT_VALID("GLOBAL-007", "요청 데이터에 대한 검증에 실패했습니다.", HttpStatus.BAD_REQUEST),
+    HANDLER_METHOD_VALIDATION("GLOBAL-008", "요청 데이터에 대한 검증에 실패했습니다.", HttpStatus.BAD_REQUEST),
 
     PROJECT_NOT_FOUND("PROJECT-001", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 

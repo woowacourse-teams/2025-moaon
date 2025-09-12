@@ -2,6 +2,7 @@ package moaon.backend.article.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Max;
 import java.util.List;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -10,6 +11,7 @@ import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +41,7 @@ public class ArticleController {
             @RequestParam(value = "sector", required = false) String sector,
             @RequestParam(value = "topics", required = false) List<String> topics,
             @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "limit") int limit,
+            @RequestParam(value = "limit") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
