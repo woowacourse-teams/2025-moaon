@@ -1,8 +1,8 @@
 import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import {
-  ARTICLE_CATEGORY_ENTRY,
-  type ArticleCategoryKey,
-} from "@domains/filter/articleCategory";
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
 import MoveTop from "@shared/components/MoveTop/MoveTop";
 import Tab from "@shared/components/Tab/Tab";
 import { useMeta } from "@shared/hooks/useMeta";
@@ -23,7 +23,7 @@ function ArticlePage() {
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
 
-  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
+  const articleCategories = ARTICLE_SECTOR_ENTRY.map(([key, { label }]) => ({
     key,
     label,
   }));
@@ -33,7 +33,7 @@ function ArticlePage() {
     description: ARTICLE_PAGE_DESCRIPTION,
   });
 
-  const handleTabSelect = (key: ArticleCategoryKey) => {
+  const handleTabSelect = (key: ArticleSectorKey) => {
     updateCategory(key);
     refetch();
   };

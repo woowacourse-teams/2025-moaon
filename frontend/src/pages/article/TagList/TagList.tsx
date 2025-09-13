@@ -1,4 +1,4 @@
-import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import {
   ANDROID_STACK_ENTRY,
   BACKEND_STACK_ENTRY,
@@ -14,7 +14,7 @@ import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
 interface TagListProps {
-  selectedCategory: ArticleCategoryKey;
+  selectedCategory: ArticleSectorKey;
 }
 
 function TagList({ selectedCategory }: TagListProps) {

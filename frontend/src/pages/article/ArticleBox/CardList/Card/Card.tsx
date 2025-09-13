@@ -1,6 +1,6 @@
 import eyeIcon from "@assets/icons/eye.svg";
 import OutgoingLinkIcon from "@assets/icons/outgoing-link.svg";
-import { ARTICLE_CATEGORY_MAP } from "@domains/filter/articleCategory";
+import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import type { Article } from "@/apis/articles/articles.type";
 import useArticleClick from "@/pages/article/hooks/useArticleClick";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
@@ -26,7 +26,7 @@ function Card({ article }: CardProps) {
 
   const isArticleList = !!projectId;
   const { postArticleClick } = useArticleClick();
-  const { label, bgColor } = ARTICLE_CATEGORY_MAP[category];
+  const { label, bgColor } = ARTICLE_SECTOR_MAP[category];
   return (
     <S.CardContainer>
       <Badge bgColor={bgColor}>

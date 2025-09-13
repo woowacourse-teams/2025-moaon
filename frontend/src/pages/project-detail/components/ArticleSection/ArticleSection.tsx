@@ -1,7 +1,7 @@
 import {
-  ARTICLE_CATEGORY_ENTRY,
-  type ArticleCategoryKey,
-} from "@domains/filter/articleCategory";
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
 import EmptyState from "@shared/components/EmptyState/EmptyState";
 import Tab from "@shared/components/Tab/Tab";
 import type { Article } from "@/apis/articles/articles.type";
@@ -26,15 +26,15 @@ function ArticleSection({
   isLoading,
 }: ArticleSectionProps) {
   const { selectedCategory, updateCategory } = useArticleCategory(
-    DEFAULT_ARTICLE_CATEGORY_TYPE
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
 
-  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
+  const articleCategories = ARTICLE_SECTOR_ENTRY.map(([key, { label }]) => ({
     key,
     label,
   }));
 
-  const handleTabSelect = (key: ArticleCategoryKey) => {
+  const handleTabSelect = (key: ArticleSectorKey) => {
     if (key !== selectedCategory) {
       updateCategory(key);
       refetch();
