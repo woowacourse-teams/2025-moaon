@@ -2,7 +2,7 @@ package moaon.backend.global.cursor;
 
 import static moaon.backend.article.domain.QArticle.article;
 
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +31,11 @@ public class CreatedAtArticleCursor implements Cursor<LocalDateTime> {
     }
 
     @Override
-    public void applyCursor(BooleanBuilder whereBuilder) {
-        whereBuilder.and(
-                article.createdAt.lt(getSortValue())
-                        .or(
-                                article.createdAt.eq(getSortValue())
-                                        .and(article.id.lt(getLastId()))
-                        )
-        );
+    public BooleanExpression getCursorExpression() {
+        return article.createdAt.lt(getSortValue())
+                .or(
+                        article.createdAt.eq(getSortValue())
+                                .and(article.id.lt(getLastId()))
+                );
     }
 }
