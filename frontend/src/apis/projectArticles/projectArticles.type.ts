@@ -1,13 +1,25 @@
-import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
+import type { AllTopicKey } from "@domains/filter/articleTopic";
 import type { TechStackKey } from "@domains/filter/techStack";
 
-export interface ProjectArticle {
+interface ProjectArticle {
   id: number;
   title: string;
   clicks: number;
   summary: string;
   techStacks: TechStackKey[];
   url: string;
-  category: ArticleCategoryKey;
+  sector: ArticleSectorKey;
+  topics: AllTopicKey[];
   createdAt: string;
+}
+
+interface ProjectArticleCount {
+  sector: ArticleSectorKey;
+  count: number;
+}
+
+export interface ProjectArticlesResponse {
+  count: ProjectArticleCount[];
+  data: ProjectArticle[];
 }
