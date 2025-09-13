@@ -4,6 +4,7 @@ import * as S from "./Tab.styled";
 interface TabItem<K extends string> {
   key: K;
   label: string;
+  count?: number;
   width?: number;
 }
 
@@ -34,8 +35,19 @@ function Tab<K extends string>({
           width={selectedStyle.width}
           duration={selectedStyle.duration}
         />
-        {items.map(({ key, label }, idx) => {
+        {items.map(({ key, label, count }, idx) => {
           const isSelected = selected === key;
+          const disabled = count === 0;
+          if (disabled) {
+            return (
+              <S.DisabledTabItem key={key} tabCount={items.length}>
+                {label}
+                <S.DisabledCountText>{`(${count})`}</S.DisabledCountText>
+              </S.DisabledTabItem>
+            );
+          }
+
+          console.log(key, count);
           return (
             <S.TabItem
               ref={(el) => setTabElementsRef(el, idx)}
@@ -46,6 +58,9 @@ function Tab<K extends string>({
               duration={selectedStyle.duration}
             >
               {label}
+              {typeof count === "number" && (
+                <S.CountText>{`(${count})`}</S.CountText>
+              )}
             </S.TabItem>
           );
         })}
