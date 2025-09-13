@@ -224,6 +224,7 @@ public class ProjectApiTest extends BaseApiTest {
         assertAll(
                 () -> assertThat(actualResponse.count())
                         .containsExactlyInAnyOrder(
+                                new ArticleSectorCount("all", 5),
                                 ArticleSectorCount.of(Sector.BE, 4),
                                 ArticleSectorCount.of(Sector.FE, 1),
                                 ArticleSectorCount.of(Sector.IOS, 0),

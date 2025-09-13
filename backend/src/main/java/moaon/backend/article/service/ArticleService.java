@@ -1,5 +1,6 @@
 package moaon.backend.article.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    public static final String ALL_SECTOR = "all";
     private final ArticleRepository articleRepository;
     private final ProjectRepository projectRepository;
 
@@ -54,9 +56,18 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAllByProjectIdAndCondition(id, condition);
         List<ArticleDetailResponse> data = ArticleDetailResponse.from(articles);
 
-        List<ArticleSectorCount> count = Arrays.stream(Sector.values())
-                .map(sector -> ArticleSectorCount.of(sector, articleRepository.countByProjectIdAndSector(id, sector)))
-                .toList();
+        List<ArticleSectorCount> count = new ArrayList<>(
+                Arrays.stream(Sector.values())
+                        .map(sector -> ArticleSectorCount.of(
+                                sector,
+                                articleRepository.countByProjectIdAndSector(id, sector)))
+                        .toList()
+        );
+
+        long totalCount = count.stream()
+                .mapToLong(ArticleSectorCount::count)
+                .sum();
+        count.addFirst(new ArticleSectorCount(ALL_SECTOR, totalCount));
 
         return ProjectArticleResponse.of(count, data);
     }
