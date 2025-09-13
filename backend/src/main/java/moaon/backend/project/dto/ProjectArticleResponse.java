@@ -1,6 +1,10 @@
 package moaon.backend.project.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleSectorCount;
 
@@ -10,9 +14,27 @@ public record ProjectArticleResponse(
 ) {
 
     public static ProjectArticleResponse of(
-            List<ArticleSectorCount> count,
-            List<ArticleDetailResponse> data
+            List<Article> articles,
+            Map<Sector, Long> articleCountBySector
     ) {
-        return new ProjectArticleResponse(count, data);
+        List<ArticleDetailResponse> data = ArticleDetailResponse.from(articles);
+        List<ArticleSectorCount> sectorCounts = createSectorCounts(articleCountBySector);
+
+        return new ProjectArticleResponse(sectorCounts, data);
+    }
+
+    private static List<ArticleSectorCount> createSectorCounts(Map<Sector, Long> articleCountBySector) {
+        List<ArticleSectorCount> sectorCounts = new ArrayList<>();
+
+        articleCountBySector.entrySet().stream()
+                .map(entry -> ArticleSectorCount.of(entry.getKey(), entry.getValue()))
+                .forEach(sectorCounts::add);
+
+        long totalCount = articleCountBySector.values().stream()
+                .mapToLong(Long::longValue)
+                .sum();
+        sectorCounts.add(ArticleSectorCount.all(totalCount));
+
+        return sectorCounts;
     }
 }

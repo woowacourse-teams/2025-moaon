@@ -11,7 +11,7 @@ public record ArticleSectorCount(
         return new ArticleSectorCount(sector.getName(), count);
     }
 
-    public static ArticleSectorCount of(String sector, long count) {
-        return new ArticleSectorCount(sector, count);
+    public static ArticleSectorCount all(long count) {
+        return new ArticleSectorCount("all", count);
     }
 }
