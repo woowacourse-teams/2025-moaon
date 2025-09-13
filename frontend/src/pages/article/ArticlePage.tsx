@@ -9,9 +9,8 @@ import { useMeta } from "@shared/hooks/useMeta";
 import ArticleBox from "./ArticleBox/ArticleBox";
 import * as S from "./ArticlePage.styled";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
-import { useArticleCategory } from "./hooks/useArticleCategory";
+import { useArticleSector } from "./hooks/useArticleCategory";
 import useArticleList from "./hooks/useArticleList";
-import TagList from "./TagList/TagList";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 const ARTICLE_PAGE_DESCRIPTION =
@@ -19,7 +18,7 @@ const ARTICLE_PAGE_DESCRIPTION =
 
 function ArticlePage() {
   const { refetch } = useArticleList();
-  const { selectedCategory, updateCategory } = useArticleCategory(
+  const { selectedSector, updateSector } = useArticleSector(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
 
@@ -34,7 +33,7 @@ function ArticlePage() {
   });
 
   const handleTabSelect = (key: ArticleSectorKey) => {
-    updateCategory(key);
+    updateSector(key);
     refetch();
   };
 
@@ -50,11 +49,10 @@ function ArticlePage() {
       <Tab
         items={articleCategories}
         onSelect={handleTabSelect}
-        selected={selectedCategory}
+        selected={selectedSector}
       />
       <S.Box>
         <ArticleBox />
-        <TagList selectedCategory={selectedCategory} />
       </S.Box>
       <MoveTop />
     </S.Main>

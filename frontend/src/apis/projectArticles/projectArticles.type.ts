@@ -2,7 +2,7 @@ import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import type { AllTopicKey } from "@domains/filter/articleTopic";
 import type { TechStackKey } from "@domains/filter/techStack";
 
-interface ProjectArticle {
+export interface ProjectArticle {
   id: number;
   title: string;
   clicks: number;
@@ -14,7 +14,7 @@ interface ProjectArticle {
   createdAt: string;
 }
 
-interface ProjectArticleCount {
+export interface ProjectArticleCount {
   sector: ArticleSectorKey;
   count: number;
 }
