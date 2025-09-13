@@ -67,7 +67,7 @@ public class ArticleService {
         long totalCount = count.stream()
                 .mapToLong(ArticleSectorCount::count)
                 .sum();
-        count.addFirst(new ArticleSectorCount(ALL_SECTOR, totalCount));
+        count.addFirst(ArticleSectorCount.of(ALL_SECTOR, totalCount));
 
         return ProjectArticleResponse.of(count, data);
     }
