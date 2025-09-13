@@ -2,8 +2,7 @@ import { useMeta } from "@shared/hooks/useMeta";
 import { useParams } from "react-router";
 import ArticleSection from "./components/ArticleSection/ArticleSection";
 import Carousel from "./components/Carousel/Carousel";
-import useProjectArticles from "./components/hooks/useProjectArticles";
-import useProjectDetail from "./components/hooks/useProjectDetail";
+import useProjectDetailData from "./components/hooks/useProjectDetailData";
 import OverviewSection from "./components/OverviewSection/OverviewSection";
 import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
 import TitleSection from "./components/TitleSection/TitleSection";
@@ -11,9 +10,13 @@ import TitleSection from "./components/TitleSection/TitleSection";
 function ProjectDetailPage() {
   const { id } = useParams();
 
-  const { projectDetail } = useProjectDetail(Number(id));
-  const { projectArticles, refetch, isRefetching, isLoading } =
-    useProjectArticles(Number(id));
+  const {
+    projectDetail,
+    projectArticles,
+    projectArticleRefetch,
+    isProjectArticleRefetching,
+    isProjectArticleLoading,
+  } = useProjectDetailData(Number(id));
 
   useMeta({
     title: projectDetail
@@ -34,9 +37,9 @@ function ProjectDetailPage() {
       <ArticleSection
         articles={projectArticles.data}
         sectorCounts={projectArticles.count}
-        refetch={refetch}
-        isRefetching={isRefetching}
-        isLoading={isLoading}
+        refetch={projectArticleRefetch}
+        isRefetching={isProjectArticleRefetching}
+        isLoading={isProjectArticleLoading}
       />
     </div>
   );
