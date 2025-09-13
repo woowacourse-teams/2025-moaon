@@ -14,6 +14,7 @@ import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
 import moaon.backend.project.repository.ProjectRepository;
@@ -50,7 +51,7 @@ public class ArticleService {
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
-        projectRepository.findById(id)
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
         List<Article> articles = articleRepository.findAllByProjectIdAndCondition(id, condition);
@@ -64,11 +65,7 @@ public class ArticleService {
                         .toList()
         );
 
-        long totalCount = count.stream()
-                .mapToLong(ArticleSectorCount::count)
-                .sum();
-        count.addFirst(ArticleSectorCount.of(ALL_SECTOR, totalCount));
-
+        count.addFirst(ArticleSectorCount.of(ALL_SECTOR, project.getArticles().size()));
         return ProjectArticleResponse.of(count, data);
     }
 
