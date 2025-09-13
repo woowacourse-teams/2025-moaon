@@ -1,5 +1,6 @@
 package moaon.backend.article.dto;
 
+import java.util.Map;
 import moaon.backend.article.domain.Sector;
 
 public record ArticleSectorCount(
@@ -11,7 +12,11 @@ public record ArticleSectorCount(
         return new ArticleSectorCount(sector.getName(), count);
     }
 
-    public static ArticleSectorCount all(long count) {
-        return new ArticleSectorCount("all", count);
+    public static ArticleSectorCount all(Map<Sector, Long> articleCountBySector) {
+        long totalCount = articleCountBySector.values().stream()
+                .mapToLong(Long::longValue)
+                .sum();
+
+        return new ArticleSectorCount("all", totalCount);
     }
 }

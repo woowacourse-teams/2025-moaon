@@ -18,23 +18,10 @@ public record ProjectArticleResponse(
             Map<Sector, Long> articleCountBySector
     ) {
         List<ArticleDetailResponse> data = ArticleDetailResponse.from(articles);
-        List<ArticleSectorCount> sectorCounts = createSectorCounts(articleCountBySector);
-
-        return new ProjectArticleResponse(sectorCounts, data);
-    }
-
-    private static List<ArticleSectorCount> createSectorCounts(Map<Sector, Long> articleCountBySector) {
-        List<ArticleSectorCount> sectorCounts = new ArrayList<>();
-
-        articleCountBySector.entrySet().stream()
+        List<ArticleSectorCount> articleSectorCounts = new ArrayList<>(articleCountBySector.entrySet().stream()
                 .map(entry -> ArticleSectorCount.of(entry.getKey(), entry.getValue()))
-                .forEach(sectorCounts::add);
-
-        long totalCount = articleCountBySector.values().stream()
-                .mapToLong(Long::longValue)
-                .sum();
-        sectorCounts.add(ArticleSectorCount.all(totalCount));
-
-        return sectorCounts;
+                .toList());
+        articleSectorCounts.add(ArticleSectorCount.all(articleCountBySector));
+        return new ProjectArticleResponse(articleSectorCounts, data);
     }
 }
