@@ -2,31 +2,41 @@ import eyeIcon from "@assets/icons/eye.svg";
 import OutgoingLinkIcon from "@assets/icons/outgoing-link.svg";
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import type { Article } from "@/apis/articles/articles.type";
+import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
 import useArticleClick from "@/pages/article/hooks/useArticleClick";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
+import * as S from "./ArticleCard.styled";
 import Badge from "./Badge/Badge";
-import * as S from "./Card.styled";
 
 interface CardProps {
-  article: Article;
+  article: Article | ProjectArticle;
 }
 
-function Card({ article }: CardProps) {
-  const {
-    title,
-    summary,
-    techStacks,
-    url,
-    category,
-    projectId,
-    projectTitle,
-    clicks,
-    id,
-  } = article;
+const isArticle = (article: Article | ProjectArticle): article is Article => {
+  return (article as Article).projectId !== undefined;
+};
 
-  const isArticleList = !!projectId;
+const getProjectInfo = (article: Article | ProjectArticle) => {
+  if (isArticle(article)) {
+    return {
+      projectId: article.projectId,
+      projectTitle: article.projectTitle,
+    };
+  }
+  return {
+    projectId: null,
+    projectTitle: null,
+  };
+};
+
+function ArticleCard({ article }: CardProps) {
+  const { title, summary, techStacks, url, sector, clicks, id } = article;
+
+  const isArticleList = isArticle(article);
+  const { projectId, projectTitle } = getProjectInfo(article);
+
   const { postArticleClick } = useArticleClick();
-  const { label, bgColor } = ARTICLE_SECTOR_MAP[category];
+  const { label, bgColor } = ARTICLE_SECTOR_MAP[sector];
   return (
     <S.CardContainer>
       <Badge bgColor={bgColor}>
@@ -66,4 +76,4 @@ function Card({ article }: CardProps) {
   );
 }
 
-export default Card;
+export default ArticleCard;
