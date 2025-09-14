@@ -8,7 +8,26 @@ export const NavLinkList = styled.ul`
   position: relative;
 `;
 
-export const NavLinkItem = styled.li``;
+export const NavLinkItem = styled.li`
+  position: relative;
+
+  ::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -0.75rem;
+    transform: translateY(-50%);
+    width: 0.0625rem;
+    height: 1rem;
+    background-color: #d4d4d4;
+    border-radius: 0.125rem;
+  }
+  :last-of-type {
+    ::before {
+      display: none;
+    }
+  }
+`;
 
 export const Link = styled.button<{ isSelected: boolean }>`
   color: ${({ isSelected }) => (isSelected ? "#007bff" : "#000")};
