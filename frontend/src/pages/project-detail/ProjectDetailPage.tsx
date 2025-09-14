@@ -26,11 +26,11 @@ function ProjectDetailPage() {
   return (
     <div>
       <TitleSection projectDetail={projectDetail} />
-      <TechStacksSection techStacks={projectDetail.techStacks} />
       {projectDetail.imageUrls.length > 0 && (
         <Carousel imageUrls={projectDetail.imageUrls} />
       )}
       <OverviewSection overview={projectDetail.description} />
+      <TechStacksSection techStacks={projectDetail.techStacks} />
       <ArticleSection
         articles={projectArticles}
         refetch={refetch}
