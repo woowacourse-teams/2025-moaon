@@ -222,7 +222,7 @@ public class ProjectApiTest extends BaseApiTest {
 
         // then
         assertAll(
-                () -> assertThat(actualResponse.count())
+                () -> assertThat(actualResponse.counts())
                         .containsExactlyInAnyOrder(
                                 new ArticleSectorCount("all", 5),
                                 ArticleSectorCount.of(Sector.BE, 4),
@@ -232,7 +232,7 @@ public class ProjectApiTest extends BaseApiTest {
                                 ArticleSectorCount.of(Sector.INFRA, 0),
                                 ArticleSectorCount.of(Sector.NON_TECH, 0)
                         ),
-                () -> assertThat(actualResponse.data())
+                () -> assertThat(actualResponse.articles())
                         .extracting(ArticleDetailResponse::id)
                         .containsExactlyInAnyOrder(
                                 targetProjectArticle1.getId(),
@@ -291,20 +291,20 @@ public class ProjectApiTest extends BaseApiTest {
 
     private ResponseFieldsSnippet projectArticlesResponseFields() {
         return responseFields(
-                subsectionWithPath("count").description("직군별 아티클 개수 목록"),
-                fieldWithPath("count[].sector").description("직군"),
-                fieldWithPath("count[].count").description("해당 직군 아티클 개수"),
+                subsectionWithPath("counts").description("직군별 아티클 개수 목록"),
+                fieldWithPath("counts[].sector").description("직군"),
+                fieldWithPath("counts[].count").description("해당 직군 아티클 개수"),
 
-                subsectionWithPath("data").description("아티클 데이터 목록"),
-                fieldWithPath("data[].id").description("아티클 ID"),
-                fieldWithPath("data[].title").description("아티클 제목"),
-                fieldWithPath("data[].summary").description("아티클 요약"),
-                fieldWithPath("data[].clicks").description("아티클 클릭수"),
-                fieldWithPath("data[].techStacks").description("기술 스택 목록").optional(),
-                fieldWithPath("data[].url").description("아티클 URL"),
-                fieldWithPath("data[].sector").description("직군"),
-                fieldWithPath("data[].topics").description("아티클 주제"),
-                fieldWithPath("data[].createdAt").description("생성일시")
+                subsectionWithPath("articles").description("아티클 데이터 목록"),
+                fieldWithPath("articles[].id").description("아티클 ID"),
+                fieldWithPath("articles[].title").description("아티클 제목"),
+                fieldWithPath("articles[].summary").description("아티클 요약"),
+                fieldWithPath("articles[].clicks").description("아티클 클릭수"),
+                fieldWithPath("articles[].techStacks").description("기술 스택 목록").optional(),
+                fieldWithPath("articles[].url").description("아티클 URL"),
+                fieldWithPath("articles[].sector").description("직군"),
+                fieldWithPath("articles[].topics").description("아티클 주제"),
+                fieldWithPath("articles[].createdAt").description("생성일시")
         );
     }
 
