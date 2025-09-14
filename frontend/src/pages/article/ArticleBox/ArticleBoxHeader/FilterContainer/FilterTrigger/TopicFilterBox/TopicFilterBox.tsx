@@ -3,13 +3,14 @@ import TopicFilterList from "./TopicFilterList/TopicFilterList";
 
 interface TopicFilterBoxProps {
   onSelect: () => void;
+  sector: string | null;
 }
 
-function TopicFilterBox({ onSelect }: TopicFilterBoxProps) {
+function TopicFilterBox({ onSelect, sector }: TopicFilterBoxProps) {
   return (
     <>
       <S.Title>주제 선택</S.Title>
-      <TopicFilterList onSelect={onSelect} />
+      <TopicFilterList onSelect={onSelect} sector={sector} />
     </>
   );
 }

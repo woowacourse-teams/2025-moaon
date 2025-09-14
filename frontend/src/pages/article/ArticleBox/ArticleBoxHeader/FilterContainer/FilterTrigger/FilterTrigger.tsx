@@ -18,6 +18,9 @@ interface FilterProps {
 }
 
 function FilterTrigger({ label, param, onSelect }: FilterProps) {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const sector = params.get("sector");
   const [isOpen, setIsOpen] = useState(false);
   const addToSafeZone = useOutsideClick(() => setIsOpen(false));
   const searchParams = useSearchParams({ key: param, mode: "multi" });
@@ -26,10 +29,6 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
   const toggleFilter = () => {
     setIsOpen((prev) => !prev);
   };
-
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const sector = params.get("sector");
 
   return (
     <S.Container ref={addToSafeZone}>
@@ -52,8 +51,12 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
           <SwitchCase
             value={label}
             caseBy={{
-              주제: () => <TopicFilterBox onSelect={onSelect} />,
-              "기술 스택": () => <TechStackFilterBox onSelect={onSelect} />,
+              주제: () => (
+                <TopicFilterBox onSelect={onSelect} sector={sector} />
+              ),
+              "기술 스택": () => (
+                <TechStackFilterBox onSelect={onSelect} sector={sector} />
+              ),
             }}
           />
         </FilterBox>
