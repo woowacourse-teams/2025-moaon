@@ -20,6 +20,6 @@ export interface ProjectArticleCount {
 }
 
 export interface ProjectArticlesResponse {
-  count: ProjectArticleCount[];
-  data: ProjectArticle[];
+  counts: ProjectArticleCount[];
+  articles: ProjectArticle[];
 }

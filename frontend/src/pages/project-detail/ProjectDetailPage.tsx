@@ -35,8 +35,8 @@ function ProjectDetailPage() {
       )}
       <OverviewSection overview={projectDetail.description} />
       <ArticleSection
-        articles={projectArticles.data}
-        sectorCounts={projectArticles.count}
+        articles={projectArticles.articles}
+        sectorCounts={projectArticles.counts}
         refetch={projectArticleRefetch}
         isRefetching={isProjectArticleRefetching}
         isLoading={isProjectArticleLoading}
