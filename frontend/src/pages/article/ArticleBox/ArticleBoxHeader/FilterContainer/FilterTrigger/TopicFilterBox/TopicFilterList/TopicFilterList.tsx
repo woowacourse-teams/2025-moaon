@@ -1,46 +1,13 @@
-import {
-  BACKEND_TOPIC_ENTRY,
-  COMMON_TOPIC_ENTRY,
-  FRONTEND_TOPIC_ENTRY,
-  INFRA_TOPIC_ENTRY,
-  NON_TECH_TOPIC_ENTRY,
-  TOPIC_ENTRY,
-} from "@domains/filter/topic";
-import { useLocation } from "react-router";
+import { getTopicsBySector } from "../utils/getTopicsBySector";
 import TopicFilterButton from "./TopicFilterButton/TopicFilterButton";
 import * as S from "./TopicFilterList.styled";
 
 interface TopicFilterListProps {
   onSelect: () => void;
+  sector: string | null;
 }
 
-function getTopicsBySector(sector: string | null) {
-  switch (sector) {
-    case "fe":
-      return [...COMMON_TOPIC_ENTRY, ...FRONTEND_TOPIC_ENTRY];
-    case "be":
-      return [...COMMON_TOPIC_ENTRY, ...BACKEND_TOPIC_ENTRY];
-    case "infra":
-      return [...COMMON_TOPIC_ENTRY, ...INFRA_TOPIC_ENTRY];
-    case "nonTech":
-      return [...COMMON_TOPIC_ENTRY, ...NON_TECH_TOPIC_ENTRY];
-    case "Android":
-    case "ios":
-      return COMMON_TOPIC_ENTRY;
-    case "all":
-    case null:
-    case undefined:
-      return TOPIC_ENTRY;
-    default:
-      return TOPIC_ENTRY;
-  }
-}
-
-function TopicFilterList({ onSelect }: TopicFilterListProps) {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const sector = params.get("sector");
-
+function TopicFilterList({ onSelect, sector }: TopicFilterListProps) {
   return (
     <S.List>
       {getTopicsBySector(sector).map(([key, { label }]) => (
