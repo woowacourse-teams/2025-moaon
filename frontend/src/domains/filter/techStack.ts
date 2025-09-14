@@ -176,11 +176,6 @@ export const FRONTEND_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Webpack.svg",
   },
-  githubAction: {
-    label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
-  },
   git: {
     label: "Git",
     imgUrl:
@@ -253,11 +248,6 @@ export const BACKEND_STACK_ICON_MAP = {
     label: "Ruby on Rails",
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RubyonRails.svg",
-  },
-  aws: {
-    label: "AWS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/AWS.svg",
   },
   mongodb: {
     label: "MongoDB",
@@ -509,11 +499,6 @@ export const BACKEND_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Lombok.svg",
   },
-  githubAction: {
-    label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
-  },
   git: {
     label: "Git",
     imgUrl:
@@ -642,11 +627,6 @@ export const ANDROID_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Okhttp3.svg",
   },
-  githubAction: {
-    label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
-  },
   git: {
     label: "Git",
     imgUrl:
@@ -725,11 +705,6 @@ export const IOS_STACK_ICON_MAP = {
     imgUrl:
       "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RestClient.svg",
   },
-  githubAction: {
-    label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
-  },
   git: {
     label: "Git",
     imgUrl:
@@ -742,11 +717,25 @@ export const IOS_STACK_ICON_MAP = {
   },
 } as const;
 
+export const INFRA_STACK_ICON_MAP = {
+  aws: {
+    label: "AWS",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/AWS.svg",
+  },
+  githubAction: {
+    label: "Github Action",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+} as const;
+
 export const TECH_STACK_ICON_MAP = {
   ...FRONTEND_STACK_ICON_MAP,
   ...BACKEND_STACK_ICON_MAP,
   ...ANDROID_STACK_ICON_MAP,
   ...IOS_STACK_ICON_MAP,
+  ...INFRA_STACK_ICON_MAP,
 } as const;
 
 export const TECH_STACK_GROUPS = {
@@ -754,18 +743,21 @@ export const TECH_STACK_GROUPS = {
   BE: BACKEND_STACK_ICON_MAP,
   Android: ANDROID_STACK_ICON_MAP,
   iOS: IOS_STACK_ICON_MAP,
+  Infra: INFRA_STACK_ICON_MAP,
 } as const;
 
 export type FrontendStackKey = keyof typeof FRONTEND_STACK_ICON_MAP;
 export type BackendStackKey = keyof typeof BACKEND_STACK_ICON_MAP;
 export type AndroidStackKey = keyof typeof ANDROID_STACK_ICON_MAP;
 export type IosStackKey = keyof typeof IOS_STACK_ICON_MAP;
+export type InfraStackKey = keyof typeof INFRA_STACK_ICON_MAP;
 
 export type TechStackKey =
   | FrontendStackKey
   | BackendStackKey
   | AndroidStackKey
-  | IosStackKey;
+  | IosStackKey
+  | InfraStackKey;
 
 export const FRONTEND_STACK_ENTRY = typeSafeObjectEntries(
   FRONTEND_STACK_ICON_MAP
