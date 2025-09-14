@@ -2,24 +2,16 @@ import { useTabAnimation } from "@shared/hooks/useTabAnimation";
 import { useLocation, useNavigate } from "react-router";
 import useArticleList from "@/pages/article/hooks/useArticleList";
 import useProjectList from "@/pages/project-list/hooks/useProjectList";
+import type { NavItem } from "../types/Header.types";
 import * as S from "./NavBar.styled";
 
-const NAV_LIST = [
-  {
-    id: 1,
-    href: "/project",
-    text: "프로젝트 탐색",
-  },
-  {
-    id: 2,
-    href: "/article",
-    text: "아티클 탐색",
-  },
-];
+interface NavBarProps {
+  items: NavItem[];
+}
 
-function NavBar() {
+function NavBar({ items }: NavBarProps) {
   const pathname = useLocation().pathname;
-  const selectedIndex = NAV_LIST.findIndex((item) => item.href === pathname);
+  const selectedIndex = items.findIndex((item) => item.href === pathname);
   const { setTabElementsRef, selectedStyle } = useTabAnimation({
     selectedIndex,
     duration: 0.3,
@@ -45,7 +37,7 @@ function NavBar() {
   return (
     <S.NavBar>
       <S.NavLinkList>
-        {NAV_LIST.map(({ id, href, text }, idx) => (
+        {items.map(({ id, href, text }, idx) => (
           <S.NavLinkItem key={id} ref={(el) => setTabElementsRef(el, idx)}>
             <S.Link
               type="button"

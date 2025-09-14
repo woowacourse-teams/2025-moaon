@@ -26,7 +26,6 @@ function Card({ article }: CardProps) {
 
   const isArticleList = !!projectId;
   const { postArticleClick } = useArticleClick();
-  console.log(sector);
   const { label, bgColor } = ARTICLE_CATEGORY_MAP[sector];
   return (
     <S.CardContainer>
