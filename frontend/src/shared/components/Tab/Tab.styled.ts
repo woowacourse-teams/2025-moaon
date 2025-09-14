@@ -78,5 +78,6 @@ export const SlidingBG = styled.div<{
   z-index: 0;
   transform: translateX(${({ translateX }) => translateX}px);
   width: ${({ width }) => width}px;
-  transition: transform ${({ duration }) => duration}s ease-in-out, width ${({ duration }) => duration}s ease-out;
+  transition: transform ${({ duration }) => duration}s ease-in-out,
+    width ${({ duration }) => duration}s ease-out;
 `;
