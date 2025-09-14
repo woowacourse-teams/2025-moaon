@@ -14,6 +14,7 @@ interface SearchBarProps {
   onSubmit: (value: string) => void;
   defaultValue?: string;
   maxLength: number;
+  isFullBorder?: boolean;
 }
 
 function SearchBar({
@@ -21,6 +22,7 @@ function SearchBar({
   onSubmit,
   defaultValue = "",
   maxLength,
+  isFullBorder = false,
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasSearchValue, setHasSearchValue] = useState(
@@ -54,7 +56,7 @@ function SearchBar({
 
   return (
     <S.SearchForm onSubmit={handleSearchFormSubmit}>
-      <S.SearchLabel htmlFor="search-input">
+      <S.SearchLabel isFullBorder={isFullBorder} htmlFor="search-input">
         <S.SearchIcon src={searchIcon} alt="검색" />
         <S.SearchInput
           type="text"

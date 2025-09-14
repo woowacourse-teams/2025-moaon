@@ -21,3 +21,7 @@ export const EmptyContainer = styled.div`
   padding: 1rem 0;
   height: 13.6875rem;
 `;
+
+export const SearchBarWrapper = styled.div`
+  margin: 1rem 0 3rem 0;
+`;

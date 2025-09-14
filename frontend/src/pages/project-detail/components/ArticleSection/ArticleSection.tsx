@@ -2,6 +2,7 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
+import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
 import type {
   ProjectArticle,
@@ -13,6 +14,7 @@ import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
+const MAX_SEARCH_LENGTH = 50;
 
 interface ArticleSectionProps {
   articles: ProjectArticle[];
@@ -59,6 +61,14 @@ function ArticleSection({
             selected={selectedSector}
             width={100}
           />
+          <S.SearchBarWrapper>
+            <SearchBar
+              placeholder="아티클 제목, 내용을 검색해보세요"
+              maxLength={MAX_SEARCH_LENGTH}
+              onSubmit={() => {}}
+              isFullBorder={true}
+            />
+          </S.SearchBarWrapper>
           <S.CardListContainer>
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
