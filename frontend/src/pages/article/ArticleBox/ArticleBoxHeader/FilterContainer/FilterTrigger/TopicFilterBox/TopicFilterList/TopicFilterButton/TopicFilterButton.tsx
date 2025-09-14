@@ -1,10 +1,11 @@
+import type { TopicKey, TopicLabel } from "@domains/filter/topic";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useEffect, useState } from "react";
 import * as S from "./TopicFilterButton.styled";
 
 interface TopicFilterButtonProps {
-  value: any;
-  label: any;
+  value: TopicKey;
+  label: TopicLabel;
   onSelect: () => void;
 }
 

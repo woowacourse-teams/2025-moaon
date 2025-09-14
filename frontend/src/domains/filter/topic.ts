@@ -95,6 +95,7 @@ export type TopicKey =
   | BackendTopicKey
   | InfraTopicKey
   | NonTechTopicKey;
+export type TopicLabel = (typeof TOPIC_MAP)[keyof typeof TOPIC_MAP]["label"];
 
 export const COMMON_TOPIC_ENTRY = typeSafeObjectEntries(COMMON_TOPIC).sort(
   ([a], [b]) => a.localeCompare(b)
