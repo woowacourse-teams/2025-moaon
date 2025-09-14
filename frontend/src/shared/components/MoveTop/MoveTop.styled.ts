@@ -37,7 +37,7 @@ export const MoveTopButton = styled.button<MoveTopButtonProps>`
 
   &:hover {
     animation: ${bounceAnimation} 1.2s ease-in-out infinite;
-    background-color: #f9f9f9;
+    background-color: #0057b5ff;
   }
 `;
 
