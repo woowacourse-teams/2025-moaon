@@ -22,6 +22,7 @@ function ArticlePage() {
     description: ARTICLE_PAGE_DESCRIPTION,
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     refetch();
   }, [sector]);
