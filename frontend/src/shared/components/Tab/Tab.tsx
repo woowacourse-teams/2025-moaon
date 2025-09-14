@@ -47,7 +47,6 @@ function Tab<K extends string>({
             );
           }
 
-          console.log(key, count);
           return (
             <S.TabItem
               ref={(el) => setTabElementsRef(el, idx)}
