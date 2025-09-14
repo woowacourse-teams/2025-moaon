@@ -17,6 +17,13 @@ export const HeaderBox = styled.div`
   flex-direction: column;
 `;
 
+export const HeaderMainRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const LogoLink = styled(Link)`
   font-size: 1.75rem;
   font-weight: 700;
