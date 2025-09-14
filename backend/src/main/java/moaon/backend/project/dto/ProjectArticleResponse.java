@@ -9,8 +9,8 @@ import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleSectorCount;
 
 public record ProjectArticleResponse(
-        List<ArticleSectorCount> count,
-        List<ArticleDetailResponse> data
+        List<ArticleSectorCount> counts,
+        List<ArticleDetailResponse> articles
 ) {
 
     public static ProjectArticleResponse of(
