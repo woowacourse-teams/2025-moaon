@@ -31,7 +31,7 @@ function SubMenu({ items }: SubMenuProps) {
             }
           }}
           onClick={() => {
-            params.update(key, { replace: true });
+            params.update(key, { replace: true, reset: true });
           }}
           ref={(el) => setTabElementsRef(el, idx)}
         >
