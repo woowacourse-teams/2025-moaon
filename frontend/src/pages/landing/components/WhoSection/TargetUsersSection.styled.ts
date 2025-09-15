@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
-export const WhoSection = styled.section`
-  width: 100vw;
+export const TargetUsersSection = styled.section`
+  width: 100dvw;
   display: flex;
   justify-content: center;
   background: rgba(0, 123, 255, 0.07);
@@ -10,7 +10,7 @@ export const WhoSection = styled.section`
 
 export const Inner = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 5rem 1.5rem;
   text-align: center;
@@ -28,7 +28,7 @@ export const Badge = styled.h3`
 
 export const SubCopy = styled.p`
   margin: 1.75rem auto 0;
-  max-width: 720px;
+  max-width: 45rem;
   line-height: 1.4;
   font-size: 1.25rem;
   font-weight: 600;
@@ -36,7 +36,7 @@ export const SubCopy = styled.p`
 
 export const Emphasis = styled.h3`
   margin: 5rem auto 0;
-  max-width: 1000px;
+  max-width: 62.5rem;
   font-size: 2rem;
   font-weight: 600;
   line-height: 1.4;

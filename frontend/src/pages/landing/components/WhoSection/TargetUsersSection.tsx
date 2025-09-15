@@ -1,8 +1,8 @@
-import * as S from "./WhoSection.styled";
+import * as S from "./TargetUsersSection.styled";
 
-function WhoSection() {
+function TargetUsersSection() {
   return (
-    <S.WhoSection aria-label="Who Section">
+    <S.TargetUsersSection aria-label="Target users Section">
       <S.Inner>
         <S.Badge>누구에게 필요한 서비스일까요?</S.Badge>
         <S.SubCopy>
@@ -18,8 +18,8 @@ function WhoSection() {
           <S.Kicker>탐색을 넘어, 개발 생태계의 흐름</S.Kicker>을 읽을 수 있어요.
         </S.Emphasis>
       </S.Inner>
-    </S.WhoSection>
+    </S.TargetUsersSection>
   );
 }
 
-export default WhoSection;
+export default TargetUsersSection;

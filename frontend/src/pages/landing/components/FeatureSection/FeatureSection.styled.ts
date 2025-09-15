@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const FeatureSection = styled.section`
-  width: 100vw;
+  width: 100dvw;
   display: flex;
   justify-content: center;
   position: relative;
@@ -10,8 +10,7 @@ export const FeatureSection = styled.section`
 
 export const Inner = styled.div`
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 75rem;
   padding: 6rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr;
@@ -28,7 +27,7 @@ export const FeatureImageFrame = styled.div`
   background: #e8e8e8;
   border-radius: 1.25rem;
   padding: 1.25rem;
-  width: clamp(280px, 47vw, 600px);
+  width: clamp(17.5rem, 47vw, 37.5rem);
 
   @media (max-width: 900px) {
     width: 100%;

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const LandingBannerSection = styled.section`
-  width: 100vw;
+  width: 100dvw;
   margin-top: 8.75rem;
 `;
 
@@ -19,7 +19,7 @@ export const BannerImage = styled.img`
 
 export const Inner = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 5rem auto;
   display: flex;
   justify-content: center;

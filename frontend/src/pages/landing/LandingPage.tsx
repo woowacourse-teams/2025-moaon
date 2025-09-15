@@ -2,14 +2,14 @@ import MoveTop from "@shared/components/MoveTop/MoveTop";
 import FeatureSection from "./components/FeatureSection/FeatureSection";
 import HeroSection from "./components/HeroSection/HeroSection";
 import LandingBannerSection from "./components/LandingBannerSection/LandingBannerSection";
-import WhoSection from "./components/WhoSection/WhoSection";
+import TargetUsersSection from "./components/WhoSection/TargetUsersSection";
 
 function LandingPage() {
   return (
     <main>
       <HeroSection />
       <FeatureSection />
-      <WhoSection />
+      <TargetUsersSection />
       <LandingBannerSection />
       <MoveTop />
     </main>
