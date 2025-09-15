@@ -1,6 +1,6 @@
 import bannerPng from "@assets/images/landing-banner.png";
 import bannerWebp from "@assets/images/landing-banner.webp";
-import CtaButton from "../shared/CtaButton/CtaButton";
+import LinkButton from "../shared/LinkButton/LinkButton";
 import * as S from "./LandingBannerSection.styled";
 
 function LandingBannerSection() {
@@ -16,7 +16,7 @@ function LandingBannerSection() {
           <br />
           흩어진 프로젝트, 이제 한 곳에서.
         </S.BannerContent>
-        <CtaButton href="/project">지금 시작하기</CtaButton>
+        <LinkButton href="/project">지금 시작하기</LinkButton>
       </S.Inner>
     </S.LandingBannerSection>
   );

@@ -1,17 +1,18 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router";
 
-interface CtaButtonProps {
+interface LinkButtonProps {
   children: React.ReactNode;
   href: string;
 }
 
-function CtaButton({ children, href }: CtaButtonProps) {
-  return <CtaButtonStyle href={href}>{children}</CtaButtonStyle>;
+function LinkButtonProps({ children, href }: LinkButtonProps) {
+  return <LinkButtonStyle to={href}>{children}</LinkButtonStyle>;
 }
 
-export default CtaButton;
+export default LinkButtonProps;
 
-const CtaButtonStyle = styled.a`
+const LinkButtonStyle = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
