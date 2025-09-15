@@ -1,14 +1,19 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import MoveTop from "@shared/components/MoveTop/MoveTop";
+import FeatureSection from "./components/FeatureSection/FeatureSection";
+import HeroSection from "./components/HeroSection/HeroSection";
+import LandingBannerSection from "./components/LandingBannerSection/LandingBannerSection";
+import TargetUsersSection from "./components/WhoSection/TargetUsersSection";
 
 function LandingPage() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate("/project");
-  }, [navigate]);
-
-  return <div>메인페이지</div>;
+  return (
+    <main>
+      <HeroSection />
+      <FeatureSection />
+      <TargetUsersSection />
+      <LandingBannerSection />
+      <MoveTop />
+    </main>
+  );
 }
 
 export default LandingPage;
