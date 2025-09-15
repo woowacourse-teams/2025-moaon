@@ -76,11 +76,11 @@ export const NON_TECH_TOPIC = {
 } as const;
 
 export const TOPIC_MAP = {
-  ...COMMON_TOPIC,
   ...FE_TOPIC,
   ...BE_TOPIC,
   ...INFRA_TOPIC,
   ...NON_TECH_TOPIC,
+  ...COMMON_TOPIC,
 } as const;
 
 export type CommonTopicKey = keyof typeof COMMON_TOPIC;
@@ -97,25 +97,14 @@ export type TopicKey =
   | NonTechTopicKey;
 export type TopicLabel = (typeof TOPIC_MAP)[keyof typeof TOPIC_MAP]["label"];
 
-export const COMMON_TOPIC_ENTRY = typeSafeObjectEntries(COMMON_TOPIC).sort(
-  ([a], [b]) => a.localeCompare(b)
-);
+export const COMMON_TOPIC_ENTRY = typeSafeObjectEntries(COMMON_TOPIC);
 
-export const FRONTEND_TOPIC_ENTRY = typeSafeObjectEntries(FE_TOPIC).sort(
-  ([a], [b]) => a.localeCompare(b)
-);
+export const FRONTEND_TOPIC_ENTRY = typeSafeObjectEntries(FE_TOPIC);
 
-export const BACKEND_TOPIC_ENTRY = typeSafeObjectEntries(BE_TOPIC).sort(
-  ([a], [b]) => a.localeCompare(b)
-);
+export const BACKEND_TOPIC_ENTRY = typeSafeObjectEntries(BE_TOPIC);
 
-export const INFRA_TOPIC_ENTRY = typeSafeObjectEntries(INFRA_TOPIC).sort(
-  ([a], [b]) => a.localeCompare(b)
-);
+export const INFRA_TOPIC_ENTRY = typeSafeObjectEntries(INFRA_TOPIC);
 
-export const NON_TECH_TOPIC_ENTRY = typeSafeObjectEntries(NON_TECH_TOPIC).sort(
-  ([a], [b]) => a.localeCompare(b)
-);
-export const TOPIC_ENTRY = typeSafeObjectEntries(TOPIC_MAP).sort(([a], [b]) =>
-  a.localeCompare(b)
-);
+export const NON_TECH_TOPIC_ENTRY = typeSafeObjectEntries(NON_TECH_TOPIC);
+
+export const TOPIC_ENTRY = typeSafeObjectEntries(TOPIC_MAP);
