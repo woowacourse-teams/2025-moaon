@@ -25,9 +25,9 @@ function HeroSection() {
       </S.Overlay>
       <S.HeroPicture>
         <source srcSet={heroImageWebp} type="image/webp" />
-        <S.HeroImage src={heroImage} alt="Hero Section" />
+        <S.HeroImage src={heroImage} alt="" />
       </S.HeroPicture>
-      <S.ArrowIcon src={arrowDown} alt="arrowDown" />
+      <S.ArrowIcon src={arrowDown} alt="아래로 스크롤 하세요" />
       <S.Dim />
     </S.HeroSection>
   );

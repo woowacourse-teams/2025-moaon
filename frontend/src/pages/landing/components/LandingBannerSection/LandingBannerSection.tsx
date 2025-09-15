@@ -8,7 +8,7 @@ function LandingBannerSection() {
     <S.LandingBannerSection aria-label="Landing Banner">
       <S.BannerPicture>
         <source srcSet={bannerWebp} type="image/webp" />
-        <S.BannerImage src={bannerPng} alt="랜딩 배너" />
+        <S.BannerImage src={bannerPng} alt="" />
       </S.BannerPicture>
       <S.Inner>
         <S.BannerContent>
