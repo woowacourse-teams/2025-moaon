@@ -55,8 +55,30 @@ public enum Sector {
             DEPLOYMENT_AND_OPERATION,
             ETC
     )),
-    ANDROID("android", List.of(ETC)),
-    IOS("ios", List.of(ETC)),
+    ANDROID("android", List.of(
+            TECHNOLOGY_ADOPTION,
+            TROUBLESHOOTING,
+            PERFORMANCE_OPTIMIZATION,
+            TESTING,
+            CODE_QUALITY,
+            UI_UX_IMPROVEMENT,
+            DEPLOYMENT_AND_OPERATION,
+            ARCHITECTURE_DESIGN,
+            SECURITY,
+            ETC
+    )),
+    IOS("ios", List.of(
+            TECHNOLOGY_ADOPTION,
+            TROUBLESHOOTING,
+            PERFORMANCE_OPTIMIZATION,
+            TESTING,
+            CODE_QUALITY,
+            UI_UX_IMPROVEMENT,
+            DEPLOYMENT_AND_OPERATION,
+            ARCHITECTURE_DESIGN,
+            SECURITY,
+            ETC
+    )),
     INFRA("infra", List.of(
             TECHNOLOGY_ADOPTION,
             TROUBLESHOOTING,
