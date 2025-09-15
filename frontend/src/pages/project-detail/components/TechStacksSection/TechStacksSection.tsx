@@ -1,6 +1,7 @@
 import type { TechStackKey } from "@domains/filter/techStack";
 import { TECH_STACK_GROUPS } from "@domains/filter/techStack";
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
+import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 import SectionTitle from "../SectionTitle";
 import * as S from "./TechStacksSection.styled";
 
@@ -13,7 +14,7 @@ function TechStacksSection({ techStacks }: TechStacksSectionProps) {
     <S.TechStacksSection>
       <SectionTitle title="기술 스택" />
 
-      {Object.entries(TECH_STACK_GROUPS).map(([groupName, stackMap]) => {
+      {typeSafeObjectEntries(TECH_STACK_GROUPS).map(([groupName, stackMap]) => {
         const groupStacks = techStacks.filter((stack) =>
           Object.keys(stackMap).includes(stack),
         );
