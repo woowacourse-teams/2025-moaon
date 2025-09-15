@@ -32,10 +32,7 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
 
   return (
     <S.Container ref={addToSafeZone}>
-      {!(
-        label === "기술 스택" &&
-        (sector === "infra" || sector === "nonTech")
-      ) && (
+      {!(label === "기술 스택" && sector === "nonTech") && (
         <S.FilterButton type="button" onClick={toggleFilter}>
           <S.FilterTitle>
             {label}
