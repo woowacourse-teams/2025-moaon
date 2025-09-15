@@ -1,14 +1,11 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import HeroSection from "./components/HeroSection/HeroSection";
 
 function LandingPage() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate("/project");
-  }, [navigate]);
-
-  return <div>메인페이지</div>;
+  return (
+    <main>
+      <HeroSection />
+    </main>
+  );
 }
 
 export default LandingPage;
