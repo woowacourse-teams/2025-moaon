@@ -1,6 +1,7 @@
 import arrowDown from "@assets/icons/arrow-down.svg";
 import heroImage from "@assets/images/landing-hero.png";
 import heroImageWebp from "@assets/images/landing-hero.webp";
+import CtaButton from "../shared/CtaButton/CtaButton";
 import * as S from "./HeroSection.styled";
 
 function HeroSection() {
@@ -19,7 +20,7 @@ function HeroSection() {
             <br />
             인사이트를 모아온에서 탐색하세요.
           </S.Description>
-          <S.CtaButton href="/project">둘러보기</S.CtaButton>
+          <CtaButton href="/project">둘러보기</CtaButton>
         </S.OverlayInner>
       </S.Overlay>
       <S.HeroPicture>
