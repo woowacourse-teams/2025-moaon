@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import ArrowUp from "@/assets/icons/top-arrow.svg";
 import useScrollPosition from "@/shared/hooks/useScrollPosition";
-import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import * as S from "./MoveTop.styled";
 
 function MoveTop() {
@@ -28,8 +28,7 @@ function MoveTop() {
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       type="button"
     >
-      <ArrowIcon direction="up" />
-      TOP
+      <S.MoveTopIcon src={ArrowUp} alt="상단으로 이동" />
     </S.MoveTopButton>
   );
 }

@@ -163,25 +163,58 @@ public class ProjectApiTest extends BaseApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        Sector filterSector = Sector.BE;
-        Sector unfilterSector = Sector.FE;
+        Sector filteredSector = Sector.BE;
+        Sector unfilteredSector = Sector.FE;
+        String filteredSearch = "모아온";
+        String unfilteredSearch = "핏토링";
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .summary(filteredSearch)
+                        .build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).sector(filterSector).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .content(filteredSearch)
+                        .build()
         );
-        repositoryHelper.save(new ArticleFixtureBuilder().project(targetProject).sector(unfilterSector).build());
-        repositoryHelper.save(new ArticleFixtureBuilder().sector(filterSector).build());
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(unfilteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .title(unfilteredSearch)
+                        .build()
+        );
 
         // when
         ProjectArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
-                .queryParams("sector", filterSector.getName())
-                .filter(document(projectArticlesResponseFields()))
+                .queryParams("sector", filteredSector.getName())
+                .queryParams("search", filteredSearch)
+                .filter(document(projectArticlesResponseFields(), projectArticleQueryParameters()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)
@@ -189,16 +222,17 @@ public class ProjectApiTest extends BaseApiTest {
 
         // then
         assertAll(
-                () -> assertThat(actualResponse.count())
+                () -> assertThat(actualResponse.counts())
                         .containsExactlyInAnyOrder(
-                                ArticleSectorCount.of(Sector.BE, 3),
+                                new ArticleSectorCount("all", 5),
+                                ArticleSectorCount.of(Sector.BE, 4),
                                 ArticleSectorCount.of(Sector.FE, 1),
                                 ArticleSectorCount.of(Sector.IOS, 0),
                                 ArticleSectorCount.of(Sector.ANDROID, 0),
                                 ArticleSectorCount.of(Sector.INFRA, 0),
                                 ArticleSectorCount.of(Sector.NON_TECH, 0)
                         ),
-                () -> assertThat(actualResponse.data())
+                () -> assertThat(actualResponse.articles())
                         .extracting(ArticleDetailResponse::id)
                         .containsExactlyInAnyOrder(
                                 targetProjectArticle1.getId(),
@@ -247,31 +281,37 @@ public class ProjectApiTest extends BaseApiTest {
     private QueryParametersSnippet projectQueryParameters() {
         return queryParameters(
                 parameterWithName("search").description("검색어").optional(),
-                parameterWithName("sort").description("정렬 기준 (views, loves, createdAt)").optional(),
+                parameterWithName("sort").description("정렬 기준 (views, loves, createdAt, articleCount)").optional(),
                 parameterWithName("categories").description("카테고리 목록").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
-                parameterWithName("limit").description("요청 데이터 개수"),
+                parameterWithName("limit").description("요청 데이터 개수 | Max: 100"),
                 parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
         );
     }
 
     private ResponseFieldsSnippet projectArticlesResponseFields() {
         return responseFields(
-                subsectionWithPath("count").description("직군별 아티클 개수 목록"),
-                fieldWithPath("count[].sector").description("직군"),
-                fieldWithPath("count[].count").description("해당 직군 아티클 개수"),
+                subsectionWithPath("counts").description("직군별 아티클 개수 목록"),
+                fieldWithPath("counts[].sector").description("직군"),
+                fieldWithPath("counts[].count").description("해당 직군 아티클 개수"),
 
-                subsectionWithPath("data").description("아티클 데이터 목록"),
-                fieldWithPath("data[].id").description("아티클 ID"),
-                fieldWithPath("data[].title").description("아티클 제목"),
-                fieldWithPath("data[].summary").description("아티클 요약"),
-                fieldWithPath("data[].clicks").description("아티클 클릭수"),
-                fieldWithPath("data[].techStacks").description("기술 스택 목록").optional(),
-                fieldWithPath("data[].url").description("아티클 URL"),
-                fieldWithPath("data[].sector").description("직군"),
-                fieldWithPath("data[].topics").description("아티클 주제"),
-                fieldWithPath("data[].createdAt").description("생성일시")
+                subsectionWithPath("articles").description("아티클 데이터 목록"),
+                fieldWithPath("articles[].id").description("아티클 ID"),
+                fieldWithPath("articles[].title").description("아티클 제목"),
+                fieldWithPath("articles[].summary").description("아티클 요약"),
+                fieldWithPath("articles[].clicks").description("아티클 클릭수"),
+                fieldWithPath("articles[].techStacks").description("기술 스택 목록").optional(),
+                fieldWithPath("articles[].url").description("아티클 URL"),
+                fieldWithPath("articles[].sector").description("직군"),
+                fieldWithPath("articles[].topics").description("아티클 주제"),
+                fieldWithPath("articles[].createdAt").description("생성일시")
         );
     }
 
+    private QueryParametersSnippet projectArticleQueryParameters() {
+        return queryParameters(
+                parameterWithName("search").description("검색어").optional(),
+                parameterWithName("sector").description("직군").optional()
+        );
+    }
 }

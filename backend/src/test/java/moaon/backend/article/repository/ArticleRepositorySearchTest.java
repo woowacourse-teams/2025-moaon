@@ -107,13 +107,12 @@ public class ArticleRepositorySearchTest {
         );
 
         ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
-                .id(project.getId())
                 .sector(filteredSector)
                 .search(new SearchKeyword(filteredSearch))
                 .build();
 
         // when
-        List<Article> articles = repository.findAllByProjectIdAndSector(condition);
+        List<Article> articles = repository.findAllByProjectIdAndCondition(project.getId(), condition);
 
         // then
         assertThat(articles).containsExactlyInAnyOrder(filterArticle1, filterArticle2, filterArticle3);

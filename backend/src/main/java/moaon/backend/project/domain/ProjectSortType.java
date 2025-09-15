@@ -2,6 +2,7 @@ package moaon.backend.project.domain;
 
 import java.util.Arrays;
 import java.util.function.Function;
+import moaon.backend.global.cursor.ArticleCountProjectCursor;
 import moaon.backend.global.cursor.CreatedAtProjectCursor;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.cursor.LoveProjectCursor;
@@ -25,6 +26,10 @@ public enum ProjectSortType {
     LOVES("loves",
             cursor -> CursorParser.toCursor(cursor, new IntegerParser(), LoveProjectCursor::new),
             project -> new LoveProjectCursor(project.getLoveCount(), project.getId())
+    ),
+    ARTICLE_COUNT("articleCount",
+            cursor -> CursorParser.toCursor(cursor, new IntegerParser(), ArticleCountProjectCursor::new),
+            project -> new ArticleCountProjectCursor(project.getArticles().size(), project.getId())
     );
 
     private final String sortType;

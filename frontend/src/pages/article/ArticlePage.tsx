@@ -1,17 +1,16 @@
 import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import {
-  ARTICLE_CATEGORY_ENTRY,
-  type ArticleCategoryKey,
-} from "@domains/filter/articleCategory";
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
 import MoveTop from "@shared/components/MoveTop/MoveTop";
 import Tab from "@shared/components/Tab/Tab";
 import { useMeta } from "@shared/hooks/useMeta";
 import ArticleBox from "./ArticleBox/ArticleBox";
 import * as S from "./ArticlePage.styled";
 import ArticleSearchBar from "./ArticleSearchBar/ArticleSearchBar";
-import { useArticleCategory } from "./hooks/useArticleCategory";
+import { useArticleSector } from "./hooks/useArticleCategory";
 import useArticleList from "./hooks/useArticleList";
-import TagList from "./TagList/TagList";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 const ARTICLE_PAGE_DESCRIPTION =
@@ -19,11 +18,11 @@ const ARTICLE_PAGE_DESCRIPTION =
 
 function ArticlePage() {
   const { refetch } = useArticleList();
-  const { selectedCategory, updateCategory } = useArticleCategory(
+  const { selectedSector, updateSector } = useArticleSector(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
 
-  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
+  const articleCategories = ARTICLE_SECTOR_ENTRY.map(([key, { label }]) => ({
     key,
     label,
   }));
@@ -33,8 +32,8 @@ function ArticlePage() {
     description: ARTICLE_PAGE_DESCRIPTION,
   });
 
-  const handleTabSelect = (key: ArticleCategoryKey) => {
-    updateCategory(key);
+  const handleTabSelect = (key: ArticleSectorKey) => {
+    updateSector(key);
     refetch();
   };
 
@@ -50,11 +49,10 @@ function ArticlePage() {
       <Tab
         items={articleCategories}
         onSelect={handleTabSelect}
-        selected={selectedCategory}
+        selected={selectedSector}
       />
       <S.Box>
         <ArticleBox />
-        <TagList selectedCategory={selectedCategory} />
       </S.Box>
       <MoveTop />
     </S.Main>

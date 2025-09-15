@@ -1,8 +1,11 @@
 import { useCallback } from "react";
-import {
-  type NavigateOptions,
-  useSearchParams as useReactRouterSearchParams,
-} from "react-router";
+import { type NavigateOptions, useSearchParams as useReactRouterSearchParams } from "react-router";
+
+interface updateSearchParams {
+  params: URLSearchParams;
+  values: string[];
+  options?: NavigateOptions & { reset?: boolean };
+}
 
 type SearchParamOptions = {
   key: string;
@@ -22,11 +25,18 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
     return currentValues.split(",");
   }, [key, searchParams]);
 
-  const updateSearchParams = useCallback(
-    (values: string[], options?: NavigateOptions) => {
-      const params = new URLSearchParams(searchParams);
-      params.delete(key);
+  const clearSearchParams = (reset: boolean) => {
+    if (reset) {
+      return new URLSearchParams();
+    }
 
+    const params = new URLSearchParams(searchParams);
+    params.delete(key);
+    return params;
+  };
+
+  const updateSearchParams = useCallback(
+    ({ params, values, options }: updateSearchParams) => {
       if (values.length === 0) {
         setSearchParams(params, options);
         return;
@@ -35,7 +45,7 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
       params.append(key, values.join(","));
       setSearchParams(params, options);
     },
-    [key, searchParams, setSearchParams]
+    [key, setSearchParams]
   );
 
   const deleteAllSearchParams = useCallback(
@@ -51,15 +61,14 @@ const useSearchParams = ({ key, mode }: SearchParamOptions) => {
     single: (value: string) => [value],
     multi: (value: string) => {
       const currentValues = getSearchParams();
-      return currentValues.includes(value)
-        ? currentValues.filter((currentValue) => currentValue !== value)
-        : [...currentValues, value];
+      return currentValues.includes(value) ? currentValues.filter((currentValue) => currentValue !== value) : [...currentValues, value];
     },
   };
 
-  const updateParamValue = (value: string, options?: { replace?: boolean }) => {
+  const updateParamValue = (value: string, options?: { replace?: boolean; reset?: boolean }) => {
     const newValues = paramOperations[mode](value);
-    updateSearchParams(newValues, options);
+    const params = clearSearchParams(options?.reset ?? false);
+    updateSearchParams({ params, values: newValues, options });
   };
 
   return {

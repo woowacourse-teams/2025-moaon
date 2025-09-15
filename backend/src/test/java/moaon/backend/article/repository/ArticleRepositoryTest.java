@@ -62,7 +62,7 @@ class ArticleRepositoryTest {
         );
 
         // when
-        Integer count = repository.countByProjectIdAndSector(
+        Long count = repository.countByProjectIdAndSector(
                 filteredProject.getId(),
                 filteredSector
         );

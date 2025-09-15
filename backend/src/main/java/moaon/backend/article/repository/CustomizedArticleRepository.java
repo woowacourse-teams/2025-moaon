@@ -11,5 +11,5 @@ public interface CustomizedArticleRepository {
 
     long countWithSearchCondition(ArticleQueryCondition queryCondition);
 
-    List<Article> findAllByProjectIdAndSector(ProjectArticleQueryCondition condition);
+    List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition);
 }
