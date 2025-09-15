@@ -1,19 +1,22 @@
 import {
-  ARTICLE_CATEGORY_ENTRY,
-  type ArticleCategoryKey,
-} from "@domains/filter/articleCategory";
-import EmptyState from "@shared/components/EmptyState/EmptyState";
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
 import Tab from "@shared/components/Tab/Tab";
-import type { Article } from "@/apis/articles/articles.type";
-import Card from "@/pages/article/ArticleBox/CardList/Card/Card";
-import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
+import type {
+  ProjectArticle,
+  ProjectArticleCount,
+} from "@/apis/projectArticles/projectArticles.type";
+import ArticleCard from "@/pages/article/ArticleBox/CardList/Card/ArticleCard";
+import { useArticleSector } from "@/pages/article/hooks/useArticleCategory";
 import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 
 interface ArticleSectionProps {
-  articles: Article[];
+  articles: ProjectArticle[];
+  sectorCounts: ProjectArticleCount[];
   refetch: () => void;
   isRefetching: boolean;
   isLoading: boolean;
@@ -21,29 +24,29 @@ interface ArticleSectionProps {
 
 function ArticleSection({
   articles,
+  sectorCounts,
   refetch,
-  isRefetching,
   isLoading,
 }: ArticleSectionProps) {
-  const { selectedCategory, updateCategory } = useArticleCategory(
-    DEFAULT_ARTICLE_CATEGORY_TYPE
+  const { selectedSector, updateSector } = useArticleSector(
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
 
-  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
-    key,
+  const articleSectors = ARTICLE_SECTOR_ENTRY.map(([sector, { label }]) => ({
+    key: sector,
     label,
+    count: sectorCounts.find((item) => item.sector === sector)?.count ?? 0,
   }));
 
-  const handleTabSelect = (key: ArticleCategoryKey) => {
-    if (key !== selectedCategory) {
-      updateCategory(key);
+  const handleTabSelect = (key: ArticleSectorKey) => {
+    if (key !== selectedSector) {
+      updateSector(key);
       refetch();
     }
   };
 
-  const showEmpty = articles.length <= 0 && !isRefetching;
   const hasResult =
-    (selectedCategory !== "all" && articles.length > 0) || !isLoading;
+    (selectedSector !== "all" && articles.length > 0) || !isLoading;
 
   return (
     <>
@@ -51,24 +54,15 @@ function ArticleSection({
         <S.ArticleSectionContainer>
           <SectionTitle title="프로젝트 아티클" />
           <Tab
-            items={articleCategories}
+            items={articleSectors}
             onSelect={handleTabSelect}
-            selected={selectedCategory}
+            selected={selectedSector}
             width={100}
           />
           <S.CardListContainer>
-            {showEmpty ? (
-              <S.EmptyContainer>
-                <EmptyState
-                  title="해당 카테고리의 아티클이 없어요."
-                  description=""
-                />
-              </S.EmptyContainer>
-            ) : (
-              articles.map((article) => (
-                <Card key={article.id} article={article} />
-              ))
-            )}
+            {articles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
           </S.CardListContainer>
         </S.ArticleSectionContainer>
       )}

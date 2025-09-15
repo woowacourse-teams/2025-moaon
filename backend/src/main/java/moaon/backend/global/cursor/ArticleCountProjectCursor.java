@@ -6,14 +6,14 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ViewProjectCursor implements Cursor<Integer> {
+public class ArticleCountProjectCursor implements Cursor<Integer> {
 
-    private final int views;
+    private final int count;
     private final Long id;
 
     @Override
     public Integer getSortValue() {
-        return views;
+        return count;
     }
 
     @Override
@@ -23,14 +23,14 @@ public class ViewProjectCursor implements Cursor<Integer> {
 
     @Override
     public String getNextCursor() {
-        return views + "_" + id;
+        return count + "_" + id;
     }
 
     @Override
     public BooleanExpression getCursorExpression() {
-        return project.views.lt(getSortValue())
+        return project.articles.size().lt(getSortValue())
                 .or(
-                        project.views.eq(getSortValue())
+                        project.articles.size().eq(getSortValue())
                                 .and(project.id.lt(getLastId()))
                 );
     }

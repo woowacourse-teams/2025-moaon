@@ -1,18 +1,18 @@
-import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import useSearchParams from "@shared/hooks/useSearchParams";
 
-export const useArticleCategory = (defaultValue: ArticleCategoryKey) => {
-  const categoryParams = useSearchParams({
+export const useArticleSector = (defaultValue: ArticleSectorKey) => {
+  const sectorParams = useSearchParams({
     key: "sector",
     mode: "single",
   });
 
-  const rawSelectedCategory = categoryParams.get()[0] as ArticleCategoryKey;
-  const selectedCategory = rawSelectedCategory ?? defaultValue;
+  const rawSelectedSector = sectorParams.get()[0] as ArticleSectorKey;
+  const selectedSector = rawSelectedSector ?? defaultValue;
 
-  const updateCategory = (key: ArticleCategoryKey) => {
-    categoryParams.update(key, { replace: true });
+  const updateSector = (key: ArticleSectorKey) => {
+    sectorParams.update(key, { replace: true });
   };
 
-  return { selectedCategory, updateCategory };
+  return { selectedSector, updateSector };
 };

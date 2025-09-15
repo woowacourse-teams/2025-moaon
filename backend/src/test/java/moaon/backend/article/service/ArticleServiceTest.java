@@ -15,11 +15,13 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
+import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -137,12 +139,14 @@ class ArticleServiceTest {
     void getByProjectId() {
         // given
         long projectId = 1L;
-        String category = "all";
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
+
+        ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
+                .build();
 
         // when
         // then
-        assertThatThrownBy(() -> articleService.getByProjectIdAndSector(projectId, category))
+        assertThatThrownBy(() -> articleService.getByProjectId(projectId, condition))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }

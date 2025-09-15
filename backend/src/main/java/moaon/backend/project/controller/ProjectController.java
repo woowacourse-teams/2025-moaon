@@ -4,11 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Max;
 import java.util.List;
-import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
 import moaon.backend.project.dto.PagedProjectResponse;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
+import moaon.backend.project.dto.ProjectArticleResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.service.ProjectService;
@@ -78,11 +79,15 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/articles")
-    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(
+    public ResponseEntity<ProjectArticleResponse> getArticlesByProjectId(
             @PathVariable("id") long id,
-            @RequestParam(value = "sector", required = false) String sector
+            @RequestParam(value = "sector", required = false) String sector,
+            @RequestParam(value = "search", required = false) String search
     ) {
-        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndSector(id, sector);
-        return ResponseEntity.ok(articleDetailResponses);
+        ProjectArticleResponse projectArticleResponse = articleService.getByProjectId(
+                id,
+                ProjectArticleQueryCondition.from(sector, search)
+        );
+        return ResponseEntity.ok(projectArticleResponse);
     }
 }

@@ -2,7 +2,7 @@ import EmptyState from "@shared/components/EmptyState/EmptyState";
 import type { Ref } from "react";
 import type { Article } from "@/apis/articles/articles.type";
 import ArticleSkeletonList from "../ArticleSkeletonList/ArticleSkeletonList";
-import Card from "./Card/Card";
+import ArticleCard from "./Card/ArticleCard";
 import * as S from "./CardList.styled";
 
 interface CardListProps {
@@ -33,7 +33,7 @@ function CardList({
   return (
     <S.CardListContainer>
       {articles?.map((article) => (
-        <Card key={article.id} article={article} />
+        <ArticleCard key={article.id} article={article} />
       ))}
       {scrollEnabled && <div ref={targetRef} />}
       {showSkeleton && <ArticleSkeletonList />}

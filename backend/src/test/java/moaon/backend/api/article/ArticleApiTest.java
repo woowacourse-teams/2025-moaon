@@ -208,7 +208,7 @@ public class ArticleApiTest extends BaseApiTest {
                 parameterWithName("sector").description("직군").optional(),
                 parameterWithName("topics").description("아티클 주제").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
-                parameterWithName("limit").description("요청 데이터 개수"),
+                parameterWithName("limit").description("요청 데이터 개수 | Max: 100"),
                 parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
         );
     }

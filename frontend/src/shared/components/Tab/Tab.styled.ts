@@ -13,7 +13,10 @@ export const TabItemList = styled.ul`
   display: flex;
   gap: 0.25rem;
   position: relative;
+  justify-content: space-between;
 `;
+
+export const CountText = styled.span``;
 
 export const TabItem = styled.li<{
   isSelected: boolean;
@@ -31,6 +34,34 @@ export const TabItem = styled.li<{
   position: relative;
   z-index: 1;
   transition: color ${({ duration }) => duration}s linear;
+  display: flex;
+  justify-content: center;
+  gap: 0.0938rem;
+  align-items: baseline;
+
+  ${CountText} {
+    font-size: 0.8125rem;
+    color: ${({ isSelected }) => (isSelected ? "#fff" : "#505050ff")};
+    transition: color ${({ duration }) => duration}s linear;
+  }
+`;
+
+export const DisabledTabItem = styled.li<{ tabCount: number }>`
+  padding: 0.5rem 1.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 0.0938rem;
+  align-items: baseline;
+  cursor: not-allowed;
+  color: #c0c0c0;
+  width: ${({ tabCount }) => 100 / tabCount}%;
+`;
+
+export const DisabledCountText = styled.span`
+  font-size: 0.8125rem;
 `;
 
 export const SlidingBG = styled.div<{

@@ -1,4 +1,4 @@
-import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import type { TechStackKey } from "@domains/filter/techStack";
 
 export interface ArticleListResponse {
@@ -17,6 +17,6 @@ export interface Article {
   summary: string;
   techStacks: TechStackKey[];
   url: string;
-  sector: ArticleCategoryKey;
+  sector: ArticleSectorKey;
   createdAt: string;
 }

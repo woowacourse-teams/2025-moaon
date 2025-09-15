@@ -548,6 +548,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GLOBAL-008</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HANDLER_METHOD_VALIDATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터에 대한 검증에 실패했습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT-001</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT_NOT_FOUND</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트를 찾을 수 없습니다.</p></td>
@@ -588,7 +594,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_curl_request"><a class="link" href="#_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory171&amp;techStacks=testTechStack173&amp;limit=2' -i -X GET</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory73&amp;techStacks=testTechStack75&amp;limit=2' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -596,7 +602,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory171&amp;techStacks=testTechStack173&amp;limit=2 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects?search=moaon&amp;sort=views&amp;categories=testProjectCategory73&amp;techStacks=testTechStack75&amp;limit=2 HTTP/1.1
 Host: api.moaon.site</code></pre>
 </div>
 </div>
@@ -611,26 +617,26 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 10 Sep 2025 10:10:46 GMT
+Date: Sun, 14 Sep 2025 07:29:26 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 582
+Content-Length: 577
 
 {
   "contents" : [ {
-    "id" : 11,
+    "id" : 9,
     "title" : "moaon",
-    "summary" : "테스트 프로젝트 요약206",
-    "techStacks" : [ "testTechStack173" ],
+    "summary" : "테스트 프로젝트 요약108",
+    "techStacks" : [ "testTechStack75" ],
     "thumbnailUrl" : "https://test.com/image1.png",
     "isLoved" : false,
     "loves" : 0,
     "views" : 6
   }, {
-    "id" : 10,
-    "title" : "테스트 프로젝트 제목199",
+    "id" : 8,
+    "title" : "테스트 프로젝트 제목101",
     "summary" : "moaon",
-    "techStacks" : [ "testTechStack173" ],
+    "techStacks" : [ "testTechStack75" ],
     "thumbnailUrl" : "https://test.com/image1.png",
     "isLoved" : false,
     "loves" : 0,
@@ -638,7 +644,7 @@ Content-Length: 582
   } ],
   "totalCount" : 3,
   "hasNext" : true,
-  "nextCursor" : "4_10"
+  "nextCursor" : "4_8"
 }</code></pre>
 </div>
 </div>
@@ -666,7 +672,7 @@ Content-Length: 582
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">정렬 기준 (views, loves, createdAt)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">정렬 기준 (views, loves, createdAt, articleCount)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
 </tr>
 <tr>
@@ -681,7 +687,7 @@ Content-Length: 582
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터 개수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터 개수 | Max: 100</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 </tr>
 <tr>
@@ -821,7 +827,7 @@ Content-Length: 582
 <h4 id="_curl_request"><a class="link" href="#_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects/5' -i -X GET</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects/3' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -829,7 +835,7 @@ Content-Length: 582
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects/5 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects/3 HTTP/1.1
 Host: api.moaon.site</code></pre>
 </div>
 </div>
@@ -842,27 +848,27 @@ Host: api.moaon.site</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewed_projects=%7B%225%22%3A1757499046%7D; Path=/projects; Max-Age=31754; Expires=Wed, 10 Sep 2025 19:00:00 GMT; Secure; HttpOnly; SameSite=None
+Set-Cookie: viewed_projects=%7B%223%22%3A1757834965%7D; Path=/projects; Max-Age=41435; Expires=Sun, 14 Sep 2025 19:00:00 GMT; Secure; HttpOnly; SameSite=None
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 10 Sep 2025 10:10:46 GMT
+Date: Sun, 14 Sep 2025 07:29:25 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 554
+Content-Length: 549
 
 {
-  "id" : 5,
-  "authorId" : 5,
-  "title" : "테스트 프로젝트 제목165",
-  "summary" : "테스트 프로젝트 요약166",
-  "description" : "테스트 프로젝트 상세 설명167",
-  "techStacks" : [ "testTechStack169" ],
-  "categories" : [ "testProjectCategory170" ],
+  "id" : 3,
+  "authorId" : 3,
+  "title" : "테스트 프로젝트 제목67",
+  "summary" : "테스트 프로젝트 요약68",
+  "description" : "테스트 프로젝트 상세 설명69",
+  "techStacks" : [ "testTechStack71" ],
+  "categories" : [ "testProjectCategory72" ],
   "imageUrls" : [ "https://test.com/image1.png", "https://test.com/image2.png" ],
   "isLoved" : false,
   "loves" : 0,
   "views" : 1,
-  "createdAt" : "2025-09-10T19:10:46.137666",
+  "createdAt" : "2025-09-14T16:29:24.992844",
   "githubUrl" : "https://github.com/test-repo",
   "productionUrl" : "https://test-product.com"
 }</code></pre>
@@ -1001,7 +1007,7 @@ Content-Length: 554
 <h4 id="_curl_request"><a class="link" href="#_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects/3/articles?sector=be' -i -X GET</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/projects/1/articles?sector=be&amp;search=%EB%AA%A8%EC%95%84%EC%98%A8' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -1009,7 +1015,7 @@ Content-Length: 554
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects/3/articles?sector=be HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /projects/1/articles?sector=be&amp;search=%EB%AA%A8%EC%95%84%EC%98%A8 HTTP/1.1
 Host: api.moaon.site</code></pre>
 </div>
 </div>
@@ -1024,44 +1030,97 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 10 Sep 2025 10:10:46 GMT
+Date: Sun, 14 Sep 2025 07:29:24 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 881
+Content-Length: 1249
 
-[ {
-  "id" : 11,
-  "title" : "테스트 아티클 제목115",
-  "summary" : "테스트 아티클 요약116",
-  "clicks" : 0,
-  "techStacks" : [ "testTechStack124" ],
-  "url" : "https://test-product.com",
-  "sector" : "be",
-  "topics" : [ "etc" ],
-  "createdAt" : "2025-09-10T19:10:45.743671"
-}, {
-  "id" : 12,
-  "title" : "테스트 아티클 제목125",
-  "summary" : "테스트 아티클 요약126",
-  "clicks" : 0,
-  "techStacks" : [ "testTechStack134" ],
-  "url" : "https://test-product.com",
-  "sector" : "be",
-  "topics" : [ "etc" ],
-  "createdAt" : "2025-09-10T19:10:45.793323"
-}, {
-  "id" : 13,
-  "title" : "테스트 아티클 제목135",
-  "summary" : "테스트 아티클 요약136",
-  "clicks" : 0,
-  "techStacks" : [ "testTechStack144" ],
-  "url" : "https://test-product.com",
-  "sector" : "be",
-  "topics" : [ "etc" ],
-  "createdAt" : "2025-09-10T19:10:45.833945"
-} ]</code></pre>
+{
+  "counts" : [ {
+    "sector" : "infra",
+    "count" : 0
+  }, {
+    "sector" : "ios",
+    "count" : 0
+  }, {
+    "sector" : "android",
+    "count" : 0
+  }, {
+    "sector" : "nonTech",
+    "count" : 0
+  }, {
+    "sector" : "fe",
+    "count" : 1
+  }, {
+    "sector" : "be",
+    "count" : 4
+  }, {
+    "sector" : "all",
+    "count" : 5
+  } ],
+  "articles" : [ {
+    "id" : 1,
+    "title" : "모아온",
+    "summary" : "테스트 아티클 요약8",
+    "clicks" : 0,
+    "techStacks" : [ "testTechStack16" ],
+    "url" : "https://test-product.com",
+    "sector" : "be",
+    "topics" : [ "etc" ],
+    "createdAt" : "2025-09-14T16:29:18.127891"
+  }, {
+    "id" : 2,
+    "title" : "테스트 아티클 제목17",
+    "summary" : "모아온",
+    "clicks" : 0,
+    "techStacks" : [ "testTechStack26" ],
+    "url" : "https://test-product.com",
+    "sector" : "be",
+    "topics" : [ "etc" ],
+    "createdAt" : "2025-09-14T16:29:18.237552"
+  }, {
+    "id" : 3,
+    "title" : "테스트 아티클 제목27",
+    "summary" : "테스트 아티클 요약28",
+    "clicks" : 0,
+    "techStacks" : [ "testTechStack36" ],
+    "url" : "https://test-product.com",
+    "sector" : "be",
+    "topics" : [ "etc" ],
+    "createdAt" : "2025-09-14T16:29:18.279264"
+  } ]
+}</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_query_parameters"><a class="link" href="#_query_parameters">Query parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>search</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">직군</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_response_fields"><a class="link" href="#_response_fields">Response fields</a></h4>
@@ -1082,55 +1141,79 @@ Content-Length: 881
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 ID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].title</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 제목</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].summary</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 요약</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].clicks</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 클릭수</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].techStacks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>counts</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">기술 스택 목록</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].url</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">직군별 아티클 개수 목록</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].sector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>counts[].sector</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">직군</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].topics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>counts[].count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 직군 아티클 개수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 데이터 목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 제목</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].summary</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 요약</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].clicks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 클릭수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].techStacks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술 스택 목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아티클 URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].sector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">직군</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].topics</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아티클 주제</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>articles[].createdAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성일시</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
@@ -1170,7 +1253,7 @@ Content-Length: 881
 <h4 id="_curl_request"><a class="link" href="#_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/articles?sort=clicks&amp;search=moa&amp;sector=be&amp;topics=db&amp;techStacks=testTechStack1&amp;limit=2&amp;cursor=5_6' -i -X GET</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'https://api.moaon.site/articles?sort=clicks&amp;search=moa&amp;sector=be&amp;topics=db&amp;techStacks=testTechStack113&amp;limit=2&amp;cursor=5_6' -i -X GET</code></pre>
 </div>
 </div>
 </div>
@@ -1178,7 +1261,7 @@ Content-Length: 881
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /articles?sort=clicks&amp;search=moa&amp;sector=be&amp;topics=db&amp;techStacks=testTechStack1&amp;limit=2&amp;cursor=5_6 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /articles?sort=clicks&amp;search=moa&amp;sector=be&amp;topics=db&amp;techStacks=testTechStack113&amp;limit=2&amp;cursor=5_6 HTTP/1.1
 Host: api.moaon.site</code></pre>
 </div>
 </div>
@@ -1193,36 +1276,36 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 10 Sep 2025 10:10:44 GMT
+Date: Sun, 14 Sep 2025 07:29:31 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 826
+Content-Length: 837
 
 {
   "contents" : [ {
     "id" : 9,
     "projectId" : 1,
-    "projectTitle" : "테스트 프로젝트 제목3",
+    "projectTitle" : "테스트 프로젝트 제목115",
     "clicks" : 3,
-    "title" : "테스트 아티클 제목89",
-    "summary" : "테스트 아티클 요약90",
-    "techStacks" : [ "testTechStack1" ],
+    "title" : "테스트 아티클 제목201",
+    "summary" : "테스트 아티클 요약202",
+    "techStacks" : [ "testTechStack113" ],
     "url" : "https://test-product.com",
     "sector" : "be",
     "topics" : [ "db" ],
-    "createdAt" : "2025-09-10T19:10:39.598866"
+    "createdAt" : "2025-09-14T16:29:30.313166"
   }, {
     "id" : 8,
     "projectId" : 1,
-    "projectTitle" : "테스트 프로젝트 제목3",
+    "projectTitle" : "테스트 프로젝트 제목115",
     "clicks" : 2,
     "title" : "moa",
-    "summary" : "테스트 아티클 요약80",
-    "techStacks" : [ "testTechStack1" ],
+    "summary" : "테스트 아티클 요약192",
+    "techStacks" : [ "testTechStack113" ],
     "url" : "https://test-product.com",
     "sector" : "be",
     "topics" : [ "db" ],
-    "createdAt" : "2025-09-10T19:10:39.568079"
+    "createdAt" : "2025-09-14T16:29:30.284467"
   } ],
   "totalCount" : 3,
   "hasNext" : true,
@@ -1274,7 +1357,7 @@ Content-Length: 826
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터 개수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 데이터 개수 | Max: 100</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
 </tr>
 <tr>
@@ -1452,8 +1535,8 @@ Host: api.moaon.site</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: clicked_articles=%7B%2210%22%3A1757499045%7D; Path=/articles; Max-Age=31755; Expires=Wed, 10 Sep 2025 19:00:00 GMT; Secure; HttpOnly; SameSite=None
-Date: Wed, 10 Sep 2025 10:10:45 GMT
+Set-Cookie: clicked_articles=%7B%2210%22%3A1757834971%7D; Path=/articles; Max-Age=41429; Expires=Sun, 14 Sep 2025 19:00:00 GMT; Secure; HttpOnly; SameSite=None
+Date: Sun, 14 Sep 2025 07:29:31 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
