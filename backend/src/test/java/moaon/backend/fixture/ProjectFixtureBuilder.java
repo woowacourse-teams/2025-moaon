@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import moaon.backend.article.domain.Article;
 import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
@@ -25,6 +26,7 @@ public class ProjectFixtureBuilder {
     private LocalDateTime createdAt;
     private int views = 0;
     private List<Member> lovedMembers;
+    private List<Article> articles;
 
     public ProjectFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 프로젝트 제목");
@@ -38,6 +40,7 @@ public class ProjectFixtureBuilder {
         this.categories = new ArrayList<>(List.of(Fixture.anyProjectCategory()));
         this.createdAt = LocalDateTime.now();
         this.lovedMembers = new ArrayList<>();
+        this.articles = new ArrayList<>();
     }
 
     public ProjectFixtureBuilder title(String title) {
@@ -115,6 +118,7 @@ public class ProjectFixtureBuilder {
                 .githubUrl(this.githubUrl)
                 .images(this.images)
                 .techStacks(this.techStacks)
+                .articles(this.articles)
                 .build();
         for (int i = 0; i < views; i++) {
             project.addViewCount();

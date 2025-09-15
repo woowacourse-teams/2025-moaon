@@ -1,6 +1,6 @@
 import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 
-export const ARTICLE_CATEGORY_MAP = {
+export const ARTICLE_SECTOR_MAP = {
   all: {
     label: "전체",
     bgColor: "#6c757d",
@@ -21,18 +21,16 @@ export const ARTICLE_CATEGORY_MAP = {
     label: "iOS",
     bgColor: "#e74c3c",
   },
-  ss: {
-    label: "소프트스킬",
+  infra: {
+    label: "Infra",
     bgColor: "#47ccab",
   },
-  etc: {
-    label: "기타",
+  nonTech: {
+    label: "비개발",
     bgColor: "#868888",
   },
 } as const;
 
-export type ArticleCategoryKey = keyof typeof ARTICLE_CATEGORY_MAP;
-export const ARTICLE_CATEGORY_ENTRY =
-  typeSafeObjectEntries(ARTICLE_CATEGORY_MAP);
-export type ArticleCategoryLabel =
-  (typeof ARTICLE_CATEGORY_ENTRY)[number][1]["label"];
+export type ArticleSectorKey = keyof typeof ARTICLE_SECTOR_MAP;
+export const ARTICLE_SECTOR_ENTRY = typeSafeObjectEntries(ARTICLE_SECTOR_MAP);
+export type ArticleSectorLabel = (typeof ARTICLE_SECTOR_ENTRY)[number][1]["label"];

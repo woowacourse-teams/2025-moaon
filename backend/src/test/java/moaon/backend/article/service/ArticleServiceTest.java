@@ -14,11 +14,14 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
+import moaon.backend.fixture.ArticleQueryConditionBuilder;
+import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,14 +65,10 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
-                null,
-                null,
-                null,
-                ArticleSortType.CREATED_AT,
-                2,
-                null
-        );
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortType.CREATED_AT)
+                .limit(2)
+                .build();
 
         Cursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
 
@@ -112,14 +111,10 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(articles);
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
-                null,
-                null,
-                null,
-                ArticleSortType.CREATED_AT,
-                3,
-                null
-        );
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .sortBy(ArticleSortType.CREATED_AT)
+                .limit(3)
+                .build();
 
         Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
@@ -144,12 +139,14 @@ class ArticleServiceTest {
     void getByProjectId() {
         // given
         long projectId = 1L;
-        String category = "all";
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
+
+        ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
+                .build();
 
         // when
         // then
-        assertThatThrownBy(() -> articleService.getByProjectIdAndCategory(projectId, category))
+        assertThatThrownBy(() -> articleService.getByProjectId(projectId, condition))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }

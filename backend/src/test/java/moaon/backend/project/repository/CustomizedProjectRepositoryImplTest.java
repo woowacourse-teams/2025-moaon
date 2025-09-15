@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
@@ -185,6 +186,33 @@ class CustomizedProjectRepositoryImplTest {
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
                         .sortBy(ProjectSortType.VIEWS)
+                        .build()
+        );
+
+        // then
+        assertThat(projects).containsExactly(high, middle, low);
+    }
+
+    @DisplayName("프로젝트의 아티클 갯수를 기준으로 정렬한다.")
+    @Test
+    void toOrderByArticleCount() {
+        // given
+        Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(low).build());
+
+        Project middle = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(middle).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(middle).build());
+
+        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+
+        // when
+        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
+                new ProjectQueryConditionFixtureBuilder()
+                        .sortBy(ProjectSortType.ARTICLE_COUNT)
                         .build()
         );
 

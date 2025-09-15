@@ -1,7 +1,10 @@
 package moaon.backend.article.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,7 +53,7 @@ public class Article extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String articleUrl;
 
     @Column(nullable = false)
@@ -62,12 +65,18 @@ public class Article extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ArticleCategory category;
-
     @ManyToMany
     private List<TechStack> techStacks;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Sector sector;
+
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<Topic> topics;
+
+    // todo topic과 sector의 포함 관계 확인?
     public Article(
             String title,
             String summary,
@@ -75,7 +84,8 @@ public class Article extends BaseTimeEntity {
             String articleUrl,
             LocalDateTime createdAt,
             Project project,
-            ArticleCategory category,
+            Sector sector,
+            List<Topic> topics,
             List<TechStack> techStacks
     ) {
         this.title = title;
@@ -85,7 +95,8 @@ public class Article extends BaseTimeEntity {
         this.clicks = 0;
         this.createdAt = createdAt;
         this.project = project;
-        this.category = category;
+        this.sector = sector;
+        this.topics = topics;
         this.techStacks = new ArrayList<>(techStacks);
     }
 

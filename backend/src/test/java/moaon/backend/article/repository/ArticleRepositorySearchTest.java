@@ -5,10 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
+import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
+import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
+import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.project.domain.Project;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +65,57 @@ public class ArticleRepositorySearchTest {
                 () -> assertThat(aboutDisk).containsExactlyInAnyOrder(ec2Docker, runner),
                 () -> assertThat(aboutRunner).containsOnlyOnce(runner)
         );
+    }
+
+    @DisplayName("상세페이지에서 직군 필터와 검색어를 이용하여 아티클을 조회한다.")
+    @Test
+    void getByProjectIdAndSectorWithSearch() {
+        // given
+        Project project = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        Sector filteredSector = Sector.BE;
+        String filteredSearch = "모아온";
+        String unfilteredSearch = "핏토링";
+
+        Article filterArticle1 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .sector(filteredSector)
+                        .content(filteredSearch)
+                        .build()
+        );
+        Article filterArticle2 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .sector(filteredSector)
+                        .summary(filteredSearch)
+                        .build()
+        );
+        Article filterArticle3 = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(project)
+                        .sector(filteredSector)
+                        .title(unfilteredSearch)
+                        .build()
+        );
+
+        ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
+                .sector(filteredSector)
+                .search(new SearchKeyword(filteredSearch))
+                .build();
+
+        // when
+        List<Article> articles = repository.findAllByProjectIdAndCondition(project.getId(), condition);
+
+        // then
+        assertThat(articles).containsExactlyInAnyOrder(filterArticle1, filterArticle2, filterArticle3);
     }
 
     private ArticleQueryCondition aboutSearchKeyword(String keyword) {
