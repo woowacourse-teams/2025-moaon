@@ -14,7 +14,7 @@ public enum Topic {
     PERFORMANCE_OPTIMIZATION("performance"),
     TESTING("testing"),
     CODE_QUALITY("code"),
-    SECURITY("security"),
+    SECURITY("security"), //BE+infra 공통
     ETC("etc"),
 
     // FE,
@@ -27,6 +27,9 @@ public enum Topic {
     API_DESIGN("api"),
     DATABASE("db"),
     DEPLOYMENT_AND_OPERATION("deployment"),
+
+    // android
+
 
     // infra
     CI_CD("cicd"),
