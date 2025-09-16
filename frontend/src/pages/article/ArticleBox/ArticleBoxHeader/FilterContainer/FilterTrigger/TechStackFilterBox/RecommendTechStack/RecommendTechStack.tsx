@@ -9,9 +9,9 @@ interface RecommendTechStackProps {
 
 function RecommendTechStack({ onSelect, sector }: RecommendTechStackProps) {
   const { techStacks: selectedTechStacks } = useFilterParams();
-  const techStacks = getTechStackBySector(sector);
-  const filteredTechStacks = [...techStacks]
-    .filter((techStack) => !selectedTechStacks.includes(techStack[0]))
+  const techStackEntry = getTechStackBySector(sector);
+  const filteredTechStacks = techStackEntry
+    .filter(([techStack, _]) => !selectedTechStacks.includes(techStack))
     .map(([label, _]) => label);
 
   const limitedTechStacks = filteredTechStacks.slice(0, 10);
