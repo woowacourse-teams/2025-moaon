@@ -15,7 +15,7 @@ function TopicFilterButton({ value, label, onSelect }: TopicFilterButtonProps) {
     mode: "multi",
   });
   const selectedCategories = params.get();
-  const [isSelected, setIsSelected] = useState(
+  const [isSelected, setIsSelected] = useState(() =>
     selectedCategories.includes(value),
   );
 
