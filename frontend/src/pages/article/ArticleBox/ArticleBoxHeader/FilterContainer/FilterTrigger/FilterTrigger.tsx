@@ -3,7 +3,6 @@ import UnmountAfterAnimation from "@shared/components/UnmountAnimation/UnmountAn
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useState } from "react";
-import { useLocation } from "react-router";
 import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
 import type { FilterLabel, FilterParam } from "../FilterContainer";
 import FilterBox from "./FilterBox/FilterBox";
@@ -15,12 +14,10 @@ interface FilterProps {
   label: FilterLabel;
   param: FilterParam;
   onSelect: () => void;
+  sector: string | null;
 }
 
-function FilterTrigger({ label, param, onSelect }: FilterProps) {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const sector = params.get("sector");
+function FilterTrigger({ label, param, onSelect, sector }: FilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const addToSafeZone = useOutsideClick(() => setIsOpen(false));
   const searchParams = useSearchParams({ key: param, mode: "multi" });
@@ -32,17 +29,15 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
 
   return (
     <S.Container ref={addToSafeZone}>
-      {!(label === "기술 스택" && sector === "nonTech") && (
-        <S.FilterButton type="button" onClick={toggleFilter}>
-          <S.FilterTitle>
-            {label}
-            <S.FilterSelectedCount>
-              {selectedCount ? selectedCount : ""}
-            </S.FilterSelectedCount>
-          </S.FilterTitle>
-          <ArrowIcon direction={isOpen ? "up" : "down"} />
-        </S.FilterButton>
-      )}
+      <S.FilterButton type="button" onClick={toggleFilter}>
+        <S.FilterTitle>
+          {label}
+          <S.FilterSelectedCount>
+            {selectedCount ? selectedCount : ""}
+          </S.FilterSelectedCount>
+        </S.FilterTitle>
+        <ArrowIcon direction={isOpen ? "up" : "down"} />
+      </S.FilterButton>
       <UnmountAfterAnimation visible={isOpen}>
         <FilterBox param={param} onSelect={onSelect} isOpen={isOpen}>
           <SwitchCase
