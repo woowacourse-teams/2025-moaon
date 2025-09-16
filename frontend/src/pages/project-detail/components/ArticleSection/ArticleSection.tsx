@@ -2,6 +2,7 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
+import EmptyState from "@shared/components/EmptyState/EmptyState";
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
 import type {
@@ -67,10 +68,15 @@ function ArticleSection({
             selected={selectedSector}
             width={100}
           />
+
           <S.SearchHeader>
             <S.ArticleDescriptionText>
-              <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
-              아티클이 모여있어요.
+              {articles.length > 0 && (
+                <>
+                  <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
+                  아티클이 모여있어요.
+                </>
+              )}
             </S.ArticleDescriptionText>
             <S.SearchBarBox>
               <SearchBar
@@ -81,6 +87,11 @@ function ArticleSection({
               />
             </S.SearchBarBox>
           </S.SearchHeader>
+
+          {articles.length === 0 && (
+            <EmptyState title="조건에 맞는 아티클이 없어요." />
+          )}
+
           <S.CardListContainer>
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
