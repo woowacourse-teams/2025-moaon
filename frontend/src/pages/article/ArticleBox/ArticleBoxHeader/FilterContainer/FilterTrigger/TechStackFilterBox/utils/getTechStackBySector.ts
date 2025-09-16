@@ -6,7 +6,7 @@ import {
   TECH_STACK_ENTRY,
 } from "@domains/filter/techStack";
 
-export function getTechStackBySector(sector: string | null) {
+export const getTechStackBySector = (sector: string | null) => {
   switch (sector) {
     case "fe":
       return FRONTEND_STACK_ENTRY;
@@ -22,4 +22,4 @@ export function getTechStackBySector(sector: string | null) {
     default:
       return TECH_STACK_ENTRY;
   }
-}
+};

@@ -7,7 +7,7 @@ import {
   TOPIC_ENTRY,
 } from "@domains/filter/topic";
 
-export function getTopicsBySector(sector: string | null) {
+export const getTopicsBySector = (sector: string | null) => {
   switch (sector) {
     case "fe":
       return [...FRONTEND_TOPIC_ENTRY, ...COMMON_TOPIC_ENTRY];
@@ -26,4 +26,4 @@ export function getTopicsBySector(sector: string | null) {
     default:
       return TOPIC_ENTRY;
   }
-}
+};
