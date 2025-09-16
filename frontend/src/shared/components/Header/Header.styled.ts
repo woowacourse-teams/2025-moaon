@@ -14,14 +14,8 @@ export const HeaderBox = styled.div`
   width: 80rem;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
-`;
-
-export const HeaderMainRow = styled.div`
-  display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
 `;
 
 export const LogoLink = styled(Link)`
