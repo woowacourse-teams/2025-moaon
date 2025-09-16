@@ -30,7 +30,7 @@ function TechStackFilterList({
   return (
     <S.Container>
       <S.Title>{title}</S.Title>
-      {techStacks.length < 1 ? (
+      {techStacks.length === 0 ? (
         <S.EmptyBox>{emptyText}</S.EmptyBox>
       ) : (
         <S.List>
