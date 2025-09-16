@@ -22,7 +22,6 @@ export function getTopicsBySector(sector: string | null) {
       return COMMON_TOPIC_ENTRY;
     case "all":
     case null:
-    case undefined:
       return TOPIC_ENTRY;
     default:
       return TOPIC_ENTRY;

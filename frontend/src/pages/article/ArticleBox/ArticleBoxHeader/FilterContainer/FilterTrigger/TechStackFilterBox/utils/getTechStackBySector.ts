@@ -18,7 +18,6 @@ export function getTechStackBySector(sector: string | null) {
       return IOS_STACK_ENTRY;
     case "all":
     case null:
-    case undefined:
       return TECH_STACK_ENTRY;
     default:
       return TECH_STACK_ENTRY;
