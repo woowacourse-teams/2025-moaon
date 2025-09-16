@@ -6,7 +6,7 @@ export const SectorTabList = styled.ul`
   display: flex;
   justify-content: space-between;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
 `;
 
 export const SectorTabItem = styled.li<{ selected: boolean }>`
