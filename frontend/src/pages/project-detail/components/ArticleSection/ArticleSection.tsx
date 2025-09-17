@@ -51,7 +51,8 @@ function ArticleSection({
   };
 
   const onSearchSubmit = (value: string) => {
-    handleSearchSubmit(value, refetch);
+    handleSearchSubmit(value);
+    refetch();
   };
 
   const hasResult =
