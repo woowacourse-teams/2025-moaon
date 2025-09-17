@@ -1,10 +1,10 @@
 import {
+  RECOMMEND_ALL_STACKS,
   RECOMMEND_ANDROID_STACKS,
   RECOMMEND_BACKEND_STACKS,
   RECOMMEND_FRONTEND_STACKS,
   RECOMMEND_INFRA_STACKS,
   RECOMMEND_IOS_STACKS,
-  RECOMMEND_TECH_STACKS,
 } from "@domains/filter/recommendTechStack";
 import {
   ANDROID_STACK_ENTRY,
@@ -54,9 +54,9 @@ export const getRecommendTechStackBySector = (sector: string | null) => {
       return RECOMMEND_INFRA_STACKS;
     case "all":
     case null:
-      return RECOMMEND_TECH_STACKS;
+      return RECOMMEND_ALL_STACKS;
     default:
-      return RECOMMEND_TECH_STACKS;
+      return RECOMMEND_ALL_STACKS;
   }
 };
 

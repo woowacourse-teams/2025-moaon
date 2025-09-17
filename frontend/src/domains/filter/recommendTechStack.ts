@@ -1,4 +1,4 @@
-export const RECOMMEND_TECH_STACKS = [
+export const RECOMMEND_ALL_STACKS = [
   "react",
   "typescript",
   "nextjs",
