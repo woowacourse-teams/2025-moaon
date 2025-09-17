@@ -16,7 +16,7 @@ import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
-const MAX_SEARCH_LENGTH = 50;
+const SEARCH_INPUT_MAX_LENGTH = 50;
 
 interface ArticleSectionProps {
   articles: ProjectArticle[];
@@ -81,7 +81,7 @@ function ArticleSection({
             <S.SearchBarBox>
               <SearchBar
                 placeholder="아티클 제목, 내용을 검색해보세요"
-                maxLength={MAX_SEARCH_LENGTH}
+                maxLength={SEARCH_INPUT_MAX_LENGTH}
                 onSubmit={onSearchSubmit}
                 defaultValue={searchValue}
               />
