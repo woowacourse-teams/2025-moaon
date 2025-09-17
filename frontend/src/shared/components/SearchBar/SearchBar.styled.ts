@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const SearchForm = styled.form``;
 
-export const SearchLabel = styled.label<{ isFullBorder?: boolean }>`
+export const SearchLabel = styled.label`
   width: 100%;
   background: #fff;
   padding: 0.75rem 1rem;
@@ -10,9 +10,6 @@ export const SearchLabel = styled.label<{ isFullBorder?: boolean }>`
   align-items: center;
   gap: 0.8rem;
 
-  border-bottom: 1px solid #d1d6dd;
-  border: ${({ isFullBorder }) =>
-    isFullBorder ? "1px solid #d1d6dd" : "none"};
   border-bottom: 1px solid #d1d6dd;
 `;
 
