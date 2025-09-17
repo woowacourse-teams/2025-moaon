@@ -11,7 +11,7 @@ export const useArticleSector = (defaultValue: ArticleSectorKey) => {
   const selectedSector = rawSelectedSector ?? defaultValue;
 
   const updateSector = (key: ArticleSectorKey) => {
-    sectorParams.update(key, { replace: true });
+    sectorParams.update(key, { replace: true, reset: true });
   };
 
   return { selectedSector, updateSector };
