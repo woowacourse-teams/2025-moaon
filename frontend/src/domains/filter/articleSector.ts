@@ -33,4 +33,5 @@ export const ARTICLE_SECTOR_MAP = {
 
 export type ArticleSectorKey = keyof typeof ARTICLE_SECTOR_MAP;
 export const ARTICLE_SECTOR_ENTRY = typeSafeObjectEntries(ARTICLE_SECTOR_MAP);
-export type ArticleSectorLabel = (typeof ARTICLE_SECTOR_ENTRY)[number][1]["label"];
+export type ArticleSectorLabel =
+  (typeof ARTICLE_SECTOR_ENTRY)[number][1]["label"];

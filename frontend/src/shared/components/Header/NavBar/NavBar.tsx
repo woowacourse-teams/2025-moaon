@@ -56,13 +56,6 @@ function NavBar() {
             </S.Link>
           </S.NavLinkItem>
         ))}
-        {hasActive && (
-          <S.Underline
-            translateX={selectedStyle.translateX}
-            width={selectedStyle.width}
-            duration={selectedStyle.duration}
-          />
-        )}
       </S.NavLinkList>
     </S.NavBar>
   );

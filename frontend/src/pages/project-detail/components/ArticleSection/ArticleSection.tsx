@@ -8,7 +8,7 @@ import type {
   ProjectArticleCount,
 } from "@/apis/projectArticles/projectArticles.type";
 import ArticleCard from "@/pages/article/ArticleBox/CardList/Card/ArticleCard";
-import { useArticleSector } from "@/pages/article/hooks/useArticleCategory";
+import { useArticleSector } from "@/pages/article/hooks/useArticleSector";
 import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
