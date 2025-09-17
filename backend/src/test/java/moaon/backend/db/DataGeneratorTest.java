@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -29,21 +28,16 @@ public class DataGeneratorTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // [추가 기능 1] 한글 텍스트 생성을 위해 Locale.KOREAN 사용
+    // 한글 텍스트 생성을 위해 Locale.KOREAN 사용
     private final Faker faker = new Faker(Locale.KOREAN);
 
-    // [추가 기능 2] 검색 테스트를 위한 중복 키워드 리스트
-    private static final List<String> SEARCH_KEYWORDS = Arrays.asList(
-            "자바", "스프링 부트", "데이터베이스", "리액트", "코틀린", "성능 최적화", "JPA", "MSA", "도커", "쿠버네티스"
-    );
-
     // --- 설정값 ---
-    public static final int PROJECT_COUNT = 10000;
-    public static final int ARTICLE_COUNT = 10000;
+    public static final int PROJECT_COUNT = 100_000;
+    public static final int ARTICLE_COUNT = 1_000_000;
     public static final int BATCH_SIZE = 1000;
 
     /**
-     * [추가 기능 3] 테스트 실행 전 모든 관련 테이블의 데이터를 삭제합니다. TRUNCATE를 사용하여 빠르고 효율적으로 데이터를 초기화합니다.
+     * 테스트 실행 전 모든 관련 테이블의 데이터를 삭제합니다. TRUNCATE를 사용하여 빠르고 효율적으로 데이터를 초기화합니다.
      */
     @BeforeEach
     void cleanup() {
@@ -90,7 +84,6 @@ public class DataGeneratorTest {
     }
 
     private List<Long> generateProjects() {
-        String sql = "INSERT INTO project (author_id, title, summary, description, github_url, production_url, views, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         List<Long> allGeneratedIds = new ArrayList<>(PROJECT_COUNT);
 
         for (int i = 0; i < PROJECT_COUNT; i += BATCH_SIZE) {
@@ -99,11 +92,9 @@ public class DataGeneratorTest {
             for (int j = i; j < end; j++) {
                 batchArgs.add(new Object[]{
                         1L,
-                        // [추가 기능 2] 제목에 키워드 추가
-                        addKeywords(faker.lorem().sentence(3), 1), // title
+                        faker.lorem().sentence(3), // title
                         faker.lorem().sentence(10), // summary
-                        // [추가 기능 2] 설명에 키워드 추가
-                        addKeywords(faker.lorem().paragraph(5), 2), // content
+                        faker.lorem().paragraph(5), // content
                         "https://github.com/example/project",
                         "https://example.com",
                         faker.number().numberBetween(0, 100_000), // views
@@ -113,7 +104,24 @@ public class DataGeneratorTest {
             }
 
             // 배치 업데이트 실행
-            jdbcTemplate.batchUpdate(sql, batchArgs);
+            String sql = "INSERT INTO project (author_id, title, summary, description, github_url, production_url, views, created_at, updated_at) VALUES ";
+            var sb = new StringBuilder(sql);
+            for (Object[] batchArg : batchArgs) {
+                sb.append("(")
+                        .append(batchArg[0]).append(", ")
+                        .append("'").append(batchArg[1]).append("', ")
+                        .append("'").append(batchArg[2]).append("', ")
+                        .append("'").append(batchArg[3]).append("', ")
+                        .append("'").append(batchArg[4]).append("', ")
+                        .append("'").append(batchArg[5]).append("', ")
+                        .append(batchArg[6]).append(", ")
+                        .append("'").append(batchArg[7]).append("', ")
+                        .append("'").append(batchArg[8]).append("'")
+                        .append("), ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(";");
+            jdbcTemplate.execute(sb.toString());
 
             // 생성된 ID를 가져오기 위해 현재 최대 ID를 기준으로 계산
             Long currentMaxId = jdbcTemplate.queryForObject("SELECT COALESCE(MAX(id), 0) FROM project", Long.class);
@@ -123,7 +131,6 @@ public class DataGeneratorTest {
                 }
             }
 
-            // [추가 기능 4] 중간 진행 과정 출력
             System.out.printf("  -> Project %d / %d 생성 완료%n", end, PROJECT_COUNT);
         }
         return allGeneratedIds;
@@ -151,8 +158,17 @@ public class DataGeneratorTest {
                 }
             }
 
-            jdbcTemplate.batchUpdate("INSERT INTO project_categories (project_id, categories_id) VALUES (?, ?)",
-                    categoryLinks);
+            String sql = "INSERT INTO project_categories (project_id, categories_id) VALUES ";
+            var sb = new StringBuilder(sql);
+            for (Object[] categoryLink : categoryLinks) {
+                sb.append("(")
+                        .append(categoryLink[0]).append(", ")
+                        .append(categoryLink[1])
+                        .append("), ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(";");
+            jdbcTemplate.execute(sb.toString());
             System.out.printf("    Project-Category: %d / %d 완료%n", end, projectIds.size());
         }
         System.out.println("  ✅ Project-Category 연관 관계 생성 완료");
@@ -177,9 +193,17 @@ public class DataGeneratorTest {
                 }
             }
 
-            System.out.printf("    Project-TechStack: %d / %d batch update 시작 %n", end, projectIds.size());
-            jdbcTemplate.batchUpdate("INSERT INTO project_tech_stacks (project_id, tech_stacks_id) VALUES (?, ?)",
-                    techStackLinks);
+            String sql = "INSERT INTO project_tech_stacks (project_id, tech_stacks_id) VALUES ";
+            var sb = new StringBuilder(sql);
+            for (Object[] techStackLink : techStackLinks) {
+                sb.append("(")
+                        .append(techStackLink[0]).append(", ")
+                        .append(techStackLink[1])
+                        .append("), ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(";");
+            jdbcTemplate.execute(sb.toString());
             System.out.printf("    Project-TechStack: %d / %d 완료%n", end, projectIds.size());
         }
         System.out.println("  ✅ Project-TechStack 연관 관계 생성 완료");
@@ -187,7 +211,6 @@ public class DataGeneratorTest {
 
 
     private void generateArticlesAndLinksInBatches(List<Long> projectIds, List<Long> techStackIds, String[] topics) {
-        String articleSql = "INSERT INTO article (project_id, title, summary, content, article_url, clicks, created_at, updated_at, sector) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String[] sectors = Arrays.stream(Sector.values()).map(Sector::name).toArray(String[]::new);
 
         for (int i = 0; i < ARTICLE_COUNT; i += BATCH_SIZE) {
@@ -199,11 +222,9 @@ public class DataGeneratorTest {
                         (j < 500) ? "BE" : (j < 700) ? "FE" : sectors[faker.number().numberBetween(0, sectors.length)];
                 articleBatchArgs.add(new Object[]{
                         projectIds.get(faker.number().numberBetween(0, projectIds.size())),
-                        // [추가 기능 2] 제목에 키워드 추가
-                        addKeywords(faker.lorem().sentence(5), 1),
+                        faker.lorem().sentence(5),
                         faker.lorem().sentence(15),
-                        // [추가 기능 2] 본문에 키워드 추가
-                        addKeywords(faker.lorem().paragraph(10), 3),
+                        faker.lorem().paragraph(10),
                         "https://example.com/article/" + (j + 1),
                         faker.number().numberBetween(0, 100_000),
                         getRandomTimestampInLastThreeYears(),
@@ -213,7 +234,24 @@ public class DataGeneratorTest {
             }
 
             // 배치 업데이트 실행
-            jdbcTemplate.batchUpdate(articleSql, articleBatchArgs);
+            String sql = "INSERT INTO article (project_id, title, summary, content, article_url, clicks, created_at, updated_at, sector) VALUES ";
+            var sb = new StringBuilder(sql);
+            for (Object[] batchArg : articleBatchArgs) {
+                sb.append("(")
+                        .append(batchArg[0]).append(", ")
+                        .append("'").append(batchArg[1]).append("', ")
+                        .append("'").append(batchArg[2]).append("', ")
+                        .append("'").append(batchArg[3]).append("', ")
+                        .append("'").append(batchArg[4]).append("', ")
+                        .append(batchArg[5]).append(", ")
+                        .append("'").append(batchArg[6]).append("', ")
+                        .append("'").append(batchArg[7]).append("', ")
+                        .append("'").append(batchArg[8]).append("'")
+                        .append("), ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(";");
+            jdbcTemplate.execute(sb.toString());
 
             // 생성된 ID를 가져오기 위해 현재 최대 ID를 기준으로 계산
             Long currentMaxId = jdbcTemplate.queryForObject("SELECT COALESCE(MAX(id), 0) FROM article", Long.class);
@@ -226,7 +264,6 @@ public class DataGeneratorTest {
 
             generateArticleLinks(generatedArticleIds, techStackIds, topics);
 
-            // [추가 기능 4] 중간 진행 과정 출력
             System.out.printf("  -> Article %d / %d 생성 완료%n", end, ARTICLE_COUNT);
         }
     }
@@ -254,8 +291,18 @@ public class DataGeneratorTest {
                 }
             }
 
-            jdbcTemplate.batchUpdate("INSERT INTO article_tech_stacks (article_id, tech_stacks_id) VALUES (?, ?)",
-                    techStackLinks);
+            String sql = "INSERT INTO article_tech_stacks (article_id, tech_stacks_id) VALUES ";
+            var sb = new StringBuilder(sql);
+            for (Object[] techStackLink : techStackLinks) {
+                sb.append("(")
+                        .append(techStackLink[0]).append(", ")
+                        .append(techStackLink[1])
+                        .append("), ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(";");
+            jdbcTemplate.execute(sb.toString());
+
             System.out.printf("      Article-TechStack: %d / %d 완료%n", end, articleIds.size());
         }
         System.out.println("    ✅ Article-TechStack 연관 관계 생성 완료");
@@ -280,7 +327,18 @@ public class DataGeneratorTest {
                 }
             }
 
-            jdbcTemplate.batchUpdate("INSERT INTO article_topics (article_id, topics) VALUES (?, ?)", topicLinks);
+            String sql = "INSERT INTO article_topics (article_id, topics) VALUES ";
+            var sb = new StringBuilder(sql);
+            for (Object[] topicLink : topicLinks) {
+                sb.append("(")
+                        .append(topicLink[0]).append(", ")
+                        .append("'").append(topicLink[1]).append("'")
+                        .append("), ");
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(";");
+            jdbcTemplate.execute(sb.toString());
+
             System.out.printf("      Article-Topic: %d / %d 완료%n", end, articleIds.size());
         }
         System.out.println("    ✅ Article-Topic 연관 관계 생성 완료");
@@ -289,22 +347,5 @@ public class DataGeneratorTest {
 
     private Timestamp getRandomTimestampInLastThreeYears() {
         return new Timestamp(faker.date().past(3 * 365, TimeUnit.DAYS).getTime());
-    }
-
-    /**
-     * [추가 기능 2] 원본 텍스트에 검색 키워드를 무작위로 추가하는 헬퍼 메소드
-     *
-     * @param originalText 원본 Faker 텍스트
-     * @param maxKeywords  추가할 최대 키워드 수
-     * @return 키워드가 추가된 텍스트
-     */
-    private String addKeywords(String originalText, int maxKeywords) {
-        StringBuilder sb = new StringBuilder(originalText);
-        int keywordCount = ThreadLocalRandom.current().nextInt(1, maxKeywords + 1);
-        for (int i = 0; i < keywordCount; i++) {
-            String randomKeyword = SEARCH_KEYWORDS.get(ThreadLocalRandom.current().nextInt(SEARCH_KEYWORDS.size()));
-            sb.append(" ").append(randomKeyword);
-        }
-        return sb.toString();
     }
 }
