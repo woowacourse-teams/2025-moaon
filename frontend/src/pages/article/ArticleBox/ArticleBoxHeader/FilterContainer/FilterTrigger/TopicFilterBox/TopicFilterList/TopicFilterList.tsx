@@ -1,4 +1,4 @@
-import { getTopicsBySector } from "../utils/getTopicsBySector";
+import { getTopicsBySector } from "@/pages/article/utils/sectorHandlers";
 import TopicFilterButton from "./TopicFilterButton/TopicFilterButton";
 import * as S from "./TopicFilterList.styled";
 
