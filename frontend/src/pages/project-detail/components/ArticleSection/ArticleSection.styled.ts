@@ -26,7 +26,7 @@ export const SearchHeader = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin: 1rem 0 2rem 0;
+  margin: 1rem 0 2rem;
 `;
 
 export const ArticleIntroText = styled.span`

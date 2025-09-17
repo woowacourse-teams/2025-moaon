@@ -89,9 +89,11 @@ function ArticleSection({
           </S.SearchHeader>
 
           {articles.length === 0 && (
-            <EmptyState title="조건에 맞는 아티클이 없어요." />
+            <EmptyState
+              description="검색어를 바꿔 다시 시도해 보세요."
+              title="검색된 아티클이 없어요."
+            />
           )}
-
           <S.CardListContainer>
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
