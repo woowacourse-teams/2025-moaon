@@ -7,7 +7,7 @@ import {
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { type ChangeEvent, useRef, useState } from "react";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
-import { getTechStackBySector } from "../utils/getTechStackBySector";
+import { getTechStackBySector } from "../../../../../../utils/sectorHandlers";
 import { useListKeyboardNavigation } from "./hooks/useListKeyboardNavigation";
 import * as S from "./TechStackSearchBar.styled";
 import TechStackSearchResult from "./TechStackSearchResult/TechStackSearchResult";
