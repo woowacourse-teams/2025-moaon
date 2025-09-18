@@ -1,23 +1,28 @@
 package moaon.backend.fixture;
 
+import java.util.Arrays;
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 
 public class ArticleQueryConditionBuilder {
 
     private SearchKeyword search;
-    private String categoryName;
+    private Sector sector;
+    private List<Topic> topics;
     private List<String> techStackNames;
     private ArticleSortType sortBy;
     private int limit;
-    private ArticleCursor<?> articleCursor;
+    private Cursor<?> articleCursor;
 
     public ArticleQueryConditionBuilder() {
         this.search = new SearchKeyword(null);
-        this.categoryName = "all";
+        this.sector = null;
+        this.topics = null;
         this.techStackNames = null;
         this.sortBy = null;
         this.limit = 50;
@@ -29,8 +34,13 @@ public class ArticleQueryConditionBuilder {
         return this;
     }
 
-    public ArticleQueryConditionBuilder categoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public ArticleQueryConditionBuilder sector(Sector sector) {
+        this.sector = sector;
+        return this;
+    }
+
+    public ArticleQueryConditionBuilder topics(Topic... topics) {
+        this.topics = Arrays.asList(topics);
         return this;
     }
 
@@ -49,7 +59,7 @@ public class ArticleQueryConditionBuilder {
         return this;
     }
 
-    public ArticleQueryConditionBuilder cursor(ArticleCursor<?> articleCursor) {
+    public ArticleQueryConditionBuilder cursor(Cursor<?> articleCursor) {
         this.articleCursor = articleCursor;
         return this;
     }
@@ -57,7 +67,8 @@ public class ArticleQueryConditionBuilder {
     public ArticleQueryCondition build() {
         return new ArticleQueryCondition(
                 search,
-                categoryName,
+                sector,
+                topics,
                 techStackNames,
                 sortBy,
                 limit,

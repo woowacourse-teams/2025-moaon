@@ -2,17 +2,20 @@ package moaon.backend.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Max;
 import java.util.List;
-import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
 import moaon.backend.project.dto.PagedProjectResponse;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
+import moaon.backend.project.dto.ProjectArticleResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +64,7 @@ public class ProjectController {
             @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
             @RequestParam(value = "sort", required = false) String sortType,
-            @RequestParam(value = "limit") int limit,
+            @RequestParam(value = "limit") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ProjectQueryCondition projectQueryCondition = ProjectQueryCondition.of(
@@ -76,11 +79,15 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/articles")
-    public ResponseEntity<List<ArticleDetailResponse>> getArticlesByProjectId(
+    public ResponseEntity<ProjectArticleResponse> getArticlesByProjectId(
             @PathVariable("id") long id,
-            @RequestParam(value = "category", required = false, defaultValue = "all") String category
+            @RequestParam(value = "sector", required = false) String sector,
+            @RequestParam(value = "search", required = false) String search
     ) {
-        List<ArticleDetailResponse> articleDetailResponses = articleService.getByProjectIdAndCategory(id, category);
-        return ResponseEntity.ok(articleDetailResponses);
+        ProjectArticleResponse projectArticleResponse = articleService.getByProjectId(
+                id,
+                ProjectArticleQueryCondition.from(sector, search)
+        );
+        return ResponseEntity.ok(projectArticleResponse);
     }
 }

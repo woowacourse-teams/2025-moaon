@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import moaon.backend.article.domain.Article;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.member.domain.Member;
 import moaon.backend.techStack.domain.TechStack;
@@ -50,10 +52,10 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Column(length = 500)
     private String githubUrl;
 
-    @Column
+    @Column(length = 500)
     private String productionUrl;
 
     @Embedded
@@ -64,6 +66,7 @@ public class Project extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
     @ManyToOne
     private Member author;
 
@@ -75,6 +78,9 @@ public class Project extends BaseTimeEntity {
 
     @ManyToMany
     private List<ProjectCategory> categories;
+
+    @OneToMany(mappedBy = "project")
+    private List<Article> articles;
 
     public Project(
             String title,

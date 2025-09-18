@@ -1,19 +1,26 @@
 import {
-  ARTICLE_CATEGORY_ENTRY,
-  type ArticleCategoryKey,
-} from "@domains/filter/articleCategory";
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
 import EmptyState from "@shared/components/EmptyState/EmptyState";
+import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
-import type { Article } from "@/apis/articles/articles.type";
-import Card from "@/pages/article/ArticleBox/CardList/Card/Card";
-import { useArticleCategory } from "@/pages/article/hooks/useArticleCategory";
+import type {
+  ProjectArticle,
+  ProjectArticleCount,
+} from "@/apis/projectArticles/projectArticles.type";
+import ArticleCard from "@/pages/article/ArticleBox/CardList/Card/ArticleCard";
+import { useArticleSector } from "@/pages/article/hooks/useArticleSector";
+import useProjectArticleSearch from "../hooks/useProjectArticleSearch";
 import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
+const SEARCH_INPUT_MAX_LENGTH = 50;
 
 interface ArticleSectionProps {
-  articles: Article[];
+  articles: ProjectArticle[];
+  sectorCounts: ProjectArticleCount[];
   refetch: () => void;
   isRefetching: boolean;
   isLoading: boolean;
@@ -21,29 +28,35 @@ interface ArticleSectionProps {
 
 function ArticleSection({
   articles,
+  sectorCounts,
   refetch,
-  isRefetching,
   isLoading,
 }: ArticleSectionProps) {
-  const { selectedCategory, updateCategory } = useArticleCategory(
-    DEFAULT_ARTICLE_CATEGORY_TYPE
+  const { selectedSector, updateSector } = useArticleSector(
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
+  const { handleSearchSubmit, searchValue } = useProjectArticleSearch();
 
-  const articleCategories = ARTICLE_CATEGORY_ENTRY.map(([key, { label }]) => ({
-    key,
+  const articleSectors = ARTICLE_SECTOR_ENTRY.map(([sector, { label }]) => ({
+    key: sector,
     label,
+    count: sectorCounts.find((item) => item.sector === sector)?.count ?? 0,
   }));
 
-  const handleTabSelect = (key: ArticleCategoryKey) => {
-    if (key !== selectedCategory) {
-      updateCategory(key);
+  const handleTabSelect = (key: ArticleSectorKey) => {
+    if (key !== selectedSector) {
+      updateSector(key);
       refetch();
     }
   };
 
-  const showEmpty = articles.length <= 0 && !isRefetching;
+  const onSearchSubmit = (value: string) => {
+    handleSearchSubmit(value);
+    refetch();
+  };
+
   const hasResult =
-    (selectedCategory !== "all" && articles.length > 0) || !isLoading;
+    (selectedSector !== "all" && articles.length > 0) || !isLoading;
 
   return (
     <>
@@ -51,24 +64,41 @@ function ArticleSection({
         <S.ArticleSectionContainer>
           <SectionTitle title="프로젝트 아티클" />
           <Tab
-            items={articleCategories}
+            items={articleSectors}
             onSelect={handleTabSelect}
-            selected={selectedCategory}
+            selected={selectedSector}
             width={100}
           />
+
+          <S.SearchHeader>
+            <S.ArticleDescriptionText>
+              {articles.length > 0 && (
+                <>
+                  <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
+                  아티클이 모여있어요.
+                </>
+              )}
+            </S.ArticleDescriptionText>
+            <S.SearchBarBox>
+              <SearchBar
+                placeholder="아티클 제목, 내용을 검색해보세요"
+                maxLength={SEARCH_INPUT_MAX_LENGTH}
+                onSubmit={onSearchSubmit}
+                defaultValue={searchValue}
+              />
+            </S.SearchBarBox>
+          </S.SearchHeader>
+
+          {articles.length === 0 && (
+            <EmptyState
+              description="검색어를 바꿔 다시 시도해 보세요."
+              title="검색된 아티클이 없어요."
+            />
+          )}
           <S.CardListContainer>
-            {showEmpty ? (
-              <S.EmptyContainer>
-                <EmptyState
-                  title="해당 카테고리의 아티클이 없어요."
-                  description=""
-                />
-              </S.EmptyContainer>
-            ) : (
-              articles.map((article) => (
-                <Card key={article.id} article={article} />
-              ))
-            )}
+            {articles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
           </S.CardListContainer>
         </S.ArticleSectionContainer>
       )}

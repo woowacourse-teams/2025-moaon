@@ -11,17 +11,15 @@ jobs:
       github.actor == 'Minuring' ||
       github.actor == 'eueo8259' ||
       github.actor == 'minjae8563'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     defaults:
       run:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
@@ -29,6 +27,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Gradle cache for Docker
+        id: gradle_cache
+        uses: actions/cache@v4
+        with:
+          path: ./gradle-cache-dev-home
+          key: ${{ runner.os }}-gradle-cache-dev-${{ hashFiles('build.gradle', 'settings.gradle', 'gradle/wrapper/**') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-cache-dev-
+
+      - name: Restore Gradle cache mounts to BuildKit
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: ./gradle-cache-dev-home
+          dockerfile: ./backend/Dockerfile
+          skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
 
       - name: Build and push Docker image
         id: build

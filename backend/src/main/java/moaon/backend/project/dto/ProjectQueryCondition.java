@@ -1,7 +1,7 @@
 package moaon.backend.project.dto;
 
 import java.util.List;
-import moaon.backend.global.cursor.ProjectCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.ProjectSortType;
 
@@ -11,7 +11,7 @@ public record ProjectQueryCondition(
         List<String> techStackNames,
         ProjectSortType projectSortType,
         int limit,
-        ProjectCursor<?> cursor
+        Cursor<?> cursor
 ) {
 
     public static ProjectQueryCondition of(
@@ -25,8 +25,8 @@ public record ProjectQueryCondition(
         ProjectSortType sortType = ProjectSortType.from(sortBy);
         return new ProjectQueryCondition(
                 new SearchKeyword(search),
-                categories,
-                techStacks,
+                categories == null ? List.of() : categories,
+                techStacks == null ? List.of() : techStacks,
                 sortType,
                 limit,
                 sortType.toCursor(cursor)

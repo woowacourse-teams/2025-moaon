@@ -1,5 +1,5 @@
 import { SwitchCase } from "@shared/components/SwitchCase/SwitchCase";
-import UnmountAnimation from "@shared/components/UnmountAnimation/UnmountAnimation";
+import UnmountAfterAnimation from "@shared/components/UnmountAnimation/UnmountAnimation";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useState } from "react";
@@ -38,7 +38,7 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
         <ArrowIcon direction={isOpen ? "up" : "down"} />
       </S.FilterButton>
 
-      <UnmountAnimation visible={isOpen}>
+      <UnmountAfterAnimation visible={isOpen}>
         <FilterBox param={param} onSelect={onSelect} isOpen={isOpen}>
           <SwitchCase
             value={label}
@@ -48,7 +48,7 @@ function FilterTrigger({ label, param, onSelect }: FilterProps) {
             }}
           />
         </FilterBox>
-      </UnmountAnimation>
+      </UnmountAfterAnimation>
     </S.Container>
   );
 }

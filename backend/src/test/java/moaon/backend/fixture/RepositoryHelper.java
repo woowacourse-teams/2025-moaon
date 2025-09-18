@@ -1,7 +1,6 @@
 package moaon.backend.fixture;
 
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.repository.ArticleCategoryRepository;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.project.domain.Project;
@@ -24,9 +23,6 @@ public class RepositoryHelper {
     private ProjectCategoryRepository projectCategoryRepository;
 
     @Autowired
-    private ArticleCategoryRepository articleCategoryRepository;
-
-    @Autowired
     private ProjectRepository projectRepository;
 
     @Autowired
@@ -41,7 +37,6 @@ public class RepositoryHelper {
     }
 
     public Article save(Article article) {
-        articleCategoryRepository.save(article.getCategory());
         techStackRepository.saveAll(article.getTechStacks());
         save(article.getProject());
 

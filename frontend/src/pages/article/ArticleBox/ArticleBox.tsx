@@ -18,7 +18,6 @@ function ArticleBox() {
     refetch,
     isLoading,
   } = useArticleList();
-
   const { targetRef } = useInfiniteScroll({
     hasNext,
     nextCursor,
