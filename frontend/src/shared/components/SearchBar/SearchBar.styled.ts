@@ -13,11 +13,13 @@ export const SearchLabel = styled.label`
   border-bottom: 1px solid #d1d6dd;
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled.input<{
+  variant: "small" | "medium";
+}>`
   flex: 1;
   height: 1.875rem;
-  font-size: 1.375rem;
   font-weight: 500;
+  font-size: ${({ variant }) => (variant === "small" ? "1.3rem" : "1.375rem")};
 
   &::placeholder {
     color: #a4a4a4;
@@ -25,8 +27,10 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const SearchIcon = styled.img`
-  width: 1.75rem;
+export const SearchIcon = styled.img<{
+  variant: "small" | "medium";
+}>`
+  width: ${({ variant }) => (variant === "small" ? "1.4rem" : "1.75rem")};
   aspect-ratio: 1/1;
   flex-shrink: 0;
 `;

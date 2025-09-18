@@ -87,6 +87,7 @@ function ArticleSection({
               </S.ArticleDescriptionText>
               <S.SearchBarBox>
                 <SearchBar
+                  size="small"
                   placeholder="아티클 제목, 내용을 검색해보세요"
                   maxLength={SEARCH_INPUT_MAX_LENGTH}
                   onSubmit={onSearchSubmit}

@@ -14,6 +14,7 @@ interface SearchBarProps {
   onSubmit: (value: string) => void;
   defaultValue?: string;
   maxLength: number;
+  size?: "small" | "medium";
 }
 
 function SearchBar({
@@ -21,10 +22,11 @@ function SearchBar({
   onSubmit,
   defaultValue = "",
   maxLength,
+  size = "medium",
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasSearchValue, setHasSearchValue] = useState(
-    defaultValue.trim() !== "",
+    defaultValue.trim() !== ""
   );
 
   useEffect(() => {
@@ -55,8 +57,9 @@ function SearchBar({
   return (
     <S.SearchForm onSubmit={handleSearchFormSubmit}>
       <S.SearchLabel htmlFor="search-input">
-        <S.SearchIcon src={searchIcon} alt="검색" />
+        <S.SearchIcon variant={size} src={searchIcon} alt="검색" />
         <S.SearchInput
+          variant={size}
           type="text"
           placeholder={placeholder}
           ref={inputRef}
