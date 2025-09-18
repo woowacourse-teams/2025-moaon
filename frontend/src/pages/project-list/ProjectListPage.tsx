@@ -1,11 +1,13 @@
 import resetIcon from "@assets/icons/reset.svg";
+import TechStackFilterBox from "@domains/components/TechStackFilterBox/TechStackFilterBox";
 import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
+import FilterContainer from "@shared/components/FilterContainer/FilterContainer";
 import { useMeta } from "@shared/hooks/useMeta";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
+import CategoryFilterBox from "../../domains/components/CategoryFilterBox/CategoryFilterBox";
 import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
-import FilterContainer from "./FilterContainer/FilterContainer";
 import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
 import * as S from "./ProjectListPage.styled";
@@ -47,7 +49,25 @@ function ProjectListPage() {
       </S.MainBox>
       <S.Box>
         <S.Wrap>
-          <FilterContainer onSelect={handleSelect} />
+          <FilterContainer
+            filterList={[
+              {
+                label: "주제",
+                param: "categories",
+                render: (onSelect: () => void) => (
+                  <CategoryFilterBox onSelect={onSelect} />
+                ),
+              },
+              {
+                label: "기술 스택",
+                param: "techStacks",
+                render: (onSelect: () => void) => (
+                  <TechStackFilterBox onSelect={onSelect} />
+                ),
+              },
+            ]}
+            onSelect={handleSelect}
+          />
           {isSelected && (
             <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
               <S.ResetIcon src={resetIcon} alt="필터 초기화" />
