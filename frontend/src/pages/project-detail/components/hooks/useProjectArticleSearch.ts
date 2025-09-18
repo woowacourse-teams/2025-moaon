@@ -10,7 +10,7 @@ const useProjectArticleSearch = () => {
       return;
     }
 
-    if (value.length < 2) toast.error("검색어는 2글자 이상 입력해주세요.");
+    if (value.length < 2) toast.warning("검색어는 2글자 이상 입력해주세요.");
 
     params.update(value, { replace: true });
   };
