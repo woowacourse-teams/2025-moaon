@@ -1,0 +1,26 @@
+{
+  "analysis": {
+    "analyzer": {
+      "article_common_analyzer": {
+        "char_filter": [
+          "html_strip"
+        ],
+        "tokenizer": "nori_tokenizer",
+        "filter": [
+          "nori_part_of_speech",
+          "nori_readingform",
+          "lowercase",
+          "article_common_synonym"
+        ]
+      }
+    },
+    "filter": {
+      "article_common_synonym": {
+        "type": "synonym",
+        "synonyms": [
+          "IDE, 에디터"
+        ]
+      }
+    }
+  }
+}
