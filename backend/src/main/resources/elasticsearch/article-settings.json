@@ -17,9 +17,7 @@
     "filter": {
       "article_common_synonym": {
         "type": "synonym",
-        "synonyms": [
-          "IDE, 에디터"
-        ]
+        "synonyms_path": "user_dic/article_syn_dic.txt"
       }
     }
   }

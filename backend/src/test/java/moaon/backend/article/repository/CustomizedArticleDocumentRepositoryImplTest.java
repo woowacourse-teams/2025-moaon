@@ -6,12 +6,12 @@ import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.global.domain.SearchKeyword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
-@DataElasticsearchTest
-@MockitoBean(types = JpaMetamodelMappingContext.class)
+@SpringBootTest
+@Rollback(true)
+//@MockitoBean(types = JpaMetamodelMappingContext.class)
 class CustomizedArticleDocumentRepositoryImplTest {
 
     @Autowired
