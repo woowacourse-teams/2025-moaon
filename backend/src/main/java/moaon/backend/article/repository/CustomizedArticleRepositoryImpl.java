@@ -53,7 +53,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                         applyCursor(articleCursor)
                 )
                 .having(hasExactTechStackCount(techStackNames))
-                .groupBy(article.id)
+//                .groupBy(article.id)
+                .groupBy(article.createdAt, article.id)
                 .orderBy(toOrderBy(sortBy))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
@@ -77,7 +78,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                         satisfiesMatchScore(searchKeyword)
                 )
                 .having(hasExactTechStackCount(techStackNames))
-                .groupBy(article.id)
+                .groupBy(article.createdAt, article.id)
                 .fetch()
                 .size();
     }
