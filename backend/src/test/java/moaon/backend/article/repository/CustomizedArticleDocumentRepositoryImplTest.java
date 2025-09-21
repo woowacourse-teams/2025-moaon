@@ -6,7 +6,7 @@ import java.util.Set;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.techStack.domain.TechStackField;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,8 @@ class CustomizedArticleDocumentRepositoryImplTest {
                 Set.of(new TechStackField("1", "MySQL")))
         );
 
-        final var articles = repository.search(new SearchKeyword("요약"));
+        final var condition = new ArticleQueryConditionBuilder().search("요약").build();
+        final var articles = repository.search(condition);
 
         assertThat(articles).containsExactly(saved);
     }

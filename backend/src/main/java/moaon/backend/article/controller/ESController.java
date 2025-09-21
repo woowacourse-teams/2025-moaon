@@ -4,8 +4,8 @@ import jakarta.validation.constraints.Max;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ArticleDocument;
+import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.ArticleDocumentRepository;
-import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -28,11 +28,12 @@ public class ESController {
             @RequestParam(value = "limit", defaultValue = "100") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
-        final var searchKeyword = new SearchKeyword(query);
+        final var condition = ArticleQueryCondition.from(
+                query, sector, topics, techStacks, sector, limit, cursor
+        );
 
-        final var documents = repository.search(searchKeyword);
+        final var documents = repository.search(condition);
         System.out.println("documents = " + documents.size());
-        System.out.println("documents.getFirst() = " + documents.getFirst());
         return ResponseEntity.ok(documents);
     }
 }
