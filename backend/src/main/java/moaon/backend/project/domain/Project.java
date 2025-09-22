@@ -1,5 +1,6 @@
 package moaon.backend.project.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -76,8 +77,8 @@ public class Project extends BaseTimeEntity {
     @ManyToMany
     private List<TechStack> techStacks;
 
-    @ManyToMany
-    private List<Category> categories;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true) // todo cascade, orphanRemoval 필요?
+    private List<ProjectCategory> categories;
 
     @OneToMany(mappedBy = "project")
     private List<Article> articles;
@@ -91,7 +92,7 @@ public class Project extends BaseTimeEntity {
             Images images,
             Member author,
             List<TechStack> techStacks,
-            List<Category> categories,
+            List<ProjectCategory> categories,
             LocalDateTime createdAt
     ) {
         this.title = title;
@@ -112,6 +113,11 @@ public class Project extends BaseTimeEntity {
         views++;
     }
 
+    public void addCategory(Category category) {
+        ProjectCategory projectCategory = new ProjectCategory(this, category);
+        this.categories.add(projectCategory);
+    }
+
     public int getLoveCount() {
         return lovedMembers.size();
     }
@@ -125,7 +131,9 @@ public class Project extends BaseTimeEntity {
     }
 
     public List<Category> getCategories() {
-        return List.copyOf(categories);
+        return categories.stream()
+                .map(ProjectCategory::getCategory)
+                .toList();
     }
 
     public List<Member> getLovedMembers() {

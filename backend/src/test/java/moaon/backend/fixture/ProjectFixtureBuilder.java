@@ -113,7 +113,7 @@ public class ProjectFixtureBuilder {
                 .lovedMembers(this.lovedMembers)
                 .createdAt(this.createdAt)
                 .summary(this.summary)
-                .categories(this.categories)
+                .categories(new ArrayList<>())
                 .description(this.description)
                 .githubUrl(this.githubUrl)
                 .images(this.images)
@@ -122,6 +122,9 @@ public class ProjectFixtureBuilder {
                 .build();
         for (int i = 0; i < views; i++) {
             project.addViewCount();
+        }
+        for (Category category : categories) {
+            project.addCategory(category);
         }
         return project;
     }

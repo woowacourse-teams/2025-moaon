@@ -1,5 +1,6 @@
 package moaon.backend.project.repository;
 
+import static moaon.backend.project.domain.QCategory.category;
 import static moaon.backend.project.domain.QProject.project;
 import static moaon.backend.project.domain.QProjectCategory.projectCategory;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
@@ -95,7 +96,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         if (CollectionUtils.isEmpty(categoryNames)) {
             return null;
         }
-        return projectCategory.name.in(categoryNames);
+        return category.name.in(categoryNames);
     }
 
     private BooleanExpression hasExactTechStackCount(List<String> techStackNames) {
@@ -110,7 +111,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         if (CollectionUtils.isEmpty(categoryNames)) {
             return null;
         }
-        return projectCategory.name.countDistinct()
+        return category.name.countDistinct()
                 .eq((long) categoryNames.size());
     }
 
