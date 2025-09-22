@@ -21,8 +21,8 @@ import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectArticleResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
@@ -88,50 +88,50 @@ public class ProjectApiTest extends BaseApiTest {
         // given
         String filteredSearch = "moaon";
         String unfilteredSearch = "momoon";
-        ProjectCategory filteredProjectCategory = Fixture.anyProjectCategory();
-        ProjectCategory unfilteredProjectCategory = Fixture.anyProjectCategory();
+        Category filteredCategory = Fixture.anyProjectCategory();
+        Category unfilteredCategory = Fixture.anyProjectCategory();
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(unfilteredSearch)
-                        .categories(filteredProjectCategory)
+                        .categories(filteredCategory)
                         .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(filteredSearch)
-                        .categories(unfilteredProjectCategory)
+                        .categories(unfilteredCategory)
                         .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(filteredSearch)
-                        .categories(filteredProjectCategory)
+                        .categories(filteredCategory)
                         .techStacks(unfilteredTechStack)
                         .build()
         );
 
         Project projectViewRankThird = repositoryHelper.save(new ProjectFixtureBuilder()
                 .description(filteredSearch)
-                .categories(filteredProjectCategory)
+                .categories(filteredCategory)
                 .techStacks(filteredTechStack)
                 .views(1)
                 .build()
         );
         Project projectViewRankSecond = repositoryHelper.save(new ProjectFixtureBuilder()
                 .summary(filteredSearch)
-                .categories(filteredProjectCategory)
+                .categories(filteredCategory)
                 .techStacks(filteredTechStack)
                 .views(2)
                 .build()
         );
         Project projectViewRankFirst = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title(filteredSearch)
-                .categories(filteredProjectCategory)
+                .categories(filteredCategory)
                 .techStacks(filteredTechStack)
                 .views(3)
                 .build()
@@ -141,7 +141,7 @@ public class ProjectApiTest extends BaseApiTest {
         PagedProjectResponse actualResponses = RestAssured.given(documentationSpecification).log().all()
                 .queryParams("search", filteredSearch)
                 .queryParams("sort", "views")
-                .queryParams("categories", List.of(filteredProjectCategory.getName()))
+                .queryParams("categories", List.of(filteredCategory.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .filter(document(projectQueryParameters(), pagedProjectResponseFields()))

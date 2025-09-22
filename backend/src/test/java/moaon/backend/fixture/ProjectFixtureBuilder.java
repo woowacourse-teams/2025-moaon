@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.member.domain.Member;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
 
 public class ProjectFixtureBuilder {
@@ -22,7 +22,7 @@ public class ProjectFixtureBuilder {
     private Images images;
     private Member author;
     private List<TechStack> techStacks;
-    private List<ProjectCategory> categories;
+    private List<Category> categories;
     private LocalDateTime createdAt;
     private int views = 0;
     private List<Member> lovedMembers;
@@ -88,7 +88,7 @@ public class ProjectFixtureBuilder {
         return this;
     }
 
-    public ProjectFixtureBuilder categories(ProjectCategory... categories) {
+    public ProjectFixtureBuilder categories(Category... categories) {
         this.categories = new ArrayList<>(Arrays.asList(categories));
         return this;
     }

@@ -77,7 +77,7 @@ public class Project extends BaseTimeEntity {
     private List<TechStack> techStacks;
 
     @ManyToMany
-    private List<ProjectCategory> categories;
+    private List<Category> categories;
 
     @OneToMany(mappedBy = "project")
     private List<Article> articles;
@@ -91,7 +91,7 @@ public class Project extends BaseTimeEntity {
             Images images,
             Member author,
             List<TechStack> techStacks,
-            List<ProjectCategory> categories,
+            List<Category> categories,
             LocalDateTime createdAt
     ) {
         this.title = title;
@@ -124,7 +124,7 @@ public class Project extends BaseTimeEntity {
         return List.copyOf(techStacks);
     }
 
-    public List<ProjectCategory> getCategories() {
+    public List<Category> getCategories() {
         return List.copyOf(categories);
     }
 

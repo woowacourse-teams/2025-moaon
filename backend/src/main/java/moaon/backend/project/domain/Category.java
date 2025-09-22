@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class ProjectCategory {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class ProjectCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public ProjectCategory(String name) {
+    public Category(String name) {
         this.name = name;
     }
 }
