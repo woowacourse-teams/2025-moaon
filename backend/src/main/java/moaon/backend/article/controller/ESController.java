@@ -20,16 +20,16 @@ public class ESController {
 
     @GetMapping("/es/search")
     public ResponseEntity<List<ArticleDocument>> getPagedArticles(
-            @RequestParam(value = "sort", required = false) String sortType,
+            @RequestParam(value = "sort", required = false, defaultValue = "createdAt") String sortType,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
             @RequestParam(value = "sector", required = false) String sector,
             @RequestParam(value = "topics", required = false) List<String> topics,
-            @RequestParam(value = "q", required = false) String query,
-            @RequestParam(value = "limit", defaultValue = "100") @Validated @Max(100) int limit,
+            @RequestParam(value = "search", required = false) String query,
+            @RequestParam(value = "limit", defaultValue = "20") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
         final var condition = ArticleQueryCondition.from(
-                query, sector, topics, techStacks, sector, limit, cursor
+                query, sector, topics, techStacks, sortType, limit, cursor
         );
 
         final var documents = repository.search(condition);

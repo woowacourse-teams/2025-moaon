@@ -9,10 +9,14 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.ArticleDocument;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.domain.SearchKeyword;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -49,11 +53,23 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
             filters.add(allTechStacksMatch(techStackNames));
         }
 
-        final var nativeQuery = combineQueries(musts, filters);
+        final var nativeQuery = NativeQuery.builder()
+                .withQuery(combineQueries(musts, filters))
+                .withPageable(Pageable.ofSize(condition.limit()))
+                .withSort(toSort(condition.sortBy()))
+                .withSearchAfter(searchAfter(condition))
+                .build();
         final var searchHits = ops.search(nativeQuery, ArticleDocument.class);
         return searchHits.getSearchHits().stream()
                 .map(SearchHit::getContent)
                 .toList();
+    }
+
+    private List<Object> searchAfter(final ArticleQueryCondition condition) {
+        if (condition.articleCursor() != null) {
+            return List.of(condition.articleCursor().getSortValue(), condition.articleCursor().getLastId());
+        }
+        return List.of();
     }
 
     private Query sectorEquals(final Sector sector) {
@@ -102,14 +118,17 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
         )._toQuery();
     }
 
-    private NativeQuery combineQueries(final List<Query> musts, final List<Query> filters) {
-        final var boolQuery = BoolQuery.of(b -> b
+    private Query combineQueries(final List<Query> musts, final List<Query> filters) {
+        return BoolQuery.of(b -> b
                 .must(musts)
                 .filter(filters)
         )._toQuery();
+    }
 
-        return NativeQuery.builder()
-                .withQuery(boolQuery)
-                .build();
+    private Sort toSort(final ArticleSortType sortBy) {
+        if (sortBy == ArticleSortType.CLICKS) {
+            return Sort.by(Order.desc("clicks"), Order.desc("id"));
+        }
+        return Sort.by(Order.desc("createdAt"), Order.desc("id"));
     }
 }

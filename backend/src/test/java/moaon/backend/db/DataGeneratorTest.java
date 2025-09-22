@@ -6,6 +6,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
@@ -21,7 +24,6 @@ import moaon.backend.article.repository.ArticleDocumentRepository;
 import moaon.backend.techStack.domain.TechStackField;
 import moaon.backend.techStack.repository.TechStackRepository;
 import net.datafaker.Faker;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,12 +33,12 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @Rollback(false)
 @ActiveProfiles("local")
-@Disabled
+//@Disabled
 public class DataGeneratorTest {
 
     // --- 설정값 ---
-    public static final int ARTICLE_COUNT = 1_000;
-    public static final int BATCH_SIZE = 100;
+    public static final int ARTICLE_COUNT = 1_000_000;
+    public static final int BATCH_SIZE = 2500;
 
     // 한글 텍스트 생성을 위해 Locale.KOREAN 사용
     private final Faker faker = new Faker(Locale.KOREAN);
@@ -50,18 +52,20 @@ public class DataGeneratorTest {
     @Autowired
     private ArticleDocumentRepository articleDocumentRepository;
 
-    //    @Test
+    @Test
     void one() {
         final var ts1 = new TechStackField(techStackRepository.findByName("java"));
         final var ts2 = new TechStackField(techStackRepository.findByName("mysql"));
         articleDocumentRepository.save(new ArticleDocument(
-                "1",
+                "1234",
                 "제목",
                 "한줄요약",
                 "내용",
                 Sector.NON_TECH,
                 Set.of(Topic.DATABASE, Topic.API_DESIGN),
-                Set.of(ts1, ts2)
+                Set.of(ts1, ts2),
+                50,
+                LocalDateTime.now()
         ));
     }
 
@@ -91,7 +95,11 @@ public class DataGeneratorTest {
                         entry("content", faker.lorem().paragraph(10)),
                         entry("sector", sector),
                         entry("topics", topics),
-                        entry("techStacks", genedTsfs)
+                        entry("techStacks", genedTsfs),
+                        entry("clicks", faker.number().numberBetween(0, 100_000)),
+                        entry("createdAt",
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").format(
+                                        faker.date().past(3 * 365, TimeUnit.DAYS).toLocalDateTime()))
                 );
                 /*
                 {
