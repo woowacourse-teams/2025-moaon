@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import type { Test } from "./SearchBar";
 
 export const SearchForm = styled.form``;
 
@@ -14,7 +15,7 @@ export const SearchLabel = styled.label`
 `;
 
 export const SearchInput = styled.input<{
-  variant: "small" | "medium";
+  variant: Test;
 }>`
   flex: 1;
   height: 1.875rem;
@@ -28,7 +29,7 @@ export const SearchInput = styled.input<{
 `;
 
 export const SearchIcon = styled.img<{
-  variant: "small" | "medium";
+  variant: Test;
 }>`
   width: ${({ variant }) => (variant === "small" ? "1.4rem" : "1.75rem")};
   aspect-ratio: 1/1;

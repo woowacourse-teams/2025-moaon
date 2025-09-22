@@ -8,13 +8,14 @@ import {
 } from "react";
 import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
+export type Test = "small" | "medium";
 
 interface SearchBarProps {
   placeholder: string;
   onSubmit: (value: string) => void;
   defaultValue?: string;
   maxLength: number;
-  size?: "small" | "medium";
+  size?: Test;
 }
 
 function SearchBar({
@@ -26,7 +27,7 @@ function SearchBar({
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasSearchValue, setHasSearchValue] = useState(
-    defaultValue.trim() !== ""
+    defaultValue.trim() !== "",
   );
 
   useEffect(() => {
