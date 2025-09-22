@@ -74,14 +74,12 @@ function ArticleSection({
 
       {shouldShowSearchBar && (
         <S.SearchHeader>
-          <S.ArticleDescriptionText>
-            {hasArticles && (
-              <>
-                <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
-                아티클이 모여있어요.
-              </>
-            )}
-          </S.ArticleDescriptionText>
+          {hasArticles && (
+            <S.ArticleDescriptionText>
+              <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
+              아티클이 모여있어요.
+            </S.ArticleDescriptionText>
+          )}
           <S.SearchBarBox>
             <SearchBar
               size="small"
