@@ -101,29 +101,6 @@ public class DataGeneratorTest {
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").format(
                                         faker.date().past(3 * 365, TimeUnit.DAYS).toLocalDateTime()))
                 );
-                /*
-                {
-  "id": "2",
-  "title": "제목",
-  "summary": "한줄요약",
-  "content": "내용",
-  "sector": "NON_TECH",
-  "topics": [
-    "API_DESIGN",
-    "DATABASE"
-  ],
-  "techStacks": [
-    {
-      "id": "32",
-      "name": "mysql"
-    },
-    {
-      "id": "37",
-      "name": "java"
-    }
-  ]
-}
-                 */
 
                 ops.add(BulkOperation.of(b -> b
                         .index(idx -> idx
