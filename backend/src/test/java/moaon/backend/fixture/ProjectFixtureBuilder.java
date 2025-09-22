@@ -117,14 +117,19 @@ public class ProjectFixtureBuilder {
                 .description(this.description)
                 .githubUrl(this.githubUrl)
                 .images(this.images)
-                .techStacks(this.techStacks)
+                .techStacks(new ArrayList<>())
                 .articles(this.articles)
                 .build();
-        for (int i = 0; i < views; i++) {
-            project.addViewCount();
-        }
+
         for (Category category : categories) {
             project.addCategory(category);
+        }
+        for (TechStack techStack : techStacks) {
+            project.addTechStack(techStack);
+        }
+
+        for (int i = 0; i < views; i++) {
+            project.addViewCount();
         }
         return project;
     }

@@ -25,6 +25,7 @@ import lombok.ToString;
 import moaon.backend.article.domain.Article;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.member.domain.Member;
+import moaon.backend.techStack.domain.ProjectTechStack;
 import moaon.backend.techStack.domain.TechStack;
 
 @Entity
@@ -74,13 +75,13 @@ public class Project extends BaseTimeEntity {
     @ManyToMany
     private List<Member> lovedMembers;
 
-    @ManyToMany
-    private List<TechStack> techStacks;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectTechStack> techStacks;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true) // todo cascade, orphanRemoval 필요?
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectCategory> categories;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articles;
 
     public Project(
@@ -91,7 +92,7 @@ public class Project extends BaseTimeEntity {
             String productionUrl,
             Images images,
             Member author,
-            List<TechStack> techStacks,
+            List<ProjectTechStack> techStacks,
             List<ProjectCategory> categories,
             LocalDateTime createdAt
     ) {
@@ -118,6 +119,11 @@ public class Project extends BaseTimeEntity {
         this.categories.add(projectCategory);
     }
 
+    public void addTechStack(TechStack techStack) {
+        ProjectTechStack projectTechStack = new ProjectTechStack(this, techStack);
+        this.techStacks.add(projectTechStack);
+    }
+
     public int getLoveCount() {
         return lovedMembers.size();
     }
@@ -127,7 +133,9 @@ public class Project extends BaseTimeEntity {
     }
 
     public List<TechStack> getTechStacks() {
-        return List.copyOf(techStacks);
+        return techStacks.stream()
+                .map(ProjectTechStack::getTechStack)
+                .toList();
     }
 
     public List<Category> getCategories() {

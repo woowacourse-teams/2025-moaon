@@ -3,6 +3,7 @@ package moaon.backend.project.repository;
 import static moaon.backend.project.domain.QCategory.category;
 import static moaon.backend.project.domain.QProject.project;
 import static moaon.backend.project.domain.QProjectCategory.projectCategory;
+import static moaon.backend.techStack.domain.QProjectTechStack.projectTechStack;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -43,7 +44,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         return jpaQueryFactory
                 .selectFrom(project).distinct()
                 .leftJoin(project.categories, projectCategory)
-                .leftJoin(project.techStacks, techStack)
+                .leftJoin(project.techStacks, projectTechStack)
                 .where(
                         techStackNamesIn(techStackNames),
                         categoryNamesIn(categoryNames),
@@ -70,7 +71,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                 .select(project.countDistinct())
                 .from(project)
                 .leftJoin(project.categories, projectCategory)
-                .leftJoin(project.techStacks, techStack)
+                .leftJoin(project.techStacks, projectTechStack)
                 .where(
                         techStackNamesIn(techStackNames),
                         categoryNamesIn(categoryNames),
