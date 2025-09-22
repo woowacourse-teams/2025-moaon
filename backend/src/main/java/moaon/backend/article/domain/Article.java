@@ -10,8 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.project.domain.Project;
+import moaon.backend.techStack.domain.ArticleTechStack;
 import moaon.backend.techStack.domain.TechStack;
 
 @Entity
@@ -65,8 +66,8 @@ public class Article extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @ManyToMany
-    private List<TechStack> techStacks;
+    @OneToMany(mappedBy = "article", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleTechStack> techStacks;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -86,7 +87,7 @@ public class Article extends BaseTimeEntity {
             Project project,
             Sector sector,
             List<Topic> topics,
-            List<TechStack> techStacks
+            List<ArticleTechStack> techStacks
     ) {
         this.title = title;
         this.summary = summary;
@@ -104,7 +105,14 @@ public class Article extends BaseTimeEntity {
         clicks++;
     }
 
+    public void addTechStack(TechStack techStack) {
+        ArticleTechStack articleTechStack = new ArticleTechStack(this, techStack);
+        this.techStacks.add(articleTechStack);
+    }
+
     public List<TechStack> getTechStacks() {
-        return List.copyOf(techStacks);
+        return techStacks.stream()
+                .map(ArticleTechStack::getTechStack)
+                .toList();
     }
 }

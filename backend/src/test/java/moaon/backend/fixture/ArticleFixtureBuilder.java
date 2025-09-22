@@ -93,7 +93,7 @@ public class ArticleFixtureBuilder {
     }
 
     public Article build() {
-        return Article.builder()
+        Article article = Article.builder()
                 .id(this.id)
                 .title(this.title)
                 .summary(this.summary)
@@ -104,7 +104,13 @@ public class ArticleFixtureBuilder {
                 .project(this.project)
                 .sector(this.sector)
                 .topics(this.topics)
-                .techStacks(this.techStacks)
+                .techStacks(new ArrayList<>())
                 .build();
+        
+        for (TechStack techStack : techStacks) {
+            article.addTechStack(techStack);
+        }
+        
+        return article;
     }
 }
