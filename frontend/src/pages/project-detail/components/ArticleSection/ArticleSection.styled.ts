@@ -5,13 +5,6 @@ export const ArticleSectionContainer = styled.section`
   padding-top: 2rem;
 `;
 
-export const CardListContainer = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
-  gap: 1.375rem 2rem;
-  min-height: 13.6875rem;
-`;
-
 export const EmptyContainer = styled.div`
   grid-column: 1 / -1;
   display: flex;
