@@ -6,5 +6,7 @@ export const projectArticleQueries = {
     queryOptions({
       queryKey: ["projectArticles", id] as const,
       queryFn: () => getProjectArticles(id),
+      throwOnError: true,
+      retry: 0,
     }),
 };

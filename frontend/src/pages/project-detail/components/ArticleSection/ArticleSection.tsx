@@ -5,9 +5,12 @@ import {
 import EmptyState from "@shared/components/EmptyState/EmptyState";
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
+import { toast } from "@shared/components/Toast/toast";
+import type { QueryObserverResult } from "@tanstack/react-query";
 import type {
   ProjectArticle,
   ProjectArticleCount,
+  ProjectArticlesResponse,
 } from "@/apis/projectArticles/projectArticles.type";
 import ArticleCard from "@/pages/article/ArticleBox/CardList/Card/ArticleCard";
 import { useArticleSector } from "@/pages/article/hooks/useArticleSector";
@@ -21,7 +24,7 @@ const SEARCH_INPUT_MAX_LENGTH = 50;
 interface ArticleSectionProps {
   articles: ProjectArticle[];
   sectorCounts: ProjectArticleCount[];
-  refetch: () => void;
+  refetch: () => Promise<QueryObserverResult<ProjectArticlesResponse, Error>>;
   isRefetching: boolean;
   isLoading: boolean;
 }
@@ -33,7 +36,7 @@ function ArticleSection({
   isLoading,
 }: ArticleSectionProps) {
   const { selectedSector, updateSector } = useArticleSector(
-    DEFAULT_ARTICLE_CATEGORY_TYPE
+    DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
   const { handleSearchSubmit, searchValue } = useProjectArticleSearch();
 
@@ -50,9 +53,10 @@ function ArticleSection({
     }
   };
 
-  const onSearchSubmit = (value: string) => {
+  const onSearchSubmit = async (value: string) => {
     handleSearchSubmit(value);
-    refetch();
+    const result = await refetch();
+    if (result.isError) toast.warning(result.error.message);
   };
 
   const hasResult =

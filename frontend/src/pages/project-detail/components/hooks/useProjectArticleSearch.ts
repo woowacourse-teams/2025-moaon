@@ -1,4 +1,3 @@
-import { toast } from "@shared/components/Toast/toast";
 import useSearchParams from "@shared/hooks/useSearchParams";
 
 const useProjectArticleSearch = () => {
@@ -9,8 +8,6 @@ const useProjectArticleSearch = () => {
       params.deleteAll({ replace: true });
       return;
     }
-
-    if (value.length < 2) toast.warning("검색어는 2글자 이상 입력해주세요.");
 
     params.update(value, { replace: true });
   };
