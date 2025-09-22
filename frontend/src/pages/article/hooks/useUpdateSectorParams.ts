@@ -5,11 +5,14 @@ export const useUpdateSectorParams = () => {
   const navigate = useNavigate();
 
   return (newSector: string) => {
-    const params = new URLSearchParams(location.search);
-
+    const params = new URLSearchParams();
     params.set("sector", newSector);
-    params.delete("topics");
-    params.delete("techStacks");
+
+    const prevParams = new URLSearchParams(location.search);
+    const searchValue = prevParams.get("search");
+    if (searchValue) {
+      params.set("search", searchValue);
+    }
 
     navigate({ search: params.toString() }, { replace: true });
   };
