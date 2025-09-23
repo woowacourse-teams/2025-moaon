@@ -28,6 +28,19 @@ public record ArticleQueryCondition(
             String cursor
     ) {
         ArticleSortType sortBy = ArticleSortType.from(sortType);
+        return from(search, sector, topics, techStackNames, sortType, limit, sortBy.toCursor(cursor));
+    }
+
+    public static ArticleQueryCondition from(
+            String search,
+            String sector,
+            List<String> topics,
+            List<String> techStackNames,
+            String sortType,
+            int limit,
+            Cursor<?> articleCursor
+    ) {
+        ArticleSortType sortBy = ArticleSortType.from(sortType);
         return new ArticleQueryCondition(
                 new SearchKeyword(search),
                 Sector.of(sector),
@@ -42,7 +55,7 @@ public record ArticleQueryCondition(
                         : techStackNames,
                 sortBy,
                 limit,
-                sortBy.toCursor(cursor)
+                articleCursor
         );
     }
 }
