@@ -7,7 +7,6 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -18,13 +17,13 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.RefreshPolicy;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Repository;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
-public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticleDocumentRepository {
+public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository {
 
     private final ElasticsearchOperations ops;
 
@@ -73,7 +72,7 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
 
     private Query sectorEquals(Sector sector) {
         return TermQuery.of(t -> t
-                .field("sector")
+                .field("sector.keyword")
                 .value(sector.name())
         )._toQuery();
     }
@@ -89,7 +88,7 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
 
     private Query topicEquals(Topic topic) {
         return TermQuery.of(t -> t
-                .field("topics")
+                .field("topics.keyword")
                 .value(topic.name())
         )._toQuery();
     }
@@ -105,7 +104,7 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
 
     private Query techStackEquals(String techStackName) {
         return TermQuery.of(t -> t
-                .field("techStacks.name")
+                .field("techStacks.name.keyword")
                 .value(techStackName)
         )._toQuery();
     }
@@ -130,5 +129,10 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
         }
         return Sort.by(Order.desc("createdAt"), Order.desc("id"));
 //        return Sort.by(Order.desc("_score"), Order.desc("id"));
+    }
+
+    @Override
+    public ArticleDocument save(final ArticleDocument articleDocument) {
+        return ops.withRefreshPolicy(RefreshPolicy.IMMEDIATE).save(articleDocument);
     }
 }

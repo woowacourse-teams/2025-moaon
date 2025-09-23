@@ -8,10 +8,10 @@ import org.springframework.data.elasticsearch.annotations.MultiField;
 
 public record TechStackField(
         @Field(type = FieldType.Keyword)
-        String id,
+        Long id,
 
         @MultiField(
-                mainField = @Field(type = FieldType.Keyword, normalizer = "lowercase"),
+                mainField = @Field(type = FieldType.Keyword),
                 otherFields = {
                         @InnerField(suffix = "text", type = FieldType.Text, analyzer = "article_common_analyzer")
                 }
@@ -19,12 +19,12 @@ public record TechStackField(
         String name
 ) {
 
-    public TechStackField(final String id, final String name) {
+    public TechStackField(final Long id, final String name) {
         this.id = id;
         this.name = name;
     }
 
     public TechStackField(final TechStack techStack) {
-        this(techStack.getId().toString(), techStack.getName());
+        this(techStack.getId(), techStack.getName());
     }
 }
