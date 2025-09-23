@@ -79,6 +79,7 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
         final var sortValue = cursor.getSortValue();
         final var lastId = cursor.getLastId();
 
+        //return List.of(Double.parseDouble(sortValue.toString()), lastId);
         if (ArticleSortType.CREATED_AT == condition.sortBy()) {
             return List.of(Long.parseLong(sortValue.toString()), lastId);
         }
@@ -139,9 +140,10 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
     }
 
     private Sort toSort(final ArticleSortType sortBy) {
-        if (sortBy == ArticleSortType.CLICKS) {
-            return Sort.by(Order.desc("clicks"), Order.desc("id"));
-        }
-        return Sort.by(Order.desc("createdAt"), Order.desc("id"));
+//        if (sortBy == ArticleSortType.CLICKS) {
+//            return Sort.by(Order.desc("clicks"), Order.desc("id"));
+//        }
+//        return Sort.by(Order.desc("createdAt"), Order.desc("id"));
+        return Sort.by(Order.desc("_score"), Order.desc("id"));
     }
 }

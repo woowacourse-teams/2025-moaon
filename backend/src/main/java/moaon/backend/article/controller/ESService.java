@@ -1,5 +1,6 @@
 package moaon.backend.article.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
@@ -26,6 +27,10 @@ public class ESService {
         final var searchHits = repository.search(condition);
         final var totalHits = searchHits.getTotalHits();
         final var articles = getOriginArticles(searchHits);
+        System.out.println("------------------------------");
+        searchHits.getSearchHits().forEach(hit -> {
+            System.out.printf("[%s][%s] : %.3f점\n", hit.getId(), hit.getContent().getTitle(), hit.getScore());
+        });
 
         final var maybeHasNext = articles.size() == condition.limit();
         if (maybeHasNext) {
@@ -41,7 +46,11 @@ public class ESService {
                 .map(ArticleDocument::getId)
                 .map(Long::parseLong)
                 .toList();
-        return articleRepository.findAllById(ids);
+
+        return articleRepository.findAllById(ids)
+                .stream()
+                .sorted(Comparator.comparingInt(a -> ids.indexOf(a.getId())))
+                .toList();
     }
 
     private Cursor<?> nextCursorFor(final SearchHits<ArticleDocument> searchHits) {
