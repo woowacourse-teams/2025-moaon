@@ -31,7 +31,7 @@ public class ArticleDocument {
 
     @Id
     @Field(type = FieldType.Keyword)
-    private String id;
+    private Long id;
 
     @Field(type = FieldType.Text, analyzer = "article_common_analyzer")
     private String title;
@@ -58,7 +58,7 @@ public class ArticleDocument {
     private LocalDateTime createdAt;
 
     public ArticleDocument(final Article article) {
-        this.id = article.getId().toString();
+        this.id = article.getId();
         this.title = article.getTitle();
         this.summary = article.getSummary();
         this.content = article.getContent();

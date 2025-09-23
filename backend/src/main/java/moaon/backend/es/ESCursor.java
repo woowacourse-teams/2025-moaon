@@ -1,11 +1,10 @@
 package moaon.backend.es;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import java.util.List;
-import java.util.Objects;
-import moaon.backend.global.cursor.Cursor;
+import lombok.Getter;
 
-public class ESCursor implements Cursor<String> {
+@Getter
+public class ESCursor {
 
     private final List<Object> sortValues;
 
@@ -16,27 +15,20 @@ public class ESCursor implements Cursor<String> {
     }
 
     public ESCursor(final String rawCursor) {
-        final var cursor = Objects.requireNonNullElse(rawCursor, "");
-        this.sortValues = List.of(cursor.split("_"));
+        if (rawCursor == null || rawCursor.isEmpty()) {
+            this.sortValues = List.of();
+            return;
+        }
+
+        final var split = rawCursor.split("_");
+        this.sortValues = List.of(Long.parseLong(split[0]), split[1]);
     }
 
-    @Override
-    public String getSortValue() {
-        return sortValues.getFirst().toString();
+    public boolean isEmpty() {
+        return sortValues.size() < 2;
     }
 
-    @Override
-    public Long getLastId() {
-        return Long.parseLong(sortValues.getLast().toString());
-    }
-
-    @Override
     public String getNextCursor() {
-        return sortValues.getFirst() + "_" + sortValues.getLast();
-    }
-
-    @Override
-    public BooleanExpression getCursorExpression() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return sortValues.get(0) + "_" + sortValues.get(1);
     }
 }

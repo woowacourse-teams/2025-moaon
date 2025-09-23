@@ -3,7 +3,6 @@ package moaon.backend.es;
 import jakarta.validation.constraints.Max;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,23 +28,9 @@ public class ESController {
             @RequestParam(value = "limit", defaultValue = "20") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
-        final var condition = toQueryCondition(sortType, techStacks, sector, topics, query, limit, cursor);
+        ArticleESQuery articleESQuery = ArticleESQuery.from(query, sector, topics, techStacks, sortType, limit, cursor);
 
-        final var articles = service.search(condition);
-        return ResponseEntity.ok(articles);
-    }
-
-    private static ArticleQueryCondition toQueryCondition(
-            final String sortType,
-            final List<String> techStacks,
-            final String sector,
-            final List<String> topics,
-            final String query,
-            final int limit,
-            final String cursor) {
-        if (cursor == null) {
-            return ArticleQueryCondition.from(query, sector, topics, techStacks, sortType, limit, (String) null);
-        }
-        return ArticleQueryCondition.from(query, sector, topics, techStacks, sortType, limit, new ESCursor(cursor));
+        ArticleResponse search = service.search(articleESQuery);
+        return ResponseEntity.ok(search);
     }
 }
