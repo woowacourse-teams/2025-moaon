@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.member.domain.Member;
-import moaon.backend.project.domain.ProjectCategory;
+import moaon.backend.project.domain.Category;
 import moaon.backend.techStack.domain.TechStack;
 
 public class Fixture {
@@ -19,8 +19,8 @@ public class Fixture {
         return new TechStack(nameWithSequence("testTechStack"));
     }
 
-    public static ProjectCategory anyProjectCategory() {
-        return new ProjectCategory(nameWithSequence("testProjectCategory"));
+    public static Category anyProjectCategory() {
+        return new Category(nameWithSequence("testProjectCategory"));
     }
 
     public static Sector randomSector() {

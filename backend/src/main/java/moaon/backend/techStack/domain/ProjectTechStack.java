@@ -1,4 +1,4 @@
-package moaon.backend.project.domain;
+package moaon.backend.techStack.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,13 +11,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import moaon.backend.project.domain.Project;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class ProjectCategory {
+public class ProjectTechStack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +28,10 @@ public class ProjectCategory {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
+    private TechStack techStack;
 
-    public ProjectCategory(Project project, Category category) {
+    public ProjectTechStack(Project project, TechStack techStack) {
         this.project = project;
-        this.category = category;
+        this.techStack = techStack;
     }
 }
