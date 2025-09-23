@@ -1,4 +1,3 @@
-import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import UnmountAfterAnimation from "@shared/components/UnmountAfterAnimation/UnmountAnimation";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import useSearchParams from "@shared/hooks/useSearchParams";
@@ -11,7 +10,6 @@ interface FilterProps {
   label: string;
   param: string;
   onSelect: () => void;
-  sector: ArticleSectorKey;
 }
 
 function FilterTrigger({
