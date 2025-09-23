@@ -2,18 +2,21 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
-import EmptyState from "@shared/components/EmptyState/EmptyState";
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
+import { toast } from "@shared/components/Toast/toast";
+import type { QueryObserverResult } from "@tanstack/react-query";
 import type {
   ProjectArticle,
   ProjectArticleCount,
+  ProjectArticlesResponse,
 } from "@/apis/projectArticles/projectArticles.type";
-import ArticleCard from "@/pages/article/ArticleBox/CardList/Card/ArticleCard";
 import { useArticleSector } from "@/pages/article/hooks/useArticleSector";
 import useProjectArticleSearch from "../hooks/useProjectArticleSearch";
 import SectionTitle from "../SectionTitle";
 import * as S from "./ArticleSection.styled";
+import CardList from "./CardList/CardList";
+import EmptyArticleList from "./EmptyArticleList/EmptyArticleList";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 const SEARCH_INPUT_MAX_LENGTH = 50;
@@ -21,7 +24,7 @@ const SEARCH_INPUT_MAX_LENGTH = 50;
 interface ArticleSectionProps {
   articles: ProjectArticle[];
   sectorCounts: ProjectArticleCount[];
-  refetch: () => void;
+  refetch: () => Promise<QueryObserverResult<ProjectArticlesResponse, Error>>;
   isRefetching: boolean;
   isLoading: boolean;
 }
@@ -30,7 +33,6 @@ function ArticleSection({
   articles,
   sectorCounts,
   refetch,
-  isLoading,
 }: ArticleSectionProps) {
   const { selectedSector, updateSector } = useArticleSector(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
@@ -50,59 +52,54 @@ function ArticleSection({
     }
   };
 
-  const onSearchSubmit = (value: string) => {
+  const onSearchSubmit = async (value: string) => {
     handleSearchSubmit(value);
-    refetch();
+    const result = await refetch();
+    if (result.isError) toast.warning(result.error.message);
   };
 
-  const hasResult =
-    (selectedSector !== "all" && articles.length > 0) || !isLoading;
+  const hasArticles = articles.length > 0;
+  const shouldShowSearchBar = hasArticles || searchValue !== undefined;
 
   return (
-    <>
-      {hasResult && (
-        <S.ArticleSectionContainer>
-          <SectionTitle title="프로젝트 아티클" />
-          <Tab
-            items={articleSectors}
-            onSelect={handleTabSelect}
-            selected={selectedSector}
-            width={100}
-          />
+    <S.ArticleSectionContainer>
+      <SectionTitle title="프로젝트 아티클" />
 
-          <S.SearchHeader>
+      <Tab
+        items={articleSectors}
+        onSelect={handleTabSelect}
+        selected={selectedSector}
+        width={100}
+      />
+
+      {shouldShowSearchBar && (
+        <S.SearchHeader>
+          {hasArticles && (
             <S.ArticleDescriptionText>
-              {articles.length > 0 && (
-                <>
-                  <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
-                  아티클이 모여있어요.
-                </>
-              )}
+              <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
+              아티클이 모여있어요.
             </S.ArticleDescriptionText>
-            <S.SearchBarBox>
-              <SearchBar
-                placeholder="아티클 제목, 내용을 검색해보세요"
-                maxLength={SEARCH_INPUT_MAX_LENGTH}
-                onSubmit={onSearchSubmit}
-                defaultValue={searchValue}
-              />
-            </S.SearchBarBox>
-          </S.SearchHeader>
-
-          {articles.length === 0 && (
-            <EmptyState
-              description="검색어를 바꿔 다시 시도해 보세요."
-              title="검색된 아티클이 없어요."
-            />
           )}
-          <S.CardListContainer>
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </S.CardListContainer>
-        </S.ArticleSectionContainer>
+          <S.SearchBarBox>
+            <SearchBar
+              size="small"
+              placeholder="아티클 제목, 내용을 검색해보세요"
+              maxLength={SEARCH_INPUT_MAX_LENGTH}
+              onSubmit={onSearchSubmit}
+              defaultValue={searchValue}
+            />
+          </S.SearchBarBox>
+        </S.SearchHeader>
       )}
-    </>
+
+      {hasArticles ? (
+        <CardList articles={articles} />
+      ) : (
+        <EmptyArticleList
+          variant={searchValue ? "searchEmpty" : "initialEmpty"}
+        />
+      )}
+    </S.ArticleSectionContainer>
   );
 }
 
