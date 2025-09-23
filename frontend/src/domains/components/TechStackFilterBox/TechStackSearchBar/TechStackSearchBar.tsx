@@ -33,7 +33,6 @@ const getFilteredListWithoutSelected = (
 
 interface TechStackSearchBarProps {
   onSelect: () => void;
-  sector: ArticleSectorKey;
 }
 
 function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {

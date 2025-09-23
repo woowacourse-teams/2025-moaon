@@ -6,7 +6,6 @@ import * as S from "./TopicFilterList.styled";
 
 interface TopicFilterListProps {
   onSelect: () => void;
-  sector: ArticleSectorKey;
 }
 
 function TopicFilterList({ onSelect }: TopicFilterListProps) {

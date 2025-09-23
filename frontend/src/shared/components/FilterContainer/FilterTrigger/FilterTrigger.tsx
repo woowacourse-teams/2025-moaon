@@ -11,7 +11,6 @@ interface FilterProps {
   label: string;
   param: string;
   onSelect: () => void;
-  sector: ArticleSectorKey;
 }
 
 function FilterTrigger({
