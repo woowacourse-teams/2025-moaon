@@ -64,7 +64,7 @@ const ANDROID_TOPICS = {
     label: "UI/UX",
   },
   build: {
-    label: "빌드/배포 관련",
+    label: "빌드/배포",
   },
   native: {
     label: "네이티브 모듈",
@@ -89,7 +89,7 @@ const IOS_TOPICS = {
     label: "UI/UX",
   },
   build: {
-    label: "빌드/배포 관련",
+    label: "빌드/배포",
   },
   native: {
     label: "네이티브 모듈",
