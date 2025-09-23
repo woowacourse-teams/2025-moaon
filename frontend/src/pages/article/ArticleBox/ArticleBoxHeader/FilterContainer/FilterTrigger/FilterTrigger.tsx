@@ -1,3 +1,4 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import { SwitchCase } from "@shared/components/SwitchCase/SwitchCase";
 import UnmountAfterAnimation from "@shared/components/UnmountAnimation/UnmountAnimation";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
@@ -14,7 +15,7 @@ interface FilterProps {
   label: FilterLabel;
   param: FilterParam;
   onSelect: () => void;
-  sector: string | null;
+  sector: ArticleSectorKey;
 }
 
 function FilterTrigger({ label, param, onSelect, sector }: FilterProps) {

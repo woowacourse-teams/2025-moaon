@@ -1,3 +1,4 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import RecommendTechStack from "./RecommendTechStack/RecommendTechStack";
 import SelectedTechStack from "./SelectedTechStack/SelectedTechStack";
 import * as S from "./TechStackFilterBox.styled";
@@ -5,7 +6,7 @@ import TechStackSearchBar from "./TechStackSearchBar/TechStackSearchBar";
 
 interface TechStackFilterBoxProps {
   onSelect: () => void;
-  sector: string | null;
+  sector: ArticleSectorKey;
 }
 
 function TechStackFilterBox({ onSelect, sector }: TechStackFilterBoxProps) {

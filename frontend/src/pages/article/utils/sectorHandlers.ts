@@ -1,3 +1,13 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
+import {
+  ALL_TOPICS_ENTRY,
+  ANDROID_TOPICS_ENTRY,
+  BACKEND_TOPICS_ENTRY,
+  FRONTEND_TOPICS_ENTRY,
+  INFRA_TOPICS_ENTRY,
+  IOS_TOPICS_ENTRY,
+  NON_TECH_TOPICS_ENTRY,
+} from "@domains/filter/articleTopic";
 import {
   RECOMMEND_ALL_STACKS,
   RECOMMEND_ANDROID_STACKS,
@@ -13,22 +23,14 @@ import {
   IOS_STACK_ENTRY,
   TECH_STACK_ENTRY,
 } from "@domains/filter/techStack";
-import {
-  BACKEND_TOPIC_ENTRY,
-  COMMON_TOPIC_ENTRY,
-  FRONTEND_TOPIC_ENTRY,
-  INFRA_TOPIC_ENTRY,
-  NON_TECH_TOPIC_ENTRY,
-  TOPIC_ENTRY,
-} from "@domains/filter/topic";
 
-export const getTechStackBySector = (sector: string | null) => {
+export const getTechStackBySector = (sector: ArticleSectorKey) => {
   switch (sector) {
     case "fe":
       return FRONTEND_STACK_ENTRY;
     case "be":
       return BACKEND_STACK_ENTRY;
-    case "Android":
+    case "android":
       return ANDROID_STACK_ENTRY;
     case "ios":
       return IOS_STACK_ENTRY;
@@ -40,7 +42,7 @@ export const getTechStackBySector = (sector: string | null) => {
   }
 };
 
-export const getRecommendTechStackBySector = (sector: string | null) => {
+export const getRecommendTechStackBySector = (sector: ArticleSectorKey) => {
   switch (sector) {
     case "fe":
       return RECOMMEND_FRONTEND_STACKS;
@@ -60,23 +62,24 @@ export const getRecommendTechStackBySector = (sector: string | null) => {
   }
 };
 
-export const getTopicsBySector = (sector: string | null) => {
+export const getTopicsBySector = (sector: ArticleSectorKey) => {
   switch (sector) {
     case "fe":
-      return [...FRONTEND_TOPIC_ENTRY, ...COMMON_TOPIC_ENTRY];
+      return FRONTEND_TOPICS_ENTRY;
     case "be":
-      return [...BACKEND_TOPIC_ENTRY, ...COMMON_TOPIC_ENTRY];
-    case "infra":
-      return [...INFRA_TOPIC_ENTRY, ...COMMON_TOPIC_ENTRY];
-    case "nonTech":
-      return [...NON_TECH_TOPIC_ENTRY, ...COMMON_TOPIC_ENTRY];
-    case "Android":
+      return BACKEND_TOPICS_ENTRY;
+    case "android":
+      return ANDROID_TOPICS_ENTRY;
     case "ios":
-      return COMMON_TOPIC_ENTRY;
+      return IOS_TOPICS_ENTRY;
+    case "infra":
+      return INFRA_TOPICS_ENTRY;
+    case "nonTech":
+      return NON_TECH_TOPICS_ENTRY;
     case "all":
     case null:
-      return TOPIC_ENTRY;
+      return ALL_TOPICS_ENTRY;
     default:
-      return TOPIC_ENTRY;
+      return ALL_TOPICS_ENTRY;
   }
 };

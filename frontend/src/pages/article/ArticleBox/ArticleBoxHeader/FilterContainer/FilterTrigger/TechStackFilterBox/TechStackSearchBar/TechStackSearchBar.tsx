@@ -1,4 +1,5 @@
 import searchIcon from "@assets/icons/search.svg";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import {
   TECH_STACK_ENTRY,
   TECH_STACK_ICON_MAP,
@@ -15,7 +16,7 @@ import TechStackSearchResult from "./TechStackSearchResult/TechStackSearchResult
 const getFilteredListWithoutSelected = (
   keyword: string,
   selectedTechStacks: TechStackKey[],
-  sector: string | null,
+  sector: ArticleSectorKey,
 ) => {
   const techStacks = getTechStackBySector(sector);
   const filteredList = techStacks.filter(([_, { label }]) =>
@@ -31,7 +32,7 @@ const getFilteredListWithoutSelected = (
 
 interface TechStackSearchBarProps {
   onSelect: () => void;
-  sector: string | null;
+  sector: ArticleSectorKey;
 }
 
 function TechStackSearchBar({ onSelect, sector }: TechStackSearchBarProps) {

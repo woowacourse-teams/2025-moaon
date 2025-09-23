@@ -1,10 +1,11 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import { getTopicsBySector } from "@/pages/article/utils/sectorHandlers";
 import TopicFilterButton from "./TopicFilterButton/TopicFilterButton";
 import * as S from "./TopicFilterList.styled";
 
 interface TopicFilterListProps {
   onSelect: () => void;
-  sector: string | null;
+  sector: ArticleSectorKey;
 }
 
 function TopicFilterList({ onSelect, sector }: TopicFilterListProps) {
