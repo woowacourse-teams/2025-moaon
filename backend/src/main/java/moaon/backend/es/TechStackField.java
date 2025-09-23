@@ -1,5 +1,6 @@
-package moaon.backend.techStack.domain;
+package moaon.backend.es;
 
+import moaon.backend.techStack.domain.TechStack;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.InnerField;

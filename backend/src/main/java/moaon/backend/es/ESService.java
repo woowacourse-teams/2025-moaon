@@ -1,13 +1,11 @@
-package moaon.backend.article.controller;
+package moaon.backend.es;
 
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.ArticleDocumentRepository;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.global.cursor.Cursor;
 import org.springframework.data.elasticsearch.core.SearchHit;

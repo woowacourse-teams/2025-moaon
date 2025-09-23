@@ -1,4 +1,4 @@
-package moaon.backend.article.repository;
+package moaon.backend.es;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -80,6 +79,10 @@ public class CustomizedArticleDocumentRepositoryImpl implements CustomizedArticl
         final var lastId = cursor.getLastId();
 
         //return List.of(Double.parseDouble(sortValue.toString()), lastId);
+        /*
+        createdate, clicks, score
+        long epochmillis
+         */
         if (ArticleSortType.CREATED_AT == condition.sortBy()) {
             return List.of(Long.parseLong(sortValue.toString()), lastId);
         }

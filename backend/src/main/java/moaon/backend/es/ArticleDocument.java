@@ -1,4 +1,4 @@
-package moaon.backend.article.domain;
+package moaon.backend.es;
 
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
@@ -11,7 +11,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.techStack.domain.TechStackField;
+import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;

@@ -1,4 +1,4 @@
-package moaon.backend.article.controller;
+package moaon.backend.es;
 
 import jakarta.validation.constraints.Max;
 import java.util.List;

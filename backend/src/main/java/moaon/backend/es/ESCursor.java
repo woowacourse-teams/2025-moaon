@@ -1,4 +1,4 @@
-package moaon.backend.article.controller;
+package moaon.backend.es;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import java.util.List;
