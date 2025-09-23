@@ -1,10 +1,11 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
 import { getRecommendTechStackBySector } from "../../../../../../utils/sectorHandlers";
 import TechStackFilterList from "../TechStackFilterList/TechStackFilterList";
 
 interface RecommendTechStackProps {
   onSelect: () => void;
-  sector: string | null;
+  sector: ArticleSectorKey;
 }
 
 function RecommendTechStack({ onSelect, sector }: RecommendTechStackProps) {

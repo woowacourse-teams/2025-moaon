@@ -24,7 +24,7 @@ import {
   TECH_STACK_ENTRY,
 } from "@domains/filter/techStack";
 
-export const getTechStackBySector = (sector: ArticleSectorKey | null) => {
+export const getTechStackBySector = (sector: ArticleSectorKey) => {
   switch (sector) {
     case "fe":
       return FRONTEND_STACK_ENTRY;
@@ -42,9 +42,7 @@ export const getTechStackBySector = (sector: ArticleSectorKey | null) => {
   }
 };
 
-export const getRecommendTechStackBySector = (
-  sector: ArticleSectorKey | null
-) => {
+export const getRecommendTechStackBySector = (sector: ArticleSectorKey) => {
   switch (sector) {
     case "fe":
       return RECOMMEND_FRONTEND_STACKS;
@@ -64,7 +62,7 @@ export const getRecommendTechStackBySector = (
   }
 };
 
-export const getTopicsBySector = (sector: ArticleSectorKey | null) => {
+export const getTopicsBySector = (sector: ArticleSectorKey) => {
   switch (sector) {
     case "fe":
       return FRONTEND_TOPICS_ENTRY;

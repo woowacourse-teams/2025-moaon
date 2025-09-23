@@ -1,3 +1,8 @@
+import {
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
+import { toast } from "@shared/components/Toast/toast";
 import { useLocation } from "react-router";
 import * as S from "./FilterContainer.styled";
 import FilterTrigger from "./FilterTrigger/FilterTrigger";
@@ -17,7 +22,22 @@ interface FilterContainerProps {
 function FilterContainer({ onSelect }: FilterContainerProps) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const sector = params.get("sector");
+  const rawSector = params.get("sector");
+
+  const validSectors = ARTICLE_SECTOR_ENTRY.map(([key]) => key);
+  const isRealSector = validSectors.includes(rawSector as ArticleSectorKey);
+
+  const sector: ArticleSectorKey = isRealSector
+    ? (rawSector as ArticleSectorKey)
+    : "all";
+
+  if (rawSector && !isRealSector) {
+    toast.warning("존재하지 않는 분야입니다.");
+    params.set("sector", "all");
+    const newSearch = params.toString();
+    const newPath = location.pathname + "?" + newSearch;
+    window.history.replaceState({}, "", newPath);
+  }
 
   return (
     <S.Container>
