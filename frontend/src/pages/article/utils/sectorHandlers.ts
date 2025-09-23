@@ -1,3 +1,4 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import {
   ALL_TOPICS_ENTRY,
   ANDROID_TOPICS_ENTRY,
@@ -23,13 +24,13 @@ import {
   TECH_STACK_ENTRY,
 } from "@domains/filter/techStack";
 
-export const getTechStackBySector = (sector: string | null) => {
+export const getTechStackBySector = (sector: ArticleSectorKey | null) => {
   switch (sector) {
     case "fe":
       return FRONTEND_STACK_ENTRY;
     case "be":
       return BACKEND_STACK_ENTRY;
-    case "Android":
+    case "android":
       return ANDROID_STACK_ENTRY;
     case "ios":
       return IOS_STACK_ENTRY;
@@ -41,7 +42,9 @@ export const getTechStackBySector = (sector: string | null) => {
   }
 };
 
-export const getRecommendTechStackBySector = (sector: string | null) => {
+export const getRecommendTechStackBySector = (
+  sector: ArticleSectorKey | null
+) => {
   switch (sector) {
     case "fe":
       return RECOMMEND_FRONTEND_STACKS;
@@ -61,7 +64,7 @@ export const getRecommendTechStackBySector = (sector: string | null) => {
   }
 };
 
-export const getTopicsBySector = (sector: string | null) => {
+export const getTopicsBySector = (sector: ArticleSectorKey | null) => {
   switch (sector) {
     case "fe":
       return FRONTEND_TOPICS_ENTRY;

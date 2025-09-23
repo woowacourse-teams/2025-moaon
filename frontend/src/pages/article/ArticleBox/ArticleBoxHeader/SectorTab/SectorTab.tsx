@@ -1,9 +1,16 @@
-import { ARTICLE_SECTOR_ENTRY } from "@domains/filter/articleSector";
+import {
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useTabAnimation } from "@shared/hooks/useTabAnimation";
 import * as S from "./SectorTab.styled";
 
-function SectorTab({ onSelect }: { onSelect: (sector: string) => void }) {
+function SectorTab({
+  onSelect,
+}: {
+  onSelect: (sector: ArticleSectorKey) => void;
+}) {
   const params = useSearchParams({
     key: "sector",
     mode: "single",

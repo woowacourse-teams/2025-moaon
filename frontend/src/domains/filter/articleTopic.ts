@@ -153,8 +153,7 @@ const ALL_TOPICS = {
 } as const;
 
 export type AllTopicKey = keyof typeof ALL_TOPICS;
-export type AllTopicLabel =
-  (typeof ALL_TOPICS)[keyof typeof ALL_TOPICS]["label"];
+export type AllTopicLabel = (typeof ALL_TOPICS)[AllTopicKey]["label"];
 
 export const FRONTEND_TOPICS_ENTRY = typeSafeObjectEntries(FE_TOPICS);
 
