@@ -1,10 +1,9 @@
 import useSearchParams from "@shared/hooks/useSearchParams";
 import type { PropsWithChildren } from "react";
-import type { FilterParam } from "../../FilterContainer";
 import * as S from "./FilterBox.styled";
 
 interface FilterBoxProps {
-  param: FilterParam;
+  param: string;
   onSelect: () => void;
   isOpen: boolean;
 }

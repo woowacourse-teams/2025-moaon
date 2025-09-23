@@ -30,11 +30,10 @@ function UnmountAfterAnimation({
     }
 
     const animations = element.getAnimations({ subtree: true });
-    Promise.all(animations.map((animation) => animation.finished)).finally(
-      () => {
-        setMounted(false);
-      },
-    );
+
+    Promise.all(animations.map((animation) => animation.finished))
+      .then(() => setMounted(false))
+      .catch(() => setMounted(false));
   };
 
   if (!mounted) {

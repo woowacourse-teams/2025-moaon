@@ -1,9 +1,12 @@
 import searchIcon from "@assets/icons/search.svg";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import {
-  TECH_STACK_ENTRY,
+  type AllTechStackEntry,
   TECH_STACK_ICON_MAP,
   type TechStackKey,
 } from "@domains/filter/techStack";
+import { useGetSectorLocation } from "@domains/hooks/useGetSectorLocation";
+import { getTechStackBySector } from "@domains/utils/sectorHandlers";
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { type ChangeEvent, useRef, useState } from "react";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
@@ -14,8 +17,10 @@ import TechStackSearchResult from "./TechStackSearchResult/TechStackSearchResult
 const getFilteredListWithoutSelected = (
   keyword: string,
   selectedTechStacks: TechStackKey[],
+  sector: ArticleSectorKey,
 ) => {
-  const filteredList = TECH_STACK_ENTRY.filter(([_, { label }]) =>
+  const techStacks = getTechStackBySector(sector);
+  const filteredList = techStacks.filter(([_, { label }]) =>
     label.toLowerCase().startsWith(keyword.toLowerCase()),
   );
   const selectedTechStackLabels = selectedTechStacks.map(
@@ -33,13 +38,14 @@ interface TechStackSearchBarProps {
 function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [filterList, setFilterList] = useState<typeof TECH_STACK_ENTRY>([]);
+  const [filterList, setFilterList] = useState<AllTechStackEntry>([]);
   const { techStacks: selectedTechStacks } = useFilterParams();
   const { updateTechStackParam } = useFilterParams();
   const inputRef = useRef<HTMLInputElement>(null);
   useKeyDown({
     Escape: () => setIsOpen(false),
   });
+  const sector = useGetSectorLocation();
 
   const handleTechStackItemClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);
@@ -93,6 +99,7 @@ function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
     const filteredListWithoutSelected = getFilteredListWithoutSelected(
       keyword,
       selectedTechStacks,
+      sector,
     );
     setFilterList(filteredListWithoutSelected);
     setIsOpen(true);

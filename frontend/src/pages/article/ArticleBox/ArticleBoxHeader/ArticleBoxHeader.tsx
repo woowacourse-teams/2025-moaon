@@ -1,8 +1,10 @@
 import SortList from "@domains/components/SortList/SortList";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
+import FilterContainer from "@shared/components/FilterContainer/FilterContainer";
+import { useGetSectorLocation } from "../../../../domains/hooks/useGetSectorLocation";
 import { useUpdateSectorParams } from "../../hooks/useUpdateSectorParams";
+import { getArticleFilterList } from "../../utils/getArticleFilterList";
 import * as S from "./ArticleBoxHeader.styled";
-import FilterContainer from "./FilterContainer/FilterContainer";
 import SectorTab from "./SectorTab/SectorTab";
 
 interface ArticleBoxHeaderProps {
@@ -20,11 +22,13 @@ function ArticleBoxHeader({
 }: ArticleBoxHeaderProps) {
   const shouldShowSort = isLoading || totalCount > 0;
   const updateSectorParams = useUpdateSectorParams();
+  const sector = useGetSectorLocation();
+  const filterList = getArticleFilterList(sector);
 
   return (
     <S.ArticleHeader>
       <SectorTab onSelect={updateSectorParams} />
-      <FilterContainer onSelect={onSelectSort} />
+      <FilterContainer filterList={filterList} onSelect={onSelectSort} />
       <S.ArticleHeaderBox>
         <S.ArticleIntro>
           {totalCount > 0 && (
