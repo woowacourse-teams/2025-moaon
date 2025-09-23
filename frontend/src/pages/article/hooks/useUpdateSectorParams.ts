@@ -1,10 +1,11 @@
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import { useLocation, useNavigate } from "react-router";
 
 export const useUpdateSectorParams = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  return (newSector: string) => {
+  return (newSector: ArticleSectorKey) => {
     const params = new URLSearchParams();
     params.set("sector", newSector);
 

@@ -75,10 +75,11 @@ clean {
 sourceSets {
     main {
         java {
-            srcDir "$buildDir/generated/sources/annotationProcessor/main"
+            srcDir "$buildDir/generated/sources/annotationProcessor/java/main"
         }
     }
 }
+
 
 tasks.named('test', Test) {
     useJUnitPlatform()

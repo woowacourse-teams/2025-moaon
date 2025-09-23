@@ -1,7 +1,9 @@
 package moaon.backend.project.repository;
 
+import static moaon.backend.project.domain.QCategory.category;
 import static moaon.backend.project.domain.QProject.project;
 import static moaon.backend.project.domain.QProjectCategory.projectCategory;
+import static moaon.backend.techStack.domain.QProjectTechStack.projectTechStack;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -42,7 +44,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         return jpaQueryFactory
                 .selectFrom(project).distinct()
                 .leftJoin(project.categories, projectCategory)
-                .leftJoin(project.techStacks, techStack)
+                .leftJoin(project.techStacks, projectTechStack)
                 .where(
                         techStackNamesIn(techStackNames),
                         categoryNamesIn(categoryNames),
@@ -69,7 +71,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
                 .select(project.countDistinct())
                 .from(project)
                 .leftJoin(project.categories, projectCategory)
-                .leftJoin(project.techStacks, techStack)
+                .leftJoin(project.techStacks, projectTechStack)
                 .where(
                         techStackNamesIn(techStackNames),
                         categoryNamesIn(categoryNames),
@@ -95,7 +97,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         if (CollectionUtils.isEmpty(categoryNames)) {
             return null;
         }
-        return projectCategory.name.in(categoryNames);
+        return category.name.in(categoryNames);
     }
 
     private BooleanExpression hasExactTechStackCount(List<String> techStackNames) {
@@ -110,7 +112,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         if (CollectionUtils.isEmpty(categoryNames)) {
             return null;
         }
-        return projectCategory.name.countDistinct()
+        return category.name.countDistinct()
                 .eq((long) categoryNames.size());
     }
 

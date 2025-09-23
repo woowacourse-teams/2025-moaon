@@ -2,8 +2,8 @@ package moaon.backend.project.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
 
 public record ProjectDetailResponse(
@@ -34,7 +34,7 @@ public record ProjectDetailResponse(
                         .map(TechStack::getName)
                         .toList(),
                 project.getCategories().stream()
-                        .map(ProjectCategory::getName)
+                        .map(Category::getName)
                         .toList(),
                 project.getImages().getUrls(),
                 false, // TODO 로그인 추가 시 수정

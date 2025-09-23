@@ -1,6 +1,7 @@
 package moaon.backend.article.repository;
 
 import static moaon.backend.article.domain.QArticle.article;
+import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -44,7 +45,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         return jpaQueryFactory
                 .selectFrom(article).distinct()
-                .leftJoin(article.techStacks, techStack)
+                .leftJoin(article.techStacks, articleTechStack)
                 .where(
                         equalSector(sector),
                         containsAllTopics(topics),
@@ -69,7 +70,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return jpaQueryFactory
                 .select(article.countDistinct())
                 .from(article)
-                .leftJoin(article.techStacks, techStack)
+                .leftJoin(article.techStacks, articleTechStack)
                 .where(
                         equalSector(sector),
                         containsAllTopics(topics),
@@ -89,7 +90,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         return jpaQueryFactory.
                 selectFrom(article).distinct()
-                .leftJoin(article.techStacks, techStack)
+                .leftJoin(article.techStacks, articleTechStack)
                 .where(
                         article.project.id.eq(id),
                         equalSector(sector),

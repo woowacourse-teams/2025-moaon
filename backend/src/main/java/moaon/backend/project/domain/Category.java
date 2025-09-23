@@ -1,11 +1,10 @@
 package moaon.backend.project.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,20 +16,16 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class ProjectCategory {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Project project;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
-
-    public ProjectCategory(Project project, Category category) {
-        this.project = project;
-        this.category = category;
+    public Category(String name) {
+        this.name = name;
     }
 }
