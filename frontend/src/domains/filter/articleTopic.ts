@@ -1,3 +1,5 @@
+import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
+
 const TECH_COMMON_TOPICS = {
   adoption: {
     label: "기술 도입",
@@ -14,7 +16,6 @@ const TECH_COMMON_TOPICS = {
 };
 
 const FE_TOPICS = {
-  ...TECH_COMMON_TOPICS,
   state: {
     label: "상태 관리",
   },
@@ -30,10 +31,10 @@ const FE_TOPICS = {
   code: {
     label: "코드 품질",
   },
+  ...TECH_COMMON_TOPICS,
 } as const;
 
 const BE_TOPICS = {
-  ...TECH_COMMON_TOPICS,
   security: {
     label: "보안",
   },
@@ -55,10 +56,10 @@ const BE_TOPICS = {
   code: {
     label: "코드 품질",
   },
+  ...TECH_COMMON_TOPICS,
 } as const;
 
 const ANDROID_TOPICS = {
-  ...TECH_COMMON_TOPICS,
   uiux: {
     label: "UI/UX",
   },
@@ -80,10 +81,10 @@ const ANDROID_TOPICS = {
   code: {
     label: "코드 품질",
   },
+  ...TECH_COMMON_TOPICS,
 } as const;
 
 const IOS_TOPICS = {
-  ...TECH_COMMON_TOPICS,
   uiux: {
     label: "UI/UX",
   },
@@ -105,10 +106,10 @@ const IOS_TOPICS = {
   code: {
     label: "코드 품질",
   },
+  ...TECH_COMMON_TOPICS,
 } as const;
 
 const INFRA_TOPICS = {
-  ...TECH_COMMON_TOPICS,
   cicd: {
     label: "CI/CD",
   },
@@ -121,6 +122,7 @@ const INFRA_TOPICS = {
   network: {
     label: "네트워크",
   },
+  ...TECH_COMMON_TOPICS,
 } as const;
 
 const NON_TECH_TOPICS = {
@@ -151,3 +153,19 @@ const ALL_TOPICS = {
 } as const;
 
 export type AllTopicKey = keyof typeof ALL_TOPICS;
+export type AllTopicLabel =
+  (typeof ALL_TOPICS)[keyof typeof ALL_TOPICS]["label"];
+
+export const FRONTEND_TOPICS_ENTRY = typeSafeObjectEntries(FE_TOPICS);
+
+export const BACKEND_TOPICS_ENTRY = typeSafeObjectEntries(BE_TOPICS);
+
+export const ANDROID_TOPICS_ENTRY = typeSafeObjectEntries(ANDROID_TOPICS);
+
+export const IOS_TOPICS_ENTRY = typeSafeObjectEntries(IOS_TOPICS);
+
+export const INFRA_TOPICS_ENTRY = typeSafeObjectEntries(INFRA_TOPICS);
+
+export const NON_TECH_TOPICS_ENTRY = typeSafeObjectEntries(NON_TECH_TOPICS);
+
+export const ALL_TOPICS_ENTRY = typeSafeObjectEntries(ALL_TOPICS);
