@@ -1,7 +1,7 @@
 import type { TechStackKey } from "@domains/filter/techStack";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import { useRef } from "react";
-import { useAutoScrollOnFocus } from "../hooks/useAutoScrollOnFocus";
+import { useAutoScrollOnFocus } from "./hooks/useAutoScrollOnFocus";
 import * as S from "./TechStackSearchResult.styled";
 
 interface TechStackSearchResultProps {
