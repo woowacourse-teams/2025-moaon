@@ -2,10 +2,10 @@ import SortList from "@domains/components/SortList/SortList";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import FilterContainer from "@shared/components/FilterContainer/FilterContainer";
 import { useGetSectorLocation } from "../../../../domains/hooks/useGetSectorLocation";
-import { useUpdateSectorParams } from "../../hooks/useUpdateSectorParams";
-import { getArticleFilterList } from "../../utils/getArticleFilterList";
 import * as S from "./ArticleBoxHeader.styled";
+import { useUpdateSectorParams } from "./hooks/useUpdateSectorParams";
 import SectorTab from "./SectorTab/SectorTab";
+import { getArticleFilterList } from "./utils/getArticleFilterList";
 
 interface ArticleBoxHeaderProps {
   totalCount: number;
