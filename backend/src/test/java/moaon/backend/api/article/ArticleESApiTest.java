@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 import io.restassured.RestAssured;
-import java.nio.file.Paths;
 import java.util.List;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -27,14 +26,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import org.testcontainers.utility.MountableFile;
 
-@Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ArticleESApiTest {
 
@@ -45,20 +43,23 @@ public class ArticleESApiTest {
             .withEnv("xpack.security.transport.ssl.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
             .withEnv("xpack.security.enabled", "false")
-            .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && exec bin/elasticsearch")
-            .withCopyFileToContainer(
-                    MountableFile.forHostPath(Paths.get("src/test/resources/article_syn_test.txt")),
-                    "/usr/share/elasticsearch/config/user_dic/article_syn_dic.txt");
+            .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && exec bin/elasticsearch");
 
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private ElasticsearchOperations ops;
+
     @BeforeEach
     void setUp() {
-        RestAssured.port = port;
         await().untilAsserted(
                 () -> assertThat(container.isRunning()).isTrue()
         );
+        IndexOperations indexOps = ops.indexOps(ArticleDocument.class);
+        indexOps.createWithMapping();
+        indexOps.refresh();
+        RestAssured.port = port;
     }
 
     @Autowired
