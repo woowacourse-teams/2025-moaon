@@ -15,7 +15,6 @@ import moaon.backend.es.ArticleDocument;
 import moaon.backend.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
-import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import moaon.backend.techStack.repository.TechStackRepository;
@@ -28,7 +27,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -36,7 +34,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 
-@Import({QueryDslConfig.class})
 @Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ArticleESApiTest {
@@ -51,7 +48,7 @@ public class ArticleESApiTest {
             .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && exec bin/elasticsearch")
             .withCopyFileToContainer(
                     MountableFile.forHostPath(Paths.get("src/test/resources/article_syn_test.txt")),
-                    "/usr/share/elasticsearch/config/article_syn_dic.txt");
+                    "/usr/share/elasticsearch/config/user_dic/article_syn_dic.txt");
 
     @LocalServerPort
     private int port;

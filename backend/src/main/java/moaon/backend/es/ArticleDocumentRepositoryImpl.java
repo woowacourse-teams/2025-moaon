@@ -72,7 +72,7 @@ public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository 
 
     private Query sectorEquals(Sector sector) {
         return TermQuery.of(t -> t
-                .field("sector.keyword")
+                .field("sector")
                 .value(sector.name())
         )._toQuery();
     }
@@ -88,7 +88,7 @@ public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository 
 
     private Query topicEquals(Topic topic) {
         return TermQuery.of(t -> t
-                .field("topics.keyword")
+                .field("topics")
                 .value(topic.name())
         )._toQuery();
     }
@@ -104,7 +104,7 @@ public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository 
 
     private Query techStackEquals(String techStackName) {
         return TermQuery.of(t -> t
-                .field("techStacks.name.keyword")
+                .field("techStacks.name")
                 .value(techStackName)
         )._toQuery();
     }

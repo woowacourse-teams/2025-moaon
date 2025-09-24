@@ -17,7 +17,7 @@
     "filter": {
       "article_common_synonym": {
         "type": "synonym",
-        "synonyms_path": "article_syn_dic.txt"
+        "synonyms_path": "user_dic/article_syn_dic.txt"
       }
     }
   }
