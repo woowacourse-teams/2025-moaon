@@ -73,7 +73,7 @@ function ArticleSection({
       />
 
       {shouldShowSearchBar && (
-        <S.SearchHeader>
+        <S.SearchHeader hasArticles={hasArticles}>
           {hasArticles && (
             <S.ArticleDescriptionText>
               <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
