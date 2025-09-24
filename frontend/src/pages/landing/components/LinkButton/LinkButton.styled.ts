@@ -1,18 +1,7 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
 
-interface LinkButtonProps {
-  children: React.ReactNode;
-  href: string;
-}
-
-function LinkButtonProps({ children, href }: LinkButtonProps) {
-  return <LinkButtonStyle to={href}>{children}</LinkButtonStyle>;
-}
-
-export default LinkButtonProps;
-
-const LinkButtonStyle = styled(Link)`
+export const LinkButton = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;

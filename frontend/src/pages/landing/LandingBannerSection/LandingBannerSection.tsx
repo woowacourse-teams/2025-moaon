@@ -1,6 +1,6 @@
 import bannerPng from "@assets/images/landing-banner.png";
 import bannerWebp from "@assets/images/landing-banner.webp";
-import LinkButton from "../shared/LinkButton/LinkButton";
+import LinkButton from "../components/LinkButton/LinkButton";
 import * as S from "./LandingBannerSection.styled";
 
 function LandingBannerSection() {
