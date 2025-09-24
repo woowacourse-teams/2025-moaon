@@ -2,12 +2,14 @@ package moaon.backend.article.repository;
 
 import static moaon.backend.article.domain.QArticle.article;
 import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
-import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,55 +34,30 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private static final String BLANK = " ";
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-        List<String> techStackNames = queryCondition.techStackNames();
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
-        int limit = queryCondition.limit();
-
-        return jpaQueryFactory
-                .selectFrom(article).distinct()
-                .leftJoin(article.techStacks, articleTechStack)
-                .where(
-                        equalSector(sector),
-                        containsAllTopics(topics),
-                        techStackNamesIn(techStackNames),
-                        satisfiesMatchScore(searchKeyword),
-                        applyCursor(articleCursor)
-                )
-                .having(hasExactTechStackCount(techStackNames))
-                .groupBy(article.id)
-                .orderBy(toOrderBy(sortBy))
-                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
-                .fetch();
+        // 조건에 따라 최적화된 메서드로 분기
+        if (hasTechStackFilter(queryCondition)) {
+            return findWithTechStackFilter(queryCondition);
+        }
+        if (hasTopicFilter(queryCondition)) {
+            return findWithTopicFilter(queryCondition);
+        }
+        return findWithBasicFilter(queryCondition);
     }
 
     @Override
     public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-        List<String> techStackNames = queryCondition.techStackNames();
-
-        return jpaQueryFactory
-                .select(article.countDistinct())
-                .from(article)
-                .leftJoin(article.techStacks, articleTechStack)
-                .where(
-                        equalSector(sector),
-                        containsAllTopics(topics),
-                        techStackNamesIn(techStackNames),
-                        satisfiesMatchScore(searchKeyword)
-                )
-                .having(hasExactTechStackCount(techStackNames))
-                .groupBy(article.id)
-                .fetch()
-                .size();
+        // 조건에 따라 최적화된 카운트 메서드로 분기
+        if (hasTechStackFilter(queryCondition)) {
+            return countWithTechStackFilter(queryCondition);
+        }
+        if (hasTopicFilter(queryCondition)) {
+            return countWithTopicFilter(queryCondition);
+        }
+        return countWithBasicFilter(queryCondition);
     }
 
     @Override
@@ -106,6 +83,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return article.sector.eq(sector);
     }
 
+
     private BooleanExpression containsAllTopics(List<Topic> topics) {
         if (CollectionUtils.isEmpty(topics)) {
             return null;
@@ -116,20 +94,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .orElse(null);
     }
 
-    private BooleanExpression techStackNamesIn(List<String> techStackNames) {
-        if (CollectionUtils.isEmpty(techStackNames)) {
-            return null;
-        }
-        return techStack.name.in(techStackNames);
-    }
-
-    private BooleanExpression hasExactTechStackCount(List<String> techStackNames) {
-        if (CollectionUtils.isEmpty(techStackNames)) {
-            return null;
-        }
-        return techStack.name.countDistinct()
-                .eq((long) techStackNames.size());
-    }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
@@ -171,5 +135,246 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
 
         return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
+    }
+
+    private OrderSpecifier<?>[] toOrderByWithSector(ArticleSortType sortBy, Sector sector) {
+        if (sector == null) {
+            return toOrderBy(sortBy);
+        }
+
+        if (sortBy == ArticleSortType.CLICKS) {
+            return new OrderSpecifier<?>[]{
+                    article.sector.asc(),
+                    article.clicks.desc(), 
+                    article.id.desc()
+            };
+        }
+
+        return new OrderSpecifier<?>[]{
+                article.sector.asc(),
+                article.createdAt.desc(), 
+                article.id.desc()
+        };
+    }
+
+    // 조건 분기를 위한 헬퍼 메서드들
+    private boolean hasTechStackFilter(ArticleQueryCondition queryCondition) {
+        return !CollectionUtils.isEmpty(queryCondition.techStackNames());
+    }
+
+    private boolean hasTopicFilter(ArticleQueryCondition queryCondition) {
+        return !CollectionUtils.isEmpty(queryCondition.topics());
+    }
+
+    // TechStack 필터링을 위한 최적화된 메서드 (JOIN 서브쿼리 방식 - 네이티브 쿼리)
+    @Override
+    public List<Article> findWithTechStackFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<String> techStackNames = queryCondition.techStackNames();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+        int limit = queryCondition.limit();
+
+        // 동적 네이티브 쿼리 빌더
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT a1_0.id, a1_0.article_url, a1_0.clicks, a1_0.content, ");
+        sql.append("a1_0.created_at, a1_0.project_id, a1_0.sector, a1_0.summary, ");
+        sql.append("a1_0.title, a1_0.updated_at ");
+        sql.append("FROM article a1_0 ");
+        sql.append("JOIN ( ");
+        sql.append("    SELECT ts1_0.article_id ");
+        sql.append("    FROM article_tech_stack ts1_0 ");
+        sql.append("    JOIN tech_stack ts2_0 ON ts2_0.id = ts1_0.tech_stack_id ");
+        sql.append("    WHERE ts2_0.name IN (:techStackNames) ");
+        sql.append("    GROUP BY ts1_0.article_id ");
+        sql.append("    HAVING COUNT(DISTINCT ts1_0.tech_stack_id) = :techStackCount ");
+        sql.append(") AS filtered_articles ON a1_0.id = filtered_articles.article_id ");
+        sql.append("WHERE 1=1 ");
+
+        // WHERE 조건 추가
+        if (sector != null) {
+            sql.append("AND a1_0.sector = :sector ");
+        }
+        
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            sql.append("AND MATCH(a1_0.title, a1_0.summary, a1_0.content) AGAINST(:searchQuery IN BOOLEAN MODE) ");
+        }
+
+        // Cursor 조건 추가
+        if (articleCursor != null) {
+            if (sortBy == ArticleSortType.CLICKS) {
+                sql.append("AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ");
+            } else {
+                sql.append("AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ");
+            }
+        }
+
+        // ORDER BY 추가
+        sql.append("ORDER BY ");
+        if (sector != null) {
+            sql.append("a1_0.sector ASC, ");
+        }
+        if (sortBy == ArticleSortType.CLICKS) {
+            sql.append("a1_0.clicks DESC, ");
+        } else {
+            sql.append("a1_0.created_at DESC, ");
+        }
+        sql.append("a1_0.id DESC ");
+        sql.append("LIMIT :limit");
+
+        Query query = entityManager.createNativeQuery(sql.toString(), Article.class);
+        
+        // 파라미터 설정
+        query.setParameter("techStackNames", techStackNames);
+        query.setParameter("techStackCount", techStackNames.size());
+        
+        if (sector != null) {
+            query.setParameter("sector", sector.name());
+        }
+        
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            query.setParameter("searchQuery", formatSearchKeyword(searchKeyword));
+        }
+        
+        if (articleCursor != null) {
+            if (sortBy == ArticleSortType.CLICKS) {
+                query.setParameter("cursorClicks", articleCursor.getSortValue());
+                query.setParameter("cursorId", articleCursor.getLastId());
+            } else {
+                query.setParameter("cursorCreatedAt", articleCursor.getSortValue());
+                query.setParameter("cursorId", articleCursor.getLastId());
+            }
+        }
+        
+        query.setParameter("limit", limit + FETCH_EXTRA_FOR_HAS_NEXT);
+
+        @SuppressWarnings("unchecked")
+        List<Article> result = query.getResultList();
+        return result;
+    }
+
+    @Override
+    public long countWithTechStackFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<String> techStackNames = queryCondition.techStackNames();
+
+        // 동적 네이티브 카운트 쿼리 빌더
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT COUNT(*) ");
+        sql.append("FROM article a1_0 ");
+        sql.append("JOIN ( ");
+        sql.append("    SELECT ts1_0.article_id ");
+        sql.append("    FROM article_tech_stack ts1_0 ");
+        sql.append("    JOIN tech_stack ts2_0 ON ts2_0.id = ts1_0.tech_stack_id ");
+        sql.append("    WHERE ts2_0.name IN (:techStackNames) ");
+        sql.append("    GROUP BY ts1_0.article_id ");
+        sql.append("    HAVING COUNT(DISTINCT ts1_0.tech_stack_id) = :techStackCount ");
+        sql.append(") AS filtered_articles ON a1_0.id = filtered_articles.article_id ");
+        sql.append("WHERE 1=1 ");
+
+        // WHERE 조건 추가
+        if (sector != null) {
+            sql.append("AND a1_0.sector = :sector ");
+        }
+        
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            sql.append("AND MATCH(a1_0.title, a1_0.summary, a1_0.content) AGAINST(:searchQuery IN BOOLEAN MODE) ");
+        }
+
+        Query query = entityManager.createNativeQuery(sql.toString());
+        
+        // 파라미터 설정
+        query.setParameter("techStackNames", techStackNames);
+        query.setParameter("techStackCount", techStackNames.size());
+        
+        if (sector != null) {
+            query.setParameter("sector", sector.name());
+        }
+        
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            query.setParameter("searchQuery", formatSearchKeyword(searchKeyword));
+        }
+
+        Object result = query.getSingleResult();
+        return ((Number) result).longValue();
+    }
+
+    // Topic 필터링을 위한 최적화된 메서드 (WHERE IN 서브쿼리 방식)
+    @Override
+    public List<Article> findWithTopicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+        int limit = queryCondition.limit();
+
+        return jpaQueryFactory
+                .selectFrom(article)
+                .where(
+                        equalSector(sector),
+                        containsAllTopics(topics),
+                        satisfiesMatchScore(searchKeyword),
+                        applyCursor(articleCursor)
+                )
+                .orderBy(toOrderByWithSector(sortBy, sector))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+    }
+
+    @Override
+    public long countWithTopicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
+
+        return jpaQueryFactory
+                .select(article.count())
+                .from(article)
+                .where(
+                        equalSector(sector),
+                        containsAllTopics(topics),
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .fetchOne();
+    }
+
+
+    // 기본 필터링을 위한 메서드 (techStacks, topics 조건이 없을 때)
+    @Override
+    public List<Article> findWithBasicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+        int limit = queryCondition.limit();
+
+        return jpaQueryFactory
+                .selectFrom(article)
+                .where(
+                        equalSector(sector),
+                        satisfiesMatchScore(searchKeyword),
+                        applyCursor(articleCursor)
+                )
+                .orderBy(toOrderByWithSector(sortBy, sector))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+    }
+
+    @Override
+    public long countWithBasicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+
+        return jpaQueryFactory
+                .select(article.count())
+                .from(article)
+                .where(
+                        equalSector(sector),
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .fetchOne();
     }
 }

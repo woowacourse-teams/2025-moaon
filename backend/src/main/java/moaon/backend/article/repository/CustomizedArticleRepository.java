@@ -12,4 +12,16 @@ public interface CustomizedArticleRepository {
     long countWithSearchCondition(ArticleQueryCondition queryCondition);
 
     List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition);
+
+    List<Article> findWithTechStackFilter(ArticleQueryCondition queryCondition);
+
+    List<Article> findWithTopicFilter(ArticleQueryCondition queryCondition);
+
+    List<Article> findWithBasicFilter(ArticleQueryCondition queryCondition);
+
+    long countWithTechStackFilter(ArticleQueryCondition queryCondition);
+
+    long countWithTopicFilter(ArticleQueryCondition queryCondition);
+
+    long countWithBasicFilter(ArticleQueryCondition queryCondition);
 }
