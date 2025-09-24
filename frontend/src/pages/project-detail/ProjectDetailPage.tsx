@@ -1,11 +1,11 @@
 import { useMeta } from "@shared/hooks/useMeta";
 import { useParams } from "react-router";
-import ArticleSection from "./components/ArticleSection/ArticleSection";
-import Carousel from "./components/Carousel/Carousel";
-import useProjectDetailData from "./components/hooks/useProjectDetailData";
-import OverviewSection from "./components/OverviewSection/OverviewSection";
-import TechStacksSection from "./components/TechStacksSection/TechStacksSection";
-import TitleSection from "./components/TitleSection/TitleSection";
+import ArticleSection from "./ArticleSection/ArticleSection";
+import Carousel from "./Carousel/Carousel";
+import useProjectDetailData from "./hooks/useProjectDetailData";
+import OverviewSection from "./OverviewSection/OverviewSection";
+import TechStacksSection from "./TechStacksSection/TechStacksSection";
+import TitleSection from "./TitleSection/TitleSection";
 
 function ProjectDetailPage() {
   const { id } = useParams();
