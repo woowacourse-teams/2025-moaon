@@ -9,9 +9,12 @@ import static moaon.backend.techStack.domain.QTechStack.techStack;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLSubQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cursor.Cursor;
@@ -20,7 +23,6 @@ import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,7 +34,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
     public List<Project> findWithSearchConditions(ProjectQueryCondition condition) {
         SearchKeyword searchKeyword = condition.search();
         List<String> techStackNames = condition.techStackNames();
@@ -42,20 +43,13 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         int limit = condition.limit();
 
         return jpaQueryFactory
-                .selectFrom(project).distinct()
-                .leftJoin(project.categories, projectCategory)
-                .leftJoin(project.techStacks, projectTechStack)
+                .selectFrom(project)
                 .where(
-                        techStackNamesIn(techStackNames),
-                        categoryNamesIn(categoryNames),
-                        satisfiesMatchScore(searchKeyword),
-                        applyCursor(cursor)
+                        hasTechStacks(techStackNames),
+                        hasCategories(categoryNames),
+                        applyCursor(cursor),
+                        satisfiesMatchScore(searchKeyword)
                 )
-                .having(
-                        hasExactTechStackCount(techStackNames),
-                        hasExactCategoryCount(categoryNames)
-                )
-                .groupBy(project.id)
                 .orderBy(toOrderBy(sortBy))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
@@ -67,53 +61,47 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         List<String> techStackNames = condition.techStackNames();
         List<String> categoryNames = condition.categoryNames();
 
-        return jpaQueryFactory
+        return Optional.ofNullable(jpaQueryFactory
                 .select(project.countDistinct())
                 .from(project)
-                .leftJoin(project.categories, projectCategory)
-                .leftJoin(project.techStacks, projectTechStack)
                 .where(
-                        techStackNamesIn(techStackNames),
-                        categoryNamesIn(categoryNames),
+                        hasTechStacks(techStackNames),
+                        hasCategories(categoryNames),
                         satisfiesMatchScore(searchKeyword)
                 )
-                .having(
-                        hasExactTechStackCount(techStackNames),
-                        hasExactCategoryCount(categoryNames)
-                )
-                .groupBy(project.id)
-                .fetch()
-                .size();
+                .fetchFirst()).orElse(0L);
     }
 
-    private BooleanExpression techStackNamesIn(List<String> techStackNames) {
-        if (CollectionUtils.isEmpty(techStackNames)) {
+    private BooleanExpression hasTechStacks(List<String> names) {
+        if (names == null || names.isEmpty()) {
             return null;
         }
-        return techStack.name.in(techStackNames);
+
+        JPQLSubQuery<Long> techStackSubQuery = JPAExpressions
+                .select(projectTechStack.project.id)
+                .from(projectTechStack)
+                .join(projectTechStack.techStack, techStack)
+                .where(techStack.name.in(names))
+                .groupBy(projectTechStack.project.id)
+                .having(projectTechStack.techStack.countDistinct().eq((long) names.size()));
+
+        return project.id.in(techStackSubQuery);
     }
 
-    private BooleanExpression categoryNamesIn(List<String> categoryNames) {
-        if (CollectionUtils.isEmpty(categoryNames)) {
+    private BooleanExpression hasCategories(List<String> names) {
+        if (names == null || names.isEmpty()) {
             return null;
         }
-        return category.name.in(categoryNames);
-    }
 
-    private BooleanExpression hasExactTechStackCount(List<String> techStackNames) {
-        if (CollectionUtils.isEmpty(techStackNames)) {
-            return null;
-        }
-        return techStack.name.countDistinct()
-                .eq((long) techStackNames.size());
-    }
+        JPQLSubQuery<Long> categorySubQuery = JPAExpressions
+                .select(projectCategory.project.id)
+                .from(projectCategory)
+                .join(projectCategory.category, category)
+                .where(category.name.in(names))
+                .groupBy(projectCategory.project.id)
+                .having(projectCategory.category.countDistinct().eq((long) names.size()));
 
-    private BooleanExpression hasExactCategoryCount(List<String> categoryNames) {
-        if (CollectionUtils.isEmpty(categoryNames)) {
-            return null;
-        }
-        return category.name.countDistinct()
-                .eq((long) categoryNames.size());
+        return project.id.in(categorySubQuery);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
