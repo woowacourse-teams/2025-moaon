@@ -6,7 +6,6 @@ import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -38,7 +37,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        // 조건에 따라 최적화된 메서드로 분기
         if (hasTechStackFilter(queryCondition)) {
             return findWithTechStackFilter(queryCondition);
         }
@@ -50,7 +48,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
-        // 조건에 따라 최적화된 카운트 메서드로 분기
         if (hasTechStackFilter(queryCondition)) {
             return countWithTechStackFilter(queryCondition);
         }
@@ -74,6 +71,113 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                         satisfiesMatchScore(searchKeyword)
                 )
                 .fetch();
+    }
+
+    @Override
+    public List<Article> findWithTechStackFilter(ArticleQueryCondition queryCondition) {
+        String selectClause = String.join("\n",
+                "SELECT a1_0.id, a1_0.article_url, a1_0.clicks, a1_0.content,",
+                "a1_0.created_at, a1_0.project_id, a1_0.sector, a1_0.summary,",
+                "a1_0.title, a1_0.updated_at");
+
+        String sql = String.join("\n",
+                selectClause,
+                buildCommonTechStackQuery(queryCondition),
+                buildOrderByClause(queryCondition),
+                "LIMIT :limit");
+
+        Query query = entityManager.createNativeQuery(sql, Article.class);
+        setCommonTechStackParameters(query, queryCondition);
+        query.setParameter("limit", queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public long countWithTechStackFilter(ArticleQueryCondition queryCondition) {
+        String sql = String.join(" ",
+                "SELECT COUNT(*)",
+                buildCommonTechStackQuery(queryCondition));
+
+        Query query = entityManager.createNativeQuery(sql);
+        setCommonTechStackParameters(query, queryCondition);
+
+        Object result = query.getSingleResult();
+        return ((Number) result).longValue();
+    }
+
+    @Override
+    public List<Article> findWithTopicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+        int limit = queryCondition.limit();
+
+        return jpaQueryFactory
+                .selectFrom(article)
+                .where(
+                        equalSector(sector),
+                        applyCursor(articleCursor),
+                        satisfiesMatchScore(searchKeyword),
+                        containsAllTopics(topics)
+                )
+                .orderBy(toOrderByWithSector(sortBy, sector))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+    }
+
+    @Override
+    public long countWithTopicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
+
+        return jpaQueryFactory
+                .select(article.count())
+                .from(article)
+                .where(
+                        equalSector(sector),
+                        containsAllTopics(topics),
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public List<Article> findWithBasicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+        int limit = queryCondition.limit();
+
+        return jpaQueryFactory
+                .selectFrom(article)
+                .where(
+                        equalSector(sector),
+                        applyCursor(articleCursor),
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .orderBy(toOrderByWithSector(sortBy, sector))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+    }
+
+    @Override
+    public long countWithBasicFilter(ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+
+        return jpaQueryFactory
+                .select(article.count())
+                .from(article)
+                .where(
+                        equalSector(sector),
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .fetchOne();
     }
 
     private BooleanExpression equalSector(Sector sector) {
@@ -129,14 +233,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return String.format("+%s*", keyword.toLowerCase());
     }
 
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
-        if (sortBy == ArticleSortType.CLICKS) {
-            return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
-        }
-
-        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
-    }
-
     private OrderSpecifier<?>[] toOrderByWithSector(ArticleSortType sortBy, Sector sector) {
         if (sector == null) {
             return toOrderBy(sortBy);
@@ -145,19 +241,26 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         if (sortBy == ArticleSortType.CLICKS) {
             return new OrderSpecifier<?>[]{
                     article.sector.asc(),
-                    article.clicks.desc(), 
+                    article.clicks.desc(),
                     article.id.desc()
             };
         }
 
         return new OrderSpecifier<?>[]{
                 article.sector.asc(),
-                article.createdAt.desc(), 
+                article.createdAt.desc(),
                 article.id.desc()
         };
     }
 
-    // 조건 분기를 위한 헬퍼 메서드들
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
+        if (sortBy == ArticleSortType.CLICKS) {
+            return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
+        }
+
+        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
+    }
+
     private boolean hasTechStackFilter(ArticleQueryCondition queryCondition) {
         return !CollectionUtils.isEmpty(queryCondition.techStackNames());
     }
@@ -166,51 +269,48 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return !CollectionUtils.isEmpty(queryCondition.topics());
     }
 
-    // TechStack 필터링을 위한 최적화된 메서드 (JOIN 서브쿼리 방식 - 네이티브 쿼리)
-    @Override
-    public List<Article> findWithTechStackFilter(ArticleQueryCondition queryCondition) {
+    private String buildCommonTechStackQuery(ArticleQueryCondition queryCondition) {
         SearchKeyword searchKeyword = queryCondition.search();
         Sector sector = queryCondition.sector();
-        List<String> techStackNames = queryCondition.techStackNames();
         ArticleSortType sortBy = queryCondition.sortBy();
         Cursor<?> articleCursor = queryCondition.articleCursor();
-        int limit = queryCondition.limit();
 
-        // 동적 네이티브 쿼리 빌더
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT a1_0.id, a1_0.article_url, a1_0.clicks, a1_0.content, ");
-        sql.append("a1_0.created_at, a1_0.project_id, a1_0.sector, a1_0.summary, ");
-        sql.append("a1_0.title, a1_0.updated_at ");
-        sql.append("FROM article a1_0 ");
-        sql.append("JOIN ( ");
-        sql.append("    SELECT ts1_0.article_id ");
-        sql.append("    FROM article_tech_stack ts1_0 ");
-        sql.append("    JOIN tech_stack ts2_0 ON ts2_0.id = ts1_0.tech_stack_id ");
-        sql.append("    WHERE ts2_0.name IN (:techStackNames) ");
-        sql.append("    GROUP BY ts1_0.article_id ");
-        sql.append("    HAVING COUNT(DISTINCT ts1_0.tech_stack_id) = :techStackCount ");
-        sql.append(") AS filtered_articles ON a1_0.id = filtered_articles.article_id ");
-        sql.append("WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder(300);
+        sql.append("FROM article a1_0 ")
+                .append("JOIN ( ")
+                .append("    SELECT ts1_0.article_id ")
+                .append("    FROM article_tech_stack ts1_0 ")
+                .append("    JOIN tech_stack ts2_0 ON ts2_0.id = ts1_0.tech_stack_id ")
+                .append("    WHERE ts2_0.name IN (:techStackNames) ")
+                .append("    GROUP BY ts1_0.article_id ")
+                .append("    HAVING COUNT(DISTINCT ts1_0.tech_stack_id) = :techStackCount ")
+                .append(") AS filtered_articles ON a1_0.id = filtered_articles.article_id ")
+                .append("WHERE 1=1 ");
 
-        // WHERE 조건 추가
         if (sector != null) {
             sql.append("AND a1_0.sector = :sector ");
         }
-        
         if (searchKeyword != null && searchKeyword.hasValue()) {
             sql.append("AND MATCH(a1_0.title, a1_0.summary, a1_0.content) AGAINST(:searchQuery IN BOOLEAN MODE) ");
         }
-
-        // Cursor 조건 추가
         if (articleCursor != null) {
             if (sortBy == ArticleSortType.CLICKS) {
-                sql.append("AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ");
+                sql.append(
+                        "AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ");
             } else {
-                sql.append("AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ");
+                sql.append(
+                        "AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ");
             }
         }
 
-        // ORDER BY 추가
+        return sql.toString();
+    }
+
+    private String buildOrderByClause(ArticleQueryCondition queryCondition) {
+        Sector sector = queryCondition.sector();
+        ArticleSortType sortBy = queryCondition.sortBy();
+
+        StringBuilder sql = new StringBuilder(100);
         sql.append("ORDER BY ");
         if (sector != null) {
             sql.append("a1_0.sector ASC, ");
@@ -221,22 +321,26 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
             sql.append("a1_0.created_at DESC, ");
         }
         sql.append("a1_0.id DESC ");
-        sql.append("LIMIT :limit");
 
-        Query query = entityManager.createNativeQuery(sql.toString(), Article.class);
-        
-        // 파라미터 설정
+        return sql.toString();
+    }
+
+    private void setCommonTechStackParameters(Query query, ArticleQueryCondition queryCondition) {
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        List<String> techStackNames = queryCondition.techStackNames();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+
         query.setParameter("techStackNames", techStackNames);
         query.setParameter("techStackCount", techStackNames.size());
-        
+
         if (sector != null) {
             query.setParameter("sector", sector.name());
         }
-        
         if (searchKeyword != null && searchKeyword.hasValue()) {
             query.setParameter("searchQuery", formatSearchKeyword(searchKeyword));
         }
-        
         if (articleCursor != null) {
             if (sortBy == ArticleSortType.CLICKS) {
                 query.setParameter("cursorClicks", articleCursor.getSortValue());
@@ -246,135 +350,5 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 query.setParameter("cursorId", articleCursor.getLastId());
             }
         }
-        
-        query.setParameter("limit", limit + FETCH_EXTRA_FOR_HAS_NEXT);
-
-        @SuppressWarnings("unchecked")
-        List<Article> result = query.getResultList();
-        return result;
-    }
-
-    @Override
-    public long countWithTechStackFilter(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<String> techStackNames = queryCondition.techStackNames();
-
-        // 동적 네이티브 카운트 쿼리 빌더
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT COUNT(*) ");
-        sql.append("FROM article a1_0 ");
-        sql.append("JOIN ( ");
-        sql.append("    SELECT ts1_0.article_id ");
-        sql.append("    FROM article_tech_stack ts1_0 ");
-        sql.append("    JOIN tech_stack ts2_0 ON ts2_0.id = ts1_0.tech_stack_id ");
-        sql.append("    WHERE ts2_0.name IN (:techStackNames) ");
-        sql.append("    GROUP BY ts1_0.article_id ");
-        sql.append("    HAVING COUNT(DISTINCT ts1_0.tech_stack_id) = :techStackCount ");
-        sql.append(") AS filtered_articles ON a1_0.id = filtered_articles.article_id ");
-        sql.append("WHERE 1=1 ");
-
-        // WHERE 조건 추가
-        if (sector != null) {
-            sql.append("AND a1_0.sector = :sector ");
-        }
-        
-        if (searchKeyword != null && searchKeyword.hasValue()) {
-            sql.append("AND MATCH(a1_0.title, a1_0.summary, a1_0.content) AGAINST(:searchQuery IN BOOLEAN MODE) ");
-        }
-
-        Query query = entityManager.createNativeQuery(sql.toString());
-        
-        // 파라미터 설정
-        query.setParameter("techStackNames", techStackNames);
-        query.setParameter("techStackCount", techStackNames.size());
-        
-        if (sector != null) {
-            query.setParameter("sector", sector.name());
-        }
-        
-        if (searchKeyword != null && searchKeyword.hasValue()) {
-            query.setParameter("searchQuery", formatSearchKeyword(searchKeyword));
-        }
-
-        Object result = query.getSingleResult();
-        return ((Number) result).longValue();
-    }
-
-    // Topic 필터링을 위한 최적화된 메서드 (WHERE IN 서브쿼리 방식)
-    @Override
-    public List<Article> findWithTopicFilter(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
-        int limit = queryCondition.limit();
-
-        return jpaQueryFactory
-                .selectFrom(article)
-                .where(
-                        equalSector(sector),
-                        containsAllTopics(topics),
-                        satisfiesMatchScore(searchKeyword),
-                        applyCursor(articleCursor)
-                )
-                .orderBy(toOrderByWithSector(sortBy, sector))
-                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
-                .fetch();
-    }
-
-    @Override
-    public long countWithTopicFilter(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-
-        return jpaQueryFactory
-                .select(article.count())
-                .from(article)
-                .where(
-                        equalSector(sector),
-                        containsAllTopics(topics),
-                        satisfiesMatchScore(searchKeyword)
-                )
-                .fetchOne();
-    }
-
-
-    // 기본 필터링을 위한 메서드 (techStacks, topics 조건이 없을 때)
-    @Override
-    public List<Article> findWithBasicFilter(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
-        int limit = queryCondition.limit();
-
-        return jpaQueryFactory
-                .selectFrom(article)
-                .where(
-                        equalSector(sector),
-                        satisfiesMatchScore(searchKeyword),
-                        applyCursor(articleCursor)
-                )
-                .orderBy(toOrderByWithSector(sortBy, sector))
-                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
-                .fetch();
-    }
-
-    @Override
-    public long countWithBasicFilter(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-
-        return jpaQueryFactory
-                .select(article.count())
-                .from(article)
-                .where(
-                        equalSector(sector),
-                        satisfiesMatchScore(searchKeyword)
-                )
-                .fetchOne();
     }
 }
