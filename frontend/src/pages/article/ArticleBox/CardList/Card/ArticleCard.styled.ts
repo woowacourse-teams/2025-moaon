@@ -87,7 +87,7 @@ export const ProjectLinkButton = styled.div`
   }
 `;
 
-export const BadgeList = styled.div`
+export const BadgeList = styled.ul`
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;

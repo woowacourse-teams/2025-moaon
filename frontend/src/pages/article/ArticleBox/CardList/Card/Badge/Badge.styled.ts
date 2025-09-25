@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const BadgeContainer = styled.div`
+export const BadgeContainer = styled.li`
   background-color: #e9e9e9ff;
   height: 1.8rem;
   padding: 0.4rem 1rem;
