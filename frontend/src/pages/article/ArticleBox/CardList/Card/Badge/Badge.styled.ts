@@ -11,5 +11,4 @@ export const BadgeContainer = styled.div`
 export const BadgeText = styled.span`
   font-size: 0.875rem;
   color: #1c1c1cff;
-  line-height: 1;
 `;
