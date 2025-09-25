@@ -38,7 +38,7 @@ function ArticleCard({ article }: CardProps) {
 
   const navigate = useNavigate();
   const { postArticleClick } = useArticleClick();
-  const { label, bgColor } = ARTICLE_SECTOR_MAP[sector];
+  const { label, color } = ARTICLE_SECTOR_MAP[sector];
 
   const handleProjectClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -68,7 +68,7 @@ function ArticleCard({ article }: CardProps) {
             onClick={handleProjectClick}
             aria-label={`${projectTitle} 프로젝트 페이지로 이동`}
           >
-            <ProjectTitle projectTitle={projectTitle} bgColor={bgColor} />
+            <ProjectTitle projectTitle={projectTitle} color={color} />
           </S.ProjectLinkButton>
         )}
         <S.CardTitle>{title}</S.CardTitle>

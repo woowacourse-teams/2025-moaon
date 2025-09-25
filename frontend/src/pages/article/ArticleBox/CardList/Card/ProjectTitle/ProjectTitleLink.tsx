@@ -3,14 +3,14 @@ import * as S from "./ProjectTitle.styled";
 
 interface ProjectTitleProps {
   projectTitle: string;
-  bgColor: string;
+  color: string;
 }
 
-const ProjectTitle = ({ projectTitle, bgColor }: ProjectTitleProps) => {
+const ProjectTitle = ({ projectTitle, color }: ProjectTitleProps) => {
   return (
-    <S.ProjectTitle bgColor={bgColor}>
+    <S.ProjectTitle color={color}>
       {projectTitle}
-      <ArrowIcon color={bgColor} direction="right" />
+      <ArrowIcon color={color} direction="right" />
     </S.ProjectTitle>
   );
 };
