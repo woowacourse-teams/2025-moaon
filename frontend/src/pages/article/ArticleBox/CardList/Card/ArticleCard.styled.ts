@@ -61,33 +61,26 @@ export const CardClickCount = styled.span`
   color: #595858;
 `;
 
-const LinkStyle = `
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid transparent;
-  color: #fff;
-  background-image: linear-gradient(to right, white 0 100%);
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: 0% 1px;
-  transition: color .25s ease, background-size .25s ease;
-
-  &:hover {
-    color: darkgray;
-    background-size: 100% 1px;
-  }
-`;
-
 export const ArticleLink = styled.a`
   cursor: pointer;
-  ${LinkStyle}
 `;
 
 export const ProjectLink = styled(Link)`
-  display: block;
-  width: 100%;
-  ${LinkStyle}
+  position: relative;
+  padding: 0.4rem 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0%;
+    background-color: #646464ff;
+    transition: width 0.25s ease;
+  }
+
+  &:hover::after {
+    width: 90%;
+  }
 `;

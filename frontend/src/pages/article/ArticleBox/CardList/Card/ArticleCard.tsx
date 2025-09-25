@@ -8,7 +8,7 @@ import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/Tech
 import * as S from "./ArticleCard.styled";
 import Badge from "./Badge/Badge";
 import useArticleClick from "./hooks/useArticleClick";
-import ProjectTitleLink from "./ProjectTitleLink/ProjectTitleLink";
+import ProjectTitle from "./ProjectTitle/ProjectTitleLink";
 
 interface CardProps {
   article: Article | ProjectArticle;
@@ -52,7 +52,7 @@ function ArticleCard({ article }: CardProps) {
       </Badge> */}
       {projectTitle && (
         <S.ProjectLink to={`/project/${projectId}`}>
-          <ProjectTitleLink projectTitle={projectTitle} bgColor={bgColor} />
+          <ProjectTitle projectTitle={projectTitle} bgColor={bgColor} />
         </S.ProjectLink>
       )}
       <S.CardTitle>{title}</S.CardTitle>
