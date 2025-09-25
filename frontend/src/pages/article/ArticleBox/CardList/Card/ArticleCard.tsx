@@ -1,12 +1,14 @@
 import eyeIcon from "@assets/icons/eye.svg";
-import OutgoingLinkIcon from "@assets/icons/outgoing-link.svg";
+import redHeartIcon from "@assets/icons/pink-heart.svg";
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
+import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import type { Article } from "@/apis/articles/articles.type";
 import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
 import * as S from "./ArticleCard.styled";
 import Badge from "./Badge/Badge";
 import useArticleClick from "./hooks/useArticleClick";
+import ProjectTitleLink from "./ProjectTitleLink/ProjectTitleLink";
 
 interface CardProps {
   article: Article | ProjectArticle;
@@ -39,7 +41,7 @@ function ArticleCard({ article }: CardProps) {
   const { label, bgColor } = ARTICLE_SECTOR_MAP[sector];
   return (
     <S.CardContainer>
-      <Badge bgColor={bgColor}>
+      {/* <Badge bgColor={bgColor}>
         {isArticleList ? (
           <>
             {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
@@ -47,7 +49,12 @@ function ArticleCard({ article }: CardProps) {
         ) : (
           label
         )}
-      </Badge>
+      </Badge> */}
+      {projectTitle && (
+        <S.ProjectLink to={`/project/${projectId}`}>
+          <ProjectTitleLink projectTitle={projectTitle} bgColor={bgColor} />
+        </S.ProjectLink>
+      )}
       <S.CardTitle>{title}</S.CardTitle>
       <S.CardSummary>{summary}</S.CardSummary>
       <S.CardInfoBox>
@@ -57,7 +64,7 @@ function ArticleCard({ article }: CardProps) {
           <S.CardClickCount>{clicks > 999 ? "999+" : clicks}</S.CardClickCount>
         </S.CardClickBox>
       </S.CardInfoBox>
-      <S.BackDropBox className="back-drop-box">
+      {/* <S.BackDropBox className="back-drop-box">
         <S.ArticleLink
           href={url}
           target="_blank"
@@ -71,7 +78,7 @@ function ArticleCard({ article }: CardProps) {
             프로젝트 <img src={OutgoingLinkIcon} alt="아웃고잉 링크 아이콘" />
           </S.ProjectLink>
         )}
-      </S.BackDropBox>
+      </S.BackDropBox> */}
     </S.CardContainer>
   );
 }

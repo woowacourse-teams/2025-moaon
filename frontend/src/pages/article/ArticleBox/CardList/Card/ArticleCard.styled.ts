@@ -109,9 +109,3 @@ export const ArticleLink = styled.a`
 export const ProjectLink = styled(Link)`
   ${LinkStyle}
 `;
-
-export const ArrowText = styled.span`
-  position: relative;
-  top: -0.0625rem;
-  display: inline-block;
-`;
