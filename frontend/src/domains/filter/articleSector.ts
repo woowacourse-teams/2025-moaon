@@ -6,15 +6,15 @@ export const ARTICLE_SECTOR_MAP = {
     bgColor: "#6c757d",
   },
   fe: {
-    label: "FE",
+    label: "프론트엔드",
     bgColor: "#3498db",
   },
   be: {
-    label: "BE",
+    label: "백엔드",
     bgColor: "#27ae60",
   },
   android: {
-    label: "Android",
+    label: "안드로이드",
     bgColor: "#f39c12",
   },
   ios: {
@@ -22,7 +22,7 @@ export const ARTICLE_SECTOR_MAP = {
     bgColor: "#e74c3c",
   },
   infra: {
-    label: "Infra",
+    label: "인프라",
     bgColor: "#47ccab",
   },
   nonTech: {
