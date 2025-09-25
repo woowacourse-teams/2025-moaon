@@ -21,7 +21,7 @@ spring:
     open-in-view: false
 
   elasticsearch:
-    uris: http://localhost:9200
+    uris: http://elastic:9200
 
 logging:
   pattern:
