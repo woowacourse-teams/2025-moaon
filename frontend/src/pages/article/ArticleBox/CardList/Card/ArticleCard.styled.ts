@@ -2,22 +2,6 @@ import styled from "@emotion/styled";
 import { Link } from "react-router";
 import { textOverflowEllipsis } from "@/styles/global.styled";
 
-export const BackDropBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(35, 35, 35, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
-`;
-
 export const CardContainer = styled.li`
   position: relative;
   border: 1px solid #d1d6dd;
@@ -29,12 +13,8 @@ export const CardContainer = styled.li`
   gap: 0.75rem;
   overflow: hidden;
   &:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
-    & > ${BackDropBox} {
-      opacity: 1;
-      visibility: visible;
-    }
+    transition: 0.25s linear;
+    box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
   }
 `;
 
