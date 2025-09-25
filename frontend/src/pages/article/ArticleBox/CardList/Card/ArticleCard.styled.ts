@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Link } from "react-router";
 import { textOverflowEllipsis } from "@/styles/global.styled";
 
 export const CardContainer = styled.li`
@@ -62,13 +61,22 @@ export const CardClickCount = styled.span`
   color: #595858;
 `;
 
-export const ArticleLink = styled.a`
+export const ArticleLink = styled.button`
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 100%;
+  text-align: left;
 `;
 
-export const ProjectLink = styled(Link)`
+export const ProjectLink = styled.a`
+  font-size: 1rem;
   position: relative;
   padding: 0.4rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
 
   &::after {
     content: "";

@@ -2,7 +2,7 @@ import eyeIcon from "@assets/icons/eye.svg";
 import redHeartIcon from "@assets/icons/pink-heart.svg";
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import { ALL_TOPICS } from "@domains/filter/articleTopic";
-import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
+import { useNavigate } from "react-router";
 import type { Article } from "@/apis/articles/articles.type";
 import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
@@ -39,16 +39,24 @@ function ArticleCard({ article }: CardProps) {
 
   const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_SECTOR_MAP[sector];
+
+  const navigate = useNavigate();
+
   return (
     <S.ArticleLink
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => postArticleClick(id)}
+      onClick={() => {
+        postArticleClick(id);
+        window.open(url, "_blank", "noopener,noreferrer");
+      }}
     >
       <S.CardContainer>
         {projectTitle && (
-          <S.ProjectLink to={`/project/${projectId}`}>
+          <S.ProjectLink
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/project/${projectId}`);
+            }}
+          >
             <ProjectTitle projectTitle={projectTitle} bgColor={bgColor} />
           </S.ProjectLink>
         )}
