@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
@@ -71,15 +72,16 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         Sector sector = queryCondition.sector();
         List<Topic> topics = queryCondition.topics();
 
-        return jpaQueryFactory
-                .select(article.count())
-                .from(article)
-                .where(
-                        equalSector(sector),
-                        satisfiesMatchScore(searchKeyword),
-                        containsAllTopics(topics)
-                )
-                .fetchOne();
+        return Optional.ofNullable(jpaQueryFactory
+                        .select(article.count())
+                        .from(article)
+                        .where(
+                                equalSector(sector),
+                                satisfiesMatchScore(searchKeyword),
+                                containsAllTopics(topics)
+                        )
+                        .fetchOne())
+                .orElse(0L);
     }
 
     @Override
@@ -103,14 +105,17 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 "SELECT a1_0.id, a1_0.article_url, a1_0.clicks, a1_0.content,",
                 "a1_0.created_at, a1_0.project_id, a1_0.sector, a1_0.summary,",
                 "a1_0.title, a1_0.updated_at",
-                buildFromAndJoinClause(),
+                buildTechStackJoinSubqueryClause(),
                 buildWhereClause(queryCondition),
+                buildWhereCursorClause(queryCondition),
                 buildOrderByClause(queryCondition),
                 "LIMIT :limit"
         );
 
         Query query = entityManager.createNativeQuery(sql, Article.class);
-        setTechStackParameters(query, queryCondition);
+        setTechStackJoinSubqueryParameters(query, queryCondition);
+        setWhereClauseParameters(query, queryCondition);
+        setWhereCursorParameters(query, queryCondition);
         query.setParameter("limit", queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT);
 
         return query.getResultList();
@@ -119,12 +124,13 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private long countWithTechStackFilter(ArticleQueryCondition queryCondition) {
         String sql = String.join("\n",
                 "SELECT COUNT(*)",
-                buildFromAndJoinClause(),
+                buildTechStackJoinSubqueryClause(),
                 buildWhereClause(queryCondition)
         );
 
         Query query = entityManager.createNativeQuery(sql);
-        setTechStackParameters(query, queryCondition);
+        setTechStackJoinSubqueryParameters(query, queryCondition);
+        setWhereClauseParameters(query, queryCondition);
 
         Object result = query.getSingleResult();
         return ((Number) result).longValue();
@@ -213,7 +219,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return !CollectionUtils.isEmpty(queryCondition.techStackNames());
     }
 
-    private String buildFromAndJoinClause() {
+    private String buildTechStackJoinSubqueryClause() {
         return "FROM article a1_0 " +
                 "JOIN ( " +
                 "    SELECT ts1_0.article_id " +
@@ -229,8 +235,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private String buildWhereClause(ArticleQueryCondition queryCondition) {
         SearchKeyword searchKeyword = queryCondition.search();
         Sector sector = queryCondition.sector();
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
         List<Topic> topics = queryCondition.topics();
 
         StringBuilder whereClause = new StringBuilder();
@@ -249,17 +253,18 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                         .append(") ");
             }
         }
-        if (articleCursor != null) {
-            if (sortBy == ArticleSortType.CLICKS) {
-                whereClause.append(
-                        "AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ");
-            } else {
-                whereClause.append(
-                        "AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ");
-            }
+        return whereClause.toString();
+    }
+
+    private String buildWhereCursorClause(ArticleQueryCondition queryCondition) {
+        if (queryCondition.articleCursor() == null) {
+            return null;
         }
 
-        return whereClause.toString();
+        if (queryCondition.sortBy() == ArticleSortType.CLICKS) {
+            return "AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ";
+        }
+        return "AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ";
     }
 
     private String buildOrderByClause(ArticleQueryCondition queryCondition) {
@@ -281,16 +286,18 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         return sql.toString();
     }
 
-    private void setTechStackParameters(Query query, ArticleQueryCondition queryCondition) {
+    private void setTechStackJoinSubqueryParameters(Query query, ArticleQueryCondition queryCondition) {
+        List<String> techStackNames = queryCondition.techStackNames();
+        if (!CollectionUtils.isEmpty(techStackNames)) {
+            query.setParameter("techStackNames", techStackNames);
+            query.setParameter("techStackCount", techStackNames.size());
+        }
+    }
+
+    private void setWhereClauseParameters(Query query, ArticleQueryCondition queryCondition) {
         SearchKeyword searchKeyword = queryCondition.search();
         Sector sector = queryCondition.sector();
-        List<String> techStackNames = queryCondition.techStackNames();
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
         List<Topic> topics = queryCondition.topics();
-
-        query.setParameter("techStackNames", techStackNames);
-        query.setParameter("techStackCount", techStackNames.size());
 
         if (sector != null) {
             query.setParameter("sector", sector.name());
@@ -303,6 +310,12 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 query.setParameter("topic" + i, topics.get(i).name());
             }
         }
+    }
+
+    private void setWhereCursorParameters(Query query, ArticleQueryCondition queryCondition) {
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+
         if (articleCursor != null) {
             if (sortBy == ArticleSortType.CLICKS) {
                 query.setParameter("cursorClicks", articleCursor.getSortValue());
