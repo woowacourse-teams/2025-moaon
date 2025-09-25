@@ -1,6 +1,7 @@
 package moaon.backend.es;
 
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleResponse;
@@ -25,7 +26,7 @@ public class ESController {
             @RequestParam(value = "sector", required = false) String sector,
             @RequestParam(value = "topics", required = false) List<String> topics,
             @RequestParam(value = "search", required = false) String query,
-            @RequestParam(value = "limit", defaultValue = "20") @Validated @Max(100) int limit,
+            @RequestParam(value = "limit", defaultValue = "20") @Validated @Min(1) @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ArticleESQuery articleESQuery = ArticleESQuery.from(query, sector, topics, techStacks, sortType, limit, cursor);
