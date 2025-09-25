@@ -104,7 +104,7 @@ public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository 
 
     private Query techStackEquals(String techStackName) {
         return TermQuery.of(t -> t
-                .field("techStacks.name")
+                .field("techStacks")
                 .value(techStackName)
         )._toQuery();
     }
@@ -112,7 +112,7 @@ public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository 
     private Query textMatches(SearchKeyword searchKeyword) {
         return MultiMatchQuery.of(m -> m
                 .query(searchKeyword.value())
-                .fields("title^3", "techStacks.name.text^2.5", "summary^2", "content^1")
+                .fields("title^3", "techStacks.text^2.5", "summary^2", "content^1")
         )._toQuery();
     }
 

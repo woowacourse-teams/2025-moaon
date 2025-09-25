@@ -1,10 +1,11 @@
 package moaon.backend.es;
 
+import static java.util.stream.Collectors.toSet;
+
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,10 +15,13 @@ import lombok.ToString;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
+import moaon.backend.techStack.domain.TechStack;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.InnerField;
+import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
 @Document(indexName = "articles")
@@ -48,8 +52,13 @@ public class ArticleDocument {
     @Field(type = FieldType.Keyword)
     private Set<Topic> topics;
 
-    @Field(type = FieldType.Object, normalizer = "lowercase")
-    private Set<TechStackField> techStacks;
+    @MultiField(
+            mainField = @Field(type = FieldType.Keyword),
+            otherFields = {
+                    @InnerField(suffix = "text", type = FieldType.Text, analyzer = "article_common_analyzer")
+            }
+    )
+    private Set<String> techStacks;
 
     @Field(type = FieldType.Integer)
     private int clicks;
@@ -64,7 +73,7 @@ public class ArticleDocument {
         this.content = article.getContent();
         this.sector = article.getSector();
         this.topics = new HashSet<>(article.getTopics());
-        this.techStacks = article.getTechStacks().stream().map(TechStackField::new).collect(Collectors.toSet());
+        this.techStacks = article.getTechStacks().stream().map(TechStack::getName).collect(toSet());
         this.clicks = article.getClicks();
         this.createdAt = article.getCreatedAt();
     }
