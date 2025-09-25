@@ -69,13 +69,15 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
         SearchKeyword searchKeyword = queryCondition.search();
         Sector sector = queryCondition.sector();
+        List<Topic> topics = queryCondition.topics();
 
         return jpaQueryFactory
                 .select(article.count())
                 .from(article)
                 .where(
                         equalSector(sector),
-                        satisfiesMatchScore(searchKeyword)
+                        satisfiesMatchScore(searchKeyword),
+                        containsAllTopics(topics)
                 )
                 .fetchOne();
     }
@@ -243,8 +245,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         if (!CollectionUtils.isEmpty(topics)) {
             for (int i = 0; i < topics.size(); i++) {
                 whereClause.append("AND :topic").append(i).append(" IN (")
-                           .append("SELECT t1_0.topics FROM article_topics t1_0 WHERE a1_0.id = t1_0.article_id")
-                           .append(") ");
+                        .append("SELECT t1_0.topics FROM article_topics t1_0 WHERE a1_0.id = t1_0.article_id")
+                        .append(") ");
             }
         }
         if (articleCursor != null) {
