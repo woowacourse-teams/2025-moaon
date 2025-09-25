@@ -3,7 +3,7 @@ import { textOverflowEllipsis } from "@/styles/global.styled";
 
 export const CardContainer = styled.li`
   position: relative;
-  border: 1px solid #d1d6dd;
+  border: 1px solid #b8b8b8;
   padding: 1rem 1.375rem;
   border-radius: 8px;
   display: flex;
