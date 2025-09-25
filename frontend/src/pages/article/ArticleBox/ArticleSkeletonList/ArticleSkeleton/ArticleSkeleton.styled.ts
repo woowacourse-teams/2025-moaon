@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { shimmerGradient } from "@/styles/global.styled";
 
 export const SkeletonContainer = styled.li`
+  margin-top: 1rem;
   position: relative;
   border: 1px solid #d1d6dd;
   padding: 1rem 1.375rem;
