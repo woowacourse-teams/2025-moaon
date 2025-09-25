@@ -1,5 +1,4 @@
 import eyeIcon from "@assets/icons/eye.svg";
-import redHeartIcon from "@assets/icons/pink-heart.svg";
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import { ALL_TOPICS } from "@domains/filter/articleTopic";
 import { useNavigate } from "react-router";
@@ -37,28 +36,40 @@ function ArticleCard({ article }: CardProps) {
     article;
   const { projectId, projectTitle } = getProjectInfo(article);
 
+  const navigate = useNavigate();
   const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_SECTOR_MAP[sector];
 
-  const navigate = useNavigate();
+  const handleProjectClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (projectId) {
+      navigate(`/project/${projectId}`);
+    }
+  };
 
   return (
     <S.ArticleLink
-      onClick={() => {
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => {
+        e.preventDefault();
         postArticleClick(id);
         window.open(url, "_blank", "noopener,noreferrer");
       }}
     >
       <S.CardContainer>
         {projectTitle && (
-          <S.ProjectLink
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/project/${projectId}`);
-            }}
+          // biome-ignore lint/a11y/useSemanticElements: using button role instead
+          <S.ProjectLinkButton
+            role="button"
+            tabIndex={0}
+            onClick={handleProjectClick}
+            aria-label={`${projectTitle} 프로젝트 페이지로 이동`}
           >
             <ProjectTitle projectTitle={projectTitle} bgColor={bgColor} />
-          </S.ProjectLink>
+          </S.ProjectLinkButton>
         )}
         <S.CardTitle>{title}</S.CardTitle>
         <S.CardSummary>{summary}</S.CardSummary>

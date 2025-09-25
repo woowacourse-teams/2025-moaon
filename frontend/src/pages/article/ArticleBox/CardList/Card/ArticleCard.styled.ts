@@ -61,16 +61,9 @@ export const CardClickCount = styled.span`
   color: #595858;
 `;
 
-export const ArticleLink = styled.button`
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  width: 100%;
-  text-align: left;
-`;
+export const ArticleLink = styled.a``;
 
-export const ProjectLink = styled.a`
+export const ProjectLinkButton = styled.div`
   font-size: 1rem;
   position: relative;
   padding: 0.4rem 0;
