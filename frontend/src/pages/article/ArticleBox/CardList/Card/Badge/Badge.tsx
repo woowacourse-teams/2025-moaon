@@ -1,13 +1,9 @@
 import type { PropsWithChildren } from "react";
 import * as S from "./Badge.styled";
 
-interface BadgeProps {
-  bgColor: string;
-}
-
-function Badge({ bgColor, children }: PropsWithChildren<BadgeProps>) {
+function Badge({ children }: PropsWithChildren) {
   return (
-    <S.BadgeContainer bgColor={bgColor}>
+    <S.BadgeContainer>
       <S.BadgeText>{children}</S.BadgeText>
     </S.BadgeContainer>
   );

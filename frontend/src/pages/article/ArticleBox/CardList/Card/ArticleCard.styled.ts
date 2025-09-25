@@ -31,6 +31,7 @@ export const CardSummary = styled.span`
   line-height: 1.5;
   color: #555555;
   height: 3.75rem;
+  margin-bottom: 0.5rem;
   ${textOverflowEllipsis(3)};
 `;
 

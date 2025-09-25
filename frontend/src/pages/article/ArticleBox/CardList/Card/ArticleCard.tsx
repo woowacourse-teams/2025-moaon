@@ -1,6 +1,7 @@
 import eyeIcon from "@assets/icons/eye.svg";
 import redHeartIcon from "@assets/icons/pink-heart.svg";
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
+import { ALL_TOPICS } from "@domains/filter/articleTopic";
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import type { Article } from "@/apis/articles/articles.type";
 import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
@@ -32,54 +33,44 @@ const getProjectInfo = (article: Article | ProjectArticle) => {
 };
 
 function ArticleCard({ article }: CardProps) {
-  const { title, summary, techStacks, url, sector, clicks, id } = article;
-
-  const isArticleList = isArticle(article);
+  const { title, summary, techStacks, url, sector, clicks, id, topics } =
+    article;
   const { projectId, projectTitle } = getProjectInfo(article);
 
   const { postArticleClick } = useArticleClick();
   const { label, bgColor } = ARTICLE_SECTOR_MAP[sector];
   return (
-    <S.CardContainer>
-      {/* <Badge bgColor={bgColor}>
-        {isArticleList ? (
-          <>
-            {projectTitle} <S.ArrowText>&gt;</S.ArrowText> {label}
-          </>
-        ) : (
-          label
-        )}
-      </Badge> */}
-      {projectTitle && (
-        <S.ProjectLink to={`/project/${projectId}`}>
-          <ProjectTitle projectTitle={projectTitle} bgColor={bgColor} />
-        </S.ProjectLink>
-      )}
-      <S.CardTitle>{title}</S.CardTitle>
-      <S.CardSummary>{summary}</S.CardSummary>
-      <S.CardInfoBox>
-        <TechStackList techStacks={techStacks} />
-        <S.CardClickBox>
-          <S.CardClickIcon src={eyeIcon} alt="클릭 수 아이콘" />
-          <S.CardClickCount>{clicks > 999 ? "999+" : clicks}</S.CardClickCount>
-        </S.CardClickBox>
-      </S.CardInfoBox>
-      {/* <S.BackDropBox className="back-drop-box">
-        <S.ArticleLink
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => postArticleClick(id)}
-        >
-          아티클 <img src={OutgoingLinkIcon} alt="아웃고잉 링크 아이콘" />
-        </S.ArticleLink>
-        {isArticleList && (
+    <S.ArticleLink
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => postArticleClick(id)}
+    >
+      <S.CardContainer>
+        {projectTitle && (
           <S.ProjectLink to={`/project/${projectId}`}>
-            프로젝트 <img src={OutgoingLinkIcon} alt="아웃고잉 링크 아이콘" />
+            <ProjectTitle projectTitle={projectTitle} bgColor={bgColor} />
           </S.ProjectLink>
         )}
-      </S.BackDropBox> */}
-    </S.CardContainer>
+        <S.CardTitle>{title}</S.CardTitle>
+        <S.CardSummary>{summary}</S.CardSummary>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <Badge>{label}</Badge>
+          {topics.map((topic) => (
+            <Badge key={topic}>{ALL_TOPICS[topic].label}</Badge>
+          ))}
+        </div>
+        <S.CardInfoBox>
+          <TechStackList techStacks={techStacks} />
+          <S.CardClickBox>
+            <S.CardClickIcon src={eyeIcon} alt="클릭 수 아이콘" />
+            <S.CardClickCount>
+              {clicks > 999 ? "999+" : clicks}
+            </S.CardClickCount>
+          </S.CardClickBox>
+        </S.CardInfoBox>
+      </S.CardContainer>
+    </S.ArticleLink>
   );
 }
 
