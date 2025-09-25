@@ -107,5 +107,7 @@ export const ArticleLink = styled.a`
 `;
 
 export const ProjectLink = styled(Link)`
+  display: block;
+  width: 100%;
   ${LinkStyle}
 `;
