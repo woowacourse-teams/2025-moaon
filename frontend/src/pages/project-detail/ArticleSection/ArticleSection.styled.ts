@@ -15,10 +15,11 @@ export const EmptyContainer = styled.div`
   height: 13.6875rem;
 `;
 
-export const SearchHeader = styled.div`
+export const SearchHeader = styled.div<{ hasArticles: boolean }>`
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: ${({ hasArticles }) =>
+    hasArticles ? "space-between" : "flex-end"};
   margin: 1rem 0 2rem;
 `;
 

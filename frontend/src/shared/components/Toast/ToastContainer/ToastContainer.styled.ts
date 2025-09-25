@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import type { ToastPosition } from "../../types/toast.type";
+import type { ToastPosition } from "../types/toast.type";
 
 const TOAST_POSITION_STYLES = {
   "top-left": {

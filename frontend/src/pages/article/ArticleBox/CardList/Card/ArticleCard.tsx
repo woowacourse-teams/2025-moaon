@@ -3,10 +3,10 @@ import OutgoingLinkIcon from "@assets/icons/outgoing-link.svg";
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import type { Article } from "@/apis/articles/articles.type";
 import type { ProjectArticle } from "@/apis/projectArticles/projectArticles.type";
-import useArticleClick from "@/pages/article/hooks/useArticleClick";
 import TechStackList from "@/pages/project-list/CardList/Card/TechStackList/TechStackList";
 import * as S from "./ArticleCard.styled";
 import Badge from "./Badge/Badge";
+import useArticleClick from "./hooks/useArticleClick";
 
 interface CardProps {
   article: Article | ProjectArticle;

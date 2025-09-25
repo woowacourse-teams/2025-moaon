@@ -1,6 +1,6 @@
 import type { TechStackKey } from "@domains/filter/techStack";
 import IconBadgeList from "@shared/components/IconBadgeList/IconBadgeList";
-import SectionTitle from "../SectionTitle";
+import SectionTitle from "../components/SectionTitle/SectionTitle";
 import * as S from "./TechStacksSection.styled";
 
 interface TechStacksSectionProps {

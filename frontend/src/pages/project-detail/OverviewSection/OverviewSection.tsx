@@ -1,4 +1,4 @@
-import SectionTitle from "../SectionTitle";
+import SectionTitle from "../components/SectionTitle/SectionTitle";
 import * as S from "./OverviewSection.styled";
 
 interface OverviewSectionProps {

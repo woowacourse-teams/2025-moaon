@@ -11,12 +11,12 @@ import type {
   ProjectArticleCount,
   ProjectArticlesResponse,
 } from "@/apis/projectArticles/projectArticles.type";
-import { useArticleSector } from "@/pages/article/hooks/useArticleSector";
-import useProjectArticleSearch from "../hooks/useProjectArticleSearch";
-import SectionTitle from "../SectionTitle";
+import SectionTitle from "../components/SectionTitle/SectionTitle";
 import * as S from "./ArticleSection.styled";
 import CardList from "./CardList/CardList";
 import EmptyArticleList from "./EmptyArticleList/EmptyArticleList";
+import { useArticleSector } from "./hooks/useArticleSector";
+import useProjectArticleSearch from "./hooks/useProjectArticleSearch";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 const SEARCH_INPUT_MAX_LENGTH = 50;
@@ -73,7 +73,7 @@ function ArticleSection({
       />
 
       {shouldShowSearchBar && (
-        <S.SearchHeader>
+        <S.SearchHeader hasArticles={hasArticles}>
           {hasArticles && (
             <S.ArticleDescriptionText>
               <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
