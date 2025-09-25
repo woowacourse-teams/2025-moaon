@@ -27,10 +27,6 @@ phases:
       - aws s3 cp dist/index.html s3://${S3_BUCKET_NAME}/index.html \
         --cache-control "no-cache"
 
-      # 3. CloudFront 캐시 무효화 (index.html)
-      - aws cloudfront create-invalidation \ --distribution-id
-        ${CLOUDFRONT_DISTRIBUTION_ID} \ --paths "/index.html"
-
 artifacts:
   base-directory: frontend/dist
   files:
