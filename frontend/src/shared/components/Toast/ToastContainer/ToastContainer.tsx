@@ -1,6 +1,6 @@
-import { useDistributedToasts } from "../../hooks/useDistributedToasts";
-import type { ToastPosition } from "../../types/toast.type";
+import { useDistributedToasts } from "../hooks/useDistributedToasts";
 import { ToastItem } from "../ToastItem/ToastItem";
+import type { ToastPosition } from "../types/toast.type";
 import * as S from "./ToastContainer.styled";
 
 export interface ToastContainerProps {

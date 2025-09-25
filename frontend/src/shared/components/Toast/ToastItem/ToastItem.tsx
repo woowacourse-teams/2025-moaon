@@ -3,9 +3,9 @@ import {
   TOAST_DEFAULT_DURATION_MS,
   TOAST_ICONS,
   TOAST_MILLISECONDS_IN_SECOND,
-} from "../../constants/toast.constants";
-import { removeToast } from "../../store/toastActions";
-import type { ToastData } from "../../types/toast.type";
+} from "../constants/toast.constants";
+import { removeToast } from "../store/toastActions";
+import type { ToastData } from "../types/toast.type";
 import * as S from "./ToastItem.styled";
 
 interface ToastItemProps {

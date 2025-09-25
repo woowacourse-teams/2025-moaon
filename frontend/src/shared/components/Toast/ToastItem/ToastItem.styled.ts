@@ -1,6 +1,6 @@
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import type { ToastType } from "../../types/toast.type";
+import type { ToastType } from "../types/toast.type";
 
 const TOAST_TYPE_STYLES = {
   success: {
