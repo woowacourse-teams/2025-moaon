@@ -11,6 +11,11 @@ services:
       - xpack.security.http.ssl.enabled=false
     volumes:
       - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kibana:
     image: docker.elastic.co/kibana/kibana:9.1.4
@@ -22,6 +27,10 @@ services:
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
+    depends_on:
+      elastic:
+        condition: service_healthy
+
     ports:
       - "8080:8080"
     logging:
