@@ -37,6 +37,6 @@ export const Link = styled.button<{ isSelected: boolean }>`
   font-size: 1rem;
 
   &:hover {
-    font-weight: 600;
+    font-weight: ${({ isSelected }) => (isSelected ? 700 : 600)};
   }
 `;

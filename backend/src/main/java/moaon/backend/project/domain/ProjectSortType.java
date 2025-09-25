@@ -27,6 +27,7 @@ public enum ProjectSortType {
             cursor -> CursorParser.toCursor(cursor, new IntegerParser(), LoveProjectCursor::new),
             project -> new LoveProjectCursor(project.getLoveCount(), project.getId())
     ),
+
     ARTICLE_COUNT("articleCount",
             cursor -> CursorParser.toCursor(cursor, new IntegerParser(), ArticleCountProjectCursor::new),
             project -> new ArticleCountProjectCursor(project.getArticles().size(), project.getId())

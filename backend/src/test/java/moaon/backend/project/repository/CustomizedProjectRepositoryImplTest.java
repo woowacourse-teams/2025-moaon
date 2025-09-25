@@ -11,8 +11,8 @@ import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
@@ -55,22 +55,22 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithCategoryFilter() {
         // given
-        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory4 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory5 = Fixture.anyProjectCategory();
+        Category category1 = Fixture.anyProjectCategory();
+        Category category2 = Fixture.anyProjectCategory();
+        Category category3 = Fixture.anyProjectCategory();
+        Category category4 = Fixture.anyProjectCategory();
+        Category category5 = Fixture.anyProjectCategory();
 
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(projectCategory1, projectCategory2)
+                .categories(category1, category2)
                 .build()
         );
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(projectCategory2, projectCategory3)
+                .categories(category2, category3)
                 .build()
         );
         Project projectWantToFind = repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(projectCategory1, projectCategory3, projectCategory4, projectCategory5)
+                .categories(category1, category3, category4, category5)
                 .build()
         );
 
@@ -78,10 +78,10 @@ class CustomizedProjectRepositoryImplTest {
         List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
                 new ProjectQueryConditionFixtureBuilder()
                         .categoryNames(
-                                projectCategory1.getName(),
-                                projectCategory3.getName(),
-                                projectCategory4.getName(),
-                                projectCategory5.getName())
+                                category1.getName(),
+                                category3.getName(),
+                                category4.getName(),
+                                category5.getName())
                         .build()
         );
 
@@ -128,36 +128,36 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void findWithTechStackFilterAndCategory() {
         // given
-        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+        Category category1 = Fixture.anyProjectCategory();
+        Category category2 = Fixture.anyProjectCategory();
+        Category category3 = Fixture.anyProjectCategory();
 
         TechStack techStack1 = Fixture.anyTechStack();
         TechStack techStack2 = Fixture.anyTechStack();
 
         Project wantToFindProject = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2)
+                        .categories(category1, category2)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1)
                         .build()
         );
 
         ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
-                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .categoryNames(category1.getName(), category2.getName(), category3.getName())
                 .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 
@@ -282,36 +282,36 @@ class CustomizedProjectRepositoryImplTest {
     @Test
     void countWithSearchCondition() {
         // given
-        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+        Category category1 = Fixture.anyProjectCategory();
+        Category category2 = Fixture.anyProjectCategory();
+        Category category3 = Fixture.anyProjectCategory();
 
         TechStack techStack1 = Fixture.anyTechStack();
         TechStack techStack2 = Fixture.anyTechStack();
 
         Project wantToFindProject1 = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         Project wantToFindProject2 = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         Project wantToFindProject3 = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
-                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .categoryNames(category1.getName(), category2.getName(), category3.getName())
                 .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 

@@ -20,6 +20,9 @@ spring:
       ddl-auto: validate
     open-in-view: false
 
+  elasticsearch:
+    uris: http://elastic:9200
+
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"

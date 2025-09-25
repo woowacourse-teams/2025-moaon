@@ -20,14 +20,13 @@ const NAV_LIST = [
 function NavBar() {
   const pathname = useLocation().pathname;
   const selectedIndex = NAV_LIST.findIndex((item) => item.href === pathname);
-  const { setTabElementsRef, selectedStyle } = useTabAnimation({
+  const { setTabElementsRef } = useTabAnimation({
     selectedIndex,
     duration: 0.3,
   });
   const navigate = useNavigate();
   const { refetch: projectListRefetch } = useProjectList();
   const { refetch: articleListRefetch } = useArticleList();
-  const hasActive = selectedIndex > -1;
 
   const handleNavigation = (href: string) => {
     navigate(href);

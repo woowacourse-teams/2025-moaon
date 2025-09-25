@@ -1,8 +1,8 @@
 import MoveTop from "@shared/components/MoveTop/MoveTop";
-import FeatureSection from "./components/FeatureSection/FeatureSection";
-import HeroSection from "./components/HeroSection/HeroSection";
-import LandingBannerSection from "./components/LandingBannerSection/LandingBannerSection";
-import TargetUsersSection from "./components/WhoSection/TargetUsersSection";
+import FeatureSection from "./FeatureSection/FeatureSection";
+import HeroSection from "./HeroSection/HeroSection";
+import LandingBannerSection from "./LandingBannerSection/LandingBannerSection";
+import TargetUsersSection from "./TargetUsersSection/TargetUsersSection";
 
 function LandingPage() {
   return (
