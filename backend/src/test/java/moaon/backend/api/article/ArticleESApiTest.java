@@ -43,7 +43,7 @@ public class ArticleESApiTest {
             .withEnv("xpack.security.transport.ssl.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
             .withEnv("xpack.security.enabled", "false")
-            .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && exec bin/elasticsearch");
+            .withCommand("sh", "-c", "elasticsearch-plugin install --batch analysis-nori && exec bin/elasticsearch");
 
     @LocalServerPort
     private int port;
