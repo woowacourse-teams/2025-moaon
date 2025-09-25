@@ -14,22 +14,24 @@ public enum Topic {
     PERFORMANCE_OPTIMIZATION("performance"),
     TESTING("testing"),
     CODE_QUALITY("code"),
-    SECURITY("security"), //BE+infra 공통
     ETC("etc"),
+    SECURITY("security"), //BE+infra 공통
+    UI_UX_IMPROVEMENT("uiux"), //FE+iOS+android 공통
+    BUILD("build"), //iOS+android 공통
+    ARCHITECTURE_DESIGN("architecture"), //BE+android 공통
+    NATIVE("native"), //android+iOS 공통
+    SDK("sdk"), //android+iOS 공통
 
     // FE,
     STATE_MANAGEMENT("state"),
-    UI_UX_IMPROVEMENT("uiux"),
     BUNDLING("bundling"),
 
     // BE,
-    ARCHITECTURE_DESIGN("architecture"),
     API_DESIGN("api"),
     DATABASE("db"),
     DEPLOYMENT_AND_OPERATION("deployment"),
 
-    // android
-
+    // android,
 
     // infra
     CI_CD("cicd"),
@@ -37,7 +39,7 @@ public enum Topic {
     NETWORK("network"),
 
     // 비개발
-    TEAM_CULTURE("teamCulture"),
+    TEAM_CULTURE("culture"),
     RETROSPECTIVE("retrospective"),
     PLANNING("planning"),
     DESIGN("design");

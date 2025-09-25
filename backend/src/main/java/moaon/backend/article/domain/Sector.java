@@ -2,6 +2,7 @@ package moaon.backend.article.domain;
 
 import static moaon.backend.article.domain.Topic.API_DESIGN;
 import static moaon.backend.article.domain.Topic.ARCHITECTURE_DESIGN;
+import static moaon.backend.article.domain.Topic.BUILD;
 import static moaon.backend.article.domain.Topic.BUNDLING;
 import static moaon.backend.article.domain.Topic.CI_CD;
 import static moaon.backend.article.domain.Topic.CODE_QUALITY;
@@ -10,10 +11,12 @@ import static moaon.backend.article.domain.Topic.DEPLOYMENT_AND_OPERATION;
 import static moaon.backend.article.domain.Topic.DESIGN;
 import static moaon.backend.article.domain.Topic.ETC;
 import static moaon.backend.article.domain.Topic.MONITORING_AND_LOGGING;
+import static moaon.backend.article.domain.Topic.NATIVE;
 import static moaon.backend.article.domain.Topic.NETWORK;
 import static moaon.backend.article.domain.Topic.PERFORMANCE_OPTIMIZATION;
 import static moaon.backend.article.domain.Topic.PLANNING;
 import static moaon.backend.article.domain.Topic.RETROSPECTIVE;
+import static moaon.backend.article.domain.Topic.SDK;
 import static moaon.backend.article.domain.Topic.SECURITY;
 import static moaon.backend.article.domain.Topic.STATE_MANAGEMENT;
 import static moaon.backend.article.domain.Topic.TEAM_CULTURE;
@@ -56,27 +59,29 @@ public enum Sector {
             ETC
     )),
     ANDROID("android", List.of(
+            BUILD,
+            NATIVE,
+            SDK,
             TECHNOLOGY_ADOPTION,
             TROUBLESHOOTING,
             PERFORMANCE_OPTIMIZATION,
             TESTING,
             CODE_QUALITY,
             UI_UX_IMPROVEMENT,
-            DEPLOYMENT_AND_OPERATION,
             ARCHITECTURE_DESIGN,
-            SECURITY,
             ETC
     )),
     IOS("ios", List.of(
+            BUILD,
+            NATIVE,
+            SDK,
             TECHNOLOGY_ADOPTION,
             TROUBLESHOOTING,
             PERFORMANCE_OPTIMIZATION,
             TESTING,
             CODE_QUALITY,
             UI_UX_IMPROVEMENT,
-            DEPLOYMENT_AND_OPERATION,
             ARCHITECTURE_DESIGN,
-            SECURITY,
             ETC
     )),
     INFRA("infra", List.of(
