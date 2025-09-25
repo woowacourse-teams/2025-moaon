@@ -7,15 +7,15 @@ export const ARTICLE_SECTOR_MAP = {
   },
   fe: {
     label: "프론트엔드",
-    bgColor: "#3498db",
+    bgColor: "#51c4dbff",
   },
   be: {
     label: "백엔드",
-    bgColor: "#27ae60",
+    bgColor: "#7a7677ff",
   },
   android: {
     label: "안드로이드",
-    bgColor: "#f39c12",
+    bgColor: "#27ae60",
   },
   ios: {
     label: "iOS",
@@ -23,11 +23,11 @@ export const ARTICLE_SECTOR_MAP = {
   },
   infra: {
     label: "인프라",
-    bgColor: "#47ccab",
+    bgColor: "#f39c12",
   },
   nonTech: {
     label: "비개발",
-    bgColor: "#868888",
+    bgColor: "#d58756ff",
   },
 } as const;
 
