@@ -73,12 +73,12 @@ function ArticleCard({ article }: CardProps) {
         )}
         <S.CardTitle>{title}</S.CardTitle>
         <S.CardSummary>{summary}</S.CardSummary>
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <S.BadgeList>
           <Badge>{label}</Badge>
           {topics.map((topic) => (
             <Badge key={topic}>{ALL_TOPICS[topic].label}</Badge>
           ))}
-        </div>
+        </S.BadgeList>
         <S.CardInfoBox>
           <TechStackList techStacks={techStacks} />
           <S.CardClickBox>

@@ -86,3 +86,9 @@ export const ProjectLinkButton = styled.div`
     width: 90%;
   }
 `;
+
+export const BadgeList = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+`;
