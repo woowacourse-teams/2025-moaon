@@ -42,7 +42,6 @@ function ArticleCard({ article }: CardProps) {
 
   const handleProjectClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation();
     if (projectId) {
       navigate(`/project/${projectId}`);
     }
@@ -53,10 +52,8 @@ function ArticleCard({ article }: CardProps) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={(e) => {
-        e.preventDefault();
+      onClick={() => {
         postArticleClick(id);
-        window.open(url, "_blank", "noopener,noreferrer");
       }}
     >
       <S.CardContainer>
