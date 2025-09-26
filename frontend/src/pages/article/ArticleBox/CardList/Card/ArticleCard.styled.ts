@@ -1,26 +1,9 @@
 import styled from "@emotion/styled";
-import { Link } from "react-router";
 import { textOverflowEllipsis } from "@/styles/global.styled";
-
-export const BackDropBox = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(35, 35, 35, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
-`;
 
 export const CardContainer = styled.li`
   position: relative;
-  border: 1px solid #d1d6dd;
+  border: 1px solid #b8b8b8;
   padding: 1rem 1.375rem;
   border-radius: 8px;
   display: flex;
@@ -29,12 +12,8 @@ export const CardContainer = styled.li`
   gap: 0.75rem;
   overflow: hidden;
   &:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
-    & > ${BackDropBox} {
-      opacity: 1;
-      visibility: visible;
-    }
+    transition: 0.25s linear;
+    box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
   }
 `;
 
@@ -51,6 +30,7 @@ export const CardSummary = styled.span`
   line-height: 1.5;
   color: #555555;
   height: 3.75rem;
+  margin-bottom: 0.5rem;
   ${textOverflowEllipsis(3)};
 `;
 
@@ -81,37 +61,34 @@ export const CardClickCount = styled.span`
   color: #595858;
 `;
 
-const LinkStyle = `
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid transparent;
-  color: #fff;
-  background-image: linear-gradient(to right, white 0 100%);
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: 0% 1px;
-  transition: color .25s ease, background-size .25s ease;
+export const ArticleLink = styled.a``;
 
-  &:hover {
-    color: darkgray;
-    background-size: 100% 1px;
+export const ProjectLinkButton = styled.div`
+  font-size: 1rem;
+  position: relative;
+  padding: 0.4rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0%;
+    background-color: #646464ff;
+    transition: width 0.25s ease;
+  }
+
+  &:hover::after {
+    width: 90%;
   }
 `;
 
-export const ArticleLink = styled.a`
-  cursor: pointer;
-  ${LinkStyle}
-`;
-
-export const ProjectLink = styled(Link)`
-  ${LinkStyle}
-`;
-
-export const ArrowText = styled.span`
-  position: relative;
-  top: -0.0625rem;
-  display: inline-block;
+export const BadgeList = styled.ul`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 `;

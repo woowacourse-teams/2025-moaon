@@ -11,7 +11,7 @@ import type {
   ProjectArticleCount,
   ProjectArticlesResponse,
 } from "@/apis/projectArticles/projectArticles.type";
-import SectionTitle from "../components/SectionTitle/SectionTitle";
+import SectionTitle from "../SectionTitle/SectionTitle";
 import * as S from "./ArticleSection.styled";
 import CardList from "./CardList/CardList";
 import EmptyArticleList from "./EmptyArticleList/EmptyArticleList";

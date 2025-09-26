@@ -57,7 +57,7 @@ export const CardImageBox = styled.div`
   aspect-ratio: 14/8;
   overflow: hidden;
   position: relative;
-  border: 1px solid #cececeff;
+  border: 1px solid #b8b8b8;
   border-radius: 10px 10px 0 0;
 
   /* 기본 스켈레톤 배경 */

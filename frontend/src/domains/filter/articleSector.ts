@@ -3,31 +3,31 @@ import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 export const ARTICLE_SECTOR_MAP = {
   all: {
     label: "전체",
-    bgColor: "#6c757d",
+    color: "#6c757d",
   },
   fe: {
-    label: "FE",
-    bgColor: "#3498db",
+    label: "프론트엔드",
+    color: "#51c4dbff",
   },
   be: {
-    label: "BE",
-    bgColor: "#27ae60",
+    label: "백엔드",
+    color: "#7a7677ff",
   },
   android: {
-    label: "Android",
-    bgColor: "#f39c12",
+    label: "안드로이드",
+    color: "#27ae60",
   },
   ios: {
     label: "iOS",
-    bgColor: "#e74c3c",
+    color: "#e74c3c",
   },
   infra: {
-    label: "Infra",
-    bgColor: "#47ccab",
+    label: "인프라",
+    color: "#f39c12",
   },
   nonTech: {
     label: "비개발",
-    bgColor: "#868888",
+    color: "#d58756ff",
   },
 } as const;
 
