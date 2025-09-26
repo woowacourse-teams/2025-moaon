@@ -1,7 +1,7 @@
 import arrowDown from "@assets/icons/arrow-down.svg";
 import heroImage from "@assets/images/landing-hero.png";
 import heroImageWebp from "@assets/images/landing-hero.webp";
-import LinkButton from "../components/LinkButton/LinkButton";
+import LinkButton from "../LinkButton/LinkButton";
 import * as S from "./HeroSection.styled";
 
 function HeroSection() {

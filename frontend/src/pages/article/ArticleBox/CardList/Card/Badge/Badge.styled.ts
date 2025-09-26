@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 
-export const BadgeContainer = styled.div<{ bgColor: string }>`
-  background-color: ${({ bgColor }) => bgColor};
+export const BadgeContainer = styled.li`
+  background-color: #e9e9e9ff;
+  height: 1.8rem;
   padding: 0.4rem 1rem;
   border-radius: 12px;
   display: flex;
@@ -10,6 +11,5 @@ export const BadgeContainer = styled.div<{ bgColor: string }>`
 
 export const BadgeText = styled.span`
   font-size: 0.875rem;
-  color: #fff;
-  line-height: 1;
+  color: #1c1c1cff;
 `;

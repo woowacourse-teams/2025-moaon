@@ -5,9 +5,11 @@ export const SkeletonCard = styled.li`
   width: 100%;
   overflow: hidden;
   background-color: #ffffff;
+  margin-top: 1.2rem;
 `;
 
 export const SkeletonImageBox = styled.div`
+  border-radius: 10px 10px 0 0;
   width: 100%;
   height: 10.9375rem;
   ${shimmerGradient}
@@ -20,18 +22,18 @@ export const SkeletonInfo = styled.div`
 `;
 
 export const SkeletonTitle = styled.div`
-  height: 1.875rem;
+  height: 1.125rem;
   ${shimmerGradient}
   border-radius: 0.25rem;
-  margin: 0.25rem 0 0.5rem 0;
+  margin-bottom: 1rem;
   width: 80%;
 `;
 
 export const SkeletonSummary = styled.div`
-  height: 3rem;
+  height: 2.4rem;
   ${shimmerGradient}
   border-radius: 0.25rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 `;
 
 export const SkeletonTechStacks = styled.div`
@@ -41,20 +43,8 @@ export const SkeletonTechStacks = styled.div`
 `;
 
 export const SkeletonTechStack = styled.div`
-  height: 1.5rem;
+  height: 1rem;
   width: 3.5rem;
   ${shimmerGradient}
-  border-radius: 0.75rem;
-`;
-
-export const SkeletonFooter = styled.div`
-  ${flexCenter}
-  gap: 1rem;
-`;
-
-export const SkeletonActivityItem = styled.div`
-  height: 1.25rem;
-  width: 3rem;
-  ${shimmerGradient}
-  border-radius: 0.25rem;
+  border-radius: 0.2rem;
 `;

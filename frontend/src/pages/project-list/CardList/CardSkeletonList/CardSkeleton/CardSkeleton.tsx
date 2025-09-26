@@ -12,10 +12,6 @@ function CardSkeleton() {
           <S.SkeletonTechStack />
           <S.SkeletonTechStack />
         </S.SkeletonTechStacks>
-        <S.SkeletonFooter>
-          <S.SkeletonActivityItem />
-          <S.SkeletonActivityItem />
-        </S.SkeletonFooter>
       </S.SkeletonInfo>
     </S.SkeletonCard>
   );
