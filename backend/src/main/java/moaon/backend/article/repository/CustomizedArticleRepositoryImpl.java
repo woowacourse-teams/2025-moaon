@@ -2,6 +2,7 @@ package moaon.backend.article.repository;
 
 import static moaon.backend.article.domain.QArticle.article;
 import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
+import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -60,6 +61,57 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .orderBy(toOrderByWithSector(sortBy, sector))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
+    }
+
+    /*
+     * 기존의 쿼리를 최대한 쪼개서 사용한다.
+     */
+    @Override
+    public List<Article> findWithSearchConditions2(final ArticleQueryCondition queryCondition) {
+        List<String> techStackNames = queryCondition.techStackNames();
+        SearchKeyword searchKeyword = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        ArticleSortType sortBy = queryCondition.sortBy();
+        Cursor<?> articleCursor = queryCondition.articleCursor();
+        List<Topic> topics = queryCondition.topics();
+        int limit = queryCondition.limit();
+
+        // techStack -> techStack 을 가지는 id 조회
+        List<Long> articleIdsByTechStacks = getArticleIds(techStackNames);
+
+        // topics -> topics 를 가지는 id 조회
+
+        // 두 id set 을 교집합 -> id set 으로 조회 ->
+        return jpaQueryFactory
+                .selectFrom(article)
+                .where(
+                        equalSector(sector),
+                        applyCursor(articleCursor),
+                        articleIdIn(articleIdsByTechStacks)
+                )
+                .orderBy(toOrderByWithSector(sortBy, sector))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+    }
+
+    private List<Long> getArticleIds(List<String> techStackNames) {
+        if (CollectionUtils.isEmpty(techStackNames)) {
+            return null;
+        }
+        // 이거 또 쪼개면 techStack ID 조회 -> articleId 조회 이렇게 두 단계로 쪼갤 수 있긴 함
+        return jpaQueryFactory
+                .select(articleTechStack.article.id)
+                .from(articleTechStack)
+                .join(articleTechStack.techStack, techStack)
+                .where(techStack.name.in(techStackNames))
+                .fetch();
+    }
+
+    private BooleanExpression articleIdIn(List<Long> articleIds) {
+        if (CollectionUtils.isEmpty(articleIds)) {
+            return null;
+        }
+        return article.id.in(articleIds);
     }
 
     @Override

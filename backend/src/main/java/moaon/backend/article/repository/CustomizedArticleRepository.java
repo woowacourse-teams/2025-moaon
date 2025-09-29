@@ -9,6 +9,8 @@ public interface CustomizedArticleRepository {
 
     List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition);
 
+    List<Article> findWithSearchConditions2(ArticleQueryCondition queryCondition);
+
     long countWithSearchCondition(ArticleQueryCondition queryCondition);
 
     List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition);
