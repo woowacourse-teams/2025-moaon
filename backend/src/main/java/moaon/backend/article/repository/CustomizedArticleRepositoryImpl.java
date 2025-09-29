@@ -257,14 +257,16 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     private String buildWhereCursorClause(ArticleQueryCondition queryCondition) {
-        if (queryCondition.articleCursor() == null) {
-            return null;
-        }
+        Cursor<?> cursor = queryCondition.articleCursor();
+        ArticleSortType sortType = queryCondition.sortBy();
 
-        if (queryCondition.sortBy() == ArticleSortType.CLICKS) {
-            return "AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ";
+        if (cursor != null) {
+            if (sortType == ArticleSortType.CLICKS) {
+                return "AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ";
+            }
+            return "AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ";
         }
-        return "AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ";
+        return "AND 1=1";
     }
 
     private String buildOrderByClause(ArticleQueryCondition queryCondition) {
