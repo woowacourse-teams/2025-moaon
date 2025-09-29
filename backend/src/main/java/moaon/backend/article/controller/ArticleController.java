@@ -57,6 +57,30 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getPagedArticles(queryCondition));
     }
 
+    @GetMapping("/v2")
+    public ResponseEntity<ArticleResponse> getPagedArticles2(
+            @RequestParam(value = "sort", required = false) String sortType,
+            @RequestParam(value = "techStacks", required = false) List<String> techStacks,
+            @RequestParam(value = "sector", required = false) String sector,
+            @RequestParam(value = "topics", required = false) List<String> topics,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "limit") @Validated @Max(100) int limit,
+            @RequestParam(value = "cursor", required = false) String cursor
+    ) {
+        ArticleQueryCondition queryCondition = ArticleQueryCondition.from(
+                search,
+                sector,
+                topics,
+                techStacks,
+                sortType,
+                limit,
+                cursor
+        );
+
+        return ResponseEntity.ok(articleService.getPagedArticles2(queryCondition));
+    }
+
+
     @PostMapping("/{id}/clicks")
     public ResponseEntity<Void> updateArticleClicks(
             @PathVariable("id") long id,

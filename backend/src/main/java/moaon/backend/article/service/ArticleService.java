@@ -47,6 +47,26 @@ public class ArticleService {
         return ArticleResponse.from(articles, totalCount, false, null);
     }
 
+    public ArticleResponse getPagedArticles2(ArticleQueryCondition queryCondition) {
+        List<Article> articles = articleRepository.findWithSearchConditions(queryCondition);
+        long totalCount = articleRepository.countWithSearchCondition(queryCondition);
+
+        if (articles.size() > queryCondition.limit()) {
+            List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
+            Article lastArticle = articlesToReturn.getLast();
+
+            Cursor<?> articleCursor = queryCondition.sortBy().toCursor(lastArticle);
+
+            return ArticleResponse.from(
+                    articlesToReturn,
+                    totalCount,
+                    true,
+                    articleCursor.getNextCursor());
+        }
+
+        return ArticleResponse.from(articles, totalCount, false, null);
+    }
+
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
         projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
