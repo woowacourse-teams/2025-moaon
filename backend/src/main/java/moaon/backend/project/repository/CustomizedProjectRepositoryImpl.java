@@ -53,19 +53,6 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         return finalProjectIds;
     }
 
-    private void filterSearch(SearchKeyword searchKeyword, Set<Long> finalProjectIds) {
-        if (searchKeyword != null && searchKeyword.hasValue()) {
-            Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(searchKeyword);
-
-            if (finalProjectIds.isEmpty()) {
-                finalProjectIds.addAll(projectIdsBySearchKeyword);
-                return;
-            }
-
-            finalProjectIds.retainAll(projectIdsBySearchKeyword);
-        }
-    }
-
     private void filterCategories(List<String> categoryNames, Set<Long> finalProjectIds) {
         if (!categoryNames.isEmpty()) {
             Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(categoryNames);
@@ -76,6 +63,19 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             }
 
             finalProjectIds.retainAll(projectIdsByCategories);
+        }
+    }
+
+    private void filterSearch(SearchKeyword searchKeyword, Set<Long> finalProjectIds) {
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(searchKeyword);
+
+            if (finalProjectIds.isEmpty()) {
+                finalProjectIds.addAll(projectIdsBySearchKeyword);
+                return;
+            }
+
+            finalProjectIds.retainAll(projectIdsBySearchKeyword);
         }
     }
 }
