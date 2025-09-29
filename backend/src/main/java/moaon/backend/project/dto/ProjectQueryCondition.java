@@ -4,6 +4,7 @@ import java.util.List;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.ProjectSortType;
+import org.springframework.util.CollectionUtils;
 
 public record ProjectQueryCondition(
         SearchKeyword search,
@@ -13,6 +14,12 @@ public record ProjectQueryCondition(
         int limit,
         Cursor<?> cursor
 ) {
+
+    public boolean isEmptyFilter() {
+        return CollectionUtils.isEmpty(categoryNames) &&
+                CollectionUtils.isEmpty(techStackNames) &&
+                (search == null || !search.hasValue());
+    }
 
     public static ProjectQueryCondition of(
             String search,

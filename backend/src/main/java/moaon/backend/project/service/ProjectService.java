@@ -11,6 +11,7 @@ import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.repository.ProjectRepository;
+import moaon.backend.project.repository.Projects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,24 +31,14 @@ public class ProjectService {
     }
 
     public PagedProjectResponse getPagedProjects(ProjectQueryCondition projectQueryCondition) {
-        List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
-        long totalCount = projectRepository.countWithSearchCondition(projectQueryCondition);
+        Projects projects = projectRepository.findWithSearchConditions(projectQueryCondition);
 
-        if (projects.size() > projectQueryCondition.limit()) {
-            List<Project> projectsToReturn = projects.subList(0, projectQueryCondition.limit());
-            Project lastProject = projectsToReturn.getLast();
+        List<Project> projectsToReturn = projects.getProjectsToReturn();
+        long count = projects.getCount();
+        boolean hasNext = projects.hasNext();
+        Cursor<?> nextCursor = projects.getNextCursor(projectQueryCondition.projectSortType());
 
-            Cursor<?> projectCursor = projectQueryCondition.projectSortType().toCursor(lastProject);
-
-            return PagedProjectResponse.from(
-                    projectsToReturn,
-                    totalCount,
-                    true,
-                    projectCursor.getNextCursor()
-            );
-        }
-
-        return PagedProjectResponse.from(projects, totalCount, false, null);
+        return PagedProjectResponse.from(projectsToReturn, count, hasNext, nextCursor);
     }
 
     @Transactional
