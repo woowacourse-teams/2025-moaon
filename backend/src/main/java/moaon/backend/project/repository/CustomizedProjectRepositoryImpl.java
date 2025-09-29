@@ -1,6 +1,6 @@
 package moaon.backend.project.repository;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -42,31 +42,40 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             SearchKeyword searchKeyword,
             List<String> categoryNames
     ) {
-        Set<Long> finalProjectIds = Collections.emptySet();
+        Set<Long> finalProjectIds = new HashSet<>();
+
         if (!techStackNames.isEmpty()) {
             finalProjectIds = projectDao.findProjectIdsByTechStacks(techStackNames);
         }
+        filterCategories(categoryNames, finalProjectIds);
+        filterSearch(searchKeyword, finalProjectIds);
 
-        if (!categoryNames.isEmpty()) {
-            Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(categoryNames);
+        return finalProjectIds;
+    }
 
-            if (finalProjectIds.isEmpty()) {
-                finalProjectIds = projectIdsByCategories;
-            }
-
-            finalProjectIds.retainAll(projectIdsByCategories);
-        }
-
+    private void filterSearch(SearchKeyword searchKeyword, Set<Long> finalProjectIds) {
         if (searchKeyword != null && searchKeyword.hasValue()) {
             Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(searchKeyword);
 
             if (finalProjectIds.isEmpty()) {
-                finalProjectIds = projectIdsBySearchKeyword;
+                finalProjectIds.addAll(projectIdsBySearchKeyword);
+                return;
             }
 
             finalProjectIds.retainAll(projectIdsBySearchKeyword);
         }
+    }
 
-        return finalProjectIds;
+    private void filterCategories(List<String> categoryNames, Set<Long> finalProjectIds) {
+        if (!categoryNames.isEmpty()) {
+            Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(categoryNames);
+
+            if (finalProjectIds.isEmpty()) {
+                finalProjectIds.addAll(projectIdsByCategories);
+                return;
+            }
+
+            finalProjectIds.retainAll(projectIdsByCategories);
+        }
     }
 }
