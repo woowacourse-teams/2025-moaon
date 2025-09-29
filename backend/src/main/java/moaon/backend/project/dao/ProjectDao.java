@@ -42,10 +42,8 @@ public class ProjectDao {
         int limit = condition.limit();
 
         Predicate idInCondition = null;
-        if (projectIdsByFilter != null) {
-            if (!projectIdsByFilter.isEmpty()) {
-                idInCondition = project.id.in(projectIdsByFilter);
-            }
+        if (!projectIdsByFilter.isEmpty()) {
+            idInCondition = project.id.in(projectIdsByFilter);
         }
 
         return jpaQueryFactory.selectFrom(project)
