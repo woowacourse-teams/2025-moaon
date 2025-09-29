@@ -3,7 +3,6 @@ package moaon.backend.project.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -11,6 +10,7 @@ import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
+import moaon.backend.project.dao.ProjectDao;
 import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectSortType;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @SpringBootTest
-@Import({RepositoryHelper.class, QueryDslConfig.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class, ProjectDao.class})
 class CustomizedProjectRepositoryImplTest {
 
     @Autowired
@@ -45,10 +45,10 @@ class CustomizedProjectRepositoryImplTest {
         ProjectQueryCondition projectQueryCondition = new ProjectQueryConditionFixtureBuilder().build();
 
         //when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
 
         //then
-        assertThat(projects.size()).isEqualTo(3);
+        assertThat(projects.getCount()).isEqualTo(3);
     }
 
     @DisplayName("카테고리 필터를 이용해 프로젝트를 조회한다.")
@@ -75,18 +75,18 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .categoryNames(
-                                category1.getName(),
-                                category3.getName(),
-                                category4.getName(),
-                                category5.getName())
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .categoryNames(
+                        category1.getName(),
+                        category3.getName(),
+                        category4.getName(),
+                        category5.getName())
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsOnlyOnce(projectWantToFind);
+        assertThat(projects.getProjects()).containsOnlyOnce(projectWantToFind);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
@@ -113,15 +113,18 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder().
-                        techStackNames(techStack1.getName(), techStack2.getName(), techStack3.getName(),
-                                techStack4.getName())
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder().
+                techStackNames(
+                        techStack1.getName(),
+                        techStack2.getName(),
+                        techStack3.getName(),
+                        techStack4.getName())
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactlyInAnyOrder(projectWantToFind);
+        assertThat(projects.getProjects()).containsExactlyInAnyOrder(projectWantToFind);
     }
 
     @DisplayName("카테고리 기술스택 필터를 모두 이용하여 조회한다.")
@@ -162,10 +165,10 @@ class CustomizedProjectRepositoryImplTest {
                 .build();
 
         // when
-        List<Project> actual = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
+        Projects actual = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(actual).containsOnlyOnce(wantToFindProject);
+        assertThat(actual.getProjects()).containsOnlyOnce(wantToFindProject);
     }
 
     @DisplayName("프로젝트를 조회순을 기준으로 정렬한다.")
@@ -183,14 +186,14 @@ class CustomizedProjectRepositoryImplTest {
         Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.VIEWS)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.VIEWS)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(high, middle, low);
+        assertThat(projects.getProjects()).containsExactly(high, middle, low);
     }
 
     @DisplayName("프로젝트의 아티클 갯수를 기준으로 정렬한다.")
@@ -210,14 +213,14 @@ class CustomizedProjectRepositoryImplTest {
         repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.ARTICLE_COUNT)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.ARTICLE_COUNT)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(high, middle, low);
+        assertThat(projects.getProjects()).containsExactly(high, middle, low);
     }
 
     @DisplayName("프로젝트를 생성일자 기준으로 정렬한다.")
@@ -241,14 +244,14 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.CREATED_AT)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.CREATED_AT)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(tomorrowProject, todayProject, yesterdayProject);
+        assertThat(projects.getProjects()).containsExactly(tomorrowProject, todayProject, yesterdayProject);
     }
 
     @DisplayName("프로젝트를 좋아요 순으로 정렬한다.")
@@ -268,14 +271,14 @@ class CustomizedProjectRepositoryImplTest {
         middle.addLovedMember(author1);
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.LOVES)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.LOVES)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(high, middle, low);
+        assertThat(projects.getProjects()).containsExactly(high, middle, low);
     }
 
     @DisplayName("필터링을 거친 프로젝트의 개수를 가져온다.")
@@ -316,9 +319,9 @@ class CustomizedProjectRepositoryImplTest {
                 .build();
 
         // when
-        long count = customizedProjectRepositoryImpl.countWithSearchCondition(queryCondition);
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(count).isEqualTo(3);
+        assertThat(projects.getCount()).isEqualTo(3);
     }
 }
