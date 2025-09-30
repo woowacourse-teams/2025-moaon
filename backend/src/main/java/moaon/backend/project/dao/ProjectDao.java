@@ -5,7 +5,6 @@ import static moaon.backend.project.domain.QProjectCategory.projectCategory;
 import static moaon.backend.techStack.domain.QProjectTechStack.projectTechStack;
 
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
@@ -41,13 +40,8 @@ public class ProjectDao {
         ProjectSortType sortBy = condition.projectSortType();
         int limit = condition.limit();
 
-        Predicate idInCondition = null;
-        if (!projectIdsByFilter.isEmpty()) {
-            idInCondition = project.id.in(projectIdsByFilter);
-        }
-
         return jpaQueryFactory.selectFrom(project)
-                .where(idInCondition)
+                .where(idsInCondition(projectIdsByFilter))
                 .where(applyCursor(cursor))
                 .orderBy(toOrderBy(sortBy))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
@@ -95,6 +89,14 @@ public class ProjectDao {
         return Optional.ofNullable(jpaQueryFactory.select(Wildcard.count)
                 .from(project)
                 .fetchOne()).orElse(0L);
+    }
+
+    private BooleanExpression idsInCondition(Set<Long> projectIdsByFilter) {
+        if (CollectionUtils.isEmpty(projectIdsByFilter)) {
+            return null;
+        }
+
+        return project.id.in(projectIdsByFilter);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
