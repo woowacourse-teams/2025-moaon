@@ -41,8 +41,10 @@ public class ProjectDao {
         int limit = condition.limit();
 
         return jpaQueryFactory.selectFrom(project)
-                .where(idsInCondition(projectIdsByFilter))
-                .where(applyCursor(cursor))
+                .where(
+                        idsInCondition(projectIdsByFilter),
+                        applyCursor(cursor)
+                )
                 .orderBy(toOrderBy(sortBy))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
