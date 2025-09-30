@@ -63,7 +63,7 @@ public class ProjectDao {
                 .from(projectTechStack)
                 .where(projectTechStack.techStack.name.in(techStacks))
                 .groupBy(projectTechStack.project.id)
-                .having(projectTechStack.techStack.name.countDistinct().eq((long) techStacks.size()))
+                .having(projectTechStack.techStack.name.count().eq((long) techStacks.size()))
                 .fetch());
     }
 
@@ -76,7 +76,7 @@ public class ProjectDao {
                 .from(projectCategory)
                 .where(projectCategory.category.name.in(categories))
                 .groupBy(projectCategory.project.id)
-                .having(projectCategory.category.name.countDistinct().eq((long) categories.size()))
+                .having(projectCategory.category.name.count().eq((long) categories.size()))
                 .fetch());
     }
 
