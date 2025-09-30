@@ -15,12 +15,6 @@ public record ProjectQueryCondition(
         Cursor<?> cursor
 ) {
 
-    public boolean isEmptyFilter() {
-        return CollectionUtils.isEmpty(categoryNames) &&
-                CollectionUtils.isEmpty(techStackNames) &&
-                (search == null || !search.hasValue());
-    }
-
     public static ProjectQueryCondition of(
             String search,
             List<String> categories,
@@ -38,5 +32,11 @@ public record ProjectQueryCondition(
                 limit,
                 sortType.toCursor(cursor)
         );
+    }
+
+    public boolean isEmptyFilter() {
+        return CollectionUtils.isEmpty(categoryNames) &&
+                CollectionUtils.isEmpty(techStackNames) &&
+                (search == null || !search.hasValue());
     }
 }
