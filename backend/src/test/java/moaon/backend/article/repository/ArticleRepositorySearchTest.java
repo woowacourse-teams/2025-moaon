@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
+import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
@@ -22,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 @SpringBootTest
-@Import(RepositoryHelper.class)
+@Import({RepositoryHelper.class, ArticleDao.class})
 public class ArticleRepositorySearchTest {
 
     @Autowired

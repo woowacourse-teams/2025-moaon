@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
@@ -28,7 +29,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({RepositoryHelper.class, QueryDslConfig.class, ProjectDao.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class, ArticleDao.class, ProjectDao.class})
 class CustomizedArticleRepositoryImplTest {
 
     @Autowired
