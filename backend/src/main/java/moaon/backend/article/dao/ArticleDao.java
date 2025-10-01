@@ -55,6 +55,22 @@ public class ArticleDao {
                 .fetch();
     }
 
+    public List<Article> findAllBy(
+            long projectId,
+            Sector sector,
+            SearchKeyword searchKeyword
+    ) {
+        return jpaQueryFactory.
+                selectFrom(article)
+                .where(
+                        article.project.id.eq(projectId),
+                        equalSector(sector),
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .fetch();
+
+    }
+
     public List<Long> findIdsByTechStackNames(List<String> techStackNames) {
         if (CollectionUtils.isEmpty(techStackNames)) {
             return Collections.emptyList();
@@ -144,7 +160,7 @@ public class ArticleDao {
         return article.id.in(articleIds);
     }
 
-    public BooleanExpression equalSector(Sector sector) {
+    private BooleanExpression equalSector(Sector sector) {
         if (sector == null) {
             return null;
         }
@@ -158,7 +174,7 @@ public class ArticleDao {
         return cursor.getCursorExpression();
     }
 
-    public BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
+    private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
             return null;
         }
