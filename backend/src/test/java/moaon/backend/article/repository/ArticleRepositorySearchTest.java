@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
@@ -121,7 +122,7 @@ public class ArticleRepositorySearchTest {
     }
 
     private ArticleQueryCondition aboutSearchKeyword(String keyword) {
-        return new ArticleQueryConditionBuilder()
+        return new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
                 .search(keyword)
                 .build();
     }

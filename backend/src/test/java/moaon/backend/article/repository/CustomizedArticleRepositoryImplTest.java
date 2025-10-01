@@ -1,13 +1,16 @@
 package moaon.backend.article.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
@@ -51,7 +54,6 @@ class CustomizedArticleRepositoryImplTest {
         Article articleWithCategory = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .sector(filterdSector)
-                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
                         .build()
         );
 
@@ -61,11 +63,8 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
                 .sector(filterdSector)
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(10)
-                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
@@ -84,22 +83,18 @@ class CustomizedArticleRepositoryImplTest {
 
         Article articleWithTechStacks = repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .techStacks(List.of(techStack1, techStack2))
-                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
+                        .techStacks(techStack1, techStack2)
                         .build()
         );
 
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .techStacks(List.of(techStack2))
+                        .techStacks(techStack2)
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(10)
-                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 
         // when
@@ -109,43 +104,125 @@ class CustomizedArticleRepositoryImplTest {
         assertThat(articles).containsOnlyOnce(articleWithTechStacks);
     }
 
-    @DisplayName("직군, 기술스택 필터를 이용하여 아티클을 조회한다.")
+    @DisplayName("주제 필터를 이용하여 아티클을 조회한다.")
     @Test
-    void findWithTechStackAndCategoryFilter() {
+    void findWithTopicsFilter() {
         // given
-        TechStack techStack1 = Fixture.anyTechStack();
-        TechStack techStack2 = Fixture.anyTechStack();
+        Topic topic = Topic.TECHNOLOGY_ADOPTION;
 
-        Sector sector = Fixture.randomSector();
-
-        Article articleWithTechStacksAndCategory = repositoryHelper.save(
+        Article articleWithTopic = repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .techStacks(List.of(techStack1, techStack2))
-                        .sector(sector)
-                        .createdAt(LocalDateTime.of(2024, 7, 30, 0, 0))
+                        .topics(topic)
                         .build()
         );
-
         repositoryHelper.save(
                 new ArticleFixtureBuilder()
-                        .techStacks(List.of(techStack2))
-                        .sector(sector)
+                        .topics(Topic.PERFORMANCE_OPTIMIZATION)
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sector(sector)
-                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(10)
-                .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .topics(topic)
                 .build();
 
         // when
         List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
-        assertThat(articles).containsOnlyOnce(articleWithTechStacksAndCategory);
+        assertThat(articles).containsOnlyOnce(articleWithTopic);
+    }
+
+    @DisplayName("직군, 주제, 기술스택 필터를 이용하여 아티클을 조회한다.")
+    @Test
+    void findWithTechStackAndCategoryFilter() {
+        // given
+        TechStack techStack1 = Fixture.anyTechStack();
+        TechStack techStack2 = Fixture.anyTechStack();
+        Topic topic = Topic.TECHNOLOGY_ADOPTION;
+        Sector sector = Fixture.randomSector();
+
+        Article articleWithTechStacksAndCategoryAndTopic = repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .techStacks(techStack1, techStack2)
+                        .sector(sector)
+                        .topics(topic)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .techStacks(techStack1, techStack2)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .sector(sector)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .topics(topic)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .sector(sector)
+                .topics(topic)
+                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
+                .build();
+
+        // when
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
+
+        // then
+        assertThat(articles).containsOnlyOnce(articleWithTechStacksAndCategoryAndTopic);
+    }
+
+    @DisplayName("필터 조건이 없으면 모든 아티클을 반환한다.")
+    @Test
+    void findWithNoFilter() {
+        // given
+        Article article1 = repositoryHelper.save(new ArticleFixtureBuilder().build());
+        Article article2 = repositoryHelper.save(new ArticleFixtureBuilder().build());
+        Article article3 = repositoryHelper.save(new ArticleFixtureBuilder().build());
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT).build();
+
+        // when
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
+
+        // then
+        assertThat(articles).containsExactlyInAnyOrder(article1, article2, article3);
+    }
+
+    @DisplayName("필터 조건에 해당하는 결과가 없으면 빈 결과값을 반환한다.")
+    @Test
+    void findWithEmptyResult() {
+        // given
+        Sector existingSector = Sector.BE;
+        Sector nonExistingSector = Sector.FE;
+
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .sector(existingSector)
+                        .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .sector(nonExistingSector)
+                .build();
+
+        // when
+        Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+
+        // then
+        assertAll(
+                () -> assertThat(articles.getTotalCount()).isZero(),
+                () -> assertThat(articles.getArticles()).isEmpty()
+        );
     }
 
     @DisplayName("아티클을 생성일자를 기준으로 정렬한다.")
@@ -180,14 +257,12 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition1 = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(10)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition1).getArticles();
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).containsExactly(tomorrowArticle, todayArticle, yesterdayArticle);
@@ -227,9 +302,7 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CLICKS)
-                .limit(10)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CLICKS)
                 .cursor(new ClickArticleCursor(4, 4L))
                 .build();
 
@@ -244,106 +317,49 @@ class CustomizedArticleRepositoryImplTest {
     @Test
     void findArticlesForLimitPlusOne() {
         // given
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
 
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CLICKS)
-                .limit(4)
-                .cursor(new ClickArticleCursor(4, 99999999L))
-                .build();
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(4, ArticleSortType.CLICKS).build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
+        Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(articles).hasSize(5);
+        assertAll(
+                () -> assertThat(articles.getLimit()).isEqualTo(4),
+                () -> assertThat(articles.getArticles()).hasSize(5),
+                () -> assertThat(articles.hasNext()).isTrue()
+        );
     }
 
     @DisplayName("마지막 페이지 도달하면 limit 개수 이하로 가져온다.")
     @Test
     void findArticlesForUnderLimit() {
         // given
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
 
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        repositoryHelper.save(
-                new ArticleFixtureBuilder()
-                        .clicks(3)
-                        .build()
-        );
-
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CLICKS)
-                .limit(9)
-                .cursor(new ClickArticleCursor(4, 999999L))
-                .build();
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(9, ArticleSortType.CLICKS).build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
+        Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(articles).hasSize(6);
+        assertAll(
+                () -> assertThat(articles.getLimit()).isEqualTo(9),
+                () -> assertThat(articles.getArticles()).hasSize(6),
+                () -> assertThat(articles.getTotalCount()).isEqualTo(6),
+                () -> assertThat(articles.hasNext()).isFalse()
+        );
     }
 
     @DisplayName("cursor 가 없는 경우 초기 데이터를 가져온다.")
@@ -368,9 +384,7 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CLICKS)
-                .limit(9)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(9, ArticleSortType.CLICKS)
                 .cursor(new CreatedAtArticleCursor(LocalDateTime.now(), 1L))
                 .build();
 
@@ -401,8 +415,8 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 
         // when
