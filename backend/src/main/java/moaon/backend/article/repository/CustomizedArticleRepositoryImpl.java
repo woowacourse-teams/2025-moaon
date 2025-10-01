@@ -10,11 +10,16 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
@@ -26,6 +31,7 @@ import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class CustomizedArticleRepositoryImpl implements CustomizedArticleRepository {
@@ -39,35 +45,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        if (hasTechStackFilter(queryCondition)) {
-            return findWithTechStackFilter(queryCondition);
-        }
-
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
-        List<Topic> topics = queryCondition.topics();
-        int limit = queryCondition.limit();
-
-        return jpaQueryFactory
-                .selectFrom(article)
-                .where(
-                        equalSector(sector),
-                        applyCursor(articleCursor),
-                        satisfiesMatchScore(searchKeyword),
-                        containsAllTopics(topics)
-                )
-                .orderBy(toOrderByWithSector(sortBy, sector))
-                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
-                .fetch();
-    }
-
-    /*
-     * 기존의 쿼리를 최대한 쪼개서 사용한다.
-     */
-    @Override
-    public List<Article> findWithSearchConditions2(final ArticleQueryCondition queryCondition) {
         List<String> techStackNames = queryCondition.techStackNames();
         SearchKeyword searchKeyword = queryCondition.search();
         Sector sector = queryCondition.sector();
@@ -76,35 +53,110 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         List<Topic> topics = queryCondition.topics();
         int limit = queryCondition.limit();
 
-        // techStack -> techStack 을 가지는 id 조회
-        List<Long> articleIdsByTechStacks = getArticleIds(techStackNames);
+        List<Long> articleIdsByTechStacks = findArticleIdsByTechStackNames(techStackNames);
+        List<Long> articleIdsByTopics = findArticleIdsByTopics(topics);
+        List<Long> articleIdsBySearch = findArticleIdsBySearchKeyword(searchKeyword);
+        Set<Long> filteredIds = intersectionIds(
+                articleIdsByTechStacks,
+                articleIdsByTopics,
+                articleIdsBySearch
+        );
+        List<Long> articleIdsBySector = findArticleIdsBySector(sector, filteredIds);
 
-        // topics -> topics 를 가지는 id 조회
-
-        // 두 id set 을 교집합 -> id set 으로 조회 ->
         return jpaQueryFactory
                 .selectFrom(article)
                 .where(
-                        equalSector(sector),
                         applyCursor(articleCursor),
-                        articleIdIn(articleIdsByTechStacks)
+                        articleIdIn(articleIdsBySector)
                 )
                 .orderBy(toOrderByWithSector(sortBy, sector))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
 
-    private List<Long> getArticleIds(List<String> techStackNames) {
+    private Set<Long> intersectionIds(
+            List<Long> ids1,
+            List<Long> ids2,
+            List<Long> ids3
+    ) {
+        List<List<Long>> allLists = new ArrayList<>(List.of(ids1, ids2, ids3));
+
+        List<Long> smallestList = Collections.min(allLists, Comparator.comparingInt(List::size));
+        Set<Long> intersection = new HashSet<>(smallestList);
+        allLists.remove(smallestList);
+        for (List<Long> currentList : allLists) {
+            intersection.retainAll(new HashSet<>(currentList));
+        }
+
+        return intersection;
+    }
+
+    private List<Long> findArticleIdsByTechStackNames(List<String> techStackNames) {
         if (CollectionUtils.isEmpty(techStackNames)) {
             return null;
         }
-        // 이거 또 쪼개면 techStack ID 조회 -> articleId 조회 이렇게 두 단계로 쪼갤 수 있긴 함
+
         return jpaQueryFactory
                 .select(articleTechStack.article.id)
                 .from(articleTechStack)
                 .join(articleTechStack.techStack, techStack)
                 .where(techStack.name.in(techStackNames))
+                .groupBy(articleTechStack.article.id)
+                .having(techStack.name.count().eq((long) techStackNames.size()))
                 .fetch();
+    }
+
+    private List<Long> findArticleIdsByTopics(List<Topic> topics) { // articleTopics 엔티티가 없음. NativeQuery로?
+        if (CollectionUtils.isEmpty(topics)) {
+            return null;
+        }
+
+        String sql = """
+                SELECT
+                    article_id
+                FROM
+                    article_topics
+                WHERE
+                    topics in (:topics)
+                GROUP BY
+                    article_id
+                HAVING
+                    COUNT(article_id) = :topicCount;
+                """;
+        Query query = entityManager.createNativeQuery(sql, Long.class);
+        query.setParameter("topics", topics.stream().map(Topic::name).toList());
+        query.setParameter("topicCount", topics.size());
+
+        return query.getResultList();
+    }
+
+    private List<Long> findArticleIdsBySearchKeyword(SearchKeyword searchKeyword) {
+        if (searchKeyword == null || !searchKeyword.hasValue()) {
+            return null;
+        }
+        return jpaQueryFactory
+                .select(article.id)
+                .from(article)
+                .where(satisfiesMatchScore(searchKeyword))
+                .fetch();
+    }
+
+    private List<Long> findArticleIdsBySector(Sector sector, Set<Long> filteredIds) {
+        return jpaQueryFactory
+                .select(article.id)
+                .from(article)
+                .where(
+                        equalSector(sector),
+                        articleIdIn(filteredIds)
+                )
+                .fetch();
+    }
+
+    private BooleanExpression articleIdIn(Set<Long> articleIds) {
+        if (CollectionUtils.isEmpty(articleIds)) {
+            return null;
+        }
+        return article.id.in(articleIds);
     }
 
     private BooleanExpression articleIdIn(List<Long> articleIds) {
@@ -116,24 +168,25 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
-        if (hasTechStackFilter(queryCondition)) {
-            return countWithTechStackFilter(queryCondition);
-        }
-
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-
-        return Optional.ofNullable(jpaQueryFactory
-                        .select(article.count())
-                        .from(article)
-                        .where(
-                                equalSector(sector),
-                                satisfiesMatchScore(searchKeyword),
-                                containsAllTopics(topics)
-                        )
-                        .fetchOne())
-                .orElse(0L);
+//        if (hasTechStackFilter(queryCondition)) {
+//            return countWithTechStackFilter(queryCondition);
+//        }
+//
+//        SearchKeyword searchKeyword = queryCondition.search();
+//        Sector sector = queryCondition.sector();
+//        List<Topic> topics = queryCondition.topics();
+//
+//        return Optional.ofNullable(jpaQueryFactory
+//                        .select(article.count())
+//                        .from(article)
+//                        .where(
+//                                equalSector(sector),
+//                                satisfiesMatchScore(searchKeyword),
+//                                containsAllTopics(topics)
+//                        )
+//                        .fetchOne())
+//                .orElse(0L);
+        return 0;
     }
 
     @Override
@@ -152,57 +205,11 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .fetch();
     }
 
-    private List<Article> findWithTechStackFilter(ArticleQueryCondition queryCondition) {
-        String sql = String.join("\n",
-                "SELECT a1_0.id, a1_0.article_url, a1_0.clicks, a1_0.content,",
-                "a1_0.created_at, a1_0.project_id, a1_0.sector, a1_0.summary,",
-                "a1_0.title, a1_0.updated_at",
-                buildTechStackJoinSubqueryClause(),
-                buildWhereClause(queryCondition),
-                buildWhereCursorClause(queryCondition),
-                buildOrderByClause(queryCondition),
-                "LIMIT :limit"
-        );
-
-        Query query = entityManager.createNativeQuery(sql, Article.class);
-        setTechStackJoinSubqueryParameters(query, queryCondition);
-        setWhereClauseParameters(query, queryCondition);
-        setWhereCursorParameters(query, queryCondition);
-        query.setParameter("limit", queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT);
-
-        return query.getResultList();
-    }
-
-    private long countWithTechStackFilter(ArticleQueryCondition queryCondition) {
-        String sql = String.join("\n",
-                "SELECT COUNT(*)",
-                buildTechStackJoinSubqueryClause(),
-                buildWhereClause(queryCondition)
-        );
-
-        Query query = entityManager.createNativeQuery(sql);
-        setTechStackJoinSubqueryParameters(query, queryCondition);
-        setWhereClauseParameters(query, queryCondition);
-
-        Object result = query.getSingleResult();
-        return ((Number) result).longValue();
-    }
-
     private BooleanExpression equalSector(Sector sector) {
         if (sector == null) {
             return null;
         }
         return article.sector.eq(sector);
-    }
-
-    private BooleanExpression containsAllTopics(List<Topic> topics) {
-        if (CollectionUtils.isEmpty(topics)) {
-            return null;
-        }
-        return topics.stream()
-                .map(article.topics::contains)
-                .reduce(BooleanExpression::and)
-                .orElse(null);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
@@ -223,7 +230,6 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
         return cursor.getCursorExpression();
     }
-
 
     private String formatSearchKeyword(SearchKeyword searchKeyword) {
         String search = searchKeyword.replaceSpecialCharacters(BLANK);
@@ -265,119 +271,5 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         }
 
         return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
-    }
-
-    private boolean hasTechStackFilter(ArticleQueryCondition queryCondition) {
-        return !CollectionUtils.isEmpty(queryCondition.techStackNames());
-    }
-
-    private String buildTechStackJoinSubqueryClause() {
-        return "FROM article a1_0 " +
-                "JOIN ( " +
-                "    SELECT ts1_0.article_id " +
-                "    FROM article_tech_stack ts1_0 " +
-                "    JOIN tech_stack ts2_0 ON ts2_0.id = ts1_0.tech_stack_id " +
-                "    WHERE ts2_0.name IN (:techStackNames) " +
-                "    GROUP BY ts1_0.article_id " +
-                "    HAVING COUNT(DISTINCT ts1_0.tech_stack_id) = :techStackCount " +
-                ") AS filtered_articles ON a1_0.id = filtered_articles.article_id " +
-                "WHERE 1=1 ";
-    }
-
-    private String buildWhereClause(ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-
-        StringBuilder whereClause = new StringBuilder();
-
-        if (sector != null) {
-            whereClause.append("AND a1_0.sector = :sector ");
-        }
-        if (searchKeyword != null && searchKeyword.hasValue()) {
-            whereClause.append(
-                    "AND MATCH(a1_0.title, a1_0.summary, a1_0.content) AGAINST(:searchQuery IN BOOLEAN MODE) ");
-        }
-        if (!CollectionUtils.isEmpty(topics)) {
-            for (int i = 0; i < topics.size(); i++) {
-                whereClause.append("AND :topic").append(i).append(" IN (")
-                        .append("SELECT t1_0.topics FROM article_topics t1_0 WHERE a1_0.id = t1_0.article_id")
-                        .append(") ");
-            }
-        }
-        return whereClause.toString();
-    }
-
-    private String buildWhereCursorClause(ArticleQueryCondition queryCondition) {
-        Cursor<?> cursor = queryCondition.articleCursor();
-        ArticleSortType sortType = queryCondition.sortBy();
-
-        if (cursor != null) {
-            if (sortType == ArticleSortType.CLICKS) {
-                return "AND (a1_0.clicks < :cursorClicks OR (a1_0.clicks = :cursorClicks AND a1_0.id < :cursorId)) ";
-            }
-            return "AND (a1_0.created_at < :cursorCreatedAt OR (a1_0.created_at = :cursorCreatedAt AND a1_0.id < :cursorId)) ";
-        }
-        return "AND 1=1";
-    }
-
-    private String buildOrderByClause(ArticleQueryCondition queryCondition) {
-        Sector sector = queryCondition.sector();
-        ArticleSortType sortBy = queryCondition.sortBy();
-
-        StringBuilder sql = new StringBuilder();
-        sql.append("ORDER BY ");
-        if (sector != null) {
-            sql.append("a1_0.sector ASC, ");
-        }
-        if (sortBy == ArticleSortType.CLICKS) {
-            sql.append("a1_0.clicks DESC, ");
-        } else {
-            sql.append("a1_0.created_at DESC, ");
-        }
-        sql.append("a1_0.id DESC ");
-
-        return sql.toString();
-    }
-
-    private void setTechStackJoinSubqueryParameters(Query query, ArticleQueryCondition queryCondition) {
-        List<String> techStackNames = queryCondition.techStackNames();
-        if (!CollectionUtils.isEmpty(techStackNames)) {
-            query.setParameter("techStackNames", techStackNames);
-            query.setParameter("techStackCount", techStackNames.size());
-        }
-    }
-
-    private void setWhereClauseParameters(Query query, ArticleQueryCondition queryCondition) {
-        SearchKeyword searchKeyword = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        List<Topic> topics = queryCondition.topics();
-
-        if (sector != null) {
-            query.setParameter("sector", sector.name());
-        }
-        if (searchKeyword != null && searchKeyword.hasValue()) {
-            query.setParameter("searchQuery", formatSearchKeyword(searchKeyword));
-        }
-        if (!CollectionUtils.isEmpty(topics)) {
-            for (int i = 0; i < topics.size(); i++) {
-                query.setParameter("topic" + i, topics.get(i).name());
-            }
-        }
-    }
-
-    private void setWhereCursorParameters(Query query, ArticleQueryCondition queryCondition) {
-        ArticleSortType sortBy = queryCondition.sortBy();
-        Cursor<?> articleCursor = queryCondition.articleCursor();
-
-        if (articleCursor != null) {
-            if (sortBy == ArticleSortType.CLICKS) {
-                query.setParameter("cursorClicks", articleCursor.getSortValue());
-                query.setParameter("cursorId", articleCursor.getLastId());
-            } else {
-                query.setParameter("cursorCreatedAt", articleCursor.getSortValue());
-                query.setParameter("cursorId", articleCursor.getLastId());
-            }
-        }
     }
 }
