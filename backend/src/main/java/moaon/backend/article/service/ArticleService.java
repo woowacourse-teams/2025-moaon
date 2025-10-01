@@ -36,8 +36,7 @@ public class ArticleService {
         boolean hasNext = articles.hasNext();
 
         Cursor<?> nextCursor = articles.getNextCursor(queryCondition.sortType());
-        return ArticleResponse.from(articlesToReturn, totalCount, hasNext,
-                nextCursor == null ? null : nextCursor.getNextCursor());
+        return ArticleResponse.from(articlesToReturn, totalCount, hasNext, getNextCursor(nextCursor));
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
@@ -61,5 +60,12 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
         article.addClickCount();
+    }
+
+    private String getNextCursor(final Cursor<?> nextCursor) {
+        if (nextCursor == null) {
+            return null;
+        }
+        return nextCursor.getNextCursor();
     }
 }
