@@ -15,7 +15,7 @@ public record ArticleQueryCondition(
         List<String> techStackNames,
         ArticleSortType sortType,
         int limit,
-        Cursor<?> articleCursor
+        Cursor<?> cursor
 ) {
 
     public static ArticleQueryCondition from(

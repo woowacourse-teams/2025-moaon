@@ -32,27 +32,26 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        List<Long> articleIdsByTechStacks = articleDao.findArticleIdsByTechStackNames(queryCondition.techStackNames());
-        List<Long> articleIdsByTopics = articleDao.findArticleIdsByTopics(queryCondition.topics());
-        List<Long> articleIdsBySearch = articleDao.findArticleIdsBySearchKeyword(queryCondition.search());
-        Set<Long> filteredIds = intersect(
-                articleIdsByTechStacks,
-                articleIdsByTopics,
-                articleIdsBySearch
+        List<Long> articleIdsByTechStacks = articleDao.findIdsByTechStackNames(queryCondition.techStackNames());
+        List<Long> articleIdsByTopics = articleDao.findIdsByTopics(queryCondition.topics());
+        List<Long> articleIdsBySearch = articleDao.findIdsBySearchKeyword(queryCondition.search());
+        List<Long> filteredIds = articleDao.findIdsBySector(
+                queryCondition.sector(),
+                intersect(
+                        articleIdsByTechStacks,
+                        articleIdsByTopics,
+                        articleIdsBySearch
+                )
         );
-        List<Long> articleIdsBySector = articleDao.findArticleIdsBySector(queryCondition.sector(), filteredIds);
-        List<Article> articles = articleDao.findArticles(articleIdsBySector, queryCondition);
-        return new Articles(articles, calculateTotalCount(articleIdsBySector), queryCondition.limit());
+        List<Article> articles = articleDao.findAllBy(
+                filteredIds,
+                queryCondition.cursor(),
+                queryCondition.limit(),
+                queryCondition.sortType()
+        );
+        return new Articles(articles, calculateTotalCount(filteredIds), queryCondition.limit());
     }
 
-    private long calculateTotalCount(List<Long> articleIdsBySector) {
-        if (articleIdsBySector.isEmpty()) {
-            return articleDao.count();
-        }
-        return articleIdsBySector.size();
-    }
-
-    // todo 이것도 바꿔야됨
     @Override
     public List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition) {
         SearchKeyword searchKeyword = condition.search();
@@ -69,29 +68,47 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .fetch();
     }
 
+    private long calculateTotalCount(List<Long> articleIdsBySector) {
+        if (articleIdsBySector.isEmpty()) {
+            return articleDao.count();
+        }
+        return articleIdsBySector.size();
+    }
+
     private Set<Long> intersect(List<Long>... idLists) {
         if (idLists == null || idLists.length == 0) {
             return Collections.emptySet();
         }
 
-        List<List<Long>> nonNullLists = Arrays.stream(idLists)
-                .filter(Objects::nonNull)
-                .filter(list -> !list.isEmpty())
-                .toList();
+        List<List<Long>> nonNullLists = filterEmptyList(idLists);
         if (nonNullLists.isEmpty()) {
             return Collections.emptySet();
         }
 
-        List<Long> smallestList = nonNullLists.stream()
+        List<Long> smallestList = selectSmallestList(nonNullLists);
+        return intersect(smallestList, nonNullLists);
+    }
+
+    private List<List<Long>> filterEmptyList(List<Long>[] idLists) {
+        return Arrays.stream(idLists)
+                .filter(Objects::nonNull)
+                .filter(list -> !list.isEmpty())
+                .toList();
+    }
+
+    private List<Long> selectSmallestList(List<List<Long>> nonNullLists) {
+        return nonNullLists.stream()
                 .min(Comparator.comparingInt(List::size))
                 .orElse(Collections.emptyList());
-        Set<Long> intersection = new HashSet<>(smallestList);
-        for (List<Long> currentList : nonNullLists) {
-            if (currentList != smallestList) {
-                intersection.retainAll(currentList);
+    }
+
+    private Set<Long> intersect(List<Long> base, List<List<Long>> others) {
+        Set<Long> intersection = new HashSet<>(base);
+        for (List<Long> current : others) {
+            if (current != base) {
+                intersection.retainAll(current);
             }
         }
-
         return intersection;
     }
 }

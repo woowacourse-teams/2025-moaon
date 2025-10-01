@@ -21,7 +21,6 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.ArticleFullTextSearchHQLFunction;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
@@ -39,19 +38,24 @@ public class ArticleDao {
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager entityManager;
 
-    public List<Article> findArticles(List<Long> articleIdsBySector, ArticleQueryCondition queryCondition) {
+    public List<Article> findAllBy(
+            List<Long> ids,
+            Cursor<?> cursor,
+            int limit,
+            ArticleSortType sortType
+    ) {
         return jpaQueryFactory
                 .selectFrom(article)
                 .where(
-                        applyCursor(queryCondition.articleCursor()),
-                        articleIdIn(articleIdsBySector)
+                        idIn(ids),
+                        applyCursor(cursor)
                 )
-                .orderBy(toOrderBy(queryCondition.sortType()))
-                .limit(queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT)
+                .orderBy(toOrderBy(sortType))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
 
-    public List<Long> findArticleIdsByTechStackNames(List<String> techStackNames) {
+    public List<Long> findIdsByTechStackNames(List<String> techStackNames) {
         if (CollectionUtils.isEmpty(techStackNames)) {
             return Collections.emptyList();
         }
@@ -66,7 +70,7 @@ public class ArticleDao {
                 .fetch();
     }
 
-    public List<Long> findArticleIdsByTopics(List<Topic> topics) {
+    public List<Long> findIdsByTopics(List<Topic> topics) {
         if (CollectionUtils.isEmpty(topics)) {
             return Collections.emptyList();
         }
@@ -86,11 +90,10 @@ public class ArticleDao {
         Query query = entityManager.createNativeQuery(sql, Long.class);
         query.setParameter("topics", topics.stream().map(Topic::name).toList());
         query.setParameter("topicCount", topics.size());
-
         return query.getResultList();
     }
 
-    public List<Long> findArticleIdsBySearchKeyword(SearchKeyword searchKeyword) {
+    public List<Long> findIdsBySearchKeyword(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
             return Collections.emptyList();
         }
@@ -102,7 +105,7 @@ public class ArticleDao {
                 .fetch();
     }
 
-    public List<Long> findArticleIdsBySector(Sector sector, Set<Long> filteredIds) {
+    public List<Long> findIdsBySector(Sector sector, Set<Long> filteredIds) {
         if (sector == null && CollectionUtils.isEmpty(filteredIds)) {
             return Collections.emptyList();
         }
@@ -112,7 +115,7 @@ public class ArticleDao {
                 .from(article)
                 .where(
                         equalSector(sector),
-                        articleIdIn(filteredIds)
+                        idIn(filteredIds)
                 )
                 .fetch();
     }
@@ -127,14 +130,14 @@ public class ArticleDao {
                 .orElse(0L);
     }
 
-    private BooleanExpression articleIdIn(Set<Long> articleIds) {
+    private BooleanExpression idIn(Set<Long> articleIds) {
         if (CollectionUtils.isEmpty(articleIds)) {
             return null;
         }
         return article.id.in(articleIds);
     }
 
-    private BooleanExpression articleIdIn(List<Long> articleIds) {
+    private BooleanExpression idIn(List<Long> articleIds) {
         if (CollectionUtils.isEmpty(articleIds)) {
             return null;
         }
@@ -146,6 +149,13 @@ public class ArticleDao {
             return null;
         }
         return article.sector.eq(sector);
+    }
+
+    private BooleanExpression applyCursor(Cursor<?> cursor) {
+        if (cursor == null) {
+            return null;
+        }
+        return cursor.getCursorExpression();
     }
 
     public BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
@@ -160,11 +170,12 @@ public class ArticleDao {
                 .gt(MINIMUM_MATCH_SCORE);
     }
 
-    private BooleanExpression applyCursor(Cursor<?> cursor) {
-        if (cursor == null) {
-            return null;
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
+        if (sortBy == ArticleSortType.CLICKS) {
+            return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }
-        return cursor.getCursorExpression();
+
+        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
     }
 
     private String formatSearchKeyword(SearchKeyword searchKeyword) {
@@ -179,13 +190,5 @@ public class ArticleDao {
             return String.format("%s*", keyword);
         }
         return String.format("+%s*", keyword.toLowerCase());
-    }
-
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
-        if (sortBy == ArticleSortType.CLICKS) {
-            return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
-        }
-
-        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
     }
 }
