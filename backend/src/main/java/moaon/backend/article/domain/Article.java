@@ -33,7 +33,7 @@ import moaon.backend.techStack.domain.TechStack;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString
+@ToString(exclude = {"project", "techStacks"})
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Table(indexes = {

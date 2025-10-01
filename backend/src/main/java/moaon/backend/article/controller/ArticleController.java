@@ -77,7 +77,7 @@ public class ArticleController {
                 cursor
         );
 
-        return ResponseEntity.ok(articleService.getPagedArticles2(queryCondition));
+        return ResponseEntity.ok(articleService.getPagedArticles(queryCondition));
     }
 
 
