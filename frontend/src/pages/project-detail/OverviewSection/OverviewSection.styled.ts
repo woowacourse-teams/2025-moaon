@@ -13,4 +13,34 @@ export const OverviewContent = styled.div`
   line-height: 1.6;
   word-break: keep-all;
   overflow-wrap: break-word;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  hr {
+    margin: 0;
+    margin-top: 1rem;
+  }
+
+  blockquote {
+    height: auto;
+    min-height: 0;
+    padding: 1rem 1rem 1rem 2rem;
+    border-left: 4px solid #007bff;
+    background-color: #f7f7f7ff;
+    display: flex;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  li {
+    list-style: inside;
+  }
 `;

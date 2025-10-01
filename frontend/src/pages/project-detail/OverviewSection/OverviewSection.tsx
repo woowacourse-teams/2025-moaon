@@ -1,15 +1,17 @@
-import SectionTitle from "../SectionTitle/SectionTitle";
+import Markdown from "react-markdown";
 import * as S from "./OverviewSection.styled";
 
 interface OverviewSectionProps {
   overview?: string;
 }
 
-function OverviewSection({ overview }: OverviewSectionProps) {
+function OverviewSection({ overview = "" }: OverviewSectionProps) {
+  console.log(overview);
   return (
     <S.OverviewSectionContainer>
-      <SectionTitle title="프로젝트 개요" />
-      <S.OverviewContent>{overview || null}</S.OverviewContent>
+      <S.OverviewContent>
+        <Markdown>{overview}</Markdown>
+      </S.OverviewContent>
     </S.OverviewSectionContainer>
   );
 }
