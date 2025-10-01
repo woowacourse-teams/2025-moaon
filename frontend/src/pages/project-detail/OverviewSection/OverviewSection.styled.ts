@@ -6,7 +6,6 @@ export const OverviewSectionContainer = styled.section`
 `;
 
 export const OverviewContent = styled.div`
-  width: 50rem;
   font-size: 1rem;
   font-weight: 500;
   white-space: pre-wrap;
@@ -42,5 +41,9 @@ export const OverviewContent = styled.div`
 
   li {
     list-style: inside;
+  }
+
+  hr {
+    border: 1px solid #ebebebff;
   }
 `;

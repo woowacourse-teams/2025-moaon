@@ -7,7 +7,6 @@ interface OverviewSectionProps {
 }
 
 function OverviewSection({ overview = "" }: OverviewSectionProps) {
-  console.log(overview);
   return (
     <S.OverviewSectionContainer>
       <S.OverviewContent>
