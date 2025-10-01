@@ -1,11 +1,8 @@
 package moaon.backend.article.repository;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,46 +22,33 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        log.info("기술스택 필터링 시작");
-        List<Long> articleIdsByTechStacks = articleDao.findIdsByTechStackNames(queryCondition.techStackNames());
-        log.info("기술스택 필터링 개수: {}", articleIdsByTechStacks.size());
-        log.info("기술스택 필터링 끝");
-
-        log.info("주제 필터링 시작");
-        List<Long> articleIdsByTopics = articleDao.findIdsByTopics(queryCondition.topics());
-        log.info("주제 필터링 개수: {}", articleIdsByTopics.size());
-        log.info("주제 필터링 끝");
-
-        log.info("검색 시작");
-        List<Long> articleIdsBySearch = articleDao.findIdsBySearchKeyword(queryCondition.search());
-        log.info("검색 끝");
-
-        log.info("직군 필터링 시작");
-        Set<Long> intersected = intersect(
+        Set<Long> articleIdsByTechStacks = intersectOrFallback(
+                Collections.emptySet(),
+                articleDao.findIdsByTechStackNames(queryCondition.techStackNames())
+        );
+        Set<Long> articleIdsTechStacksAndTopics = intersectOrFallback(
                 articleIdsByTechStacks,
-                articleIdsByTopics,
-                articleIdsBySearch
+                articleDao.findIdsByTopics(queryCondition.topics())
         );
-        log.info("중간 단계 (필터링), {}개, {}", intersected.size(), intersected);
-        List<Long> filteringIds = articleDao.findIdsBySector(
+        Set<Long> articleIdsByTechStacksAndTopicsSearch = intersectOrFallback(
+                articleIdsTechStacksAndTopics,
+                articleDao.findIdsBySearchKeyword(queryCondition.search())
+        );
+        Set<Long> filteringIds = articleDao.findIdsBySector(
                 queryCondition.sector(),
-                intersected
+                articleIdsByTechStacksAndTopicsSearch
         );
-        log.info("직군 필터링 개수: {}", filteringIds.size());
-        log.info("직군 필터링 끝");
 
-        if (filteringIds.isEmpty()) {
+        if (queryCondition.hasFilter() && filteringIds.isEmpty()) {
             return new Articles(Collections.emptyList(), 0, queryCondition.limit());
         }
 
-        log.info("페이징 시작");
         List<Article> articles = articleDao.findAllBy(
                 filteringIds,
                 queryCondition.cursor(),
                 queryCondition.limit(),
                 queryCondition.sortType()
         );
-        log.info("페이징 끝");
         return new Articles(articles, calculateTotalCount(filteringIds), queryCondition.limit());
     }
 
@@ -77,47 +61,27 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         );
     }
 
-    private long calculateTotalCount(List<Long> filteringIds) {
+    private long calculateTotalCount(Set<Long> filteringIds) {
         if (filteringIds.isEmpty()) {
             return articleDao.count();
         }
         return filteringIds.size();
     }
 
-    private Set<Long> intersect(List<Long>... idLists) {
-        if (idLists == null || idLists.length == 0) {
+    private Set<Long> intersectOrFallback(Set<Long> first, Set<Long> second) {
+        if (first.isEmpty() && second.isEmpty()) {
             return Collections.emptySet();
         }
-
-        List<List<Long>> nonNullLists = filterEmptyList(idLists);
-        if (nonNullLists.isEmpty()) {
-            return Collections.emptySet();
+        if (first.isEmpty()) {
+            return second;
         }
-
-        List<Long> smallestList = selectSmallestList(nonNullLists);
-        return intersect(smallestList, nonNullLists);
-    }
-
-    private List<List<Long>> filterEmptyList(List<Long>[] idLists) {
-        return Arrays.stream(idLists)
-                .filter(Objects::nonNull)
-                .filter(list -> !list.isEmpty())
-                .toList();
-    }
-
-    private List<Long> selectSmallestList(List<List<Long>> nonNullLists) {
-        return nonNullLists.stream()
-                .min(Comparator.comparingInt(List::size))
-                .orElse(Collections.emptyList());
-    }
-
-    private Set<Long> intersect(List<Long> base, List<List<Long>> others) {
-        Set<Long> intersection = new HashSet<>(base);
-        for (List<Long> current : others) {
-            if (current != base) {
-                intersection.retainAll(current);
-            }
+        if (second.isEmpty()) {
+            return first;
         }
-        return intersection;
+        Set<Long> smaller = first.size() < second.size() ? first : second;
+        Set<Long> larger = first.size() < second.size() ? second : first;
+        Set<Long> result = new HashSet<>(smaller);
+        result.retainAll(larger);
+        return result;
     }
 }

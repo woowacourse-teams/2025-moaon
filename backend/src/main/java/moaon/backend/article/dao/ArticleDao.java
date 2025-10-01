@@ -11,7 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,7 +39,7 @@ public class ArticleDao {
     private final EntityManager entityManager;
 
     public List<Article> findAllBy(
-            List<Long> ids,
+            Set<Long> ids,
             Cursor<?> cursor,
             int limit,
             ArticleSortType sortType
@@ -68,27 +68,28 @@ public class ArticleDao {
                         satisfiesMatchScore(searchKeyword)
                 )
                 .fetch();
-
     }
 
-    public List<Long> findIdsByTechStackNames(List<String> techStackNames) {
+    public Set<Long> findIdsByTechStackNames(List<String> techStackNames) {
         if (CollectionUtils.isEmpty(techStackNames)) {
-            return Collections.emptyList();
+            return new HashSet<>();
         }
 
-        return jpaQueryFactory
-                .select(articleTechStack.article.id)
-                .from(articleTechStack)
-                .join(articleTechStack.techStack, techStack)
-                .where(techStack.name.in(techStackNames))
-                .groupBy(articleTechStack.article.id)
-                .having(techStack.name.count().eq((long) techStackNames.size()))
-                .fetch();
+        return new HashSet<>(
+                jpaQueryFactory
+                        .select(articleTechStack.article.id)
+                        .from(articleTechStack)
+                        .join(articleTechStack.techStack, techStack)
+                        .where(techStack.name.in(techStackNames))
+                        .groupBy(articleTechStack.article.id)
+                        .having(techStack.name.count().eq((long) techStackNames.size()))
+                        .fetch()
+        );
     }
 
-    public List<Long> findIdsByTopics(List<Topic> topics) {
+    public Set<Long> findIdsByTopics(List<Topic> topics) {
         if (CollectionUtils.isEmpty(topics)) {
-            return Collections.emptyList();
+            return new HashSet<>();
         }
 
         String sql = """
@@ -106,34 +107,38 @@ public class ArticleDao {
         Query query = entityManager.createNativeQuery(sql, Long.class);
         query.setParameter("topics", topics.stream().map(Topic::name).toList());
         query.setParameter("topicCount", topics.size());
-        return query.getResultList();
+        return new HashSet<>(query.getResultList());
     }
 
-    public List<Long> findIdsBySearchKeyword(SearchKeyword searchKeyword) {
+    public Set<Long> findIdsBySearchKeyword(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
-            return Collections.emptyList();
+            return new HashSet<>();
         }
 
-        return jpaQueryFactory
-                .select(article.id)
-                .from(article)
-                .where(satisfiesMatchScore(searchKeyword))
-                .fetch();
+        return new HashSet<>(
+                jpaQueryFactory
+                        .select(article.id)
+                        .from(article)
+                        .where(satisfiesMatchScore(searchKeyword))
+                        .fetch()
+        );
     }
 
-    public List<Long> findIdsBySector(Sector sector, Set<Long> filteredIds) {
+    public Set<Long> findIdsBySector(Sector sector, Set<Long> filteredIds) {
         if (sector == null && CollectionUtils.isEmpty(filteredIds)) {
-            return Collections.emptyList();
+            return new HashSet<>();
         }
 
-        return jpaQueryFactory
-                .select(article.id)
-                .from(article)
-                .where(
-                        equalSector(sector),
-                        idIn(filteredIds)
-                )
-                .fetch();
+        return new HashSet<>(
+                jpaQueryFactory
+                        .select(article.id)
+                        .from(article)
+                        .where(
+                                equalSector(sector),
+                                idIn(filteredIds)
+                        )
+                        .fetch()
+        );
     }
 
     public long count() {
