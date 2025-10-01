@@ -68,7 +68,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).containsOnlyOnce(articleWithCategory);
@@ -102,7 +102,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).containsOnlyOnce(articleWithTechStacks);
@@ -141,7 +141,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).containsOnlyOnce(articleWithTechStacksAndCategory);
@@ -186,7 +186,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition1);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition1).getArticles();
 
         // then
         assertThat(articles).containsExactly(tomorrowArticle, todayArticle, yesterdayArticle);
@@ -233,7 +233,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepositoryImpl.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepositoryImpl.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).containsExactly(highClicks, middleClicks, lowClicks);
@@ -286,7 +286,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).hasSize(5);
@@ -339,7 +339,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).hasSize(6);
@@ -374,7 +374,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+        List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
 
         // then
         assertThat(articles).containsExactly(articleWithId1, articleWithId2, articleWithId3);
@@ -405,7 +405,7 @@ class CustomizedArticleRepositoryImplTest {
                 .build();
 
         // when
-        long count = customizedArticleRepository.countWithSearchCondition(queryCondition);
+        long count = customizedArticleRepository.findWithSearchConditions(queryCondition).getTotalCount();
 
         // then
         assertThat(count).isEqualTo(2);

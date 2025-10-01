@@ -56,9 +56,10 @@ public class ArticleRepositorySearchTest {
         );
 
         // when
-        List<Article> aboutWebpack = repository.findWithSearchConditions(aboutSearchKeyword("webpack"));
-        List<Article> aboutDisk = repository.findWithSearchConditions(aboutSearchKeyword("디스크"));
-        List<Article> aboutRunner = repository.findWithSearchConditions(aboutSearchKeyword("runner offline"));
+        List<Article> aboutWebpack = repository.findWithSearchConditions(aboutSearchKeyword("webpack")).getArticles();
+        List<Article> aboutDisk = repository.findWithSearchConditions(aboutSearchKeyword("디스크")).getArticles();
+        List<Article> aboutRunner = repository.findWithSearchConditions(aboutSearchKeyword("runner offline"))
+                .getArticles();
 
         // then
         assertAll(

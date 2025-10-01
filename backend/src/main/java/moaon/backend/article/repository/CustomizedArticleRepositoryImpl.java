@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.domain.SearchKeyword;
@@ -30,7 +31,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private final ArticleDao articleDao;
 
     @Override
-    public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
+    public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
         List<Long> articleIdsByTechStacks = articleDao.findArticleIdsByTechStackNames(queryCondition.techStackNames());
         List<Long> articleIdsByTopics = articleDao.findArticleIdsByTopics(queryCondition.topics());
         List<Long> articleIdsBySearch = articleDao.findArticleIdsBySearchKeyword(queryCondition.search());
@@ -40,33 +41,18 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 articleIdsBySearch
         );
         List<Long> articleIdsBySector = articleDao.findArticleIdsBySector(queryCondition.sector(), filteredIds);
-
-        return articleDao.findArticles(articleIdsBySector, queryCondition);
+        List<Article> articles = articleDao.findArticles(articleIdsBySector, queryCondition);
+        return new Articles(articles, calculateTotalCount(articleIdsBySector), queryCondition.limit());
     }
 
-    @Override
-    public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
-//        if (hasTechStackFilter(queryCondition)) {
-//            return countWithTechStackFilter(queryCondition);
-//        }
-//
-//        SearchKeyword searchKeyword = queryCondition.search();
-//        Sector sector = queryCondition.sector();
-//        List<Topic> topics = queryCondition.topics();
-//
-//        return Optional.ofNullable(jpaQueryFactory
-//                        .select(article.count())
-//                        .from(article)
-//                        .where(
-//                                equalSector(sector),
-//                                satisfiesMatchScore(searchKeyword),
-//                                containsAllTopics(topics)
-//                        )
-//                        .fetchOne())
-//                .orElse(0L);
-        return 0;
+    private long calculateTotalCount(List<Long> articleIdsBySector) {
+        if (articleIdsBySector.isEmpty()) {
+            return articleDao.count();
+        }
+        return articleIdsBySector.size();
     }
 
+    // todo 이것도 바꿔야됨
     @Override
     public List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition) {
         SearchKeyword searchKeyword = condition.search();
@@ -83,20 +69,29 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 .fetch();
     }
 
-    @SafeVarargs
     private Set<Long> intersect(List<Long>... idLists) {
         if (idLists == null || idLists.length == 0) {
             return Collections.emptySet();
         }
 
-        return Arrays.stream(idLists)
+        List<List<Long>> nonNullLists = Arrays.stream(idLists)
                 .filter(Objects::nonNull)
-                .map(HashSet::new)
-                .sorted(Comparator.comparingInt(Set::size))
-                .reduce((first, second) -> {
-                    first.retainAll(second);
-                    return first;
-                })
-                .orElse(new HashSet<>());
+                .filter(list -> !list.isEmpty())
+                .toList();
+        if (nonNullLists.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        List<Long> smallestList = nonNullLists.stream()
+                .min(Comparator.comparingInt(List::size))
+                .orElse(Collections.emptyList());
+        Set<Long> intersection = new HashSet<>(smallestList);
+        for (List<Long> currentList : nonNullLists) {
+            if (currentList != smallestList) {
+                intersection.retainAll(currentList);
+            }
+        }
+
+        return intersection;
     }
 }

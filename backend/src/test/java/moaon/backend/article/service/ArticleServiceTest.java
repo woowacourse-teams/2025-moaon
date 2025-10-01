@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.Articles;
 import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -63,16 +64,14 @@ class ArticleServiceTest {
         List<Article> articles = List.of(article1, article2, article3);
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(articles);
+                .thenReturn(new Articles(articles, 5L, 2));
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortType.CREATED_AT)
                 .limit(2)
                 .build();
 
-        Cursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
-
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
+        Cursor<?> articleCursor = articleQueryCondition.sortType().toCursor(article2);
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
         ArticleContent articleContent2 = ArticleContent.from(article2);
@@ -109,14 +108,12 @@ class ArticleServiceTest {
         List<Article> articles = List.of(article1, article2, article3);
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(articles);
+                .thenReturn(new Articles(articles, 5L, 3));
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
                 .sortBy(ArticleSortType.CREATED_AT)
                 .limit(3)
                 .build();
-
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
         ArticleContent articleContent2 = ArticleContent.from(article2);

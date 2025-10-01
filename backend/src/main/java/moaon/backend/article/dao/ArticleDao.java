@@ -8,9 +8,12 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,6 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.ArticleFullTextSearchHQLFunction;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -35,7 +37,7 @@ public class ArticleDao {
     private static final String BLANK = " ";
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final JdbcTemplate jdbcTemplate;
+    private final EntityManager entityManager;
 
     public List<Article> findArticles(List<Long> articleIdsBySector, ArticleQueryCondition queryCondition) {
         return jpaQueryFactory
@@ -44,7 +46,7 @@ public class ArticleDao {
                         applyCursor(queryCondition.articleCursor()),
                         articleIdIn(articleIdsBySector)
                 )
-                .orderBy(toOrderBy(queryCondition.sortBy()))
+                .orderBy(toOrderBy(queryCondition.sortType()))
                 .limit(queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
     }
@@ -81,10 +83,11 @@ public class ArticleDao {
                 HAVING
                     COUNT(article_id) = :topicCount;
                 """;
-        List<String> topicNames = topics.stream()
-                .map(Topic::name)
-                .toList();
-        return jdbcTemplate.queryForList(sql, Long.class, topicNames, topics.size());
+        Query query = entityManager.createNativeQuery(sql, Long.class);
+        query.setParameter("topics", topics.stream().map(Topic::name).toList());
+        query.setParameter("topicCount", topics.size());
+
+        return query.getResultList();
     }
 
     public List<Long> findArticleIdsBySearchKeyword(SearchKeyword searchKeyword) {
@@ -114,14 +117,24 @@ public class ArticleDao {
                 .fetch();
     }
 
-    public BooleanExpression articleIdIn(Set<Long> articleIds) {
+    public long count() {
+        return Optional.ofNullable(
+                        jpaQueryFactory
+                                .select(article.count())
+                                .from(article)
+                                .fetchOne()
+                )
+                .orElse(0L);
+    }
+
+    private BooleanExpression articleIdIn(Set<Long> articleIds) {
         if (CollectionUtils.isEmpty(articleIds)) {
             return null;
         }
         return article.id.in(articleIds);
     }
 
-    public BooleanExpression articleIdIn(List<Long> articleIds) {
+    private BooleanExpression articleIdIn(List<Long> articleIds) {
         if (CollectionUtils.isEmpty(articleIds)) {
             return null;
         }
@@ -147,28 +160,28 @@ public class ArticleDao {
                 .gt(MINIMUM_MATCH_SCORE);
     }
 
-    public BooleanExpression applyCursor(Cursor<?> cursor) {
+    private BooleanExpression applyCursor(Cursor<?> cursor) {
         if (cursor == null) {
             return null;
         }
         return cursor.getCursorExpression();
     }
 
-    public String formatSearchKeyword(SearchKeyword searchKeyword) {
+    private String formatSearchKeyword(SearchKeyword searchKeyword) {
         String search = searchKeyword.replaceSpecialCharacters(BLANK);
         return Arrays.stream(search.split(BLANK))
                 .map(this::applyBooleanModeExpression)
                 .collect(Collectors.joining(BLANK));
     }
 
-    public String applyBooleanModeExpression(String keyword) {
+    private String applyBooleanModeExpression(String keyword) {
         if (keyword.length() == 1) {
             return String.format("%s*", keyword);
         }
         return String.format("+%s*", keyword.toLowerCase());
     }
 
-    public OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
         if (sortBy == ArticleSortType.CLICKS) {
             return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }

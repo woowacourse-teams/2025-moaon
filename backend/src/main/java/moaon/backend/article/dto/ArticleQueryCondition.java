@@ -13,7 +13,7 @@ public record ArticleQueryCondition(
         Sector sector,
         List<Topic> topics,
         List<String> techStackNames,
-        ArticleSortType sortBy,
+        ArticleSortType sortType,
         int limit,
         Cursor<?> articleCursor
 ) {
