@@ -1,9 +1,5 @@
 package moaon.backend.article.repository;
 
-import static moaon.backend.article.domain.QArticle.article;
-import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
-
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,22 +8,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Articles;
-import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class CustomizedArticleRepositoryImpl implements CustomizedArticleRepository {
 
-    private final JPAQueryFactory jpaQueryFactory;
     private final ArticleDao articleDao;
 
     @Override
@@ -35,7 +26,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         List<Long> articleIdsByTechStacks = articleDao.findIdsByTechStackNames(queryCondition.techStackNames());
         List<Long> articleIdsByTopics = articleDao.findIdsByTopics(queryCondition.topics());
         List<Long> articleIdsBySearch = articleDao.findIdsBySearchKeyword(queryCondition.search());
-        List<Long> filteredIds = articleDao.findIdsBySector(
+        List<Long> filteringIds = articleDao.findIdsBySector(
                 queryCondition.sector(),
                 intersect(
                         articleIdsByTechStacks,
@@ -44,35 +35,28 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 )
         );
         List<Article> articles = articleDao.findAllBy(
-                filteredIds,
+                filteringIds,
                 queryCondition.cursor(),
                 queryCondition.limit(),
                 queryCondition.sortType()
         );
-        return new Articles(articles, calculateTotalCount(filteredIds), queryCondition.limit());
+        return new Articles(articles, calculateTotalCount(filteringIds), queryCondition.limit());
     }
 
     @Override
     public List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition) {
-        SearchKeyword searchKeyword = condition.search();
-        Sector sector = condition.sector();
-
-        return jpaQueryFactory.
-                selectFrom(article).distinct()
-                .leftJoin(article.techStacks, articleTechStack)
-                .where(
-                        article.project.id.eq(id),
-                        articleDao.equalSector(sector),
-                        articleDao.satisfiesMatchScore(searchKeyword)
-                )
-                .fetch();
+        return articleDao.findAllBy(
+                id,
+                condition.sector(),
+                condition.search()
+        );
     }
 
-    private long calculateTotalCount(List<Long> articleIdsBySector) {
-        if (articleIdsBySector.isEmpty()) {
+    private long calculateTotalCount(List<Long> filteringIds) {
+        if (filteringIds.isEmpty()) {
             return articleDao.count();
         }
-        return articleIdsBySector.size();
+        return filteringIds.size();
     }
 
     private Set<Long> intersect(List<Long>... idLists) {
