@@ -1,4 +1,5 @@
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import * as S from "./OverviewSection.styled";
 
 interface OverviewSectionProps {
@@ -10,7 +11,7 @@ function OverviewSection({ overview = "" }: OverviewSectionProps) {
   return (
     <S.OverviewSectionContainer>
       <S.OverviewContent>
-        <Markdown>{overview}</Markdown>
+        <Markdown remarkPlugins={[remarkGfm]}>{overview}</Markdown>
       </S.OverviewContent>
     </S.OverviewSectionContainer>
   );
