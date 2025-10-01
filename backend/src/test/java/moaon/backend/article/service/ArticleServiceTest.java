@@ -66,9 +66,7 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(new Articles(articles, 5L, 2));
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(2)
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder(2, ArticleSortType.CREATED_AT)
                 .build();
 
         Cursor<?> articleCursor = articleQueryCondition.sortType().toCursor(article2);
@@ -110,9 +108,7 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(new Articles(articles, 5L, 3));
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(3)
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder(3, ArticleSortType.CREATED_AT)
                 .build();
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
