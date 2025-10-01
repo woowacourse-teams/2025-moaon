@@ -7,6 +7,7 @@ import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
+import org.springframework.util.CollectionUtils;
 
 public record ArticleQueryCondition(
         SearchKeyword search,
@@ -44,5 +45,12 @@ public record ArticleQueryCondition(
                 limit,
                 sortBy.toCursor(cursor)
         );
+    }
+
+    public boolean hasFilter() {
+        return (search != null && search.hasValue())
+                || sector != null
+                || !CollectionUtils.isEmpty(topics)
+                || !CollectionUtils.isEmpty(techStackNames);
     }
 }
