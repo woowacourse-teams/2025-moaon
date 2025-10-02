@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.service.ESService;
+import moaon.backend.article.service.ESArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-public class ESController {
+public class ESArticleController {
 
-    private final ESService service;
+    private final ESArticleService service;
 
     @GetMapping("/es/search")
     @Transactional(readOnly = true)

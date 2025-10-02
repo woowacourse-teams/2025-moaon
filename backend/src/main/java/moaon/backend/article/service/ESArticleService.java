@@ -18,13 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ESService {
+public class ESArticleService {
 
     private final ArticleDocumentRepository repository;
     private final ArticleRepository articleRepository;
 
     public ArticleResponse search(ArticleESQuery condition) {
-        SearchHits<ArticleDocument> searchHits = repository.search(condition);
+        ESArticleQueryBuilder builder = getElasticsearchQueryBuilder(condition);
+        SearchHits<ArticleDocument> searchHits = repository.search(builder);
+
         long totalHits = searchHits.getTotalHits();
         List<Article> articles = getOriginArticles(searchHits);
 
@@ -34,6 +36,23 @@ public class ESService {
             return ArticleResponse.from(articles, totalHits, true, cursor.getNextCursor());
         }
         return ArticleResponse.from(articles, totalHits, false, null);
+    }
+
+    private ESArticleQueryBuilder getElasticsearchQueryBuilder(ArticleESQuery condition) {
+        ESArticleQueryBuilder builder = new ESArticleQueryBuilder();
+        builder.withTextSearch(condition.search())
+                .withSector(condition.sector())
+                .withTechStacksAndMatch(condition.techStackNames())
+                .withTopicsAndMatch(condition.topics())
+                .withSort(condition.sortBy());
+        ESCursor esCursor = condition.cursor();
+        if (esCursor.isEmpty()) {
+            builder.withPagination(0, condition.limit());
+        } else {
+            builder.withPagination(condition.limit(), esCursor.getSortValues());
+        }
+
+        return builder;
     }
 
     private List<Article> getOriginArticles(SearchHits<ArticleDocument> searchHits) {
