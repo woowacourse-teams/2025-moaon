@@ -17,8 +17,7 @@ export const TitleSectionContainer = styled.section`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  border-bottom: 1px solid #d4d4d4;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 `;
 
 export const TitleSectionLeft = styled.div`

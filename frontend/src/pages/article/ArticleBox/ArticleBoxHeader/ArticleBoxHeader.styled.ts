@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 export const ArticleHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
 `;
 
 export const ArticleHeaderBox = styled.div`
@@ -16,6 +15,7 @@ export const ArticleHeaderBox = styled.div`
 export const ArticleIntro = styled.p`
   color: #73798d;
   font-size: 1.125rem;
+  padding-top: 2rem;
 `;
 
 export const ArticleIntroText = styled.span`

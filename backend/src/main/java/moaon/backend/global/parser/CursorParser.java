@@ -8,7 +8,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public class CursorParser {
 
     private static final String COUNT_BASED_CURSOR_REGEX = "[0-9]+_[0-9]+";
-    private static final String CREATED_AT_CURSOR_REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}_[0-9]+$";
+    private static final String CREATED_AT_CURSOR_REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?_[0-9]+$";
     private static final LongParser LONG_PARSER = new LongParser();
 
     private CursorParser() {

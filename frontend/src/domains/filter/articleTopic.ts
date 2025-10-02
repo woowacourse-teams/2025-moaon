@@ -143,7 +143,7 @@ const NON_TECH_TOPICS = {
   },
 } as const;
 
-const ALL_TOPICS = {
+export const ALL_TOPICS = {
   ...FE_TOPICS,
   ...BE_TOPICS,
   ...ANDROID_TOPICS,
