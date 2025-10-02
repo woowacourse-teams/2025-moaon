@@ -34,12 +34,10 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 articleIdsTechStacksAndTopics,
                 articleDao.findIdsBySearchKeyword(queryCondition.search())
         );
-        log.info("{}", articleIdsByTechStacksAndTopicsSearch);
         Set<Long> filteringIds = articleDao.findIdsBySector(
                 queryCondition.sector(),
                 articleIdsByTechStacksAndTopicsSearch
         );
-        log.info("{}", filteringIds);
         if (queryCondition.hasFilter() && filteringIds.isEmpty()) {
             return new Articles(Collections.emptyList(), 0, queryCondition.limit());
         }
