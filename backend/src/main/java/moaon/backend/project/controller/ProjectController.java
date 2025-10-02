@@ -10,6 +10,8 @@ import moaon.backend.global.cookie.TrackingCookieManager;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
+import moaon.backend.project.dto.ProjectCreateRequest;
+import moaon.backend.project.dto.ProjectCreateResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.service.ProjectService;
@@ -18,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +42,16 @@ public class ProjectController {
         this.cookieManager = cookieManager;
         this.projectService = projectService;
         this.articleService = articleService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ProjectCreateResponse> saveProject(
+            @RequestBody ProjectCreateRequest projectCreateRequest
+    ) {
+        Long savedId = projectService.save(projectCreateRequest);
+        ProjectCreateResponse response = ProjectCreateResponse.from(savedId);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

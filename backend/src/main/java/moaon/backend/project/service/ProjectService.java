@@ -1,16 +1,23 @@
 package moaon.backend.project.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.member.domain.Member;
+import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.PagedProjectResponse;
+import moaon.backend.project.dto.ProjectCreateRequest;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
+import moaon.backend.project.repository.CategoryRepository;
 import moaon.backend.project.repository.ProjectRepository;
+import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final MemberRepository memberRepository;
+    private final TechStackRepository techStackRepository;
+    private final CategoryRepository categoryRepository;
 
     public ProjectDetailResponse getById(Long id) {
         Project project = projectRepository.findById(id)
@@ -57,5 +67,29 @@ public class ProjectService {
         project.addViewCount();
 
         return ProjectDetailResponse.from(project);
+    }
+
+    @Transactional
+    public Long save(ProjectCreateRequest from) {
+        Member member = memberRepository.findById(1L).orElseThrow();
+        Project project = new Project(
+                from.title(),
+                from.summary(),
+                from.description(),
+                from.githubUrl(),
+                from.productionUrl(),
+                new Images(from.imageUrls()),
+                member,
+                from.techStacks().stream()
+                        .map(techStackRepository::findByName)
+                        .toList(),
+                from.categories().stream()
+                        .map(categoryRepository::findByName)
+                        .toList(),
+                LocalDateTime.now()
+        );
+
+        Project saved = projectRepository.save(project);
+        return saved.getId();
     }
 }
