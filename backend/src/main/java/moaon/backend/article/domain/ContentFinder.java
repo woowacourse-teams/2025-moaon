@@ -24,7 +24,9 @@ public abstract class ContentFinder {
 
             // todo
             // 조건에 맞는 by 찾고, 읽고, 탈출
-            
+            // 접근 권환 없는 링크, 잘못된 링크 예외 처리
+            // body 읽는 Finder 구현
+
             for (By by : bys) {
                 WebElement webElement = wait.until(presenceOfElementLocated(by)).findElement(by);
             }
