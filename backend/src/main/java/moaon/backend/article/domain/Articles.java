@@ -15,6 +15,10 @@ public class Articles {
     private final long totalCount;
     private final int limit;
 
+    public static Articles empty(int limit) {
+        return new Articles(List.of(), 0, limit);
+    }
+
     public List<Article> getArticlesToReturn() {
         if (hasNext()) {
             return articles.subList(0, limit);
