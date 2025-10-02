@@ -1,4 +1,4 @@
-package moaon.backend.es;
+package moaon.backend.global.cursor;
 
 import java.util.List;
 import lombok.Getter;

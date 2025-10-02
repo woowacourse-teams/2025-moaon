@@ -1,10 +1,12 @@
-package moaon.backend.es;
+package moaon.backend.article.controller;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.service.ESService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

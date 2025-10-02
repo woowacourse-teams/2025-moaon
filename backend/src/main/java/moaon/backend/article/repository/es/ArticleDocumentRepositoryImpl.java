@@ -1,4 +1,4 @@
-package moaon.backend.es;
+package moaon.backend.article.repository.es;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
@@ -7,9 +7,12 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
+import moaon.backend.article.dto.ArticleESQuery;
+import moaon.backend.global.cursor.ESCursor;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

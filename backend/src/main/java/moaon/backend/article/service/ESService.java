@@ -1,11 +1,15 @@
-package moaon.backend.es;
+package moaon.backend.article.service;
 
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleDocument;
+import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.global.cursor.ESCursor;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
