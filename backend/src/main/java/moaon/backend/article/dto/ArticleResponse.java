@@ -25,6 +25,33 @@ public record ArticleResponse(
         );
     }
 
+    public static ArticleResponse from(
+            List<Article> articles,
+            Long totalCount,
+            boolean hasNext,
+            String nextCursor
+    ) {
+        return new ArticleResponse(
+                ArticleContent.from(articles),
+                totalCount.intValue(),
+                hasNext,
+                nextCursor
+        );
+    }
+
+    public static ArticleResponse withoutNextCursor(
+            List<Article> articles,
+            Long totalCount,
+            boolean hasNext
+    ) {
+        return new ArticleResponse(
+                ArticleContent.from(articles),
+                totalCount.intValue(),
+                hasNext,
+                null
+        );
+    }
+
     private static String extractNextCursor(Cursor<?> nextCursor) {
         if (nextCursor == null) {
             return null;
