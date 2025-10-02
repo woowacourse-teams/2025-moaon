@@ -8,15 +8,18 @@ import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
+import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
+import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +71,98 @@ public class ArticleRepositorySearchTest {
                 () -> assertThat(aboutDisk).containsExactlyInAnyOrder(ec2Docker, runner),
                 () -> assertThat(aboutRunner).containsOnlyOnce(runner)
         );
+    }
+
+    @DisplayName("검색어와 모든 필터를 조합하여 아티클을 조회한다.")
+    @Test
+    void findWithSearchAndAllFilters() {
+        // given
+        String searchKeyword = "React";
+        TechStack techStack = Fixture.anyTechStack();
+        Topic topic = Topic.TECHNOLOGY_ADOPTION;
+        Sector sector = Sector.FE;
+
+        Article matchingArticle = repositoryHelper.save(new ArticleFixtureBuilder()
+                .title(searchKeyword)
+                .techStacks(techStack)
+                .topics(topic)
+                .sector(sector)
+                .build()
+        );
+        repositoryHelper.save(new ArticleFixtureBuilder()
+                .title(searchKeyword)
+                .techStacks(techStack)
+                .topics(topic)
+                .build()
+        );
+        repositoryHelper.save(new ArticleFixtureBuilder()
+                .techStacks(techStack)
+                .topics(topic)
+                .sector(sector)
+                .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .search(searchKeyword)
+                .techStackNames(techStack.getName())
+                .topics(topic)
+                .sector(sector)
+                .build();
+
+        // when
+        List<Article> articles = repository.findWithSearchConditions(queryCondition).getArticles();
+
+        // then
+        assertThat(articles).containsOnlyOnce(matchingArticle);
+    }
+
+    @DisplayName("검색어에 해당하는 결과가 없으면 빈 결과를 반환한다.")
+    @Test
+    void findWithNoSearchResult() {
+        // given
+        String nonExistentKeyword = "존재하지않는검색어12345";
+        repositoryHelper.save(new ArticleFixtureBuilder().build());
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .search(nonExistentKeyword)
+                .build();
+
+        // when
+        List<Article> articles = repository.findWithSearchConditions(queryCondition).getArticles();
+
+        // then
+        assertThat(articles).isEmpty();
+    }
+
+    @DisplayName("검색어와 필터의 교집합 결과가 없으면 빈 결과를 반환한다.")
+    @Test
+    void findWithSearchAndFilterIntersectionEmpty() {
+        // given
+        String searchKeyword = "React";
+        TechStack techStack = Fixture.anyTechStack();
+        Topic topic = Topic.PERFORMANCE_OPTIMIZATION;
+
+        repositoryHelper.save(new ArticleFixtureBuilder()
+                .summary(searchKeyword)
+                .topics(topic)
+                .build()
+        );
+        repositoryHelper.save(new ArticleFixtureBuilder()
+                .techStacks(techStack)
+                .topics(topic)
+                .build()
+        );
+
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+                .search(searchKeyword)
+                .techStackNames(techStack.getName())
+                .topics(topic)
+                .build();
+
+        // when
+        List<Article> articles = repository.findWithSearchConditions(queryCondition).getArticles();
+
+        // then
+        assertThat(articles).isEmpty();
     }
 
     @DisplayName("상세페이지에서 직군 필터와 검색어를 이용하여 아티클을 조회한다.")
