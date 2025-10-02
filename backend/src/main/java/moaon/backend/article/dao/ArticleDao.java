@@ -124,7 +124,7 @@ public class ArticleDao {
         );
     }
 
-    public Set<Long> findIdsBySector(Sector sector, Set<Long> filteredIds) {
+    public Set<Long> findIdsBySectorAndIds(Sector sector, Set<Long> filteredIds) {
         if (sector == null && CollectionUtils.isEmpty(filteredIds)) {
             return new HashSet<>();
         }

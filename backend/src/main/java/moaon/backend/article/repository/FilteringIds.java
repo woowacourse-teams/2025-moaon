@@ -8,14 +8,14 @@ import lombok.Getter;
 public class FilteringIds {
 
     private final Set<Long> ids;
-    private final boolean isInitialized;
+    private final boolean hasResult;
 
-    private FilteringIds(Set<Long> ids, boolean isInitialized) {
+    private FilteringIds(Set<Long> ids, boolean hasResult) {
         this.ids = new HashSet<>(ids);
-        this.isInitialized = isInitialized;
+        this.hasResult = hasResult;
     }
 
-    public static FilteringIds empty() {
+    public static FilteringIds init() {
         return new FilteringIds(Set.of(), false);
     }
 
@@ -24,7 +24,7 @@ public class FilteringIds {
     }
 
     public FilteringIds addFilterResult(Set<Long> newIds) {
-        if (!isInitialized) {
+        if (!hasResult) {
             return FilteringIds.of(newIds);
         }
         return intersect(newIds);
@@ -40,14 +40,14 @@ public class FilteringIds {
     }
 
     public boolean hasEmptyResult() {
-        return ids.isEmpty() && isInitialized;
-    }
-
-    public long size() {
-        return ids.size();
+        return ids.isEmpty() && hasResult;
     }
 
     public boolean isEmpty() {
         return ids.isEmpty();
+    }
+
+    public long size() {
+        return ids.size();
     }
 }

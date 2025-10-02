@@ -24,57 +24,24 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        List<String> techStackNames = queryCondition.techStackNames();
-        List<Topic> topics = queryCondition.topics();
-        SearchKeyword search = queryCondition.search();
-        Sector sector = queryCondition.sector();
-        int limit = queryCondition.limit();
-
-        FilteringIds filteringIds = FilteringIds.empty();
-
-        if (!CollectionUtils.isEmpty(techStackNames) && !filteringIds.hasEmptyResult()) {
-            Set<Long> filterByTechstacks = articleDao.findIdsByTechStackNames(techStackNames);
-            filteringIds = filteringIds.addFilterResult(filterByTechstacks);
-            if (filterByTechstacks.isEmpty()) {
-                return Articles.empty(limit);
-            }
-        }
-
-        if (!CollectionUtils.isEmpty(topics) && !filteringIds.hasEmptyResult()) {
-            Set<Long> filterByTopics = articleDao.findIdsByTopics(topics);
-            filteringIds = filteringIds.addFilterResult(filterByTopics);
-            if (filterByTopics.isEmpty()) { // 필터링 결과 0개
-                return Articles.empty(limit);
-            }
-        }
-
-        if (search != null && search.hasValue() && !filteringIds.hasEmptyResult()) {
-            Set<Long> filterBySearch = articleDao.findIdsBySearchKeyword(search);
-            filteringIds = filteringIds.addFilterResult(filterBySearch);
-            if (filterBySearch.isEmpty()) {
-                return Articles.empty(limit);
-            }
-        }
-
-        if (sector != null && !filteringIds.hasEmptyResult()) {
-            Set<Long> filterBySector = articleDao.findIdsBySector(sector, filteringIds.getIds());
-            filteringIds = FilteringIds.of(filterBySector);
-            if (filterBySector.isEmpty()) {
-                return Articles.empty(limit);
-            }
-        }
+        FilteringIds filteringIds = FilteringIds.init();
+        filteringIds = applyTechStackFilter(filteringIds, queryCondition.techStackNames());
+        filteringIds = applyTopicFilter(filteringIds, queryCondition.topics());
+        filteringIds = applySearchFilter(filteringIds, queryCondition.search());
+        filteringIds = applySectorFilter(filteringIds, queryCondition.sector());
 
         if (filteringIds.hasEmptyResult()) {
-            return Articles.empty(limit);
+            return Articles.empty();
         }
 
         List<Article> articles = articleDao.findAllBy(
                 filteringIds.getIds(),
                 queryCondition.cursor(),
-                limit,
+                queryCondition.limit(),
                 queryCondition.sortType()
         );
-        return new Articles(articles, calculateTotalCount(filteringIds), limit);
+        long totalCount = calculateTotalCount(filteringIds);
+        return new Articles(articles, totalCount, queryCondition.limit());
     }
 
     @Override
@@ -87,17 +54,46 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     }
 
     public FilteringIds applyTechStackFilter(FilteringIds filteringIds, List<String> techStackNames) {
-        if (CollectionUtils.isEmpty(techStackNames)) {
+        if (filteringIds.hasEmptyResult() || CollectionUtils.isEmpty(techStackNames)) {
             return filteringIds;
         }
+
         Set<Long> filterByTechstacks = articleDao.findIdsByTechStackNames(techStackNames);
         return filteringIds.addFilterResult(filterByTechstacks);
+    }
+
+    private FilteringIds applyTopicFilter(FilteringIds filteringIds, List<Topic> topics) {
+        if (filteringIds.hasEmptyResult() || CollectionUtils.isEmpty(topics)) {
+            return filteringIds;
+        }
+
+        Set<Long> filterByTopics = articleDao.findIdsByTopics(topics);
+        return filteringIds.addFilterResult(filterByTopics);
+    }
+
+    private FilteringIds applySearchFilter(FilteringIds filteringIds, SearchKeyword search) {
+        if (filteringIds.hasEmptyResult() || search == null || !search.hasValue()) {
+            return filteringIds;
+        }
+
+        Set<Long> filterBySearch = articleDao.findIdsBySearchKeyword(search);
+        return filteringIds.addFilterResult(filterBySearch);
+    }
+
+    private FilteringIds applySectorFilter(FilteringIds filteringIds, Sector sector) {
+        if (filteringIds.hasEmptyResult() || sector == null) {
+            return filteringIds;
+        }
+
+        Set<Long> filterBySector = articleDao.findIdsBySectorAndIds(sector, filteringIds.getIds());
+        return FilteringIds.of(filterBySector);
     }
 
     private long calculateTotalCount(FilteringIds filteringIds) {
         if (filteringIds.isEmpty()) {
             return articleDao.count();
         }
+        
         return filteringIds.size();
     }
 }

@@ -15,8 +15,8 @@ public class Articles {
     private final long totalCount;
     private final int limit;
 
-    public static Articles empty(int limit) {
-        return new Articles(List.of(), 0, limit);
+    public static Articles empty() {
+        return new Articles(List.of(), 0, 0);
     }
 
     public List<Article> getArticlesToReturn() {
