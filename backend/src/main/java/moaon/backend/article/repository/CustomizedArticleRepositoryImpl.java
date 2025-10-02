@@ -1,7 +1,5 @@
 package moaon.backend.article.repository;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Articles;
+import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Repository
@@ -22,33 +24,57 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
 
     @Override
     public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        Set<Long> articleIdsByTechStacks = intersectOrFallback(
-                Collections.emptySet(),
-                articleDao.findIdsByTechStackNames(queryCondition.techStackNames())
-        );
-        Set<Long> articleIdsTechStacksAndTopics = intersectOrFallback(
-                articleIdsByTechStacks,
-                articleDao.findIdsByTopics(queryCondition.topics())
-        );
-        Set<Long> articleIdsByTechStacksAndTopicsSearch = intersectOrFallback(
-                articleIdsTechStacksAndTopics,
-                articleDao.findIdsBySearchKeyword(queryCondition.search())
-        );
-        Set<Long> filteringIds = articleDao.findIdsBySector(
-                queryCondition.sector(),
-                articleIdsByTechStacksAndTopicsSearch
-        );
-        if (queryCondition.hasFilter() && filteringIds.isEmpty()) {
-            return new Articles(Collections.emptyList(), 0, queryCondition.limit());
+        List<String> techStackNames = queryCondition.techStackNames();
+        List<Topic> topics = queryCondition.topics();
+        SearchKeyword search = queryCondition.search();
+        Sector sector = queryCondition.sector();
+        int limit = queryCondition.limit();
+
+        FilteringIds filteringIds = FilteringIds.empty();
+
+        if (!CollectionUtils.isEmpty(techStackNames) && !filteringIds.hasEmptyResult()) {
+            Set<Long> filterByTechstacks = articleDao.findIdsByTechStackNames(techStackNames);
+            filteringIds = filteringIds.addFilterResult(filterByTechstacks);
+            if (filterByTechstacks.isEmpty()) {
+                return Articles.empty(limit);
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(topics) && !filteringIds.hasEmptyResult()) {
+            Set<Long> filterByTopics = articleDao.findIdsByTopics(topics);
+            filteringIds = filteringIds.addFilterResult(filterByTopics);
+            if (filterByTopics.isEmpty()) { // 필터링 결과 0개
+                return Articles.empty(limit);
+            }
+        }
+
+        if (search != null && search.hasValue() && !filteringIds.hasEmptyResult()) {
+            Set<Long> filterBySearch = articleDao.findIdsBySearchKeyword(search);
+            filteringIds = filteringIds.addFilterResult(filterBySearch);
+            if (filterBySearch.isEmpty()) {
+                return Articles.empty(limit);
+            }
+        }
+
+        if (sector != null && !filteringIds.hasEmptyResult()) {
+            Set<Long> filterBySector = articleDao.findIdsBySector(sector, filteringIds.getIds());
+            filteringIds = FilteringIds.of(filterBySector);
+            if (filterBySector.isEmpty()) {
+                return Articles.empty(limit);
+            }
+        }
+
+        if (filteringIds.hasEmptyResult()) {
+            return Articles.empty(limit);
         }
 
         List<Article> articles = articleDao.findAllBy(
-                filteringIds,
+                filteringIds.getIds(),
                 queryCondition.cursor(),
-                queryCondition.limit(),
+                limit,
                 queryCondition.sortType()
         );
-        return new Articles(articles, calculateTotalCount(filteringIds), queryCondition.limit());
+        return new Articles(articles, calculateTotalCount(filteringIds), limit);
     }
 
     @Override
@@ -60,27 +86,18 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         );
     }
 
-    private long calculateTotalCount(Set<Long> filteringIds) {
+    public FilteringIds applyTechStackFilter(FilteringIds filteringIds, List<String> techStackNames) {
+        if (CollectionUtils.isEmpty(techStackNames)) {
+            return filteringIds;
+        }
+        Set<Long> filterByTechstacks = articleDao.findIdsByTechStackNames(techStackNames);
+        return filteringIds.addFilterResult(filterByTechstacks);
+    }
+
+    private long calculateTotalCount(FilteringIds filteringIds) {
         if (filteringIds.isEmpty()) {
             return articleDao.count();
         }
         return filteringIds.size();
-    }
-
-    private Set<Long> intersectOrFallback(Set<Long> first, Set<Long> second) {
-        if (first.isEmpty() && second.isEmpty()) {
-            return Collections.emptySet();
-        }
-        if (first.isEmpty()) {
-            return second;
-        }
-        if (second.isEmpty()) {
-            return first;
-        }
-        Set<Long> smaller = first.size() < second.size() ? first : second;
-        Set<Long> larger = first.size() < second.size() ? second : first;
-        Set<Long> result = new HashSet<>(smaller);
-        result.retainAll(larger);
-        return result;
     }
 }

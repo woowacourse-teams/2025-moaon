@@ -158,13 +158,6 @@ public class ArticleDao {
         return article.id.in(articleIds);
     }
 
-    private BooleanExpression idIn(List<Long> articleIds) {
-        if (CollectionUtils.isEmpty(articleIds)) {
-            return null;
-        }
-        return article.id.in(articleIds);
-    }
-
     private BooleanExpression equalSector(Sector sector) {
         if (sector == null) {
             return null;
