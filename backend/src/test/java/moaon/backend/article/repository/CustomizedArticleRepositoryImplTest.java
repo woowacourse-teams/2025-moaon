@@ -385,7 +385,6 @@ class CustomizedArticleRepositoryImplTest {
         );
 
         ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(9, ArticleSortType.CLICKS)
-                .cursor(new CreatedAtArticleCursor(LocalDateTime.now(), 1L))
                 .build();
 
         // when
