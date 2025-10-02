@@ -1,5 +1,5 @@
 import remarkGfm from "remark-gfm";
-import * as S from "./markdown.styled";
+import * as S from "./Markdown.styled";
 
 interface MarkdownProps {
   text: string;
