@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
@@ -68,5 +69,17 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
         article.addClickCount();
+    }
+
+    public void save(List<ArticleCreateRequest> requests) throws InterruptedException {
+
+//        requests.stream()
+//                        .map(request -> new Article(
+//                                request.title(),
+//                                request.summary(),
+//                                request.co
+//                        ))
+//        projectRepository.findById()
+
     }
 }

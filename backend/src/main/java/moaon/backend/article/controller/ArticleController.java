@@ -34,6 +34,14 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+//    @PostMapping
+//    public ResponseEntity<Void> saveArticles(
+//            @RequestBody List<ArticleCreateRequest> requests
+//    ) {
+//        articleService.save(requests);
+//        return ResponseEntity.ok().build();
+//    }
+
     @GetMapping
     public ResponseEntity<ArticleResponse> getPagedArticles(
             @RequestParam(value = "sort", required = false) String sortType,
