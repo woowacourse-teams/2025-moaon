@@ -35,8 +35,9 @@ public class FilteringIds {
             return FilteringIds.of(Set.of());
         }
 
-        ids.retainAll(newIds);
-        return FilteringIds.of(ids);
+        Set<Long> intersection = new HashSet<>(ids);
+        intersection.retainAll(newIds);
+        return FilteringIds.of(intersection);
     }
 
     public boolean hasEmptyResult() {
