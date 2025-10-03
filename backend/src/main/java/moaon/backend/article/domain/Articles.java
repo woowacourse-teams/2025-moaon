@@ -14,9 +14,10 @@ public class Articles {
     private final List<Article> articles;
     private final long totalCount;
     private final int limit;
+    private final ArticleSortType sortType;
 
     public static Articles empty() {
-        return new Articles(List.of(), 0, 0);
+        return new Articles(List.of(), 0, 0, null);
     }
 
     public List<Article> getArticlesToReturn() {
@@ -27,7 +28,7 @@ public class Articles {
         return articles;
     }
 
-    public Cursor<?> getNextCursor(ArticleSortType sortType) {
+    public Cursor<?> getNextCursor() {
         if (hasNext()) {
             List<Article> articlesToReturn = getArticlesToReturn();
             Article lastArticle = articlesToReturn.getLast();

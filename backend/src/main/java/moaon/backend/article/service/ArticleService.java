@@ -34,8 +34,8 @@ public class ArticleService {
         List<Article> articlesToReturn = articles.getArticlesToReturn();
         long totalCount = articles.getTotalCount();
         boolean hasNext = articles.hasNext();
+        Cursor<?> nextCursor = articles.getNextCursor();
 
-        Cursor<?> nextCursor = articles.getNextCursor(queryCondition.sortType());
         return ArticleResponse.from(articlesToReturn, totalCount, hasNext, nextCursor);
     }
 

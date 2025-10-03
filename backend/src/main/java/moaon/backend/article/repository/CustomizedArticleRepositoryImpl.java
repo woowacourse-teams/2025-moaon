@@ -41,7 +41,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 queryCondition.sortType()
         );
         long totalCount = calculateTotalCount(filteringIds);
-        return new Articles(articles, totalCount, queryCondition.limit());
+        return new Articles(articles, totalCount, queryCondition.limit(), queryCondition.sortType());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         if (filteringIds.isEmpty()) {
             return articleDao.count();
         }
-        
+
         return filteringIds.size();
     }
 }
