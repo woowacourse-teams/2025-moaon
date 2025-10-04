@@ -18,14 +18,14 @@ public class ArticleQueryConditionBuilder {
     private ArticleSortType sortBy;
     private int limit;
     private Cursor<?> articleCursor;
-
+    
     public ArticleQueryConditionBuilder() {
         this.search = new SearchKeyword(null);
         this.sector = null;
         this.topics = null;
         this.techStackNames = null;
         this.sortBy = null;
-        this.limit = 50;
+        this.limit = 20;
         this.articleCursor = null;
     }
 
@@ -46,6 +46,11 @@ public class ArticleQueryConditionBuilder {
 
     public ArticleQueryConditionBuilder techStackNames(List<String> techStackNames) {
         this.techStackNames = techStackNames;
+        return this;
+    }
+
+    public ArticleQueryConditionBuilder techStackNames(String... techStackNames) {
+        this.techStackNames = Arrays.asList(techStackNames);
         return this;
     }
 
