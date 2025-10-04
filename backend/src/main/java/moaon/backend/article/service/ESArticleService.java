@@ -44,14 +44,8 @@ public class ESArticleService {
                 .withSector(condition.sector())
                 .withTechStacksAndMatch(condition.techStackNames())
                 .withTopicsAndMatch(condition.topics())
-                .withSort(condition.sortBy());
-        ESCursor esCursor = condition.cursor();
-        if (esCursor.isEmpty()) {
-            builder.withPagination(0, condition.limit());
-        } else {
-            builder.withPagination(condition.limit(), esCursor.getSortValues());
-        }
-
+                .withSort(condition.sortBy())
+                .withPagination(condition.limit(), condition.cursor());
         return builder;
     }
 

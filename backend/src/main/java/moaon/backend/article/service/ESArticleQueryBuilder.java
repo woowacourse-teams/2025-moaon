@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
+import moaon.backend.global.cursor.ESCursor;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -68,14 +69,13 @@ public class ESArticleQueryBuilder {
         return this;
     }
 
-    public ESArticleQueryBuilder withPagination(int page, int size) {
-        this.pageable = PageRequest.of(page, size);
-        return this;
-    }
-
-    public ESArticleQueryBuilder withPagination(int size, List<Object> searchAfter) {
-        this.pageable = PageRequest.ofSize(size);
-        this.searchAfter = searchAfter;
+    public ESArticleQueryBuilder withPagination(int limit, ESCursor cursor) {
+        if (cursor.isEmpty()) {
+            this.pageable = PageRequest.of(0, limit);
+            return this;
+        }
+        this.pageable = PageRequest.ofSize(limit);
+        this.searchAfter = cursor.getSortValues();
         return this;
     }
 
@@ -102,9 +102,20 @@ public class ESArticleQueryBuilder {
     }
 
     private Query createTextMatchQuery(SearchKeyword searchKeyword) {
+        float titleBoost = 3.0f;
+        float techStackBoost = 2.5f;
+        float summaryBoost = 2.0f;
+        float contentBoost = 1.0f;
+
+
         return MultiMatchQuery.of(m -> m
                 .query(searchKeyword.value())
-                .fields("title^3", "techStacks.text^2.5", "summary^2", "content^1")
+                .fields(
+                        String.format("title^%f", titleBoost),
+                        String.format("techStacks.text^%f", techStackBoost),
+                        String.format("summary^%f", summaryBoost),
+                        String.format("content^%f", contentBoost)
+                )
         )._toQuery();
     }
 
