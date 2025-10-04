@@ -23,12 +23,12 @@ public class ESArticleController {
     @GetMapping("/es/search")
     @Transactional(readOnly = true)
     public ResponseEntity<ArticleResponse> getPagedArticles(
-            @RequestParam(value = "sort", required = false, defaultValue = "createdAt") String sortType,
+            @RequestParam(value = "sort", required = false) String sortType,
             @RequestParam(value = "techStacks", required = false) List<String> techStacks,
             @RequestParam(value = "sector", required = false) String sector,
             @RequestParam(value = "topics", required = false) List<String> topics,
             @RequestParam(value = "search", required = false) String query,
-            @RequestParam(value = "limit", defaultValue = "20") @Validated @Min(1) @Max(100) int limit,
+            @RequestParam(value = "limit") @Validated @Max(100) int limit,
             @RequestParam(value = "cursor", required = false) String cursor
     ) {
         ArticleESQuery articleESQuery = ArticleESQuery.from(query, sector, topics, techStacks, sortType, limit, cursor);
