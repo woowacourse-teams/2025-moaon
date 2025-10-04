@@ -107,7 +107,6 @@ public class ESArticleQueryBuilder {
         float summaryBoost = 2.0f;
         float contentBoost = 1.0f;
 
-
         return MultiMatchQuery.of(m -> m
                 .query(searchKeyword.value())
                 .fields(
