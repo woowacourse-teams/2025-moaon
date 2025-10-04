@@ -67,7 +67,9 @@ class ArticleServiceTest {
         long totalCount = 5L;
         ArticleSortType sortType = ArticleSortType.CREATED_AT;
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder(limit, sortType)
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .limit(limit)
+                .sortBy(sortType)
                 .build();
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
@@ -116,7 +118,9 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(new Articles(articles, totalCount, limit, sortType));
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder(limit, sortType)
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .limit(limit)
+                .sortBy(sortType)
                 .build();
 
         ArticleContent articleContent1 = ArticleContent.from(article1);
