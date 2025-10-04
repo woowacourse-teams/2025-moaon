@@ -76,10 +76,10 @@ public class Project extends BaseTimeEntity {
     private List<Member> lovedMembers;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectTechStack> techStacks;
+    private List<ProjectTechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectCategory> categories;
+    private List<ProjectCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articles;
@@ -92,8 +92,8 @@ public class Project extends BaseTimeEntity {
             String productionUrl,
             Images images,
             Member author,
-            List<ProjectTechStack> techStacks,
-            List<ProjectCategory> categories,
+            List<TechStack> techStacks,
+            List<Category> categories,
             LocalDateTime createdAt
     ) {
         this.title = title;
@@ -105,8 +105,8 @@ public class Project extends BaseTimeEntity {
         this.views = 0;
         this.author = author;
         this.lovedMembers = new ArrayList<>();
-        this.techStacks = new ArrayList<>(techStacks);
-        this.categories = new ArrayList<>(categories);
+        techStacks.forEach(this::addTechStack);
+        categories.forEach(this::addCategory);
         this.createdAt = createdAt;
     }
 

@@ -2,6 +2,7 @@ package moaon.backend.fixture;
 
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.repository.CategoryRepository;
@@ -41,6 +42,10 @@ public class RepositoryHelper {
         save(article.getProject());
 
         return articleRepository.save(article);
+    }
+
+    public Member save(Member member) {
+        return memberRepository.save(member);
     }
 
     public Article getById(long id) {
