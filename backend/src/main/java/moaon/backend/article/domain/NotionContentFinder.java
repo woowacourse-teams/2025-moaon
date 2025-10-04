@@ -1,5 +1,7 @@
 package moaon.backend.article.domain;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import org.openqa.selenium.By;
 
@@ -7,11 +9,15 @@ public class NotionContentFinder extends ContentFinder {
 
     @Override
     public boolean canHandle(String link) {
-        String[] split = link.split("\\.");
-        String secondLevelDomain = split[1];
-        String topLevelDomain = split[2];
+        try {
+            URL url = new URL(link);
+            String host = url.getHost();
+            String[] split = host.split("\\.");
 
-        return "notion".equals(secondLevelDomain) && "site".equals(topLevelDomain);
+            return "notion".equals(split[1]);
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 
     @Override

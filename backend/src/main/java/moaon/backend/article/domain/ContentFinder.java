@@ -2,9 +2,16 @@ package moaon.backend.article.domain;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
+import java.util.NoSuchElementException;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,25 +23,45 @@ public abstract class ContentFinder {
 
     public String getText(String link) {
         try {
+            validateLink(link);
             driver.get(link);
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-            System.out.println("---------------------------");
 
             List<By> bys = getBy(link);
-
-            // todo
-            // 조건에 맞는 by 찾고, 읽고, 탈출
-            // 접근 권환 없는 링크, 잘못된 링크 예외 처리
-            // body 읽는 Finder 구현
-
             for (By by : bys) {
-                WebElement webElement = wait.until(presenceOfElementLocated(by)).findElement(by);
+                try {
+                    WebElement webElement = wait.until(presenceOfElementLocated(by));
+                    return webElement.getText().trim();
+                } catch (TimeoutException | NoSuchElementException e) {
+                    continue;
+                }
             }
 
-            return null;
-
+            throw new IllegalArgumentException("[ERROR] can't handle link");
         } finally {
             driver.quit();
+        }
+    }
+
+    private void validateLink(String link) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(link).openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            int code = connection.getResponseCode();
+            if (code == 403) {
+                throw new CustomException(ErrorCode.ARTICLE_URL_FORBIDDEN);
+            }
+            if (code == 404) {
+                throw new CustomException(ErrorCode.PROJECT_NOT_FOUND);
+            }
+            if (code == 410) {
+                throw new CustomException(ErrorCode.ARTICLE_URL_GONE);
+            }
+
+        } catch (IOException e) {
+            throw new CustomException(ErrorCode.UNKNOWN);
         }
     }
 

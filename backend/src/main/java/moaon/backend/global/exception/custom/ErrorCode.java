@@ -19,6 +19,11 @@ public enum ErrorCode {
     PROJECT_NOT_FOUND("PROJECT-001", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    ARTICLE_URL_FORBIDDEN("URL-403", "접근 권한이 없는 URL입니다. 로그인 필요 또는 접근이 차단됨.", HttpStatus.FORBIDDEN),
+    ARTICLE_URL_NOT_FOUND("URL-404", "존재하지 않는 URL입니다. 잘못된 링크일 수 있습니다.", HttpStatus.NOT_FOUND),
+    ARTICLE_URL_GONE("URL-410", "삭제된 페이지입니다.", HttpStatus.GONE),
+
+    CONTENT_FINDER_NOT_FOUND("CONTENT-001", "해당 URL을 처리할 수 있는 ContentFinder가 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
 
     INVALID_CURSOR_FORMAT("CURSOR-001", "커서 파라미터 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
 

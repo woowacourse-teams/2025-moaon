@@ -1,16 +1,20 @@
 package moaon.backend.article.domain;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import org.openqa.selenium.By;
 
 public class VelogContentFinder extends ContentFinder {
     @Override
     public boolean canHandle(String link) {
-        String[] split = link.split("\\.");
-        String secondLevelDomain = split[1];
-        String topLevelDomain = split[2];
-
-        return "tistory".equals(secondLevelDomain) && "com".equals(topLevelDomain);
+        try {
+            URL url = new URL(link);
+            String host = url.getHost();
+            return host.endsWith("velog.io");
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 
     @Override

@@ -1,12 +1,16 @@
 package moaon.backend.article.service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ContentFinder;
+import moaon.backend.article.domain.ContentFinders;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -14,9 +18,11 @@ import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
 import moaon.backend.project.repository.ProjectRepository;
+import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private static final ContentFinders FINDER = new ContentFinders();
+
     private final ArticleRepository articleRepository;
     private final ProjectRepository projectRepository;
+    private final TechStackRepository techStackRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         List<Article> articles = articleRepository.findWithSearchConditions(queryCondition);
@@ -72,14 +81,32 @@ public class ArticleService {
     }
 
     public void save(List<ArticleCreateRequest> requests) throws InterruptedException {
+        for (ArticleCreateRequest request : requests) {
+            ContentFinder finder = FINDER.getFinder(request.url());
+            String content = finder.getText(request.url());
+            Project project = projectRepository.findById(request.projectId()).orElseThrow(
+                    () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)
+            );
 
-//        requests.stream()
-//                        .map(request -> new Article(
-//                                request.title(),
-//                                request.summary(),
-//                                request.co
-//                        ))
-//        projectRepository.findById()
+            Article article = new Article(
+                    request.title(),
+                    request.summary(),
+                    content,
+                    request.url(),
+                    LocalDateTime.now(),
+                    project,
+                    Sector.of(request.sector()),
+                    request.topics()
+                            .stream().
+                            map(Topic::of).
+                            toList(),
+                    request.techStacks()
+                            .stream()
+                            .map(techStackRepository::findByName)
+                            .toList()
+            );
 
+            articleRepository.save(article);
+        }
     }
 }

@@ -2,6 +2,7 @@ package moaon.backend;
 
 import java.time.Duration;
 import java.util.List;
+import moaon.backend.article.domain.BodyFinder;
 import moaon.backend.article.domain.TistoryContentFinder;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -44,5 +45,12 @@ public class temp {
     @Test
     void temp2() {
         String text = new TistoryContentFinder().getText("https://nnoco.tistory.com/239");
+        System.out.println("text = " + text);
+    }
+
+    @Test
+    void temp3() {
+        String text = new BodyFinder().getText("https://nnoco.tistory.com/239");
+        System.out.println("text = " + text);
     }
 }
