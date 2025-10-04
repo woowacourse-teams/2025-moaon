@@ -5,6 +5,7 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 import io.restassured.RestAssured;
 import java.util.List;
+import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleContent;
@@ -51,6 +52,15 @@ public class ArticleESApiTest {
     @Autowired
     private ElasticsearchOperations ops;
 
+    @Autowired
+    private ArticleDocumentRepository articleDocumentRepository;
+
+    @Autowired
+    private TechStackRepository techStackRepository;
+
+    @MockitoBean
+    private ArticleRepository repository;
+
     @BeforeEach
     void setUp() {
         await().untilAsserted(
@@ -61,13 +71,6 @@ public class ArticleESApiTest {
         indexOps.refresh();
         RestAssured.port = port;
     }
-
-    @Autowired
-    private ArticleDocumentRepository articleDocumentRepository;
-    @Autowired
-    private TechStackRepository techStackRepository;
-    @MockitoBean
-    private ArticleRepository repository;
 
     @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
     @Test
@@ -160,7 +163,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        final var article8 = new ArticleFixtureBuilder()
+        Article article8 = new ArticleFixtureBuilder()
                 .id(8L)
                 .title(filteredSearch)
                 .sector(filteredSector)
@@ -171,7 +174,7 @@ public class ArticleESApiTest {
                 .build();
         ArticleDocument articleClickRankSecond = articleDocumentRepository.save(new ArticleDocument(article8));
 
-        final var article9 = new ArticleFixtureBuilder()
+        Article article9 = new ArticleFixtureBuilder()
                 .id(9L)
                 .content(filteredSearch)
                 .sector(filteredSector)

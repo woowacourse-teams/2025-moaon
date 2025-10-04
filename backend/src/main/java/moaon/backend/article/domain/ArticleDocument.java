@@ -63,7 +63,7 @@ public class ArticleDocument {
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_fraction)
     private LocalDateTime createdAt;
 
-    public ArticleDocument(final Article article) {
+    public ArticleDocument(Article article) {
         this.id = article.getId();
         this.title = article.getTitle();
         this.summary = article.getSummary();
