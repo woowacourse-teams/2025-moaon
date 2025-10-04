@@ -24,9 +24,7 @@ public class ESArticleService {
     private final ArticleRepository articleRepository;
 
     public ArticleResponse search(ArticleESQuery condition) {
-        ESArticleQueryBuilder builder = getElasticsearchQueryBuilder(condition);
-        SearchHits<ArticleDocument> searchHits = repository.search(builder);
-
+        SearchHits<ArticleDocument> searchHits = repository.search(condition);
         long totalHits = searchHits.getTotalHits();
         List<Article> articles = getOriginArticles(searchHits);
 
@@ -36,17 +34,6 @@ public class ESArticleService {
             return ArticleResponse.from(articles, totalHits, true, cursor.getNextCursor());
         }
         return ArticleResponse.from(articles, totalHits, false, null);
-    }
-
-    private ESArticleQueryBuilder getElasticsearchQueryBuilder(ArticleESQuery condition) {
-        ESArticleQueryBuilder builder = new ESArticleQueryBuilder();
-        builder.withTextSearch(condition.search())
-                .withSector(condition.sector())
-                .withTechStacksAndMatch(condition.techStackNames())
-                .withTopicsAndMatch(condition.topics())
-                .withSort(condition.sortBy())
-                .withPagination(condition.limit(), condition.cursor());
-        return builder;
     }
 
     private List<Article> getOriginArticles(SearchHits<ArticleDocument> searchHits) {

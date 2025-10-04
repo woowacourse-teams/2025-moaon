@@ -1,12 +1,12 @@
 package moaon.backend.article.repository.es;
 
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.service.ESArticleQueryBuilder;
+import moaon.backend.article.dto.ArticleESQuery;
 import org.springframework.data.elasticsearch.core.SearchHits;
 
 public interface ArticleDocumentRepository {
 
-    SearchHits<ArticleDocument> search(ESArticleQueryBuilder builder);
+    SearchHits<ArticleDocument> search(ArticleESQuery condition);
 
     ArticleDocument save(ArticleDocument articleDocument);
 }

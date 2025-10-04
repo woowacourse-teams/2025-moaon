@@ -1,4 +1,4 @@
-package moaon.backend.article.service;
+package moaon.backend.article.repository.es;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;

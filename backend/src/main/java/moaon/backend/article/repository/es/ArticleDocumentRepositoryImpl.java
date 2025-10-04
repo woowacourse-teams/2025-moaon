@@ -2,7 +2,8 @@ package moaon.backend.article.repository.es;
 
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.service.ESArticleQueryBuilder;
+import moaon.backend.article.dto.ArticleESQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -15,8 +16,16 @@ public class ArticleDocumentRepositoryImpl implements ArticleDocumentRepository 
     private final ElasticsearchOperations ops;
 
     @Override
-    public SearchHits<ArticleDocument> search(ESArticleQueryBuilder builder) {
-        return ops.search(builder.build(), ArticleDocument.class);
+    public SearchHits<ArticleDocument> search(ArticleESQuery condition) {
+        NativeQuery esArticleQuery = new ESArticleQueryBuilder()
+                .withTextSearch(condition.search())
+                .withSector(condition.sector())
+                .withTechStacksAndMatch(condition.techStackNames())
+                .withTopicsAndMatch(condition.topics())
+                .withSort(condition.sortBy())
+                .withPagination(condition.limit(), condition.cursor())
+                .build();
+        return ops.search(esArticleQuery, ArticleDocument.class);
     }
 
     @Override
