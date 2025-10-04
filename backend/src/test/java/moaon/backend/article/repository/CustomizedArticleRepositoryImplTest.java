@@ -68,7 +68,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .sector(filterdSector)
                     .build();
 
@@ -98,7 +98,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .techStackNames(techStack1.getName(), techStack2.getName())
                     .build();
 
@@ -126,7 +126,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .topics(topic)
                     .build();
 
@@ -173,7 +173,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .sector(sector)
                     .topics(topic)
                     .techStackNames(List.of(techStack1.getName(), techStack2.getName()))
@@ -194,8 +194,7 @@ class CustomizedArticleRepositoryImplTest {
             Article article2 = repositoryHelper.save(new ArticleFixtureBuilder().build());
             Article article3 = repositoryHelper.save(new ArticleFixtureBuilder().build());
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10,
-                    ArticleSortType.CREATED_AT).build();
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder().build();
 
             // when
             List<Article> articles = customizedArticleRepository.findWithSearchConditions(queryCondition).getArticles();
@@ -222,7 +221,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .sector(nonExistingSector)
                     .build();
 
@@ -260,7 +259,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .techStackNames(techStack1.getName(), techStack2.getName(), techStack3.getName())
                     .build();
 
@@ -298,7 +297,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .topics(topic1, topic2, topic3)
                     .build();
 
@@ -345,7 +344,7 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .techStackNames(techStack1.getName(), techStack2.getName())
                     .topics(topic1, topic2)
                     .sector(sector1)
@@ -398,7 +397,8 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                    .sortBy(ArticleSortType.CREATED_AT)
                     .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                     .build();
 
@@ -443,7 +443,8 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CLICKS)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                    .sortBy(ArticleSortType.CLICKS)
                     .cursor(new ClickArticleCursor(4, 4L))
                     .build();
 
@@ -466,7 +467,9 @@ class CustomizedArticleRepositoryImplTest {
             repositoryHelper.save(new ArticleFixtureBuilder().build());
             repositoryHelper.save(new ArticleFixtureBuilder().build());
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(4, ArticleSortType.CLICKS).build();
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                    .limit(4)
+                    .build();
 
             // when
             Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
@@ -490,7 +493,9 @@ class CustomizedArticleRepositoryImplTest {
             repositoryHelper.save(new ArticleFixtureBuilder().build());
             repositoryHelper.save(new ArticleFixtureBuilder().build());
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(9, ArticleSortType.CLICKS).build();
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                    .limit(9)
+                    .build();
 
             // when
             Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
@@ -526,7 +531,8 @@ class CustomizedArticleRepositoryImplTest {
                             .build()
             );
 
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(9, ArticleSortType.CLICKS)
+            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
+                    .sortBy(ArticleSortType.CLICKS)
                     .build();
 
             // when
@@ -557,7 +563,7 @@ class CustomizedArticleRepositoryImplTest {
                         .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 

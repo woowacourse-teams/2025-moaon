@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
@@ -102,7 +101,7 @@ public class ArticleRepositorySearchTest {
                 .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .search(searchKeyword)
                 .techStackNames(techStack.getName())
                 .topics(topic)
@@ -122,7 +121,7 @@ public class ArticleRepositorySearchTest {
         // given
         String nonExistentKeyword = "존재하지않는검색어12345";
         repositoryHelper.save(new ArticleFixtureBuilder().build());
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .search(nonExistentKeyword)
                 .build();
 
@@ -152,7 +151,7 @@ public class ArticleRepositorySearchTest {
                 .build()
         );
 
-        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+        ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                 .search(searchKeyword)
                 .techStackNames(techStack.getName())
                 .topics(topic)
@@ -217,7 +216,7 @@ public class ArticleRepositorySearchTest {
     }
 
     private ArticleQueryCondition aboutSearchKeyword(String keyword) {
-        return new ArticleQueryConditionBuilder(10, ArticleSortType.CREATED_AT)
+        return new ArticleQueryConditionBuilder()
                 .search(keyword)
                 .build();
     }

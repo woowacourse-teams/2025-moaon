@@ -18,14 +18,14 @@ public class ArticleQueryConditionBuilder {
     private ArticleSortType sortBy;
     private int limit;
     private Cursor<?> articleCursor;
-
-    public ArticleQueryConditionBuilder(int limit, ArticleSortType sortType) {
+    
+    public ArticleQueryConditionBuilder() {
         this.search = new SearchKeyword(null);
         this.sector = null;
         this.topics = null;
         this.techStackNames = null;
-        this.sortBy = sortType;
-        this.limit = limit;
+        this.sortBy = null;
+        this.limit = 20;
         this.articleCursor = null;
     }
 
