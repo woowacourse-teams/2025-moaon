@@ -1,5 +1,10 @@
 import { css, keyframes } from "@emotion/react";
 
+export const BP_1280 = "@media (max-width: 1280px)";
+export const BP_1024 = "@media (max-width: 1024px)";
+export const BP_768 = "@media (max-width: 768px)";
+export const BP_480 = "@media (max-width: 480px)";
+
 export const textOverflowEllipsis = (lineClamp: number) => css`
   display: -webkit-box;
   -webkit-box-orient: vertical;
