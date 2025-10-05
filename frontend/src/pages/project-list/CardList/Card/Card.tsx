@@ -3,7 +3,7 @@ import grayHeartIcon from "@assets/icons/gray-heart.svg";
 import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-image.png";
 import notFoundImage from "@assets/images/image-not-found.png";
-import type { SyntheticEvent } from "react";
+import { memo, type SyntheticEvent } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import * as S from "./Card.styled";
 import StatBox from "./StatBox/StatBox";
@@ -40,7 +40,7 @@ function Card({ project }: CardProps) {
   };
 
   return (
-    <S.Card>
+    <S.Card onDragStart={(e) => e.preventDefault()}>
       <S.CardLink to={`/project/${id}`}>
         <S.CardImageBox>
           <S.CardImage
@@ -75,4 +75,4 @@ function Card({ project }: CardProps) {
   );
 }
 
-export default Card;
+export default memo(Card);

@@ -33,6 +33,7 @@ export const Card = styled.li`
   width: 100%;
   overflow: hidden;
   border-radius: 10px;
+  scroll-snap-align: start;
 
   &:hover {
     transition: 0.25s linear;
