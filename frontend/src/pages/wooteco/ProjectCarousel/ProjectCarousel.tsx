@@ -1,9 +1,7 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
-import { useScrollRef } from "@shared/hooks/useScrollRef";
-import { mergeRefs } from "@shared/utils/mergeRefs";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import Card from "@/pages/project-list/CardList/Card/Card";
-import { useProjectCardCarousel } from "./hooks/useProjectCardCarousel";
+import { useProjectCarousel } from "./hooks/useProjectCarousel";
 import * as S from "./ProjectCarousel.styled";
 
 interface ProjectCarouselProps {
@@ -11,30 +9,20 @@ interface ProjectCarouselProps {
 }
 
 function ProjectCarousel({ projects }: ProjectCarouselProps) {
-  const {
-    buttonVisible,
-    carouselRef,
-    scrollPrev,
-    scrollNext,
-    handleScroll,
-    handleMouseDown,
-    handleMouseUp,
-  } = useProjectCardCarousel();
-  const scrollCallbackRef = useScrollRef(handleScroll);
+  const { scrollNext, scrollPrev, translateX, buttonVisible, ref } =
+    useProjectCarousel(projects.length);
 
   return (
-    <S.CarouselContainer>
-      <S.CardsWrapper
-        ref={mergeRefs(carouselRef, scrollCallbackRef)}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-      >
-        {projects.map((project) => (
-          <S.CardItem key={project.id}>
-            <Card project={project} />
-          </S.CardItem>
-        ))}
-      </S.CardsWrapper>
+    <S.Container>
+      <S.CarouselContainer>
+        <S.Carousel ref={ref} translateX={translateX}>
+          {projects.map((project) => (
+            <S.CardItem key={project.id}>
+              <Card project={project} />
+            </S.CardItem>
+          ))}
+        </S.Carousel>
+      </S.CarouselContainer>
       {buttonVisible.prev && (
         <S.NavButton
           direction="left"
@@ -55,7 +43,7 @@ function ProjectCarousel({ projects }: ProjectCarouselProps) {
           <ArrowIcon direction="right" />
         </S.NavButton>
       )}
-    </S.CarouselContainer>
+    </S.Container>
   );
 }
 

@@ -1,26 +1,26 @@
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
+import { BP_768 } from "@/styles/global.styled";
 
-export const CarouselContainer = styled.div`
+export const Container = styled.div`
   width: 100%;
   position: relative;
 `;
 
-export const CardsWrapper = styled.ul`
+export const CarouselContainer = styled.div`
+  overflow: hidden;
+`;
+
+export const Carousel = styled.ul<{ translateX: number }>`
   padding: 0.25rem 0;
   display: flex;
   gap: 1rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  transform: translateX(${({ translateX }) => translateX}px);
+  transition: transform 0.75s ease;
 `;
 
 export const CardItem = styled.div`
-  flex: 0 0 calc((100% - 3rem) / 4);
+  min-width: 292px;
 `;
 
 const fadeIn = keyframes`
@@ -48,4 +48,8 @@ export const NavButton = styled.button<{ direction: "left" | "right" }>`
   left: ${({ direction }) => (direction === "left" ? "-1.5rem" : "auto")};
   right: ${({ direction }) => (direction === "right" ? "-1.5rem" : "auto")};
   animation: ${fadeIn} 0.5s ease-in-out;
+
+  ${BP_768} {
+    display: none;
+  }
 `;
