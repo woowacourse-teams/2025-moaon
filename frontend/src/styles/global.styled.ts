@@ -28,3 +28,24 @@ export const flexCenter = css`
   display: flex;
   align-items: center;
 `;
+
+export const hoverUnderline = (color: string = "#000") => css`
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 0.0938rem;
+    bottom: -0.1875rem;
+    left: 0;
+    background-color: ${color};
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+  }
+
+  &:hover:after {
+    transform: scaleX(1);
+  }
+`;
