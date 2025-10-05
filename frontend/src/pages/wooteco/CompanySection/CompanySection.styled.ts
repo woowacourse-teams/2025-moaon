@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
-import { hoverUnderline } from "@/styles/global.styled";
+import { BP_768, hoverUnderline } from "@/styles/global.styled";
 
 export const Section = styled.section`
   display: flex;
@@ -31,6 +31,12 @@ export const SubTitle = styled.h2`
   }
 
   font-family: "GMarketSans", sans-serif;
+  word-break: keep-all;
+  line-height: 1.3;
+
+  ${BP_768} {
+    font-size: 1rem;
+  }
 `;
 
 export const Box = styled.div`
@@ -38,6 +44,7 @@ export const Box = styled.div`
   justify-content: space-between;
   align-items: baseline;
   padding: 0.5rem 0.5rem 1rem;
+  gap: 0.5rem;
 `;
 
 export const MoreLink = styled(Link)`
@@ -45,12 +52,27 @@ export const MoreLink = styled(Link)`
   color: #6e6e6e;
   font-family: "GMarketSans", sans-serif;
   ${hoverUnderline("#6e6e6e")}
+  min-width: 5.125rem;
+
+  ${BP_768} {
+    font-size: 1rem;
+  }
 `;
 
 export const Description = styled.p`
   color: #6e6e6e;
+  word-break: keep-all;
+  line-height: 1.3;
+
+  ${BP_768} {
+    font-size: 0.875rem;
+  }
 `;
 
 export const CompanyImage = styled.img`
-  width: 80px;
+  width: 5rem;
+
+  ${BP_768} {
+    width: 3.75rem;
+  }
 `;
