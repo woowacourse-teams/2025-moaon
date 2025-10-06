@@ -34,7 +34,7 @@ export const flexCenter = css`
   align-items: center;
 `;
 
-export const hoverUnderline = (color: string = "#000") => css`
+export const hoverUnderline = (bgColor: string = "#000") => css`
   position: relative;
 
   &:after {
@@ -45,7 +45,7 @@ export const hoverUnderline = (color: string = "#000") => css`
     height: 0.0938rem;
     bottom: -0.1875rem;
     left: 0;
-    background-color: ${color};
+    background-color: ${bgColor};
     transform-origin: bottom left;
     transition: transform 0.25s ease-out;
   }
