@@ -40,7 +40,7 @@ function Card({ project }: CardProps) {
   };
 
   return (
-    <S.Card onDragStart={(e) => e.preventDefault()}>
+    <S.Card>
       <S.CardLink to={`/project/${id}`}>
         <S.CardImageBox>
           <S.CardImage
