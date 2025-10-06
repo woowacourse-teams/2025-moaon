@@ -18,7 +18,7 @@ function ProjectCarousel({ projects }: ProjectCarouselProps) {
         <S.Carousel ref={ref} translateX={translateX}>
           {projects.map((project) => (
             <S.CardItem key={project.id}>
-              <Card project={project} />
+              <Card project={project} isEyeIcon={false} />
             </S.CardItem>
           ))}
         </S.Carousel>

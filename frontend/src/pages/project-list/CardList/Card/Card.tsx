@@ -11,9 +11,10 @@ import TechStackList from "./TechStackList/TechStackList";
 
 interface CardProps {
   project: ProjectCard;
+  isEyeIcon?: boolean; // TODO: 이벤트 기간이 끝난 후 제거 예정
 }
 
-function Card({ project }: CardProps) {
+function Card({ project, isEyeIcon = true }: CardProps) {
   const {
     id,
     title,
@@ -64,10 +65,12 @@ function Card({ project }: CardProps) {
               }
               count={loves}
             /> */}
-            <StatBox
-              icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
-              count={views}
-            />
+            {isEyeIcon && (
+              <StatBox
+                icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
+                count={views}
+              />
+            )}
           </S.CardFooter>
         </S.CardInfo>
       </S.CardLink>

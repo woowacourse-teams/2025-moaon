@@ -10,7 +10,7 @@ function EventProjectList({ projects }: EventProjectListProps) {
   return (
     <S.List>
       {projects.map((project) => (
-        <Card key={project.id} project={project} />
+        <Card key={project.id} project={project} isEyeIcon={false} />
       ))}
     </S.List>
   );
