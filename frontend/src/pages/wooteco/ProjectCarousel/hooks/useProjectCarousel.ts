@@ -28,6 +28,7 @@ export const useProjectCarousel = (totalSlides: number) => {
   const { buttonVisible } = useCarouselButtonVisible({
     currentIndex,
     maxIndex: Math.floor(totalSlides / visibleCountRef.current),
+    isCarouselScrollable: totalSlides > visibleCountRef.current,
   });
   const xCoordinate = useRef(0);
 

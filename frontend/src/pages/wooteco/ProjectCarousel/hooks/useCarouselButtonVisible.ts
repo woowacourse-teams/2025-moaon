@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 interface UseCarouselButtonVisible {
   currentIndex: number;
   maxIndex: number;
+  isCarouselScrollable: boolean;
 }
 
 export const useCarouselButtonVisible = ({
   currentIndex,
   maxIndex,
+  isCarouselScrollable,
 }: UseCarouselButtonVisible) => {
   const [buttonVisible, setButtonVisible] = useState({
     prev: false,
@@ -15,6 +17,14 @@ export const useCarouselButtonVisible = ({
   });
 
   useEffect(() => {
+    if (!isCarouselScrollable) {
+      setButtonVisible({
+        prev: false,
+        next: false,
+      });
+      return;
+    }
+
     if (currentIndex === 0) {
       setButtonVisible({
         prev: false,
@@ -35,7 +45,7 @@ export const useCarouselButtonVisible = ({
       prev: true,
       next: true,
     });
-  }, [currentIndex, maxIndex]);
+  }, [currentIndex, maxIndex, isCarouselScrollable]);
 
   return { buttonVisible };
 };
