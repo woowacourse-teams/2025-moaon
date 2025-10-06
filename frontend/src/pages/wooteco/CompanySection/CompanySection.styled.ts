@@ -43,7 +43,7 @@ export const Box = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 0.5rem 0.5rem 1rem;
+  padding: 0.5rem 0.5rem 0rem;
   gap: 0.5rem;
 `;
 

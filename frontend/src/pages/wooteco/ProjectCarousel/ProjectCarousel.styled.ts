@@ -12,7 +12,7 @@ export const CarouselContainer = styled.div`
 `;
 
 export const Carousel = styled.ul<{ translateX: number }>`
-  padding: 0.25rem 0;
+  padding: 0.5rem 0 1.5rem;
   display: flex;
   gap: 1rem;
   transform: translateX(${({ translateX }) => translateX}px);
