@@ -14,4 +14,9 @@ public class BodyFinder extends ContentFinder {
     protected List<By> getBy(String link) {
         return List.of(By.tagName("body"));
     }
+
+    @Override
+    protected void validateLink(String link) {
+        
+    }
 }

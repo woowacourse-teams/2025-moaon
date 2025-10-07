@@ -31,14 +31,16 @@ class ContentFindersTest {
     @Test
     void forbiddenUrl() {
         // given
-        String forbiddenUrl = "https://www.notion.so/2294b522306480fb9260d817433ad721?source=copy_link";
+        String forbiddenNotionUrl = "https://www.notion.so/2294b522306480fb9260d817433ad721?source=copy_link";
+        String forbiddenVelogUrl = "https://velog.io/@minjae8563/test-%EC%9A%A9";
+        String forbiddenLink = "https://www.notion.so/2804b522306480e4bef2c071fe9359b9?source=copy_link";
 
         // when - then
         assertThatThrownBy(
-                () -> contentFinders.getFinder(forbiddenUrl).getText(forbiddenUrl)
+                () -> contentFinders.getFinder(forbiddenLink).getText(forbiddenLink)
         )
                 .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ARTICLE_URL_FORBIDDEN.getMessage());
+                .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage());
     }
 
     private static Stream<Arguments> provideUrls() {
