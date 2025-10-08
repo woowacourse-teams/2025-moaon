@@ -11,16 +11,20 @@ export const CarouselContainer = styled.div`
   overflow: hidden;
 `;
 
+export const CarouselBox = styled.div`
+  padding: 0 1.25rem;
+`;
+
 export const Carousel = styled.ul<{ translateX: number }>`
-  padding: 0.5rem 0 1.5rem;
+  padding: 1rem 0 1.5rem;
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   transform: translateX(${({ translateX }) => translateX}px);
   transition: transform 0.75s ease;
 `;
 
 export const CardItem = styled.div`
-  min-width: 292px;
+  min-width: 279px;
 `;
 
 const fadeIn = keyframes`

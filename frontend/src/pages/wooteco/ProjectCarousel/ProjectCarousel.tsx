@@ -15,13 +15,15 @@ function ProjectCarousel({ projects }: ProjectCarouselProps) {
   return (
     <S.Container>
       <S.CarouselContainer>
-        <S.Carousel ref={ref} translateX={translateX}>
-          {projects.map((project) => (
-            <S.CardItem key={project.id}>
-              <Card project={project} isEyeIcon={false} />
-            </S.CardItem>
-          ))}
-        </S.Carousel>
+        <S.CarouselBox>
+          <S.Carousel ref={ref} translateX={translateX}>
+            {projects.map((project) => (
+              <S.CardItem key={project.id}>
+                <Card project={project} isEyeIcon={false} />
+              </S.CardItem>
+            ))}
+          </S.Carousel>
+        </S.CarouselBox>
       </S.CarouselContainer>
       {buttonVisible.prev && (
         <S.NavButton
