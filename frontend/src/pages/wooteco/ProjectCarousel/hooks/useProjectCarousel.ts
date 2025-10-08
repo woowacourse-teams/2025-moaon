@@ -86,11 +86,11 @@ export const useProjectCarousel = ({
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width } = entry.contentRect;
-        if (width >= 1280) {
+        if (width >= 1024) {
           visibleCountRef.current = 4;
-        } else if (width >= 1024) {
-          visibleCountRef.current = 3;
         } else if (width >= 768) {
+          visibleCountRef.current = 3;
+        } else if (width >= 480) {
           visibleCountRef.current = 2;
         } else {
           visibleCountRef.current = 1;
