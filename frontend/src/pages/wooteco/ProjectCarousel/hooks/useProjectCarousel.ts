@@ -41,7 +41,7 @@ export const useProjectCarousel = ({
   const xCoordinate = useRef(0);
 
   const scrollNext = () => {
-    const maxIndex = Math.floor(totalSlides / visibleCountRef.current);
+    const maxIndex = Math.floor(totalSlides / visibleCountRef.current) - 1;
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
   };
 
