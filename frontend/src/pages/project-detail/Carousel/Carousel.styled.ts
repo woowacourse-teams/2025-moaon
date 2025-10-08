@@ -95,3 +95,11 @@ export const NextButton = styled(MoveButton)`
 export const PrevButton = styled(MoveButton)`
   left: 0;
 `;
+
+export const ModalImage = styled.img`
+  max-width: 80vw;
+  max-height: 80vh;
+  min-width: 25vw;
+  min-height: 25vw;
+  object-fit: contain;
+`;

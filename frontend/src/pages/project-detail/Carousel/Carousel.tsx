@@ -1,4 +1,6 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
+import Modal from "@shared/components/Modal/Modal";
+import { useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
@@ -8,6 +10,11 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
     imageUrls,
   });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const openModal = (image: string) => setSelectedImage(image);
+  const closeModal = () => setSelectedImage(null);
 
   const getImagePosition = (index: number) => {
     const nextIndex = (currentImageIndex + 1) % imageUrls.length;
@@ -33,6 +40,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
             isSingleImage={imageUrls.length === 1}
+            onClick={() => openModal(image)}
           />
         );
       })}
@@ -45,6 +53,12 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             <ArrowIcon direction="right" />
           </S.NextButton>
         </>
+      )}
+
+      {selectedImage && (
+        <Modal onClose={closeModal}>
+          <S.ModalImage src={selectedImage} alt="확대 이미지" />
+        </Modal>
       )}
     </S.CarouselContainer>
   );
