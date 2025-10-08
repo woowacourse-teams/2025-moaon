@@ -14,7 +14,7 @@ public class Projects {
     private final int limit;
 
     public static Projects empty(int limit) {
-        return new Projects(null, 0, limit);
+        return new Projects(List.of(), 0, limit);
     }
 
     public List<Project> getProjectsToReturn() {
