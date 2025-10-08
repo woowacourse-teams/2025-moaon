@@ -1,5 +1,7 @@
+import { useFocusTrap } from "@shared/hooks/useFocusTrap";
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
-import { type PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren, useRef } from "react";
+import { usePreventScroll } from "./hooks/usePreventScroll";
 import * as S from "./Modal.styled";
 
 type ModalProps = {
@@ -8,29 +10,19 @@ type ModalProps = {
 };
 
 function Modal({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) {
-  useKeyDown({
-    Escape: () => {
-      onClose();
-    },
-  });
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpen]);
+  useKeyDown({ Escape: onClose });
+  usePreventScroll(isOpen);
+  useFocusTrap({ ref: contentRef, active: isOpen });
 
   if (!isOpen) return null;
 
   return (
     <S.Overlay onClick={onClose}>
-      <S.Content onClick={(e) => e.stopPropagation()}>{children}</S.Content>
+      <S.Content ref={contentRef} onClick={(e) => e.stopPropagation()}>
+        {children}
+      </S.Content>
     </S.Overlay>
   );
 }
