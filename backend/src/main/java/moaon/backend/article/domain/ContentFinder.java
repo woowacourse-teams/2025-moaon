@@ -20,13 +20,13 @@ public abstract class ContentFinder {
         try {
             validateLink(link);
             driver.get(link);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
             List<By> bys = getBy(link);
             for (By by : bys) {
                 try {
                     WebElement webElement = wait.until(presenceOfElementLocated(by));
-                    System.out.println(webElement.getText().trim());
+                    System.out.println(webElement.getText().trim() + "----------------");
                     return webElement.getText().trim();
                 } catch (TimeoutException | NoSuchElementException e) {
                     continue;

@@ -3,6 +3,7 @@ package moaon.backend.article.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -41,11 +42,11 @@ class NotionContentFinderTest {
         assertAll(
                 () -> assertThatThrownBy(() -> notionContentFinder.validateLink(forbiddenLink))
                         .isInstanceOf(CustomException.class)
-                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage())
-//                () -> assertThatThrownBy(() -> notionContentFinder.validateLink(deleteLink))
-//                        .isInstanceOf(CustomException.class)
-//                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
-//                () -> assertDoesNotThrow(() -> notionContentFinder.validateLink(normalLink))
+                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
+                () -> assertThatThrownBy(() -> notionContentFinder.validateLink(deleteLink))
+                        .isInstanceOf(CustomException.class)
+                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
+                () -> assertDoesNotThrow(() -> notionContentFinder.validateLink(normalLink))
         );
     }
 }

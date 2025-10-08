@@ -1,13 +1,9 @@
 package moaon.backend.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.stream.Stream;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,22 +21,6 @@ class ContentFindersTest {
 
         // then
         assertThat(finder).isInstanceOf(expectedClass);
-    }
-
-    @DisplayName("권한이 없는 링크에 접속하면 예외를 발생한다.")
-    @Test
-    void forbiddenUrl() {
-        // given
-        String forbiddenNotionUrl = "https://www.notion.so/2294b522306480fb9260d817433ad721?source=copy_link";
-        String forbiddenVelogUrl = "https://velog.io/@minjae8563/test-%EC%9A%A9";
-        String forbiddenLink = "https://www.notion.so/2804b522306480e4bef2c071fe9359b9?source=copy_link";
-
-        // when - then
-        assertThatThrownBy(
-                () -> contentFinders.getFinder(forbiddenLink).getText(forbiddenLink)
-        )
-                .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage());
     }
 
     private static Stream<Arguments> provideUrls() {
