@@ -20,14 +20,22 @@ const calculateSlideWidth = (container: HTMLElement) => {
   return slideWidth + gapPx;
 };
 
-export const useProjectCarousel = (totalSlides: number) => {
+interface UseProjectCarousel {
+  totalSlides: number;
+  threshold?: number;
+}
+
+export const useProjectCarousel = ({
+  totalSlides,
+  threshold = 50,
+}: UseProjectCarousel) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const slideWidthRef = useRef(0);
   const maxWidthRef = useRef(0);
   const visibleCountRef = useRef(4);
   const { buttonVisible } = useCarouselButtonVisible({
     currentIndex,
-    maxIndex: Math.floor(totalSlides / visibleCountRef.current),
+    maxIndex: Math.floor(totalSlides / visibleCountRef.current) - 1,
     isCarouselScrollable: totalSlides > visibleCountRef.current,
   });
   const xCoordinate = useRef(0);
@@ -52,12 +60,11 @@ export const useProjectCarousel = (totalSlides: number) => {
       return;
     }
 
-    if (xDiff > 0) {
+    if (xDiff > threshold) {
       scrollNext();
-      return;
+    } else if (xDiff < -threshold) {
+      scrollPrev();
     }
-
-    scrollPrev();
 
     xCoordinate.current = 0;
   };

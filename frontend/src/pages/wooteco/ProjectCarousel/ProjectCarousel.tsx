@@ -10,7 +10,7 @@ interface ProjectCarouselProps {
 
 function ProjectCarousel({ projects }: ProjectCarouselProps) {
   const { scrollNext, scrollPrev, translateX, buttonVisible, ref } =
-    useProjectCarousel(projects.length);
+    useProjectCarousel({ totalSlides: projects.length });
 
   return (
     <S.Container>
