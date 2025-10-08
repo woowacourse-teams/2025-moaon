@@ -1,6 +1,5 @@
 package moaon.backend.project.repository;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
 
         Set<Long> projectIdsByTechStacks = projectDao.findProjectIdsByTechStacks(techStack);
-        return FilteringIds.of(projectIdsByTechStacks);
+        return filteringIds.addFilterResult(projectIdsByTechStacks);
     }
 
     private FilteringIds applyCategories(FilteringIds filteringIds, List<String> categories) {
@@ -57,7 +56,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     }
 
     private FilteringIds applySearch(FilteringIds filteringIds, SearchKeyword keyword) {
-        if (filteringIds.hasEmptyResult() || (keyword != null && keyword.hasValue())) {
+        if (filteringIds.hasEmptyResult() || keyword == null || !keyword.hasValue()) {
             return filteringIds;
         }
 
@@ -71,47 +70,5 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
 
         return filteringIds.size();
-    }
-
-    private Set<Long> findProjectIdsByFilter(
-            List<String> techStackNames,
-            SearchKeyword searchKeyword,
-            List<String> categoryNames
-    ) {
-        Set<Long> finalProjectIds = new HashSet<>();
-
-        if (!techStackNames.isEmpty()) {
-            finalProjectIds = projectDao.findProjectIdsByTechStacks(techStackNames);
-        }
-        filterCategories(categoryNames, finalProjectIds);
-        filterSearch(searchKeyword, finalProjectIds);
-
-        return finalProjectIds;
-    }
-
-    private void filterCategories(List<String> categoryNames, Set<Long> finalProjectIds) {
-        if (!categoryNames.isEmpty()) {
-            Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(categoryNames);
-
-            if (finalProjectIds.isEmpty()) {
-                finalProjectIds.addAll(projectIdsByCategories);
-                return;
-            }
-
-            finalProjectIds.retainAll(projectIdsByCategories);
-        }
-    }
-
-    private void filterSearch(SearchKeyword searchKeyword, Set<Long> finalProjectIds) {
-        if (searchKeyword != null && searchKeyword.hasValue()) {
-            Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(searchKeyword);
-
-            if (finalProjectIds.isEmpty()) {
-                finalProjectIds.addAll(projectIdsBySearchKeyword);
-                return;
-            }
-
-            finalProjectIds.retainAll(projectIdsBySearchKeyword);
-        }
     }
 }
