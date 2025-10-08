@@ -34,6 +34,11 @@ export const Card = styled.li`
   overflow: hidden;
   border-radius: 10px;
 
+  & * {
+    user-drag: none;
+    -webkit-user-drag: none;
+  }
+
   &:hover {
     transition: 0.25s linear;
     box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;

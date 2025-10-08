@@ -7,6 +7,8 @@ import ArticlePage from "./pages/article/ArticlePage";
 import LandingPage from "./pages/landing/LandingPage";
 import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
+import CompanyEventPage from "./pages/wooteco/company/CompanyEventPage";
+import WootecoEventPage from "./pages/wooteco/WootecoEventPage";
 import Header from "./shared/components/Header/Header";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
 
@@ -23,6 +25,8 @@ function App() {
             <Route path="/project" element={<ProjectListPage />} />
             <Route path="/project/:id" element={<ProjectDetailPage />} />
             <Route path="/article" element={<ArticlePage />} />
+            <Route path="/wooteco" element={<WootecoEventPage />} />
+            <Route path="/wooteco/:company" element={<CompanyEventPage />} />
             <Route
               path="*"
               element={
