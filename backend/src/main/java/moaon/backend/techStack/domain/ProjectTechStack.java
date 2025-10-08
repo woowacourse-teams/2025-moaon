@@ -10,12 +10,14 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import moaon.backend.project.domain.Project;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id")
+@ToString(exclude = {"project", "techStack"})
 public class ProjectTechStack {
 
     @Id
@@ -31,14 +33,5 @@ public class ProjectTechStack {
     public ProjectTechStack(Project project, TechStack techStack) {
         this.project = project;
         this.techStack = techStack;
-    }
-
-    @Override
-    public String toString() {
-        return "ProjectTechStack{" +
-                "id=" + id +
-                ", project=" + project.getId() +
-                ", techStack=" + techStack +
-                '}';
     }
 }
