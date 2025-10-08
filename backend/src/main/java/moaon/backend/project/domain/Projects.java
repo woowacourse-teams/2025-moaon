@@ -1,11 +1,9 @@
-package moaon.backend.project.repository;
+package moaon.backend.project.domain;
 
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cursor.Cursor;
-import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectSortType;
 
 @RequiredArgsConstructor
 @Getter

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.dao.ProjectDao;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.stereotype.Repository;
 

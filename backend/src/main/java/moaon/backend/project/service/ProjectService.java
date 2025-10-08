@@ -7,11 +7,11 @@ import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.repository.ProjectRepository;
-import moaon.backend.project.repository.Projects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

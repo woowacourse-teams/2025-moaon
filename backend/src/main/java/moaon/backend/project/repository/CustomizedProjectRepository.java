@@ -1,5 +1,6 @@
 package moaon.backend.project.repository;
 
+import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.ProjectQueryCondition;
 
 public interface CustomizedProjectRepository {
