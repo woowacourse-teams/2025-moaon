@@ -2,7 +2,9 @@ package moaon.backend.project.repository;
 
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
 
+@Getter
 public class FilteringIds {
 
     private final Set<Long> ids;

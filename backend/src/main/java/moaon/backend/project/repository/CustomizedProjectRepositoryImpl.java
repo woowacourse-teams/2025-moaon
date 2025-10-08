@@ -10,6 +10,7 @@ import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,18 +25,52 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         SearchKeyword search = condition.search();
         List<String> categoryNames = condition.categoryNames();
 
-        Set<Long> projectIdsByFilter = findProjectIdsByFilter(techStackNames, search, categoryNames);
-        List<Project> projects = projectDao.findProjects(condition, projectIdsByFilter);
+        FilteringIds filteringIds = FilteringIds.init();
+        filteringIds = applyTechStacks(filteringIds, techStackNames);
+        filteringIds = applyCategories(filteringIds, categoryNames);
+        filteringIds = applySearch(filteringIds, search);
 
-        return new Projects(projects, countWithSearchCondition(condition, projectIdsByFilter), limit);
+        if (filteringIds.hasEmptyResult()) {
+            return Projects.empty(limit);
+        }
+
+        List<Project> projects = projectDao.findProjects(condition, filteringIds.getIds());
+        return new Projects(projects, calculateTotalCount(filteringIds), limit);
     }
 
-    private long countWithSearchCondition(ProjectQueryCondition condition, Set<Long> projectsIdByFilter) {
-        if (condition.isEmptyFilter()) {
+    private FilteringIds applyTechStacks(FilteringIds filteringIds, List<String> techStack) {
+        if (filteringIds.hasEmptyResult() || CollectionUtils.isEmpty(techStack)) {
+            return filteringIds;
+        }
+
+        Set<Long> projectIdsByTechStacks = projectDao.findProjectIdsByTechStacks(techStack);
+        return FilteringIds.of(projectIdsByTechStacks);
+    }
+
+    private FilteringIds applyCategories(FilteringIds filteringIds, List<String> categories) {
+        if (filteringIds.hasEmptyResult() || CollectionUtils.isEmpty(categories)) {
+            return filteringIds;
+        }
+
+        Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(categories);
+        return filteringIds.addFilterResult(projectIdsByCategories);
+    }
+
+    private FilteringIds applySearch(FilteringIds filteringIds, SearchKeyword keyword) {
+        if (filteringIds.hasEmptyResult() || (keyword != null && keyword.hasValue())) {
+            return filteringIds;
+        }
+
+        Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(keyword);
+        return filteringIds.addFilterResult(projectIdsBySearchKeyword);
+    }
+
+    private long calculateTotalCount(FilteringIds filteringIds) {
+        if (filteringIds.isEmpty()) {
             return projectDao.count();
         }
 
-        return projectsIdByFilter.size();
+        return filteringIds.size();
     }
 
     private Set<Long> findProjectIdsByFilter(

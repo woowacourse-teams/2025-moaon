@@ -13,6 +13,10 @@ public class Projects {
     private final long count;
     private final int limit;
 
+    public static Projects empty(int limit) {
+        return new Projects(null, 0, limit);
+    }
+
     public List<Project> getProjectsToReturn() {
         if (hasNext()) {
             return projects.subList(0, limit);
