@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import * as S from "./Markdown.styled";
 
@@ -6,7 +7,11 @@ interface MarkdownProps {
 }
 
 function Markdown({ text }: MarkdownProps) {
-  return <S.Markdown remarkPlugins={[remarkGfm]}>{text}</S.Markdown>;
+  return (
+    <S.MarkdownWrapper>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+    </S.MarkdownWrapper>
+  );
 }
 
 export default Markdown;
