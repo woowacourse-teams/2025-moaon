@@ -1,6 +1,7 @@
 import { useFocusTrap } from "@shared/hooks/useFocusTrap";
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { type PropsWithChildren, useRef } from "react";
+import ReactDOM from "react-dom";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import * as S from "./Modal.styled";
 
@@ -18,13 +19,18 @@ function Modal({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) {
 
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <S.Overlay onClick={onClose}>
       <S.Content ref={contentRef} onClick={(e) => e.stopPropagation()}>
         {children}
       </S.Content>
     </S.Overlay>
   );
+
+  const modalRoot = document.getElementById("modal-root");
+  if (!modalRoot) return null;
+
+  return ReactDOM.createPortal(modalContent, modalRoot);
 }
 
 export default Modal;
