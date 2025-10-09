@@ -1,15 +1,15 @@
-import { useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 import { useKeyDown } from "./useKeyDown/useKeyDown";
 
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 interface UseFocusTrapProps {
-  ref: React.RefObject<HTMLElement | null>;
+  ref: RefObject<HTMLElement | null>;
   active: boolean;
 }
 
-export function useFocusTrap({ ref, active }: UseFocusTrapProps) {
+export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
   const lastFocusedElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -56,4 +56,4 @@ export function useFocusTrap({ ref, active }: UseFocusTrapProps) {
       }
     },
   });
-}
+};

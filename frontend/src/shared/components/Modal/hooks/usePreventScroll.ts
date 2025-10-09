@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function usePreventScroll(active: boolean) {
+export const usePreventScroll = (active: boolean) => {
   useEffect(() => {
     if (!active) return;
 
@@ -11,4 +11,4 @@ export function usePreventScroll(active: boolean) {
       document.body.style.overflow = original;
     };
   }, [active]);
-}
+};
