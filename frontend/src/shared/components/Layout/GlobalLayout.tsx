@@ -4,7 +4,8 @@ import * as S from "./GlobalLayout.styled";
 
 function GlobalLayout({ children }: PropsWithChildren) {
   const location = useLocation();
-  const isLandingPage = location.pathname === "/";
+  const isLandingPage =
+    location.pathname === "/" || location.pathname === "/event";
 
   return (
     <S.GlobalLayout isLandingPage={isLandingPage}>{children}</S.GlobalLayout>
