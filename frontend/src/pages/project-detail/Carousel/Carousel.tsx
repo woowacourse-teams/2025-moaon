@@ -57,7 +57,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
 
       {selectedImage && (
         <Modal isOpen={!!selectedImage} onClose={closeModal}>
-          <S.ModalImage src={selectedImage} alt="확대 이미지" />
+          <S.ModalImage src={selectedImage} alt="" />
         </Modal>
       )}
     </S.CarouselContainer>
