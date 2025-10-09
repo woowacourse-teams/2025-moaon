@@ -10,10 +10,10 @@ interface ModalProps {
 }
 
 function Modal({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) {
-  const contentRef = useRef<HTMLDivElement>(null);
-
   useKeyDown({ Escape: onClose });
   usePreventScroll(isOpen);
+
+  const contentRef = useRef<HTMLDivElement>(null);
   useFocusTrap({ ref: contentRef, active: isOpen });
 
   if (!isOpen) return null;
