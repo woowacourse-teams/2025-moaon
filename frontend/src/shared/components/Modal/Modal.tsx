@@ -4,10 +4,10 @@ import { type PropsWithChildren, useRef } from "react";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import * as S from "./Modal.styled";
 
-type ModalProps = {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 function Modal({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) {
   const contentRef = useRef<HTMLDivElement>(null);
