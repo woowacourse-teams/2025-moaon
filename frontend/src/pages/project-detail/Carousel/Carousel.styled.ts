@@ -97,9 +97,9 @@ export const PrevButton = styled(MoveButton)`
 `;
 
 export const ModalImage = styled.img`
-  max-width: 80vw;
-  max-height: 80vh;
-  min-width: 25vw;
-  min-height: 25vw;
+  max-width: 80dvw;
+  max-height: 80dvh;
+  min-width: 25dvw;
+  min-height: 25dvw;
   object-fit: contain;
 `;
