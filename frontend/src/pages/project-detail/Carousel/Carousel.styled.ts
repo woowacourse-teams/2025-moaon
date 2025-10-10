@@ -16,6 +16,7 @@ const CarouselImage = styled.img`
   border: 2px solid #ddd;
   background-color: #fff;
   object-fit: contain;
+  cursor: pointer;
 
   -webkit-user-drag: none;
   -khtml-user-drag: none;
