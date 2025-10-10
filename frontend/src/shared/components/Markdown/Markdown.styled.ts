@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import Polymorphic from "../Polymorphic/Polymorphic";
 
-export const MarkdownWrapper = styled.div`
+export const MarkdownWrapper = styled(Polymorphic)`
   h1,
   h2,
   h3,
