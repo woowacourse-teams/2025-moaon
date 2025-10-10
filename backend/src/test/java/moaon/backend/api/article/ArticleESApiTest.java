@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 import io.restassured.RestAssured;
+import java.time.Duration;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
@@ -44,6 +45,7 @@ public class ArticleESApiTest {
             .withEnv("xpack.security.transport.ssl.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
             .withEnv("xpack.security.enabled", "false")
+            .withStartupTimeout(Duration.ofMinutes(5))
             .withCommand("sh", "-c", "elasticsearch-plugin install --batch analysis-nori && exec bin/elasticsearch");
 
     @LocalServerPort
