@@ -1,6 +1,6 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import Modal from "@shared/components/Modal/Modal";
-import { useState } from "react";
+import { useOverlay } from "@shared/hooks/useOverlay";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
@@ -11,10 +11,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
   });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  const openModal = (image: string) => setSelectedImage(image);
-  const closeModal = () => setSelectedImage(null);
+  const imageModal = useOverlay<string>();
 
   const getImagePosition = (index: number) => {
     const nextIndex = (currentImageIndex + 1) % imageUrls.length;
@@ -40,10 +37,11 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
             isSingleImage={imageUrls.length === 1}
-            onClick={() => openModal(image)}
+            onClick={() => imageModal.open(image)}
           />
         );
       })}
+
       {imageUrls.length > 1 && (
         <>
           <S.PrevButton onClick={handleSlidePrev}>
@@ -55,9 +53,9 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
         </>
       )}
 
-      {selectedImage && (
-        <Modal isOpen={!!selectedImage} onClose={closeModal}>
-          <S.ModalImage src={selectedImage} alt="" />
+      {imageModal.data && (
+        <Modal isOpen={imageModal.isOpen} onClose={imageModal.close}>
+          <S.ModalImage src={imageModal.data} alt="" />
         </Modal>
       )}
     </S.CarouselContainer>
