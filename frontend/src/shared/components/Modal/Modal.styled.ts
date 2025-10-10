@@ -15,6 +15,5 @@ export const Overlay = styled.div`
 
 export const Content = styled.div`
   position: relative;
-  display: flex;
   background-color: #fff;
 `;
