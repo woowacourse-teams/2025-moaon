@@ -1,13 +1,13 @@
 import { type RefObject, useEffect, useRef } from "react";
 import { useKeyDown } from "./useKeyDown/useKeyDown";
 
-const FOCUSABLE_SELECTOR =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
 interface UseFocusTrapProps {
   ref: RefObject<HTMLElement | null>;
   active: boolean;
 }
+
+const FOCUSABLE_SELECTOR =
+  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
   const lastFocusedElement = useRef<HTMLElement | null>(null);
@@ -16,16 +16,42 @@ export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
     if (!active || !ref.current) return;
 
     lastFocusedElement.current = document.activeElement as HTMLElement;
-    const element = ref.current;
+    const container = ref.current;
 
-    const focusable = element.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+    const getFocusableElements = () => {
+      const nodes = Array.from(
+        container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+      );
 
-    if (focusable.length > 0) {
-      focusable[0].focus();
-    } else {
-      element.setAttribute("tabindex", "-1");
-      element.focus();
-    }
+      const visible = nodes.filter(
+        (el) =>
+          !el.hasAttribute("disabled") &&
+          el.getAttribute("aria-hidden") !== "true" &&
+          el.tabIndex !== -1 &&
+          el.offsetParent !== null
+      );
+
+      const radioGroups = new Set<string>();
+      const filtered: HTMLElement[] = [];
+
+      for (const el of visible) {
+        if (
+          el.tagName === "INPUT" &&
+          (el as HTMLInputElement).type === "radio"
+        ) {
+          const name = (el as HTMLInputElement).name;
+          if (name && radioGroups.has(name)) continue;
+          if (name) radioGroups.add(name);
+        }
+        filtered.push(el);
+      }
+
+      return filtered;
+    };
+
+    const focusable = getFocusableElements();
+
+    (focusable[0] || container).focus();
 
     return () => {
       lastFocusedElement.current?.focus();
@@ -36,21 +62,30 @@ export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
     Tab: (e) => {
       if (!active || !ref.current) return;
 
-      const focusable =
-        ref.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+      const container = ref.current;
+      const focusable = Array.from(
+        container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+      ).filter(
+        (el) =>
+          !el.hasAttribute("disabled") &&
+          el.getAttribute("aria-hidden") !== "true" &&
+          el.tabIndex !== -1 &&
+          el.offsetParent !== null
+      );
 
-      if (focusable.length === 0) {
+      if (focusable.length <= 1) {
         e.preventDefault();
         return;
       }
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      const activeEl = document.activeElement;
 
-      if (e.shiftKey && document.activeElement === first) {
+      if (e.shiftKey && activeEl === first) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
+      } else if (!e.shiftKey && activeEl === last) {
         e.preventDefault();
         first.focus();
       }
