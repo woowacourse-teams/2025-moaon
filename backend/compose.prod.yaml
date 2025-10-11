@@ -18,13 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  #  kibana:
-  #    image: docker.elastic.co/kibana/kibana:9.1.4
-  #    ports:
-  #      - "5601:5601"
-  #    environment:
-  #      - ELASTICSEARCH_HOSTS=http://elastic:9200
-
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
