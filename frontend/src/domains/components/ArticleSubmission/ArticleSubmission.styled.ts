@@ -7,3 +7,11 @@ export const ArticleSubmissionContainer = styled.section`
   flex-direction: column;
   gap: 2rem;
 `;
+
+export const ArticleSubmissionButton = styled.button`
+  flex: 1;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+`;

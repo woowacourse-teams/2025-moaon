@@ -4,17 +4,7 @@ import ArticleForm, { type FormDataType } from "./ArticleForm/ArticleForm";
 import * as S from "./ArticleSubmission.styled";
 
 function ArticleSubmission() {
-  const [articles, setArticles] = useState<FormDataType[]>([
-    {
-      id: crypto.randomUUID(),
-      address: "https://example.com",
-      title: "Example Article",
-      description: "This is an example article description.",
-      sector: "fe",
-      topic: ["etc"],
-      techStack: ["react", "pwa"],
-    },
-  ]);
+  const [articles, setArticles] = useState<FormDataType[]>([]);
 
   const [editingArticle, setEditingArticle] = useState<FormDataType | null>(
     null,
@@ -36,6 +26,7 @@ function ArticleSubmission() {
   const handleCancelEdit = () => {
     setEditingArticle(null);
   };
+
   return (
     <S.ArticleSubmissionContainer>
       <ArticleForm
@@ -44,11 +35,16 @@ function ArticleSubmission() {
         onUpdate={handleUpdate}
         onCancel={handleCancelEdit}
       />
-      <ArticleDraftList
-        articles={articles}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-      />
+      {articles.length > 0 && (
+        <ArticleDraftList
+          articles={articles}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+        />
+      )}
+      <S.ArticleSubmissionButton type="button" onClick={() => {}}>
+        아티클 등록
+      </S.ArticleSubmissionButton>
     </S.ArticleSubmissionContainer>
   );
 }
