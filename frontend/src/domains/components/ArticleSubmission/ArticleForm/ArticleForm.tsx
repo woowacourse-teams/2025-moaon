@@ -140,7 +140,7 @@ function ArticleForm({
     <S.FormBox>
       <S.FormTitle>새 아티클 추가</S.FormTitle>
       <S.FormFieldList>
-        <FormField label="아티클 주소">
+        <FormField title="아티클 주소">
           <S.ArticleAddressBox>
             <input
               type="text"
@@ -156,7 +156,7 @@ function ArticleForm({
             </S.ArticleAddressButton>
           </S.ArticleAddressBox>
         </FormField>
-        <FormField label="아티클 제목">
+        <FormField title="아티클 제목">
           <input
             type="text"
             name="title"
@@ -167,7 +167,7 @@ function ArticleForm({
             }
           />
         </FormField>
-        <FormField label="아티클 내용">
+        <FormField title="아티클 내용">
           <textarea
             name="description"
             placeholder="아티클 내용 요약.."
@@ -177,7 +177,7 @@ function ArticleForm({
             }
           ></textarea>
         </FormField>
-        <FormField label="직군 선택">
+        <FormField title="직군 선택">
           <TagList<ArticleSectorKey>
             entries={sectorEntriesWithoutAll}
             onSelect={updateSectorParams}
@@ -185,7 +185,7 @@ function ArticleForm({
           />
         </FormField>
         {!(isSectorAll || isNonTech) && (
-          <FormField label="기술스택">
+          <FormField title="기술스택">
             <TagList<TechStackKey>
               entries={techStackEntry}
               onSelect={updateTechStackParams}
@@ -194,7 +194,7 @@ function ArticleForm({
           </FormField>
         )}
         {!isSectorAll && (
-          <FormField label="주제">
+          <FormField title="주제">
             <TagList<AllTopicKey>
               entries={topicEntry}
               onSelect={updateTopicParams}

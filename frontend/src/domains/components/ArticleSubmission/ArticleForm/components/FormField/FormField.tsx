@@ -2,19 +2,19 @@ import type { PropsWithChildren } from "react";
 import * as S from "./FormField.styled";
 
 interface FormFieldProps {
-  label: string;
+  title: string;
   required?: boolean;
 }
 
 function FormField({
   children,
   required = true,
-  label,
+  title,
 }: PropsWithChildren<FormFieldProps>) {
   return (
     <S.FormFieldWrapper>
       <S.FormFieldHeader>
-        <S.FormFieldTitle>{label}</S.FormFieldTitle>
+        <S.FormFieldTitle>{title}</S.FormFieldTitle>
         {required && <S.FormFieldRequired>*</S.FormFieldRequired>}
       </S.FormFieldHeader>
       {children}
