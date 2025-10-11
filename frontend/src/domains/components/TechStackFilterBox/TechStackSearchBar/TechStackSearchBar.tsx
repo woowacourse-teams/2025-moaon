@@ -33,9 +33,13 @@ const getFilteredListWithoutSelected = (
 
 interface TechStackSearchBarProps {
   onSelect: () => void;
+  sector?: ArticleSectorKey;
 }
 
-function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
+function TechStackSearchBar({
+  onSelect,
+  sector: sectorProps,
+}: TechStackSearchBarProps) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filterList, setFilterList] = useState<AllTechStackEntry>([]);
@@ -45,7 +49,8 @@ function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
   useKeyDown({
     Escape: () => setIsOpen(false),
   });
-  const sector = useGetSectorLocation();
+  const sectorLocation = useGetSectorLocation();
+  const sector = sectorProps ?? sectorLocation;
 
   const handleTechStackItemClick = (techStack: TechStackKey) => {
     updateTechStackParam(techStack);

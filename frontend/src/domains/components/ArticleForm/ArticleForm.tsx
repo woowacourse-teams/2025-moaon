@@ -2,28 +2,51 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
-import { BACKEND_TOPICS_ENTRY } from "@domains/filter/articleTopic";
+import type { AllTopicKey } from "@domains/filter/articleTopic";
+import { getTopicsBySector } from "@domains/utils/sectorHandlers";
 import FilterTrigger from "@shared/components/FilterContainer/FilterTrigger/FilterTrigger";
 import { useRef, useState } from "react";
-import { getArticleFilterList } from "@/pages/article/ArticleBox/ArticleBoxHeader/utils/getArticleFilterList";
+import TechStackFilterBox from "../TechStackFilterBox/TechStackFilterBox";
 import * as S from "./ArticleForm.styled";
 import FormField from "./components/FormField/FormField";
 import TagList from "./components/TagList/TagList";
 import { useFetchMeta } from "./hooks/useFetchMeta";
 
+interface FormDataType {
+  address: string;
+  title: string;
+  description: string;
+  sector: ArticleSectorKey;
+  topic: AllTopicKey;
+  techStack: string;
+}
+
 function ArticleForm() {
   const addressRef = useRef<HTMLInputElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
   const descRef = useRef<HTMLTextAreaElement | null>(null);
-  const [sector, _] = useState<ArticleSectorKey>("nonTech");
-
+  const [formData, setFormData] = useState<FormDataType>({
+    address: "",
+    title: "",
+    description: "",
+    sector: "all",
+    topic: "" as AllTopicKey,
+    techStack: "all",
+  });
   const { fetchAndFill } = useFetchMeta();
   const handleFetchMeta = () => fetchAndFill(addressRef, titleRef, descRef);
-
-  const filterList = getArticleFilterList(sector);
+  const updateSectorParams = (data: ArticleSectorKey) => {
+    setFormData((prev) => ({ ...prev, sector: data }));
+  };
+  const updateTopicParams = (data: AllTopicKey) => {
+    setFormData((prev) => ({ ...prev, topic: data }));
+  };
+  const extry = getTopicsBySector(formData.sector);
   const sectorEntriesWithoutAll = ARTICLE_SECTOR_ENTRY.filter(
     ([key]) => key !== "all",
   );
+  const isSectorAll = formData.sector === "all";
+  const isNonTech = formData.sector === "nonTech";
   return (
     <S.FormBox>
       <S.FormTitle>새 아티클 추가</S.FormTitle>
@@ -58,23 +81,36 @@ function ArticleForm() {
         </FormField>
 
         <FormField label="직군 선택">
-          <TagList entries={sectorEntriesWithoutAll} />
+          <TagList<ArticleSectorKey>
+            entries={sectorEntriesWithoutAll}
+            onSelect={updateSectorParams}
+            isActive={(data) => data === formData.sector}
+          />
         </FormField>
 
-        {sector !== "nonTech" && (
+        {!(isSectorAll || isNonTech) && (
           <FormField label="기술스택">
             <FilterTrigger
-              label={filterList[1].label}
-              param={filterList[1].param}
+              label={"기술 스택"}
+              param={"techStacks"}
               onSelect={() => {}}
             >
-              {filterList[1].render(() => {})}
+              <TechStackFilterBox
+                onSelect={() => {}}
+                sector={formData.sector}
+              />
             </FilterTrigger>
           </FormField>
         )}
-        <FormField label="주제">
-          <TagList entries={BACKEND_TOPICS_ENTRY} />
-        </FormField>
+        {!isSectorAll && (
+          <FormField label="주제">
+            <TagList<AllTopicKey>
+              entries={extry}
+              onSelect={updateTopicParams}
+              isActive={(data) => data === formData.topic}
+            />
+          </FormField>
+        )}
       </S.FormFieldList>
       <S.ArticleAddButton type="button">+ 아티클 추가</S.ArticleAddButton>
     </S.FormBox>
