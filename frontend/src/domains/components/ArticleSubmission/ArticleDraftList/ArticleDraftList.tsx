@@ -14,7 +14,10 @@ function ArticleDraftList({
   onEdit,
 }: ArticleDraftListProps) {
   const handleDeleteDraft = (id: string) => {
-    onDelete(id);
+    const confirmDelete = window.confirm("해당 아티클을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      onDelete(id);
+    }
   };
   const handleEditDraft = (article: FormDataType) => {
     onEdit(article);
