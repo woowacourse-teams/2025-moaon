@@ -1,7 +1,8 @@
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
-import ArticleForm, { type FormDataType } from "./ArticleForm/ArticleForm";
+import ArticleForm from "./ArticleForm/ArticleForm";
 import * as S from "./ArticleSubmission.styled";
 import { useArticleSubmission } from "./hooks/useArticleSubmission";
+import type { FormDataType } from "./types";
 
 interface ArticleSubmissionProps {
   projectId?: string;

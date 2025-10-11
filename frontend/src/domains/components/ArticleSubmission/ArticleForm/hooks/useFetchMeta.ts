@@ -68,8 +68,8 @@ export const useFetchMeta = () => {
       descRef,
     }: {
       urlInput: string;
-      titleRef: RefObject<HTMLInputElement>;
-      descRef: RefObject<HTMLTextAreaElement>;
+      titleRef: RefObject<HTMLInputElement | null>;
+      descRef: RefObject<HTMLTextAreaElement | null>;
     }) => {
       const meta = await fetchByUrl(urlInput);
       if (!meta) return;

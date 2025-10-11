@@ -1,12 +1,9 @@
 import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
-export type EntryTuple<T extends string = string> = readonly [
-  T,
-  { label: string; imgUrl?: string },
-];
+export type EntryTuple<T> = readonly [T, { label: string; imgUrl?: string }];
 
-interface TagListProps<T extends string> {
+interface TagListProps<T> {
   entries: ReadonlyArray<EntryTuple<T>>;
   onSelect: (key: T) => void;
   isActive: (key: T) => boolean;

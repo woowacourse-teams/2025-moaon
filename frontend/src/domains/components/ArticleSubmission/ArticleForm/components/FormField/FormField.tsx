@@ -8,8 +8,8 @@ interface FormFieldProps {
 
 function FormField({
   children,
-  required = true,
   title,
+  required = true,
 }: PropsWithChildren<FormFieldProps>) {
   return (
     <S.FormFieldWrapper>

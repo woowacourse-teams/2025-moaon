@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { FormDataType } from "../ArticleForm/ArticleForm";
+import type { FormDataType } from "../types";
 
 interface useArticleSubmissionProps {
   initialArticles: FormDataType[];
