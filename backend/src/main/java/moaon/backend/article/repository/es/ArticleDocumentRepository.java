@@ -15,7 +15,7 @@ public class ArticleDocumentRepository {
 
     private final ElasticsearchOperations ops;
 
-    public SearchHits<ArticleDocument> search(ArticleESQuery condition) {
+    public SearchHits<ArticleDocument> search(final ArticleESQuery condition) {
         NativeQuery esArticleQuery = new ESArticleQueryBuilder()
                 .withTextSearch(condition.search())
                 .withSector(condition.sector())
