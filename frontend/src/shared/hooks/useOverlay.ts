@@ -7,7 +7,7 @@ interface OverlayController<T = void> {
   data: T | null;
 }
 
-export function useOverlay<T = void>(): OverlayController<T> {
+export const useOverlay = <T = void>(): OverlayController<T> => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<T | null>(null);
 
@@ -24,4 +24,4 @@ export function useOverlay<T = void>(): OverlayController<T> {
   }, []);
 
   return { isOpen, open, close, data };
-}
+};
