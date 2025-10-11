@@ -1,4 +1,4 @@
-package moaon.backend.es;
+package moaon.backend.article.domain;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -11,9 +11,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.Sector;
-import moaon.backend.article.domain.Topic;
 import moaon.backend.techStack.domain.TechStack;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -66,7 +63,7 @@ public class ArticleDocument {
     @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_fraction)
     private LocalDateTime createdAt;
 
-    public ArticleDocument(final Article article) {
+    public ArticleDocument(Article article) {
         this.id = article.getId();
         this.title = article.getTitle();
         this.summary = article.getSummary();

@@ -1,7 +1,8 @@
-package moaon.backend.es;
+package moaon.backend.global.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import moaon.backend.article.domain.ArticleDocument;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
