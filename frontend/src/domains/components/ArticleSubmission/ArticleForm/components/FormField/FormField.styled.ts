@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const FormFieldLabel = styled.label`
+export const FormFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -24,10 +24,9 @@ export const FormFieldLabel = styled.label`
   }
 `;
 
-export const FormFieldLabelBox = styled.div`
+export const FormFieldHeader = styled.div`
   display: flex;
   gap: 0.5rem;
-  cursor: pointer;
 `;
 
 export const FormFieldTitle = styled.h3`

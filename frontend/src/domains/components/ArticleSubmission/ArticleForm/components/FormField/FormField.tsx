@@ -12,13 +12,13 @@ function FormField({
   label,
 }: PropsWithChildren<FormFieldProps>) {
   return (
-    <S.FormFieldLabel>
-      <S.FormFieldLabelBox>
+    <S.FormFieldWrapper>
+      <S.FormFieldHeader>
         <S.FormFieldTitle>{label}</S.FormFieldTitle>
         {required && <S.FormFieldRequired>*</S.FormFieldRequired>}
-      </S.FormFieldLabelBox>
+      </S.FormFieldHeader>
       {children}
-    </S.FormFieldLabel>
+    </S.FormFieldWrapper>
   );
 }
 

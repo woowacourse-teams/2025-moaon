@@ -3,7 +3,7 @@ import * as S from "./TagList.styled";
 
 export type EntryTuple<T extends string = string> = readonly [
   T,
-  { label: string },
+  { label: string; imgUrl?: string },
 ];
 
 interface TagListProps<T extends string> {
@@ -19,13 +19,14 @@ function TagList<T extends string>({
 }: TagListProps<T>) {
   return (
     <S.TagListBox>
-      {entries.map(([key, { label }]) => {
+      {entries.map(([key, { label, imgUrl }]) => {
         return (
           <Tag
             key={key}
             title={label}
             onClick={() => onSelect(key)}
             isActive={isActive(key)}
+            imgUrl={imgUrl}
           />
         );
       })}

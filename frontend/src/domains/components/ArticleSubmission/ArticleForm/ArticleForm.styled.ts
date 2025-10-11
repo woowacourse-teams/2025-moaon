@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 
 export const FormBox = styled.div`
-  width: 48rem;
-  margin: 2rem auto;
+  width: 100%;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgb(0 0 0 / 0.1),
