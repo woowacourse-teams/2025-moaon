@@ -9,7 +9,7 @@ import {
   getTopicsBySector,
 } from "@domains/utils/sectorHandlers";
 import { toast } from "@shared/components/Toast/toast";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as S from "./ArticleForm.styled";
 import FormField from "./components/FormField/FormField";
 import TagList from "./components/TagList/TagList";
@@ -27,8 +27,14 @@ export interface FormDataType {
 
 function ArticleForm({
   onFormSubmit,
+  initialData,
+  onUpdate,
+  onCancel,
 }: {
   onFormSubmit: (data: FormDataType) => void;
+  initialData?: FormDataType;
+  onUpdate?: (data: FormDataType) => void;
+  onCancel?: () => void;
 }) {
   const urlRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null!);
@@ -51,6 +57,30 @@ function ArticleForm({
     topic: [],
     techStack: [],
   });
+  // initialData가 바뀌면 폼에 반영, initialData가 없으면 폼 초기화
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+      if (urlRef.current) urlRef.current.value = initialData.address ?? "";
+      if (titleRef.current) titleRef.current.value = initialData.title ?? "";
+      if (descRef.current)
+        descRef.current.value = initialData.description ?? "";
+    } else {
+      // 수정 모드가 해제되면 폼 초기화
+      setFormData({
+        id: crypto.randomUUID(),
+        address: "",
+        title: "",
+        description: "",
+        sector: "all",
+        topic: [],
+        techStack: [],
+      });
+      if (urlRef.current) urlRef.current.value = "";
+      if (titleRef.current) titleRef.current.value = "";
+      if (descRef.current) descRef.current.value = "";
+    }
+  }, [initialData]);
   const updateSectorParams = (data: ArticleSectorKey) => {
     setFormData((prev) => ({
       ...prev,
@@ -115,7 +145,13 @@ function ArticleForm({
       toast.warning("주제를 하나 이상 선택해주세요.");
       return false;
     }
+    // 수정 모드이면 onUpdate 호출, 아니면 새로 추가
+    if (onUpdate && initialData) {
+      onUpdate(formData);
+      return true;
+    }
     onFormSubmit(formData);
+    // 추가 후 초기화
     setFormData({
       id: crypto.randomUUID(),
       address: "",
@@ -128,6 +164,7 @@ function ArticleForm({
     if (urlRef.current) urlRef.current.value = "";
     if (titleRef.current) titleRef.current.value = "";
     if (descRef.current) descRef.current.value = "";
+    return true;
   };
   const techStackEntry = getTechStackBySector(formData.sector);
   const topicEntry = getTopicsBySector(formData.sector);
@@ -138,7 +175,9 @@ function ArticleForm({
   const isNonTech = formData.sector === "nonTech";
   return (
     <S.FormBox>
-      <S.FormTitle>새 아티클 추가</S.FormTitle>
+      <S.FormTitle>
+        {initialData ? "아티클 수정" : "새 아티클 추가"}
+      </S.FormTitle>
       <S.FormFieldList>
         <FormField title="아티클 주소">
           <S.ArticleAddressBox>
@@ -203,9 +242,16 @@ function ArticleForm({
           </FormField>
         )}
       </S.FormFieldList>
-      <S.ArticleAddButton type="button" onClick={validateFormData}>
-        + 아티클 추가
-      </S.ArticleAddButton>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <S.ArticleAddButton type="button" onClick={validateFormData}>
+          {initialData ? "수정 완료" : "+ 아티클 추가"}
+        </S.ArticleAddButton>
+        {initialData && onCancel && (
+          <S.ArticleCancelButton type="button" onClick={onCancel}>
+            취소
+          </S.ArticleCancelButton>
+        )}
+      </div>
     </S.FormBox>
   );
 }

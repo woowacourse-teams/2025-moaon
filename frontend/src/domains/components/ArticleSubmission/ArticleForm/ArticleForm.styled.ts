@@ -48,3 +48,13 @@ export const ArticleAddButton = styled.button`
   border: 1px solid #e5e7eb;
   border-radius: 8px;
 `;
+
+export const ArticleCancelButton = styled.button`
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+`;
