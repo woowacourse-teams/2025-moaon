@@ -1,40 +1,87 @@
 import { toast } from "@shared/components/Toast/toast";
-import { fetchMeta } from "../utils/parseMetaFromHtml";
+import { type RefObject, useCallback, useRef, useState } from "react";
+import { fetchAndParseMeta, type Meta } from "../utils/fetchAndParseMeta";
+
+const normalizeUrl = (raw: string) => {
+  const url = raw.trim();
+  if (!url) return "";
+  try {
+    const withScheme = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+    new URL(withScheme);
+    return withScheme;
+  } catch {
+    return "";
+  }
+};
+
+const isAbortError = (e: unknown): e is DOMException =>
+  typeof e === "object" && e !== null && "name" in e && e.name === "AbortError";
 
 export const useFetchMeta = () => {
-  const fetchAndFill = async (
-    addressRef: React.RefObject<HTMLInputElement | null>,
-    titleRef: React.RefObject<HTMLInputElement | null>,
-    descRef: React.RefObject<HTMLTextAreaElement | null>
-  ) => {
-    const raw = addressRef.current?.value?.trim();
-    if (!raw) {
-      toast.warning("주소를 입력해주세요.");
-      return;
-    }
+  const [loading, setLoading] = useState(false);
+  const controllerRef = useRef<AbortController | null>(null);
 
-    try {
-      const { title, description } = await fetchMeta(raw);
-
-      if (title && titleRef.current) titleRef.current.value = title;
-      if (description && descRef.current) descRef.current.value = description;
-
-      if (!title && !description) {
-        toast.info("해당 페이지에 메타(title/description)가 없습니다.");
-      } else if (!title) {
-        toast.warning("해당 페이지에 title 메타 정보를 가져올 수 없습니다.");
-      } else if (!description) {
-        toast.warning(
-          "해당 페이지에 description 메타 정보를 가져올 수 없습니다."
-        );
-      } else {
-        toast.success("메타 정보를 가져왔습니다.");
+  const fetchByUrl = useCallback(
+    async (rawUrl: string): Promise<Meta | null> => {
+      const url = normalizeUrl(rawUrl);
+      if (!url) {
+        toast.warning("올바른 주소(URL)를 입력해주세요.");
+        return null;
       }
-    } catch (err) {
-      console.error("fetchMeta error:", err);
-      toast.error("메타 정보를 가져오지 못했습니다.");
-    }
-  };
 
-  return { fetchAndFill };
+      controllerRef.current?.abort();
+
+      const controller = new AbortController();
+      controllerRef.current = controller;
+
+      setLoading(true);
+      try {
+        const { title, description } = await fetchAndParseMeta(url, {
+          signal: controller.signal,
+        });
+
+        if (!title && !description) {
+          toast.info("해당 페이지에 title/description 메타가 없습니다.");
+        } else if (!title) {
+          toast.warning("title 메타 정보를 가져올 수 없습니다.");
+        } else if (!description) {
+          toast.warning("description 메타 정보를 가져올 수 없습니다.");
+        }
+
+        return { title, description };
+      } catch (err: unknown) {
+        if (!isAbortError(err)) {
+          toast.error("메타 정보를 가져오지 못했습니다.");
+        }
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  const fill = useCallback(
+    async ({
+      urlInput,
+      titleRef,
+      descRef,
+    }: {
+      urlInput: string;
+      titleRef: RefObject<HTMLInputElement>;
+      descRef: RefObject<HTMLTextAreaElement>;
+    }) => {
+      const meta = await fetchByUrl(urlInput);
+      if (!meta) return;
+
+      if (meta.title && titleRef.current) titleRef.current.value = meta.title;
+      if (meta.description && descRef.current)
+        descRef.current.value = meta.description;
+    },
+    [fetchByUrl]
+  );
+
+  const abort = useCallback(() => controllerRef.current?.abort(), []);
+
+  return { loading, fill, abort };
 };

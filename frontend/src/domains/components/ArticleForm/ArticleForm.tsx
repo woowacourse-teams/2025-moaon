@@ -22,9 +22,12 @@ interface FormDataType {
 }
 
 function ArticleForm() {
-  const addressRef = useRef<HTMLInputElement | null>(null);
-  const titleRef = useRef<HTMLInputElement | null>(null);
-  const descRef = useRef<HTMLTextAreaElement | null>(null);
+  const urlRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null!);
+  const descRef = useRef<HTMLTextAreaElement>(null!);
+  const { fill } = useFetchMeta();
+  const handleFetchMeta = () =>
+    fill({ urlInput: urlRef.current?.value ?? "", titleRef, descRef });
   const [formData, setFormData] = useState<FormDataType>({
     address: "",
     title: "",
@@ -33,8 +36,6 @@ function ArticleForm() {
     topic: "" as AllTopicKey,
     techStack: "all",
   });
-  const { fetchAndFill } = useFetchMeta();
-  const handleFetchMeta = () => fetchAndFill(addressRef, titleRef, descRef);
   const updateSectorParams = (data: ArticleSectorKey) => {
     setFormData((prev) => ({ ...prev, sector: data }));
   };
@@ -57,7 +58,7 @@ function ArticleForm() {
               type="text"
               name="address"
               placeholder="https://moaon.co.kr"
-              ref={addressRef}
+              ref={urlRef}
             />
             <S.ArticleAddressButton type="button" onClick={handleFetchMeta}>
               가져오기
