@@ -6,7 +6,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 
 public class ContentFinders {
 
-    private static final List<ContentFinder> finders = List.of(
+    private static final List<ContentFinder> FINDERS = List.of(
             new TistoryContentFinder(),
             new NotionContentFinder(),
             new VelogContentFinder(),
@@ -14,7 +14,7 @@ public class ContentFinders {
     );
 
     public ContentFinder getFinder(String url) {
-        return finders.stream()
+        return FINDERS.stream()
                 .filter(contentFinder -> contentFinder.canHandle(url))
                 .findFirst()
                 .orElseThrow(() -> new CustomException(ErrorCode.CONTENT_FINDER_NOT_FOUND));

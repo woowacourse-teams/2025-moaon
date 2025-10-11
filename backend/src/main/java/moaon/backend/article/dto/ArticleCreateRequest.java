@@ -1,7 +1,9 @@
 package moaon.backend.article.dto;
 
 import java.util.List;
+import lombok.Builder;
 
+@Builder
 public record ArticleCreateRequest(
         Long projectId,
         String projectTitle,

@@ -80,7 +80,8 @@ public class ArticleService {
         article.addClickCount();
     }
 
-    public void save(List<ArticleCreateRequest> requests) throws InterruptedException {
+    @Transactional
+    public void save(List<ArticleCreateRequest> requests) {
         for (ArticleCreateRequest request : requests) {
             ContentFinder finder = FINDER.getFinder(request.url());
             String content = finder.getText(request.url());
