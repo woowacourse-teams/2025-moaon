@@ -29,9 +29,7 @@ import org.springframework.util.CollectionUtils;
 @RequiredArgsConstructor
 public class ProjectDao {
 
-    private static final double MINIMUM_MATCH_SCORE = 0.0;
     private static final String BLANK = " ";
-    private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -40,13 +38,14 @@ public class ProjectDao {
         ProjectSortType sortBy = condition.projectSortType();
         int limit = condition.limit();
 
+        int fetchExtraForHasNext = 1;
         return jpaQueryFactory.selectFrom(project)
                 .where(
                         idsInCondition(projectIdsByFilter),
                         applyCursor(cursor)
                 )
                 .orderBy(toOrderBy(sortBy))
-                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .limit(limit + fetchExtraForHasNext)
                 .fetch();
     }
 
@@ -105,12 +104,13 @@ public class ProjectDao {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
             return null;
         }
+        double minimumMatchScore = 0.0;
         return Expressions.numberTemplate(
                         Double.class,
                         ProjectFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
                         formatSearchKeyword(searchKeyword)
                 )
-                .gt(MINIMUM_MATCH_SCORE);
+                .gt(minimumMatchScore);
     }
 
     private String formatSearchKeyword(SearchKeyword searchKeyword) {
