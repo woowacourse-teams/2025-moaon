@@ -1,45 +1,40 @@
-import { useState } from "react";
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm, { type FormDataType } from "./ArticleForm/ArticleForm";
 import * as S from "./ArticleSubmission.styled";
+import { useArticleSubmission } from "./hooks/useArticleSubmission";
 
-function ArticleSubmission() {
-  const [articles, setArticles] = useState<FormDataType[]>([]);
+interface ArticleSubmissionProps {
+  projectId?: string;
+  initialArticles?: FormDataType[];
+}
 
-  const [editingArticle, setEditingArticle] = useState<FormDataType | null>(
-    null,
-  );
-
-  const addArticlesClick = (article: FormDataType) => {
-    setArticles((prev) => [...prev, article]);
-  };
-  const handleDelete = (id: string) => {
-    setArticles((prev) => prev.filter((item) => item.id !== id));
-  };
-  const handleEdit = (article: FormDataType) => {
-    setEditingArticle(article);
-  };
-  const handleUpdate = (updated: FormDataType) => {
-    setArticles((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
-    setEditingArticle(null);
-  };
-  const handleCancelEdit = () => {
-    setEditingArticle(null);
-  };
+function ArticleSubmission({
+  projectId,
+  initialArticles,
+}: ArticleSubmissionProps) {
+  const {
+    articles,
+    editingArticle,
+    addArticle,
+    deleteArticle,
+    startEdit,
+    updateArticle,
+    cancelEdit,
+  } = useArticleSubmission({ initialArticles: initialArticles ?? [] });
 
   return (
     <S.ArticleSubmissionContainer>
       <ArticleForm
-        onFormSubmit={addArticlesClick}
+        onFormSubmit={addArticle}
         initialData={editingArticle ?? undefined}
-        onUpdate={handleUpdate}
-        onCancel={handleCancelEdit}
+        onUpdate={updateArticle}
+        onCancel={cancelEdit}
       />
       {articles.length > 0 && (
         <ArticleDraftList
           articles={articles}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
+          onDelete={deleteArticle}
+          onEdit={startEdit}
         />
       )}
       <S.ArticleSubmissionButton type="button" onClick={() => {}}>
