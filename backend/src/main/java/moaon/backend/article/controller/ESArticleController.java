@@ -1,7 +1,6 @@
 package moaon.backend.article.controller;
 
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleESQuery;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -35,5 +35,11 @@ public class ESArticleController {
 
         ArticleResponse search = service.search(articleESQuery);
         return ResponseEntity.ok(search);
+    }
+
+    @PostMapping("/admin/index-all")
+    public ResponseEntity<String> indexAll() {
+        String newIndexName = service.indexAll();
+        return ResponseEntity.ok(newIndexName);
     }
 }

@@ -9,6 +9,7 @@ import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.es.ArticleIndexer;
 import moaon.backend.global.cursor.ESCursor;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -22,6 +23,11 @@ public class ESArticleService {
 
     private final ArticleDocumentRepository repository;
     private final ArticleRepository articleRepository;
+    private final ArticleIndexer indexer;
+
+    public String indexAll() {
+        return indexer.indexAllFromSource(articleRepository);
+    }
 
     public ArticleResponse search(ArticleESQuery condition) {
         SearchHits<ArticleDocument> searchHits = repository.search(condition);

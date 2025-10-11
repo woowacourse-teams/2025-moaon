@@ -22,7 +22,7 @@ import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
-@Document(indexName = "articles_idx", aliases = {@Alias("articles")}, createIndex = false)
+@Document(indexName = "articles_idx", aliases = {@Alias("articles")})
 @Setting(settingPath = "/elasticsearch/article-settings.json")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
