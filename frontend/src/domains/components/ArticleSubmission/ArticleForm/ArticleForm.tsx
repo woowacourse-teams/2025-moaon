@@ -57,7 +57,7 @@ function ArticleForm({
     topic: [],
     techStack: [],
   });
-  // initialData가 바뀌면 폼에 반영, initialData가 없으면 폼 초기화
+
   useEffect(() => {
     if (initialData) {
       setFormData(initialData);
@@ -66,7 +66,6 @@ function ArticleForm({
       if (descRef.current)
         descRef.current.value = initialData.description ?? "";
     } else {
-      // 수정 모드가 해제되면 폼 초기화
       setFormData({
         id: crypto.randomUUID(),
         address: "",
@@ -145,13 +144,11 @@ function ArticleForm({
       toast.warning("주제를 하나 이상 선택해주세요.");
       return false;
     }
-    // 수정 모드이면 onUpdate 호출, 아니면 새로 추가
     if (onUpdate && initialData) {
       onUpdate(formData);
       return true;
     }
     onFormSubmit(formData);
-    // 추가 후 초기화
     setFormData({
       id: crypto.randomUUID(),
       address: "",

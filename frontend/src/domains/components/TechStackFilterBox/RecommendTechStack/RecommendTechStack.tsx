@@ -1,4 +1,3 @@
-import type { ArticleSectorKey } from "@domains/filter/articleSector";
 import { useGetSectorLocation } from "@domains/hooks/useGetSectorLocation";
 import { getRecommendTechStackBySector } from "@domains/utils/sectorHandlers";
 import { useFilterParams } from "@/pages/project-list/hooks/useFilterParams";
@@ -6,16 +5,11 @@ import TechStackFilterList from "../TechStackFilterList/TechStackFilterList";
 
 interface RecommendTechStackProps {
   onSelect: () => void;
-  sector?: ArticleSectorKey;
 }
 
-function RecommendTechStack({
-  onSelect,
-  sector: sectorProps,
-}: RecommendTechStackProps) {
+function RecommendTechStack({ onSelect }: RecommendTechStackProps) {
   const { techStacks: selectedTechStacks } = useFilterParams();
-  const sectorLocation = useGetSectorLocation();
-  const sector = sectorProps ?? sectorLocation;
+  const sector = useGetSectorLocation();
   const recommendTechStacks = getRecommendTechStackBySector(sector);
   const filteredTechStacks = recommendTechStacks.filter(
     (techStack) => !selectedTechStacks.includes(techStack),
