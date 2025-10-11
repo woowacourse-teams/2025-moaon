@@ -60,6 +60,8 @@ export const ArticleCancelButton = styled.button`
   margin-top: 1.5rem;
   width: 100%;
   padding: 0.75rem 1rem;
+  background-color: #ddd;
+  color: #777;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
 `;

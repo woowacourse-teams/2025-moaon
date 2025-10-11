@@ -8,11 +8,11 @@ import {
   getTechStackBySector,
   getTopicsBySector,
 } from "@domains/utils/sectorHandlers";
-import { useArticleForm } from "../hooks/useArticleForm";
 import type { FormDataType } from "../types";
 import * as S from "./ArticleForm.styled";
 import FormField from "./components/FormField/FormField";
 import TagList from "./components/TagList/TagList";
+import { useArticleForm } from "./hooks/useArticleForm";
 
 interface ArticleFormProps {
   onFormSubmit: (data: FormDataType) => void;
@@ -53,8 +53,9 @@ function ArticleForm({
               name="address"
               placeholder="https://moaon.co.kr"
               ref={refs.urlRef}
+              value={formData.address}
               onChange={(e) =>
-                setFormData({ ...formData, address: e.target.value })
+                setFormData((prev) => ({ ...prev, address: e.target.value }))
               }
             />
             <S.ArticleAddressButton
@@ -71,8 +72,9 @@ function ArticleForm({
             name="title"
             placeholder="아티클 제목을 입력해주세요."
             ref={refs.titleRef}
+            value={formData.title}
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
+              setFormData((prev) => ({ ...prev, title: e.target.value }))
             }
           />
         </FormField>
@@ -81,8 +83,9 @@ function ArticleForm({
             name="description"
             placeholder="아티클 내용 요약.."
             ref={refs.descRef}
+            value={formData.description}
             onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
+              setFormData((prev) => ({ ...prev, description: e.target.value }))
             }
           ></textarea>
         </FormField>
@@ -114,7 +117,7 @@ function ArticleForm({
       </S.FormFieldList>
       <S.ArticleButtonList>
         <S.ArticleAddButton type="button" onClick={handlers.handleSubmit}>
-          {initialData ? "수정 완료" : "+ 아티클 추가"}
+          {initialData ? "아티클 수정" : "+ 아티클 추가"}
         </S.ArticleAddButton>
         {initialData && onCancel && (
           <S.ArticleCancelButton type="button" onClick={handlers.handleCancel}>

@@ -32,15 +32,17 @@ function ArticleSubmission({
         onCancel={cancelEdit}
       />
       {articles.length > 0 && (
-        <ArticleDraftList
-          articles={articles}
-          onDelete={deleteArticle}
-          onEdit={startEdit}
-        />
+        <>
+          <ArticleDraftList
+            articles={articles}
+            onDelete={deleteArticle}
+            onEdit={startEdit}
+          />
+          <S.ArticleSubmissionButton type="button" onClick={() => {}}>
+            아티클 등록
+          </S.ArticleSubmissionButton>
+        </>
       )}
-      <S.ArticleSubmissionButton type="button" onClick={() => {}}>
-        아티클 등록
-      </S.ArticleSubmissionButton>
     </S.ArticleSubmissionContainer>
   );
 }

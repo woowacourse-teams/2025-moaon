@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useFetchMeta } from "../ArticleForm/hooks/useFetchMeta";
-import {
-  createEmptyFormData,
-  validateFormData,
-} from "../ArticleForm/utils/formUtils";
-import type { FormDataType } from "../types";
+import type { FormDataType } from "../../types";
+import { createEmptyFormData, validateFormData } from "../utils/formUtils";
+import { useFetchMeta } from "./useFetchMeta";
 
 interface UseArticleFormProps {
   initialData?: FormDataType;
