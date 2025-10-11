@@ -17,6 +17,7 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.global.cursor.ClickArticleCursor;
 import moaon.backend.global.cursor.CreatedAtArticleCursor;
+import moaon.backend.project.dao.ProjectDao;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
@@ -27,7 +28,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({RepositoryHelper.class, QueryDslConfig.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class, ProjectDao.class})
 class CustomizedArticleRepositoryImplTest {
 
     @Autowired
