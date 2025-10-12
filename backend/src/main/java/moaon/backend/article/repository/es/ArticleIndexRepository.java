@@ -22,7 +22,7 @@ public class ArticleIndexRepository {
 
     private final ElasticsearchOperations ops;
 
-    public boolean createIndex(final IndexCoordinates indexWrapper) {
+    public boolean createIndex(IndexCoordinates indexWrapper) {
         IndexOperations iops = ops.indexOps(indexWrapper);
         if (iops.exists()) {
             throw new IllegalStateException("index already exists : " + indexWrapper.getIndexName());
@@ -33,11 +33,11 @@ public class ArticleIndexRepository {
         return iops.create();
     }
 
-    public void bulkIndex(final List<IndexQuery> documentQueries, final IndexCoordinates indexWrapper) {
+    public void bulkIndex(List<IndexQuery> documentQueries, IndexCoordinates indexWrapper) {
         ops.bulkIndex(documentQueries, indexWrapper);
     }
 
-    public void setAlias(final IndexCoordinates indexWrapper, final IndexCoordinates aliasWrapper) {
+    public void setAlias(IndexCoordinates indexWrapper, IndexCoordinates aliasWrapper) {
         IndexOperations iops = ops.indexOps(indexWrapper);
         AliasActions aliasActions = new AliasActions();
         AliasAction action = new Add(AliasActionParameters.builder()
@@ -49,7 +49,7 @@ public class ArticleIndexRepository {
         iops.alias(aliasActions);
     }
 
-    public void removeAlias(final IndexCoordinates indexWrapper, final IndexCoordinates aliasWrapper) {
+    public void removeAlias(IndexCoordinates indexWrapper, IndexCoordinates aliasWrapper) {
         IndexOperations iops = ops.indexOps(indexWrapper);
         AliasActions aliasActions = new AliasActions();
         AliasAction action = new RemoveIndex(AliasActionParameters.builder()
@@ -61,7 +61,7 @@ public class ArticleIndexRepository {
         iops.alias(aliasActions);
     }
 
-    public Set<String> findIndexNamesByAlias(final IndexCoordinates aliasWrapper) {
+    public Set<String> findIndexNamesByAlias(IndexCoordinates aliasWrapper) {
         IndexOperations iops = ops.indexOps(aliasWrapper);
         if (!iops.exists()) {
             return Collections.emptySet();
@@ -70,7 +70,7 @@ public class ArticleIndexRepository {
         return iops.getAliasesForIndex(aliasWrapper.getIndexName()).keySet();
     }
 
-    public void deleteIndex(final IndexCoordinates indexWrapper) {
+    public void deleteIndex(IndexCoordinates indexWrapper) {
         IndexOperations iops = ops.indexOps(indexWrapper);
         iops.delete();
     }

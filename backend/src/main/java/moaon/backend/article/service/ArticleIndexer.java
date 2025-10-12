@@ -54,7 +54,7 @@ public class ArticleIndexer {
         deleteOldIndices(oldIndexNames, aliasWrapper);
     }
 
-    private void createNewIndex(final IndexCoordinates newIndexWrapper) {
+    private void createNewIndex(IndexCoordinates newIndexWrapper) {
         boolean succeed = indexRepository.createIndex(newIndexWrapper);
         log.info("index created : {}, {}", succeed, newIndexWrapper.getIndexName());
     }

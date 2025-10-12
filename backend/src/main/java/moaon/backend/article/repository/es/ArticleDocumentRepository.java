@@ -15,7 +15,7 @@ public class ArticleDocumentRepository {
 
     private final ElasticsearchOperations ops;
 
-    public SearchHits<ArticleDocument> search(final ArticleESQuery condition) {
+    public SearchHits<ArticleDocument> search(ArticleESQuery condition) {
         NativeQuery esArticleQuery = new ESArticleQueryBuilder()
                 .withTextSearch(condition.search())
                 .withSector(condition.sector())
@@ -27,7 +27,7 @@ public class ArticleDocumentRepository {
         return ops.search(esArticleQuery, ArticleDocument.class);
     }
 
-    public ArticleDocument save(final ArticleDocument articleDocument) {
+    public ArticleDocument save(ArticleDocument articleDocument) {
         return ops.withRefreshPolicy(RefreshPolicy.IMMEDIATE).save(articleDocument);
     }
 }
