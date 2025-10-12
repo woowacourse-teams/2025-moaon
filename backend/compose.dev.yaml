@@ -41,12 +41,12 @@ services:
       timeout: 5s
       retries: 5
 
-#  kibana:
-#    image: docker.elastic.co/kibana/kibana:9.1.4
-#    ports:
-#      - "5601:5601"
-#    environment:
-#      - ELASTICSEARCH_HOSTS=http://elastic:9200
+  #  kibana:
+  #    image: docker.elastic.co/kibana/kibana:9.1.4
+  #    ports:
+  #      - "5601:5601"
+  #    environment:
+  #      - ELASTICSEARCH_HOSTS=http://elastic:9200
 
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
@@ -95,6 +95,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: moaon-promtail
+    restart: unless-stopped
+    volumes:
+      - ./logs:/var/log/app:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+    command: -config.file=/etc/promtail/config.yml
 
 volumes:
   db-data:
