@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.service.ArticleIndexer;
 import moaon.backend.article.service.ESArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ESArticleController {
 
     private final ESArticleService service;
+    private final ArticleIndexer indexer;
 
     @GetMapping("/es/search")
     @Transactional(readOnly = true)
@@ -38,8 +41,8 @@ public class ESArticleController {
     }
 
     @PostMapping("/admin/index-all")
-    public ResponseEntity<String> indexAll() {
-        String newIndexName = service.indexAll();
+    public ResponseEntity<String> indexAll(@RequestBody @Validated @Max(5000) int batchSize) {
+        String newIndexName = indexer.indexAll(batchSize);
         return ResponseEntity.ok(newIndexName);
     }
 }

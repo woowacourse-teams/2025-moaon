@@ -1,6 +1,7 @@
 package moaon.backend.article.repository.es;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ArticleDocument;
@@ -11,6 +12,7 @@ import org.springframework.data.elasticsearch.core.index.AliasAction.Add;
 import org.springframework.data.elasticsearch.core.index.AliasActionParameters;
 import org.springframework.data.elasticsearch.core.index.AliasActions;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -30,9 +32,8 @@ public class ArticleIndexRepository {
         return iops.create();
     }
 
-    public Iterable<ArticleDocument> saveAll(final Iterable<ArticleDocument> documents,
-                                             final IndexCoordinates indexName) {
-        return ops.save(documents, indexName);
+    public void bulkIndex(final List<IndexQuery> documentQueries, final IndexCoordinates indexWrapper) {
+        ops.bulkIndex(documentQueries, indexWrapper);
     }
 
     public boolean setAlias(final IndexCoordinates indexWrapper, final IndexCoordinates aliasWrapper) {
