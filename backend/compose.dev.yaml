@@ -69,6 +69,8 @@ services:
       SPRING_DATASOURCE_URL_DEV: ${SPRING_DATASOURCE_URL_DEV}
       SPRING_DATASOURCE_USERNAME_DEV: ${SPRING_DATASOURCE_USERNAME_DEV}
       SPRING_DATASOURCE_PASSWORD_DEV: ${SPRING_DATASOURCE_PASSWORD_DEV}
+    volumes:
+      - log_data:/app/logs
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -101,10 +103,11 @@ services:
     container_name: moaon-promtail
     restart: unless-stopped
     volumes:
-      - ./logs:/var/log/app:ro
+      - log_data:/var/log/app:ro
       - ./promtail-config.yml:/etc/promtail/config.yml:ro
     command: -config.file=/etc/promtail/config.yml
 
 volumes:
   db-data:
   es_data:
+  log_data:
