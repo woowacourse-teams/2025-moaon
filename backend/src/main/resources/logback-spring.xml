@@ -38,7 +38,7 @@
         </encoder>
     </appender>
 
-    <springProfile name="local">
+    <springProfile name="local,test">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
