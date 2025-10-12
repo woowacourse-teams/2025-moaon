@@ -4,10 +4,3 @@ spring:
     url: ${SPRING_DATASOURCE_URL_PROD}
     username: ${SPRING_DATASOURCE_USERNAME_PROD}
     password: ${SPRING_DATASOURCE_PASSWORD_PROD}
-
-logging:
-  pattern:
-    console: "[%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
-  level:
-    org.hibernate.SQL: off
-    org.hibernate.orm.jdbc.bind: off
