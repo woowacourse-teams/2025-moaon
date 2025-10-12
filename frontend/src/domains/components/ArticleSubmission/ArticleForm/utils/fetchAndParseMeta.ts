@@ -7,13 +7,15 @@ export type FetchMetaOptions = {
   signal?: AbortSignal;
 };
 
-const normalizeUrl = (raw: string) => {
-  const url = raw.trim();
-  if (!url) return "";
+const normalizeUrl = (rawUrl: string) => {
+  const trimmedUrl = rawUrl.trim();
+  if (!trimmedUrl) return "";
   try {
-    const withScheme = /^https?:\/\//i.test(url) ? url : `https://${url}`;
-    new URL(withScheme);
-    return withScheme;
+    const urlWithScheme = /^https?:\/\//i.test(trimmedUrl)
+      ? trimmedUrl
+      : `https://${trimmedUrl}`;
+    new URL(urlWithScheme);
+    return urlWithScheme;
   } catch {
     return "";
   }
@@ -39,9 +41,10 @@ const extractMetaFromHtml = (html: string): Meta => {
     ?.getAttribute("content")
     ?.trim();
 
-  const decodeHtml = (s?: string | null) =>
-    s
-      ? new DOMParser().parseFromString(s, "text/html").body.textContent || ""
+  const decodeHtml = (encodedString?: string | null) =>
+    encodedString
+      ? new DOMParser().parseFromString(encodedString, "text/html").body
+          .textContent || ""
       : "";
 
   return {

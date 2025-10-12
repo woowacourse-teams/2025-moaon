@@ -10,12 +10,30 @@ interface UseArticleFormProps {
   onCancel?: () => void;
 }
 
+export type UseArticleFormReturn = {
+  formData: FormDataType;
+  setFormData: (updater: React.SetStateAction<FormDataType>) => void;
+  refs: {
+    urlRef: React.RefObject<HTMLInputElement | null>;
+    titleRef: React.RefObject<HTMLInputElement | null>;
+    descRef: React.RefObject<HTMLTextAreaElement | null>;
+  };
+  handlers: {
+    handleFetchMeta: () => Promise<void>;
+    updateSectorParams: (sector: FormDataType["sector"]) => void;
+    toggleTopic: (topic: FormDataType["topic"][number]) => void;
+    toggleTechStack: (tech: FormDataType["techStack"][number]) => void;
+    handleSubmit: () => boolean;
+    handleCancel: () => void;
+  };
+};
+
 export const useArticleForm = ({
   initialData,
   onSubmit,
   onUpdate,
   onCancel,
-}: UseArticleFormProps) => {
+}: UseArticleFormProps): UseArticleFormReturn => {
   const urlRef = useRef<HTMLInputElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
   const descRef = useRef<HTMLTextAreaElement | null>(null);
@@ -25,20 +43,24 @@ export const useArticleForm = ({
     initialData ?? createEmptyFormData()
   );
 
+  const setRefsForm = useCallback((data: FormDataType) => {
+    if (urlRef.current) urlRef.current.value = data.address ?? "";
+    if (titleRef.current) titleRef.current.value = data.title ?? "";
+    if (descRef.current) descRef.current.value = data.description ?? "";
+  }, []);
+
+  const clearRefs = useCallback(() => {
+    if (urlRef.current) urlRef.current.value = "";
+    if (titleRef.current) titleRef.current.value = "";
+    if (descRef.current) descRef.current.value = "";
+  }, []);
+
   useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
-      if (urlRef.current) urlRef.current.value = initialData.address ?? "";
-      if (titleRef.current) titleRef.current.value = initialData.title ?? "";
-      if (descRef.current)
-        descRef.current.value = initialData.description ?? "";
-    } else {
-      setFormData(createEmptyFormData());
-      if (urlRef.current) urlRef.current.value = "";
-      if (titleRef.current) titleRef.current.value = "";
-      if (descRef.current) descRef.current.value = "";
-    }
-  }, [initialData]);
+    const next = initialData ?? createEmptyFormData();
+    setFormData(next);
+    if (initialData) setRefsForm(next);
+    else clearRefs();
+  }, [initialData, setRefsForm, clearRefs]);
 
   const handleFetchMeta = useCallback(async () => {
     await fill({ urlInput: urlRef.current?.value ?? "", titleRef, descRef });
@@ -49,34 +71,32 @@ export const useArticleForm = ({
     }));
   }, [fill]);
 
-  const updateSectorParams = useCallback((data: FormDataType["sector"]) => {
-    setFormData((prev) => ({
-      ...prev,
-      sector: data,
-      topic: [],
-      techStack: [],
-    }));
+  const updateSectorParams = useCallback((sector: FormDataType["sector"]) => {
+    setFormData((prev) => ({ ...prev, sector, topic: [], techStack: [] }));
   }, []);
 
-  const toggleTopic = useCallback((data: FormDataType["topic"][number]) => {
+  const toggleTopic = useCallback((topic: FormDataType["topic"][number]) => {
     setFormData((prev) => {
-      const isInclude = prev.topic.includes(data);
-      if (isInclude)
-        return { ...prev, topic: prev.topic.filter((t) => t !== data) };
-      return { ...prev, topic: [...prev.topic, data] };
+      const exists = prev.topic.includes(topic);
+      return {
+        ...prev,
+        topic: exists
+          ? prev.topic.filter((t) => t !== topic)
+          : [...prev.topic, topic],
+      };
     });
   }, []);
 
   const toggleTechStack = useCallback(
-    (data: FormDataType["techStack"][number]) => {
+    (tech: FormDataType["techStack"][number]) => {
       setFormData((prev) => {
-        const isInclude = prev.techStack.includes(data);
-        if (isInclude)
-          return {
-            ...prev,
-            techStack: prev.techStack.filter((t) => t !== data),
-          };
-        return { ...prev, techStack: [...prev.techStack, data] };
+        const exists = prev.techStack.includes(tech);
+        return {
+          ...prev,
+          techStack: exists
+            ? prev.techStack.filter((t) => t !== tech)
+            : [...prev.techStack, tech],
+        };
       });
     },
     []
@@ -90,15 +110,11 @@ export const useArticleForm = ({
     }
     onSubmit(formData);
     setFormData(createEmptyFormData());
-    if (urlRef.current) urlRef.current.value = "";
-    if (titleRef.current) titleRef.current.value = "";
-    if (descRef.current) descRef.current.value = "";
+    clearRefs();
     return true;
-  }, [formData, onSubmit, onUpdate, initialData]);
+  }, [formData, onSubmit, onUpdate, initialData, clearRefs]);
 
-  const handleCancel = useCallback(() => {
-    onCancel?.();
-  }, [onCancel]);
+  const handleCancel = useCallback(() => onCancel?.(), [onCancel]);
 
   return {
     formData,

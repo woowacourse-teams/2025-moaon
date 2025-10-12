@@ -36,8 +36,10 @@ export const useArticleSubmission = ({
     setEditingArticle(article);
   }, []);
 
-  const updateArticle = useCallback((updated: FormDataType) => {
-    setArticles((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
+  const updateArticle = useCallback((updatedData: FormDataType) => {
+    setArticles((prev) =>
+      prev.map((item) => (item.id === updatedData.id ? updatedData : item))
+    );
     setEditingArticle(null);
   }, []);
 
