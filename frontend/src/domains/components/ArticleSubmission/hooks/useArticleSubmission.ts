@@ -3,6 +3,7 @@ import type { FormDataType } from "../types";
 
 interface useArticleSubmissionProps {
   initialArticles: FormDataType[];
+  projectId?: number;
 }
 
 interface UseArticleSubmissionReturn {
@@ -13,10 +14,12 @@ interface UseArticleSubmissionReturn {
   startEdit: (article: FormDataType) => void;
   updateArticle: (updated: FormDataType) => void;
   cancelEdit: () => void;
+  postArticlesClick: () => void;
 }
 
 export const useArticleSubmission = ({
   initialArticles,
+  projectId,
 }: useArticleSubmissionProps): UseArticleSubmissionReturn => {
   const [articles, setArticles] = useState<FormDataType[]>(initialArticles);
   const [editingArticle, setEditingArticle] = useState<FormDataType | null>(
@@ -47,6 +50,13 @@ export const useArticleSubmission = ({
     setEditingArticle(null);
   }, []);
 
+  const postArticlesClick = useCallback(() => {
+    /**
+     * 아티클 등록 API가 나올 시 연동할 예정입니다.
+     */
+    console.log(projectId, articles);
+  }, [projectId, articles]);
+
   return {
     articles,
     editingArticle,
@@ -55,5 +65,6 @@ export const useArticleSubmission = ({
     startEdit,
     updateArticle,
     cancelEdit,
+    postArticlesClick,
   };
 };

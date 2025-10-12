@@ -1,3 +1,4 @@
+import { useParams } from "react-router";
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm from "./ArticleForm/ArticleForm";
 import * as S from "./ArticleSubmission.styled";
@@ -5,14 +6,17 @@ import { useArticleSubmission } from "./hooks/useArticleSubmission";
 import type { FormDataType } from "./types";
 
 interface ArticleSubmissionProps {
-  projectId?: string;
+  id?: number;
   initialArticles?: FormDataType[];
 }
 
 function ArticleSubmission({
-  projectId,
+  id: propsId,
   initialArticles,
 }: ArticleSubmissionProps) {
+  const { id: urlId } = useParams();
+  const projectId = propsId ?? Number(urlId);
+
   const {
     articles,
     editingArticle,
@@ -21,7 +25,11 @@ function ArticleSubmission({
     startEdit,
     updateArticle,
     cancelEdit,
-  } = useArticleSubmission({ initialArticles: initialArticles ?? [] });
+    postArticlesClick,
+  } = useArticleSubmission({
+    initialArticles: initialArticles ?? [],
+    projectId,
+  });
 
   return (
     <S.ArticleSubmissionContainer>
@@ -38,7 +46,7 @@ function ArticleSubmission({
             onDelete={deleteArticle}
             onEdit={startEdit}
           />
-          <S.ArticleSubmissionButton type="button" onClick={() => {}}>
+          <S.ArticleSubmissionButton type="button" onClick={postArticlesClick}>
             아티클 등록
           </S.ArticleSubmissionButton>
         </>
