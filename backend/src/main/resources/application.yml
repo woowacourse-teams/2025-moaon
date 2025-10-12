@@ -30,3 +30,9 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: trace
     org.flywaydb: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

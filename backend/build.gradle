@@ -69,6 +69,10 @@ dependencies {
     // flyway
     implementation 'org.flywaydb:flyway-mysql'
 
+    // monitoring
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
     testImplementation 'net.datafaker:datafaker:2.1.0'
 }
 
