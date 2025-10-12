@@ -3,6 +3,9 @@ name: BE Dev CD
 on:
   push:
     branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
 
 jobs:
   build-and-push-image:
@@ -84,6 +87,8 @@ jobs:
           SPRING_DATASOURCE_URL_DEV=${{ secrets.SPRING_DATASOURCE_URL_DEV }}
           SPRING_DATASOURCE_USERNAME_DEV=${{ secrets.SPRING_DATASOURCE_USERNAME_DEV }}
           SPRING_DATASOURCE_PASSWORD_DEV=${{ secrets.SPRING_DATASOURCE_PASSWORD_DEV }}
+          MYSQL_EXPORTER_USER=${{ secrets.MYSQL_EXPORTER_USER }}
+          MYSQL_EXPORTER_PASSWORD=${{ secrets.MYSQL_EXPORTER_PASSWORD }}
           IMAGE_TAG=${{ github.sha }}
           EOF
 
