@@ -19,8 +19,8 @@ public class ReindexCommand implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (args.containsOption("reindex")) {
-            List<String> batchsize = args.getOptionValues("batchsize");
-            int batchSize = Integer.parseInt(batchsize.getFirst());
+            List<String> batchSizeOptions = args.getOptionValues("batchsize");
+            int batchSize = Integer.parseInt(batchSizeOptions.getFirst());
             indexer.indexAll(batchSize);
             System.exit(0);
         }

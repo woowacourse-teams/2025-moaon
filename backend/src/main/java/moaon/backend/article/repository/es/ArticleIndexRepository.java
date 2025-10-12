@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.index.AliasAction;
 import org.springframework.data.elasticsearch.core.index.AliasAction.Add;
+import org.springframework.data.elasticsearch.core.index.AliasAction.RemoveIndex;
 import org.springframework.data.elasticsearch.core.index.AliasActionParameters;
 import org.springframework.data.elasticsearch.core.index.AliasActions;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -36,7 +37,7 @@ public class ArticleIndexRepository {
         ops.bulkIndex(documentQueries, indexWrapper);
     }
 
-    public boolean setAlias(final IndexCoordinates indexWrapper, final IndexCoordinates aliasWrapper) {
+    public void setAlias(final IndexCoordinates indexWrapper, final IndexCoordinates aliasWrapper) {
         IndexOperations iops = ops.indexOps(indexWrapper);
         AliasActions aliasActions = new AliasActions();
         AliasAction action = new Add(AliasActionParameters.builder()
@@ -45,20 +46,32 @@ public class ArticleIndexRepository {
                 .build());
         aliasActions.add(action);
 
-        return iops.alias(aliasActions);
+        iops.alias(aliasActions);
     }
 
-    public Set<String> findIndexNamesByAlias(final IndexCoordinates aliasNameWrapper) {
-        IndexOperations iops = ops.indexOps(aliasNameWrapper);
+    public void removeAlias(final IndexCoordinates indexWrapper, final IndexCoordinates aliasWrapper) {
+        IndexOperations iops = ops.indexOps(indexWrapper);
+        AliasActions aliasActions = new AliasActions();
+        AliasAction action = new RemoveIndex(AliasActionParameters.builder()
+                .withIndices(iops.getIndexCoordinates().getIndexNames())
+                .withAliases(aliasWrapper.getIndexName())
+                .build());
+        aliasActions.add(action);
+
+        iops.alias(aliasActions);
+    }
+
+    public Set<String> findIndexNamesByAlias(final IndexCoordinates aliasWrapper) {
+        IndexOperations iops = ops.indexOps(aliasWrapper);
         if (!iops.exists()) {
             return Collections.emptySet();
         }
 
-        return iops.getAliasesForIndex(aliasNameWrapper.getIndexName()).keySet();
+        return iops.getAliasesForIndex(aliasWrapper.getIndexName()).keySet();
     }
 
-    public boolean deleteIndex(final IndexCoordinates indexNameWrapper) {
-        IndexOperations iops = ops.indexOps(indexNameWrapper);
-        return iops.delete();
+    public void deleteIndex(final IndexCoordinates indexWrapper) {
+        IndexOperations iops = ops.indexOps(indexWrapper);
+        iops.delete();
     }
 }
