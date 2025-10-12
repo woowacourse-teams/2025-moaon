@@ -74,6 +74,8 @@ services:
     image: prom/node-exporter:latest
     container_name: node-exporter
     restart: unless-stopped
+    network_mode: host
+    pid: host
     ports:
       - "9100:9100"
     command:
