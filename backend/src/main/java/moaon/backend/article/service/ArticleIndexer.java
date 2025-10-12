@@ -31,21 +31,27 @@ public class ArticleIndexer {
     private final ArticleIndexRepository indexRepository;
 
     public String indexAll(int batchSize) {
-        log.info("Indexing articles... started at {}", LocalDateTime.now());
+        log.info("Indexing articles started");
 
         IndexCoordinates newIndexWrapper = indexWrapperWithPostFixOf(NEW_INDEX_PREFIX_NAME);
         IndexCoordinates aliasWrapper = indexWrapperOf(ALIAS_NAME);
         Set<String> existingIndexNames = indexRepository.findIndexNamesByAlias(aliasWrapper);
 
         createNewIndex(newIndexWrapper, aliasWrapper);
-        doIndexAllInBatch(newIndexWrapper, batchSize);
+        indexAllInBatch(newIndexWrapper, batchSize);
         deleteOldIndices(existingIndexNames);
 
-        log.info("Indexing articles... finished at {}", LocalDateTime.now());
+        log.info("Indexing articles finished");
         return newIndexWrapper.getIndexName();
     }
 
-    private void doIndexAllInBatch(IndexCoordinates dest, int batchSize) {
+    private void createNewIndex(final IndexCoordinates newIndexWrapper, final IndexCoordinates aliasWrapper) {
+        indexRepository.createIndex(newIndexWrapper);
+        boolean succeed = indexRepository.setAlias(newIndexWrapper, aliasWrapper);
+        log.info("alias set for new index : {}, {}, {}", succeed, newIndexWrapper.getIndexName(), LocalDateTime.now());
+    }
+
+    private void indexAllInBatch(IndexCoordinates dest, int batchSize) {
         List<IndexQuery> chunk = new ArrayList<>();
         try (Stream<Article> stream = entityRepository.streamAll()) {
             stream.forEach(entity -> {
@@ -54,18 +60,20 @@ public class ArticleIndexer {
                 chunk.add(indexQuery);
 
                 if (chunk.size() >= batchSize) {
-                    log.info("submitted {} documents to index in {} index.", chunk.size(), dest.getIndexName());
-                    indexRepository.bulkIndex(chunk, dest);
-                    chunk.clear();
+                    bulkIndexChunk(dest, chunk);
                 }
             });
         }
+
+        if (!chunk.isEmpty()) {
+            bulkIndexChunk(dest, chunk);
+        }
     }
 
-    private void createNewIndex(final IndexCoordinates newIndexWrapper, final IndexCoordinates aliasWrapper) {
-        indexRepository.createIndex(newIndexWrapper);
-        boolean succeed = indexRepository.setAlias(newIndexWrapper, aliasWrapper);
-        log.info("alias set for new index : {}, {}, {}", succeed, newIndexWrapper.getIndexName(), LocalDateTime.now());
+    private void bulkIndexChunk(IndexCoordinates dest, List<IndexQuery> chunk) {
+        log.info("submitted {} documents to index in {} index.", chunk.size(), dest.getIndexName());
+        indexRepository.bulkIndex(chunk, dest);
+        chunk.clear();
     }
 
     private void deleteOldIndices(Set<String> oldIndexNames) {

@@ -2,6 +2,7 @@ package moaon.backend.article.controller;
 
 import jakarta.validation.constraints.Max;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleResponse;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -41,7 +43,10 @@ public class ESArticleController {
     }
 
     @PostMapping("/admin/index-all")
-    public ResponseEntity<String> indexAll(@RequestBody @Validated @Max(5000) int batchSize) {
+    public ResponseEntity<String> indexAll(
+            @RequestHeader(value = "Authorization", required = true) UUID authId,
+            @RequestBody @Validated @Max(5000) int batchSize
+    ) {
         String newIndexName = indexer.indexAll(batchSize);
         return ResponseEntity.ok(newIndexName);
     }
