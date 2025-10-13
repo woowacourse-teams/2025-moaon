@@ -34,7 +34,7 @@ function ArticleSubmission({
   return (
     <S.ArticleSubmissionContainer>
       <ArticleForm
-        onFormSubmit={addArticle}
+        onSubmit={addArticle}
         editingData={editingArticle ?? undefined}
         onUpdate={updateArticle}
         onCancel={cancelEdit}

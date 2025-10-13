@@ -15,21 +15,21 @@ import TagList from "./components/TagList/TagList";
 import { useArticleForm } from "./hooks/useArticleForm";
 
 interface ArticleFormProps {
-  onFormSubmit: (data: FormDataType) => void;
+  onSubmit: (data: FormDataType) => void;
   editingData?: FormDataType;
   onUpdate?: (data: FormDataType) => void;
   onCancel?: () => void;
 }
 
 function ArticleForm({
-  onFormSubmit,
+  onSubmit,
   editingData,
   onUpdate,
   onCancel,
 }: ArticleFormProps) {
   const { formData, setFormData, handlers } = useArticleForm({
     editingData,
-    onSubmit: onFormSubmit,
+    onSubmit,
     onUpdate,
     onCancel,
   });
