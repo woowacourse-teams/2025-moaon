@@ -67,6 +67,11 @@ public class ArticleFixtureBuilder {
         return this;
     }
 
+    public ArticleFixtureBuilder techStacks(TechStack... techStacks) {
+        this.techStacks = Arrays.asList(techStacks);
+        return this;
+    }
+
     public ArticleFixtureBuilder sector(Sector sector) {
         this.sector = sector;
         return this;
@@ -106,11 +111,11 @@ public class ArticleFixtureBuilder {
                 .topics(this.topics)
                 .techStacks(new ArrayList<>())
                 .build();
-        
+
         for (TechStack techStack : techStacks) {
             article.addTechStack(techStack);
         }
-        
+
         return article;
     }
 }
