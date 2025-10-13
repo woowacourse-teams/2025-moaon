@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 import { Link } from "react-router";
 
 export const Title = styled.h2`
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: #333;
   text-align: center;
   line-height: 1.6;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 `;
 
 export const CompanyText = styled.span<{ color: string }>`

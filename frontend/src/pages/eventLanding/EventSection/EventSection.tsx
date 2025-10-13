@@ -36,9 +36,11 @@ function EventSection({
   };
 
   return (
-    <S.Container ref={attachedRef}>
-      <S.Badge bgColor={badgeColor}>{badgeText}</S.Badge>
-      <S.Box>{children}</S.Box>
+    <S.Container>
+      <S.Wrap ref={attachedRef}>
+        <S.Badge bgColor={badgeColor}>{badgeText}</S.Badge>
+        <S.Box>{children}</S.Box>
+      </S.Wrap>
     </S.Container>
   );
 }

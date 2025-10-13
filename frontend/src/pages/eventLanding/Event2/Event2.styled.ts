@@ -1,19 +1,20 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-  width: 100%;
+  width: 100vw;
 `;
 
 export const Title = styled.h2`
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: #333;
   text-align: center;
   line-height: 1.6;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 `;
 
 export const Wrap = styled.div`
   display: flex;
+  justify-content: space-around;
   width: 100%;
   margin-top: 3rem;
 `;

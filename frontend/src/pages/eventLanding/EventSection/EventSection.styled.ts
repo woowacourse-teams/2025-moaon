@@ -1,13 +1,21 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.section<{ isVisible?: boolean }>`
+export const Container = styled.section`
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+export const Wrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   opacity: 0;
+  padding-top: 4.0625rem;
 
   @keyframes fadeIn {
     from {
@@ -29,10 +37,8 @@ export const Badge = styled.div<{ bgColor: string }>`
   font-weight: 600;
   display: inline-block;
   font-size: 1.125rem;
-  margin-top: 4.75rem;
 `;
 
 export const Box = styled.div`
-  height: 700px;
   width: 100%;
 `;
