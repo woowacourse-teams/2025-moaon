@@ -1,4 +1,3 @@
-import { toast } from "@shared/components/Toast/toast";
 import type { ArticleFormDataType } from "../../types";
 
 export const createEmptyFormData = (): ArticleFormDataType => ({
@@ -13,28 +12,28 @@ export const createEmptyFormData = (): ArticleFormDataType => ({
 
 export const validateFormData = (formData: ArticleFormDataType) => {
   if (!formData.address) {
-    toast.warning("아티클 주소를 입력해주세요.");
-    return false;
+    return "아티클 주소를 입력해주세요.";
   }
+
   if (!formData.title) {
-    toast.warning("아티클 제목을 입력해주세요.");
-    return false;
+    return "아티클 제목을 입력해주세요.";
   }
+
   if (!formData.description) {
-    toast.warning("아티클 내용을 입력해주세요.");
-    return false;
+    return "아티클 내용을 입력해주세요.";
   }
+
   if (formData.sector === "all") {
-    toast.warning("직군을 선택해주세요.");
-    return false;
+    return "직군을 선택해주세요.";
   }
+
   if (formData.sector !== "nonTech" && formData.techStacks.length === 0) {
-    toast.warning("기술스택을 하나 이상 선택해주세요.");
-    return false;
+    return "기술스택을 하나 이상 선택해주세요.";
   }
+
   if (formData.topics.length === 0) {
-    toast.warning("주제를 하나 이상 선택해주세요.");
-    return false;
+    return "주제를 하나 이상 선택해주세요.";
   }
-  return true;
+
+  return "";
 };

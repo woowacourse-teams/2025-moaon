@@ -1,3 +1,4 @@
+import { toast } from "@shared/components/Toast/toast";
 import { useCallback, useEffect, useState } from "react";
 import type { ArticleFormDataType } from "../../types";
 import { createEmptyFormData, validateFormData } from "../utils/formUtils";
@@ -82,7 +83,9 @@ export const useArticleForm = ({
   );
 
   const handleSubmit = useCallback(() => {
-    if (!validateFormData(formData)) {
+    const errorMessage = validateFormData(formData);
+    if (errorMessage !== "") {
+      toast.warning(errorMessage);
       return;
     }
 
