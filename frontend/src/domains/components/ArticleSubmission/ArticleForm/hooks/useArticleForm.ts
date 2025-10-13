@@ -4,7 +4,7 @@ import { createEmptyFormData, validateFormData } from "../utils/formUtils";
 import { useFetchMeta } from "./useFetchMeta";
 
 interface UseArticleFormProps {
-  initialData?: FormDataType;
+  editingData?: FormDataType;
   onSubmit: (data: FormDataType) => void;
   onUpdate?: (data: FormDataType) => void;
   onCancel?: () => void;
@@ -24,21 +24,24 @@ export type UseArticleFormReturn = {
 };
 
 export const useArticleForm = ({
-  initialData,
+  editingData,
   onSubmit,
   onUpdate,
   onCancel,
 }: UseArticleFormProps): UseArticleFormReturn => {
   const { fill } = useFetchMeta();
 
-  const [formData, setFormData] = useState<FormDataType>(
-    initialData ?? createEmptyFormData()
+  const [formData, setFormData] = useState<FormDataType>(() =>
+    createEmptyFormData()
   );
 
   useEffect(() => {
-    const next = initialData ?? createEmptyFormData();
-    setFormData(next);
-  }, [initialData]);
+    if (!editingData) {
+      return;
+    }
+
+    setFormData(editingData);
+  }, [editingData]);
 
   const handleFetchMeta = async () => {
     const result = await fill({
@@ -87,14 +90,14 @@ export const useArticleForm = ({
 
   const handleSubmit = useCallback(() => {
     if (!validateFormData(formData)) return false;
-    if (onUpdate && initialData) {
+    if (onUpdate) {
       onUpdate(formData);
       return true;
     }
     onSubmit(formData);
     setFormData(createEmptyFormData());
     return true;
-  }, [formData, onSubmit, onUpdate, initialData]);
+  }, [formData, onSubmit, onUpdate]);
 
   const handleCancel = useCallback(() => onCancel?.(), [onCancel]);
 

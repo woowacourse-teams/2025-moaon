@@ -16,19 +16,19 @@ import { useArticleForm } from "./hooks/useArticleForm";
 
 interface ArticleFormProps {
   onFormSubmit: (data: FormDataType) => void;
-  initialData?: FormDataType;
+  editingData?: FormDataType;
   onUpdate?: (data: FormDataType) => void;
   onCancel?: () => void;
 }
 
 function ArticleForm({
   onFormSubmit,
-  initialData,
+  editingData,
   onUpdate,
   onCancel,
 }: ArticleFormProps) {
   const { formData, setFormData, handlers } = useArticleForm({
-    initialData,
+    editingData,
     onSubmit: onFormSubmit,
     onUpdate,
     onCancel,
@@ -43,7 +43,7 @@ function ArticleForm({
   return (
     <S.FormBox>
       <S.FormTitle>
-        {initialData ? "아티클 수정" : "새 아티클 추가"}
+        {editingData ? "아티클 수정" : "새 아티클 추가"}
       </S.FormTitle>
       <S.FormFieldList>
         <FormField title="아티클 주소">
@@ -114,9 +114,9 @@ function ArticleForm({
       </S.FormFieldList>
       <S.ArticleButtonList>
         <S.ArticleAddButton type="button" onClick={handlers.handleSubmit}>
-          {initialData ? "아티클 수정" : "+ 아티클 추가"}
+          {editingData ? "아티클 수정" : "+ 아티클 추가"}
         </S.ArticleAddButton>
-        {initialData && onCancel && (
+        {editingData && onCancel && (
           <S.ArticleCancelButton type="button" onClick={handlers.handleCancel}>
             취소
           </S.ArticleCancelButton>
