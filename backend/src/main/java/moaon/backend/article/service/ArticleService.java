@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -28,23 +29,14 @@ public class ArticleService {
     private final ProjectRepository projectRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
-        List<Article> articles = articleRepository.findWithSearchConditions(queryCondition);
-        long totalCount = articleRepository.countWithSearchCondition(queryCondition);
+        Articles articles = articleRepository.findWithSearchConditions(queryCondition);
 
-        if (articles.size() > queryCondition.limit()) {
-            List<Article> articlesToReturn = articles.subList(0, queryCondition.limit());
-            Article lastArticle = articlesToReturn.getLast();
+        List<Article> articlesToReturn = articles.getArticlesToReturn();
+        long totalCount = articles.getTotalCount();
+        boolean hasNext = articles.hasNext();
+        Cursor<?> nextCursor = articles.getNextCursor();
 
-            Cursor<?> articleCursor = queryCondition.sortBy().toCursor(lastArticle);
-
-            return ArticleResponse.from(
-                    articlesToReturn,
-                    totalCount,
-                    true,
-                    articleCursor.getNextCursor());
-        }
-
-        return ArticleResponse.from(articles, totalCount, false, null);
+        return ArticleResponse.from(articlesToReturn, totalCount, hasNext, nextCursor);
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
