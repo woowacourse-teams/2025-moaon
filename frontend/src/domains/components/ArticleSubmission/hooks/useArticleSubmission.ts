@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import type { FormDataType } from "../types";
 
-interface useArticleSubmissionProps {
+interface UseArticleSubmissionProps {
   initialArticles: FormDataType[];
   projectId?: number;
 }
@@ -20,7 +20,7 @@ interface UseArticleSubmissionReturn {
 export const useArticleSubmission = ({
   initialArticles,
   projectId,
-}: useArticleSubmissionProps): UseArticleSubmissionReturn => {
+}: UseArticleSubmissionProps): UseArticleSubmissionReturn => {
   const [articles, setArticles] = useState<FormDataType[]>(initialArticles);
   const [editingArticle, setEditingArticle] = useState<FormDataType | null>(
     null
