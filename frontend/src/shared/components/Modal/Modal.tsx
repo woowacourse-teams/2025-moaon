@@ -9,16 +9,16 @@ import * as S from "./Modal.styled";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  titleId?: string;
-  descriptionId?: string;
+  title?: string;
+  description?: string;
 }
 
 function Modal({
   isOpen,
   onClose,
   children,
-  titleId,
-  descriptionId,
+  title,
+  description,
 }: PropsWithChildren<ModalProps>) {
   useKeyDown({ Escape: onClose });
   usePreventScroll(isOpen);
@@ -29,7 +29,10 @@ function Modal({
   const setOutsideClickRef = useOutsideClick(onClose);
 
   const generatedTitleId = useId();
+  const titleId = title ?? generatedTitleId;
+
   const generatedDescriptionId = useId();
+  const descriptionId = description ?? generatedDescriptionId;
 
   if (!isOpen) return null;
 
@@ -42,8 +45,8 @@ function Modal({
         }}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId ?? generatedTitleId}
-        aria-describedby={descriptionId ?? generatedDescriptionId}
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
       >
         {children}
       </S.Content>
