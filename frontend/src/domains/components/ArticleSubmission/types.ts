@@ -8,6 +8,6 @@ export interface FormDataType {
   title: string;
   description: string;
   sector: ArticleSectorKey;
-  topic: AllTopicKey[];
-  techStack: TechStackKey[];
+  topics: AllTopicKey[];
+  techStacks: TechStackKey[];
 }

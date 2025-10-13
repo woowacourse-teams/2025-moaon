@@ -7,8 +7,8 @@ export const createEmptyFormData = (): FormDataType => ({
   title: "",
   description: "",
   sector: "all",
-  topic: [],
-  techStack: [],
+  topics: [],
+  techStacks: [],
 });
 
 export const validateFormData = (formData: FormDataType) => {
@@ -28,11 +28,11 @@ export const validateFormData = (formData: FormDataType) => {
     toast.warning("직군을 선택해주세요.");
     return false;
   }
-  if (formData.sector !== "nonTech" && formData.techStack.length === 0) {
+  if (formData.sector !== "nonTech" && formData.techStacks.length === 0) {
     toast.warning("기술스택을 하나 이상 선택해주세요.");
     return false;
   }
-  if (formData.topic.length === 0) {
+  if (formData.topics.length === 0) {
     toast.warning("주제를 하나 이상 선택해주세요.");
     return false;
   }
