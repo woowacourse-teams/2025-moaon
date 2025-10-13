@@ -1,10 +1,11 @@
-package moaon.backend.es;
+package moaon.backend.article.dto;
 
 import java.util.List;
 import java.util.Objects;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
+import moaon.backend.global.cursor.ESCursor;
 import moaon.backend.global.domain.SearchKeyword;
 
 public record ArticleESQuery(

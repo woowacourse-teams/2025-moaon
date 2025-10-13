@@ -17,7 +17,7 @@ import moaon.backend.project.domain.Project;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(exclude = {"project", "techStack"})
 public class ProjectTechStack {
 
     @Id
