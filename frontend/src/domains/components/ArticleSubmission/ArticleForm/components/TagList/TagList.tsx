@@ -1,19 +1,19 @@
 import Tag from "./Tag/Tag";
 import * as S from "./TagList.styled";
 
-export type EntryTuple<T> = readonly [T, { label: string; imgUrl?: string }];
+export type EntryTuple<K> = readonly [K, { label: string; imgUrl?: string }];
 
-interface TagListProps<T> {
-  entries: ReadonlyArray<EntryTuple<T>>;
-  onSelect: (key: T) => void;
-  isActive: (key: T) => boolean;
+interface TagListProps<K> {
+  entries: ReadonlyArray<EntryTuple<K>>;
+  onSelect: (key: K) => void;
+  isActive: (key: K) => boolean;
 }
 
-function TagList<T extends string>({
+function TagList<K extends string>({
   entries,
   onSelect,
   isActive,
-}: TagListProps<T>) {
+}: TagListProps<K>) {
   return (
     <S.TagListBox>
       {entries.map(([key, { label, imgUrl }]) => {
