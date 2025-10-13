@@ -84,7 +84,7 @@ function ArticleForm({
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, description: e.target.value }))
             }
-          ></textarea>
+          />
         </FormField>
         <FormField title="직군 선택">
           <TagList
