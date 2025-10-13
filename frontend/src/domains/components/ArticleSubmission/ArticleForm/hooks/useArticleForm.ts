@@ -10,25 +10,12 @@ interface UseArticleFormProps {
   onCancel: () => void;
 }
 
-export type UseArticleFormReturn = {
-  formData: FormDataType;
-  setFormData: (updater: React.SetStateAction<FormDataType>) => void;
-  handlers: {
-    handleFetchMeta: () => Promise<void>;
-    updateSectorParams: (sector: FormDataType["sector"]) => void;
-    toggleTopic: (topic: FormDataType["topics"][number]) => void;
-    toggleTechStack: (tech: FormDataType["techStacks"][number]) => void;
-    handleSubmit: () => void;
-    handleCancel: () => void;
-  };
-};
-
 export const useArticleForm = ({
   editingData,
   onSubmit,
   onUpdate,
   onCancel,
-}: UseArticleFormProps): UseArticleFormReturn => {
+}: UseArticleFormProps) => {
   const { fill } = useFetchMeta();
 
   const [formData, setFormData] = useState<FormDataType>(() =>
