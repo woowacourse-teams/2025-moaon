@@ -28,11 +28,8 @@ function Modal({
 
   const setOutsideClickRef = useOutsideClick(onClose);
 
-  const generatedTitleId = useId();
-  const titleId = title ?? generatedTitleId;
-
-  const generatedDescriptionId = useId();
-  const descriptionId = description ?? generatedDescriptionId;
+  const titleId = useId();
+  const descriptionId = useId();
 
   if (!isOpen) return null;
 
@@ -45,15 +42,19 @@ function Modal({
         }}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
+        aria-labelledby={title ? titleId : undefined}
+        aria-describedby={description ? descriptionId : undefined}
       >
+        {title && <S.Title id={titleId}>{title}</S.Title>}
+        {description && (
+          <S.Description id={descriptionId}>{description}</S.Description>
+        )}
         {children}
       </S.Content>
     </S.Overlay>
   );
 
-  const modalRoot = document.getElementById("modal-root");
+  const modalRoot = document.querySelector("body");
   if (!modalRoot) return null;
 
   return createPortal(modalContent, modalRoot);
