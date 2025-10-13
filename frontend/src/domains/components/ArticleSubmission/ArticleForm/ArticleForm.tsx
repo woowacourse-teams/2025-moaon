@@ -87,7 +87,7 @@ function ArticleForm({
           ></textarea>
         </FormField>
         <FormField title="직군 선택">
-          <TagList<ArticleSectorKey>
+          <TagList
             entries={sectorEntriesWithoutAll}
             onSelect={handlers.updateSectorParams}
             isActive={(data) => data === formData.sector}
@@ -95,7 +95,7 @@ function ArticleForm({
         </FormField>
         {!(isSectorAll || isNonTech) && (
           <FormField title="기술스택">
-            <TagList<TechStackKey>
+            <TagList
               entries={techStackEntry}
               onSelect={handlers.toggleTechStack}
               isActive={(data) => formData.techStacks.includes(data)}
@@ -104,7 +104,7 @@ function ArticleForm({
         )}
         {!isSectorAll && (
           <FormField title="주제">
-            <TagList<AllTopicKey>
+            <TagList
               entries={topicEntry}
               onSelect={handlers.toggleTopic}
               isActive={(data) => formData.topics.includes(data)}
