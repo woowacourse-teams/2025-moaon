@@ -16,11 +16,17 @@ export const ArticleDraftItem = styled.li`
   padding: 1rem;
   gap: 0.5rem;
   position: relative;
-  cursor: pointer;
+  isolation: isolate;
 
   &:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const ArticleDraftItemDetailButton = styled.button`
+  position: absolute;
+  inset: 0;
+  opacity: 0;
 `;
 
 export const ArticleDraftHeader = styled.div`

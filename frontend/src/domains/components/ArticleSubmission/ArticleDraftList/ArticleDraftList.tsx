@@ -28,11 +28,13 @@ function ArticleDraftList({
         const { title, description, sector, id } = article;
         const { color, label } = ARTICLE_SECTOR_MAP[sector];
         return (
-          <S.ArticleDraftItem
-            key={id}
-            onClick={() => handleEditDraft(article)}
-            tabIndex={0}
-          >
+          <S.ArticleDraftItem key={id} tabIndex={0}>
+            <S.ArticleDraftItemDetailButton
+              type="button"
+              onClick={() => handleEditDraft(article)}
+            >
+              수정하기
+            </S.ArticleDraftItemDetailButton>
             <S.ArticleDraftHeader>
               <S.ArticleDraftBadge bgColor={color}>{label}</S.ArticleDraftBadge>
               <S.ArticleDraftTitle>{title}</S.ArticleDraftTitle>
