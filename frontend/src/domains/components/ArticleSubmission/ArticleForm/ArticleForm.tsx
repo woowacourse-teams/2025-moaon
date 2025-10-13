@@ -109,7 +109,13 @@ function ArticleForm({
         )}
       </S.FormFieldList>
       <S.ArticleButtonList>
-        <S.ArticleAddButton type="submit" onClick={handlers.handleSubmit}>
+        <S.ArticleAddButton
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            handlers.handleSubmit();
+          }}
+        >
           {editingData ? "아티클 수정" : "+ 아티클 추가"}
         </S.ArticleAddButton>
         {editingData && (
