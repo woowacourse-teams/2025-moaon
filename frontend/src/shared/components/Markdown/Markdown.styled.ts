@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import ReactMarkdown from "react-markdown";
+import Polymorphic from "../Polymorphic/Polymorphic";
 
-export const Markdown = styled(ReactMarkdown)`
+export const MarkdownWrapper = styled(Polymorphic)`
   h1,
   h2,
   h3,
@@ -13,6 +13,7 @@ export const Markdown = styled(ReactMarkdown)`
     margin-top: 1rem;
     font-size: revert;
   }
+
   blockquote {
     height: auto;
     min-height: 0;
@@ -21,14 +22,17 @@ export const Markdown = styled(ReactMarkdown)`
     background-color: #f7f7f7ff;
     display: flex;
   }
+
   ul {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
+
   li {
     list-style: inside;
   }
+
   hr {
     border: 1px solid #ebebebff;
   }
