@@ -1,18 +1,18 @@
 import { useCallback, useState } from "react";
-import type { FormDataType } from "../types";
+import type { ArticleFormDataType } from "../types";
 
 interface UseArticleSubmissionProps {
-  initialArticles: FormDataType[];
+  initialArticles: ArticleFormDataType[];
   projectId?: number;
 }
 
 interface UseArticleSubmissionReturn {
-  articles: FormDataType[];
-  editingArticle: FormDataType | null;
-  addArticle: (article: FormDataType) => void;
+  articles: ArticleFormDataType[];
+  editingArticle: ArticleFormDataType | null;
+  addArticle: (article: ArticleFormDataType) => void;
   deleteArticle: (id: string) => void;
-  startEdit: (article: FormDataType) => void;
-  updateArticle: (updated: FormDataType) => void;
+  startEdit: (article: ArticleFormDataType) => void;
+  updateArticle: (updated: ArticleFormDataType) => void;
   cancelEdit: () => void;
   postArticlesClick: () => void;
 }
@@ -21,12 +21,12 @@ export const useArticleSubmission = ({
   initialArticles,
   projectId,
 }: UseArticleSubmissionProps): UseArticleSubmissionReturn => {
-  const [articles, setArticles] = useState<FormDataType[]>(initialArticles);
-  const [editingArticle, setEditingArticle] = useState<FormDataType | null>(
-    null
-  );
+  const [articles, setArticles] =
+    useState<ArticleFormDataType[]>(initialArticles);
+  const [editingArticle, setEditingArticle] =
+    useState<ArticleFormDataType | null>(null);
 
-  const addArticle = useCallback((article: FormDataType) => {
+  const addArticle = useCallback((article: ArticleFormDataType) => {
     setArticles((prev) => [...prev, article]);
   }, []);
 
@@ -35,11 +35,11 @@ export const useArticleSubmission = ({
     setEditingArticle((current) => (current?.id === id ? null : current));
   }, []);
 
-  const startEdit = useCallback((article: FormDataType) => {
+  const startEdit = useCallback((article: ArticleFormDataType) => {
     setEditingArticle(article);
   }, []);
 
-  const updateArticle = useCallback((updatedData: FormDataType) => {
+  const updateArticle = useCallback((updatedData: ArticleFormDataType) => {
     setArticles((prev) =>
       prev.map((item) => (item.id === updatedData.id ? updatedData : item))
     );

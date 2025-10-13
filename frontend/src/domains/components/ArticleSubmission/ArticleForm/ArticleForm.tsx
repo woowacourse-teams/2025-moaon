@@ -1,23 +1,19 @@
-import {
-  ARTICLE_SECTOR_ENTRY,
-  type ArticleSectorKey,
-} from "@domains/filter/articleSector";
-import type { AllTopicKey } from "@domains/filter/articleTopic";
-import type { TechStackKey } from "@domains/filter/techStack";
+import { ARTICLE_SECTOR_ENTRY } from "@domains/filter/articleSector";
+
 import {
   getTechStackBySector,
   getTopicsBySector,
 } from "@domains/utils/sectorHandlers";
-import type { FormDataType } from "../types";
+import type { ArticleFormDataType } from "../types";
 import * as S from "./ArticleForm.styled";
 import FormField from "./components/FormField/FormField";
 import TagList from "./components/TagList/TagList";
 import { useArticleForm } from "./hooks/useArticleForm";
 
 interface ArticleFormProps {
-  onSubmit: (data: FormDataType) => void;
-  editingData?: FormDataType;
-  onUpdate: (data: FormDataType) => void;
+  onSubmit: (data: ArticleFormDataType) => void;
+  editingData?: ArticleFormDataType;
+  onUpdate: (data: ArticleFormDataType) => void;
   onCancel: () => void;
 }
 

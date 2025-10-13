@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import type { FormDataType } from "../../types";
+import type { ArticleFormDataType } from "../../types";
 import { createEmptyFormData, validateFormData } from "../utils/formUtils";
 import { useFetchMeta } from "./useFetchMeta";
 
 interface UseArticleFormProps {
-  editingData?: FormDataType;
-  onSubmit: (data: FormDataType) => void;
-  onUpdate: (data: FormDataType) => void;
+  editingData?: ArticleFormDataType;
+  onSubmit: (data: ArticleFormDataType) => void;
+  onUpdate: (data: ArticleFormDataType) => void;
   onCancel: () => void;
 }
 
@@ -18,7 +18,7 @@ export const useArticleForm = ({
 }: UseArticleFormProps) => {
   const { fill } = useFetchMeta();
 
-  const [formData, setFormData] = useState<FormDataType>(() =>
+  const [formData, setFormData] = useState<ArticleFormDataType>(() =>
     createEmptyFormData()
   );
 
@@ -44,24 +44,30 @@ export const useArticleForm = ({
     }
   };
 
-  const updateSectorParams = useCallback((sector: FormDataType["sector"]) => {
-    setFormData((prev) => ({ ...prev, sector, topics: [], techStacks: [] }));
-  }, []);
+  const updateSectorParams = useCallback(
+    (sector: ArticleFormDataType["sector"]) => {
+      setFormData((prev) => ({ ...prev, sector, topics: [], techStacks: [] }));
+    },
+    []
+  );
 
-  const toggleTopic = useCallback((topic: FormDataType["topics"][number]) => {
-    setFormData((prev) => {
-      const exists = prev.topics.includes(topic);
-      return {
-        ...prev,
-        topics: exists
-          ? prev.topics.filter((t) => t !== topic)
-          : [...prev.topics, topic],
-      };
-    });
-  }, []);
+  const toggleTopic = useCallback(
+    (topic: ArticleFormDataType["topics"][number]) => {
+      setFormData((prev) => {
+        const exists = prev.topics.includes(topic);
+        return {
+          ...prev,
+          topics: exists
+            ? prev.topics.filter((t) => t !== topic)
+            : [...prev.topics, topic],
+        };
+      });
+    },
+    []
+  );
 
   const toggleTechStack = useCallback(
-    (tech: FormDataType["techStacks"][number]) => {
+    (tech: ArticleFormDataType["techStacks"][number]) => {
       setFormData((prev) => {
         const exists = prev.techStacks.includes(tech);
         return {

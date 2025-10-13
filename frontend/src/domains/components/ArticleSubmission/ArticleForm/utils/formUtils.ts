@@ -1,7 +1,7 @@
 import { toast } from "@shared/components/Toast/toast";
-import type { FormDataType } from "../../types";
+import type { ArticleFormDataType } from "../../types";
 
-export const createEmptyFormData = (): FormDataType => ({
+export const createEmptyFormData = (): ArticleFormDataType => ({
   id: crypto.randomUUID(),
   address: "",
   title: "",
@@ -11,7 +11,7 @@ export const createEmptyFormData = (): FormDataType => ({
   techStacks: [],
 });
 
-export const validateFormData = (formData: FormDataType) => {
+export const validateFormData = (formData: ArticleFormDataType) => {
   if (!formData.address) {
     toast.warning("아티클 주소를 입력해주세요.");
     return false;

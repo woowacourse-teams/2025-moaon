@@ -1,12 +1,12 @@
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
-import type { FormDataType } from "../types";
+import type { ArticleFormDataType } from "../types";
 import * as S from "./ArticleDraftList.styled";
 
 interface ArticleDraftListProps {
-  articles: FormDataType[];
+  articles: ArticleFormDataType[];
   onDelete: (id: string) => void;
-  onEdit: (article: FormDataType) => void;
+  onEdit: (article: ArticleFormDataType) => void;
 }
 function ArticleDraftList({
   articles,
@@ -19,7 +19,7 @@ function ArticleDraftList({
       onDelete(id);
     }
   };
-  const handleEditDraft = (article: FormDataType) => {
+  const handleEditDraft = (article: ArticleFormDataType) => {
     onEdit(article);
   };
   return (

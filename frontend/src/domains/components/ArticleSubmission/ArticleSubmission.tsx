@@ -3,11 +3,11 @@ import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm from "./ArticleForm/ArticleForm";
 import * as S from "./ArticleSubmission.styled";
 import { useArticleSubmission } from "./hooks/useArticleSubmission";
-import type { FormDataType } from "./types";
+import type { ArticleFormDataType } from "./types";
 
 interface ArticleSubmissionProps {
   projectId: number;
-  initialArticles?: FormDataType[];
+  initialArticles?: ArticleFormDataType[];
 }
 
 function ArticleSubmission({
