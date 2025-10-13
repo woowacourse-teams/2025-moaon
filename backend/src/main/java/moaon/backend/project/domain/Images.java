@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,6 +23,9 @@ public class Images {
     private List<String> urls;
 
     public Images(List<String> urls) {
+        if (urls.size() > 10) {
+            throw new CustomException(ErrorCode.PROJECT_INVALID_IMAGE);
+        }
         this.urls = new ArrayList<>(urls);
     }
 

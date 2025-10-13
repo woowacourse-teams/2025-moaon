@@ -17,6 +17,12 @@ public enum ErrorCode {
     HANDLER_METHOD_VALIDATION("GLOBAL-008", "요청 데이터에 대한 검증에 실패했습니다.", HttpStatus.BAD_REQUEST),
 
     PROJECT_NOT_FOUND("PROJECT-001", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    PROJECT_INVALID_TITLE("PROJECT-002", "프로젝트 제목 형식에 맞지 않습니다.", HttpStatus.BAD_REQUEST),
+    PROJECT_INVALID_SUMMARY("PROJECT-002", "프로젝트 요약 형식에 맞지 않습니다.", HttpStatus.BAD_REQUEST),
+    PROJECT_INVALID_DESCRIPTION("PROJECT-002", "프로젝트 설명 형식에 맞지 않습니다.", HttpStatus.BAD_REQUEST),
+    PROJECT_INVALID_TECHSTACK("PROJECT-002", "프로젝트의 기술 스택은 1 ~ 20 개 입니다.", HttpStatus.BAD_REQUEST),
+    PROJECT_INVALID_CATEGORY("PROJECT-002", "프로젝트의 카테고리는 1 ~ 5 개입니다", HttpStatus.BAD_REQUEST),
+    PROJECT_INVALID_IMAGE("PROJECT-002", "프로젝트의 이미지는 0 ~ 10 개입니다.", HttpStatus.BAD_REQUEST),
 
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
