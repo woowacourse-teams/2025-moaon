@@ -2,7 +2,7 @@ import { useFocusTrap } from "@shared/hooks/useFocusTrap";
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import { type PropsWithChildren, useId, useRef } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import * as S from "./Modal.styled";
 
@@ -53,7 +53,7 @@ function Modal({
   const modalRoot = document.getElementById("modal-root");
   if (!modalRoot) return null;
 
-  return ReactDOM.createPortal(modalContent, modalRoot);
+  return createPortal(modalContent, modalRoot);
 }
 
 export default Modal;
