@@ -1,27 +1,21 @@
 import { useCallback, useState } from "react";
 
-interface OverlayController<T = void> {
-  open: (data?: T) => void;
+interface OverlayController {
+  open: () => void;
   close: () => void;
   isOpen: boolean;
-  data: T | null;
 }
 
-export const useOverlay = <T = void>(): OverlayController<T> => {
+export const useOverlay = (): OverlayController => {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState<T | null>(null);
 
-  const open = useCallback((overlayData?: T) => {
+  const open = useCallback(() => {
     setIsOpen(true);
-    if (overlayData !== undefined) {
-      setData(overlayData);
-    }
   }, []);
 
   const close = useCallback(() => {
     setIsOpen(false);
-    setData(null);
   }, []);
 
-  return { isOpen, open, close, data };
+  return { isOpen, open, close };
 };
