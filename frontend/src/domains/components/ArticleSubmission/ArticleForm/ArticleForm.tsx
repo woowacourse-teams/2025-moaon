@@ -17,8 +17,8 @@ import { useArticleForm } from "./hooks/useArticleForm";
 interface ArticleFormProps {
   onSubmit: (data: FormDataType) => void;
   editingData?: FormDataType;
-  onUpdate?: (data: FormDataType) => void;
-  onCancel?: () => void;
+  onUpdate: (data: FormDataType) => void;
+  onCancel: () => void;
 }
 
 function ArticleForm({
@@ -116,7 +116,7 @@ function ArticleForm({
         <S.ArticleAddButton type="button" onClick={handlers.handleSubmit}>
           {editingData ? "아티클 수정" : "+ 아티클 추가"}
         </S.ArticleAddButton>
-        {editingData && onCancel && (
+        {editingData && (
           <S.ArticleCancelButton type="button" onClick={handlers.handleCancel}>
             취소
           </S.ArticleCancelButton>

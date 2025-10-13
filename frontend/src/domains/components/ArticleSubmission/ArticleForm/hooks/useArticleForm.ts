@@ -6,8 +6,8 @@ import { useFetchMeta } from "./useFetchMeta";
 interface UseArticleFormProps {
   editingData?: FormDataType;
   onSubmit: (data: FormDataType) => void;
-  onUpdate?: (data: FormDataType) => void;
-  onCancel?: () => void;
+  onUpdate: (data: FormDataType) => void;
+  onCancel: () => void;
 }
 
 export type UseArticleFormReturn = {
