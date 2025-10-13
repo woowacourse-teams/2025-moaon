@@ -11,7 +11,7 @@ function Tag({ title, isActive, imgUrl, onClick }: TagProps) {
   return (
     <S.Tag>
       <S.TagButton type="button" isActive={isActive} onClick={onClick}>
-        {imgUrl && <S.TagIcon src={imgUrl} alt={title} />}
+        {imgUrl && <S.TagIcon src={imgUrl} alt="" />}
         {title}
       </S.TagButton>
     </S.Tag>
