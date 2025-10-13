@@ -27,7 +27,7 @@ function ArticleForm({
   onUpdate,
   onCancel,
 }: ArticleFormProps) {
-  const { formData, setFormData, refs, handlers } = useArticleForm({
+  const { formData, setFormData, handlers } = useArticleForm({
     initialData,
     onSubmit: onFormSubmit,
     onUpdate,
@@ -52,7 +52,6 @@ function ArticleForm({
               type="text"
               name="address"
               placeholder="https://moaon.co.kr"
-              ref={refs.urlRef}
               value={formData.address}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, address: e.target.value }))
@@ -71,7 +70,6 @@ function ArticleForm({
             type="text"
             name="title"
             placeholder="아티클 제목을 입력해주세요."
-            ref={refs.titleRef}
             value={formData.title}
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, title: e.target.value }))
@@ -82,7 +80,6 @@ function ArticleForm({
           <textarea
             name="description"
             placeholder="아티클 내용 요약.."
-            ref={refs.descRef}
             value={formData.description}
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, description: e.target.value }))
@@ -101,7 +98,7 @@ function ArticleForm({
             <TagList<TechStackKey>
               entries={techStackEntry}
               onSelect={handlers.toggleTechStack}
-              isActive={(data) => formData.techStack.includes(data)}
+              isActive={(data) => formData.techStacks.includes(data)}
             />
           </FormField>
         )}
@@ -110,7 +107,7 @@ function ArticleForm({
             <TagList<AllTopicKey>
               entries={topicEntry}
               onSelect={handlers.toggleTopic}
-              isActive={(data) => formData.topic.includes(data)}
+              isActive={(data) => formData.topics.includes(data)}
             />
           </FormField>
         )}

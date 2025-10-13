@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FormDataType } from "../../types";
 import { createEmptyFormData, validateFormData } from "../utils/formUtils";
 import { useFetchMeta } from "./useFetchMeta";
@@ -13,16 +13,11 @@ interface UseArticleFormProps {
 export type UseArticleFormReturn = {
   formData: FormDataType;
   setFormData: (updater: React.SetStateAction<FormDataType>) => void;
-  refs: {
-    urlRef: React.RefObject<HTMLInputElement | null>;
-    titleRef: React.RefObject<HTMLInputElement | null>;
-    descRef: React.RefObject<HTMLTextAreaElement | null>;
-  };
   handlers: {
     handleFetchMeta: () => Promise<void>;
     updateSectorParams: (sector: FormDataType["sector"]) => void;
-    toggleTopic: (topic: FormDataType["topic"][number]) => void;
-    toggleTechStack: (tech: FormDataType["techStack"][number]) => void;
+    toggleTopic: (topic: FormDataType["topics"][number]) => void;
+    toggleTechStack: (tech: FormDataType["techStacks"][number]) => void;
     handleSubmit: () => boolean;
     handleCancel: () => void;
   };
@@ -34,68 +29,56 @@ export const useArticleForm = ({
   onUpdate,
   onCancel,
 }: UseArticleFormProps): UseArticleFormReturn => {
-  const urlRef = useRef<HTMLInputElement | null>(null);
-  const titleRef = useRef<HTMLInputElement | null>(null);
-  const descRef = useRef<HTMLTextAreaElement | null>(null);
   const { fill } = useFetchMeta();
 
   const [formData, setFormData] = useState<FormDataType>(
     initialData ?? createEmptyFormData()
   );
 
-  const setRefsForm = useCallback((data: FormDataType) => {
-    if (urlRef.current) urlRef.current.value = data.address ?? "";
-    if (titleRef.current) titleRef.current.value = data.title ?? "";
-    if (descRef.current) descRef.current.value = data.description ?? "";
-  }, []);
-
-  const clearRefs = useCallback(() => {
-    if (urlRef.current) urlRef.current.value = "";
-    if (titleRef.current) titleRef.current.value = "";
-    if (descRef.current) descRef.current.value = "";
-  }, []);
-
   useEffect(() => {
     const next = initialData ?? createEmptyFormData();
     setFormData(next);
-    if (initialData) setRefsForm(next);
-    else clearRefs();
-  }, [initialData, setRefsForm, clearRefs]);
+  }, [initialData]);
 
-  const handleFetchMeta = useCallback(async () => {
-    await fill({ urlInput: urlRef.current?.value ?? "", titleRef, descRef });
-    setFormData((prev) => ({
-      ...prev,
-      title: titleRef.current?.value ?? "",
-      description: descRef.current?.value ?? "",
-    }));
-  }, [fill]);
+  const handleFetchMeta = async () => {
+    const result = await fill({
+      urlInput: formData.address,
+    });
+    if (result) {
+      const { title, description } = result;
+      setFormData((prev) => ({
+        ...prev,
+        title: title,
+        description: description,
+      }));
+    }
+  };
 
   const updateSectorParams = useCallback((sector: FormDataType["sector"]) => {
-    setFormData((prev) => ({ ...prev, sector, topic: [], techStack: [] }));
+    setFormData((prev) => ({ ...prev, sector, topics: [], techStacks: [] }));
   }, []);
 
-  const toggleTopic = useCallback((topic: FormDataType["topic"][number]) => {
+  const toggleTopic = useCallback((topic: FormDataType["topics"][number]) => {
     setFormData((prev) => {
-      const exists = prev.topic.includes(topic);
+      const exists = prev.topics.includes(topic);
       return {
         ...prev,
-        topic: exists
-          ? prev.topic.filter((t) => t !== topic)
-          : [...prev.topic, topic],
+        topics: exists
+          ? prev.topics.filter((t) => t !== topic)
+          : [...prev.topics, topic],
       };
     });
   }, []);
 
   const toggleTechStack = useCallback(
-    (tech: FormDataType["techStack"][number]) => {
+    (tech: FormDataType["techStacks"][number]) => {
       setFormData((prev) => {
-        const exists = prev.techStack.includes(tech);
+        const exists = prev.techStacks.includes(tech);
         return {
           ...prev,
-          techStack: exists
-            ? prev.techStack.filter((t) => t !== tech)
-            : [...prev.techStack, tech],
+          techStacks: exists
+            ? prev.techStacks.filter((t) => t !== tech)
+            : [...prev.techStacks, tech],
         };
       });
     },
@@ -110,16 +93,14 @@ export const useArticleForm = ({
     }
     onSubmit(formData);
     setFormData(createEmptyFormData());
-    clearRefs();
     return true;
-  }, [formData, onSubmit, onUpdate, initialData, clearRefs]);
+  }, [formData, onSubmit, onUpdate, initialData]);
 
   const handleCancel = useCallback(() => onCancel?.(), [onCancel]);
 
   return {
     formData,
     setFormData,
-    refs: { urlRef, titleRef, descRef },
     handlers: {
       handleFetchMeta,
       updateSectorParams,

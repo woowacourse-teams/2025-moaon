@@ -62,21 +62,15 @@ export const useFetchMeta = () => {
   );
 
   const fill = useCallback(
-    async ({
-      urlInput,
-      titleRef,
-      descRef,
-    }: {
-      urlInput: string;
-      titleRef: RefObject<HTMLInputElement | null>;
-      descRef: RefObject<HTMLTextAreaElement | null>;
-    }) => {
+    async ({ urlInput }: { urlInput: string }) => {
       const meta = await fetchByUrl(urlInput);
       if (!meta) return;
 
-      if (meta.title && titleRef.current) titleRef.current.value = meta.title;
-      if (meta.description && descRef.current)
-        descRef.current.value = meta.description;
+      if (meta.title && meta.description) {
+        return { title: meta.title, description: meta.description };
+      }
+
+      return { title: "", description: "" };
     },
     [fetchByUrl]
   );
