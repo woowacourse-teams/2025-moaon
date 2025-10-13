@@ -9,6 +9,33 @@ interface UseFocusTrapProps {
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+const isFocusable = (el: HTMLElement) =>
+  !el.hasAttribute("disabled") &&
+  el.getAttribute("aria-hidden") !== "true" &&
+  el.tabIndex !== -1 &&
+  el.offsetParent !== null;
+
+const getFocusableElements = (container: HTMLElement) => {
+  const nodes = Array.from(
+    container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+  );
+  const visible = nodes.filter(isFocusable);
+
+  const radioGroups = new Set<string>();
+  const filtered: HTMLElement[] = [];
+
+  for (const el of visible) {
+    if (el.tagName === "INPUT" && (el as HTMLInputElement).type === "radio") {
+      const name = (el as HTMLInputElement).name;
+      if (name && radioGroups.has(name)) continue;
+      if (name) radioGroups.add(name);
+    }
+    filtered.push(el);
+  }
+
+  return filtered;
+};
+
 export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
   const lastFocusedElement = useRef<HTMLElement | null>(null);
 
@@ -17,39 +44,7 @@ export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
 
     lastFocusedElement.current = document.activeElement as HTMLElement;
     const container = ref.current;
-
-    const getFocusableElements = () => {
-      const nodes = Array.from(
-        container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
-      );
-
-      const visible = nodes.filter(
-        (el) =>
-          !el.hasAttribute("disabled") &&
-          el.getAttribute("aria-hidden") !== "true" &&
-          el.tabIndex !== -1 &&
-          el.offsetParent !== null
-      );
-
-      const radioGroups = new Set<string>();
-      const filtered: HTMLElement[] = [];
-
-      for (const el of visible) {
-        if (
-          el.tagName === "INPUT" &&
-          (el as HTMLInputElement).type === "radio"
-        ) {
-          const name = (el as HTMLInputElement).name;
-          if (name && radioGroups.has(name)) continue;
-          if (name) radioGroups.add(name);
-        }
-        filtered.push(el);
-      }
-
-      return filtered;
-    };
-
-    const focusable = getFocusableElements();
+    const focusable = getFocusableElements(container);
 
     (focusable[0] || container).focus();
 
@@ -63,15 +58,7 @@ export const useFocusTrap = ({ ref, active }: UseFocusTrapProps) => {
       if (!active || !ref.current) return;
 
       const container = ref.current;
-      const focusable = Array.from(
-        container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
-      ).filter(
-        (el) =>
-          !el.hasAttribute("disabled") &&
-          el.getAttribute("aria-hidden") !== "true" &&
-          el.tabIndex !== -1 &&
-          el.offsetParent !== null
-      );
+      const focusable = getFocusableElements(container);
 
       if (focusable.length <= 1) {
         e.preventDefault();
