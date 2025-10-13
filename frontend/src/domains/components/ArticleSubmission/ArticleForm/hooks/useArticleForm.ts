@@ -18,7 +18,7 @@ export type UseArticleFormReturn = {
     updateSectorParams: (sector: FormDataType["sector"]) => void;
     toggleTopic: (topic: FormDataType["topics"][number]) => void;
     toggleTechStack: (tech: FormDataType["techStacks"][number]) => void;
-    handleSubmit: () => boolean;
+    handleSubmit: () => void;
     handleCancel: () => void;
   };
 };
@@ -89,15 +89,18 @@ export const useArticleForm = ({
   );
 
   const handleSubmit = useCallback(() => {
-    if (!validateFormData(formData)) return false;
-    if (onUpdate) {
-      onUpdate(formData);
-      return true;
+    if (!validateFormData(formData)) {
+      return;
     }
+
+    if (onUpdate && editingData) {
+      onUpdate(formData);
+      return;
+    }
+
     onSubmit(formData);
     setFormData(createEmptyFormData());
-    return true;
-  }, [formData, onSubmit, onUpdate]);
+  }, [formData, onSubmit, onUpdate, editingData]);
 
   const handleCancel = useCallback(() => onCancel?.(), [onCancel]);
 
