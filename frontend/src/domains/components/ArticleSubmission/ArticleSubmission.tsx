@@ -6,17 +6,14 @@ import { useArticleSubmission } from "./hooks/useArticleSubmission";
 import type { FormDataType } from "./types";
 
 interface ArticleSubmissionProps {
-  id?: number;
+  projectId: number;
   initialArticles?: FormDataType[];
 }
 
 function ArticleSubmission({
-  id: propsId,
+  projectId,
   initialArticles,
 }: ArticleSubmissionProps) {
-  const { id: urlId } = useParams();
-  const projectId = propsId ?? Number(urlId);
-
   const {
     articles,
     editingArticle,
