@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import ArticleDraftItem from "./ArticleDraftList/ArticleDraftItem/ArticleDraftItem";
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm from "./ArticleForm/ArticleForm";
 import * as S from "./ArticleSubmission.styled";
@@ -38,11 +38,16 @@ function ArticleSubmission({
       />
       {articles.length > 0 && (
         <>
-          <ArticleDraftList
-            articles={articles}
-            onDelete={deleteArticle}
-            onEdit={startEdit}
-          />
+          <ArticleDraftList>
+            {[...articles].reverse().map((article) => (
+              <ArticleDraftItem
+                key={article.id}
+                onEdit={startEdit}
+                article={article}
+                onDelete={deleteArticle}
+              />
+            ))}
+          </ArticleDraftList>
           <S.ArticleSubmissionButton type="button" onClick={postArticlesClick}>
             아티클 등록
           </S.ArticleSubmissionButton>
