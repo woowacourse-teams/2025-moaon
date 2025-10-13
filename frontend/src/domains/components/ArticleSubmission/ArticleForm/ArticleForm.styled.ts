@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const FormBox = styled.div`
+export const FormBox = styled.form`
   width: 100%;
   padding: 20px;
   border-radius: 8px;
@@ -30,9 +30,7 @@ export const ArticleAddressButton = styled.button`
   padding: 0.75rem 1rem;
   background-color: #007bff;
   color: #fff;
-  border: none;
   border-radius: 8px;
-  cursor: pointer;
 
   &:hover {
     background-color: #0569d4ff;
