@@ -39,7 +39,7 @@ function ArticleSubmission({
       {articles.length > 0 && (
         <>
           <ArticleDraftList>
-            {[...articles].reverse().map((article) => (
+            {[...articles].map((article) => (
               <ArticleDraftItem
                 key={article.id}
                 onEdit={startEdit}

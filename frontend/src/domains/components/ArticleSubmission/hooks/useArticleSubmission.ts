@@ -27,7 +27,7 @@ export const useArticleSubmission = ({
     useState<ArticleFormDataType | null>(null);
 
   const addArticle = useCallback((article: ArticleFormDataType) => {
-    setArticles((prev) => [...prev, article]);
+    setArticles((prev) => [article, ...prev]);
   }, []);
 
   const deleteArticle = useCallback((id: string) => {
