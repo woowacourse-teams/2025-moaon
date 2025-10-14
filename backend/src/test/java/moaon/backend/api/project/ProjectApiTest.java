@@ -50,6 +50,13 @@ public class ProjectApiTest extends BaseApiTest {
     @Test
     void saveProject() {
         // given
+        repositoryHelper.save(new TechStack("java"));
+        repositoryHelper.save(new TechStack("mysql"));
+        repositoryHelper.save(new TechStack("docker"));
+
+        repositoryHelper.save(new Category("web"));
+        repositoryHelper.save(new Category("it"));
+        
         repositoryHelper.save(new Member("포포"));
 
         ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
@@ -68,7 +75,7 @@ public class ProjectApiTest extends BaseApiTest {
                 .categories(List.of("web", "it"))
                 .githubUrl("www.moaon.github")
                 .productionUrl("www.moaon.co.kr")
-                .imageUrls(List.of("www.images.com"))
+                .imageKeys(List.of("www.images.com"))
                 .build();
 
         // when
@@ -296,7 +303,7 @@ public class ProjectApiTest extends BaseApiTest {
                 fieldWithPath("categories").description("프로젝트 카테고리 목록"),
                 fieldWithPath("githubUrl").description("GitHub 저장소 URL").optional(),
                 fieldWithPath("productionUrl").description("배포 URL").optional(),
-                fieldWithPath("imageUrls").description("프로젝트 이미지 URL 목록").optional()
+                fieldWithPath("imageKeys").description("프로젝트 이미지 URL 목록").optional()
         );
     }
 
