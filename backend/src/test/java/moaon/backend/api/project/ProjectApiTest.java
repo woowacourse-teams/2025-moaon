@@ -46,6 +46,45 @@ public class ProjectApiTest extends BaseApiTest {
     @Autowired
     protected RepositoryHelper repositoryHelper;
 
+    @DisplayName("POST /projects : 프로젝트 저장 API")
+    @Test
+    void saveProject() {
+        // given
+        repositoryHelper.save(new Member("포포"));
+
+        ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
+                .title("모아온")
+                .summary("프로젝트를 모아모아, 모아온")
+                .description(
+                        """
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                """
+                )
+                .techStacks(List.of("java", "mysql", "docker"))
+                .categories(List.of("web", "it"))
+                .githubUrl("www.moaon.github")
+                .productionUrl("www.moaon.co.kr")
+                .imageUrls(List.of("www.images.com"))
+                .build();
+
+        // when
+        ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
+                .contentType(ContentType.JSON)
+                .body(projectCreateRequest)
+                .filter(document(projectCreateRequestFields(), projectCreateResponseFields()))
+                .when().post("/projects")
+                .then().log().all()
+                .statusCode(201)
+                .extract().as(ProjectCreateResponse.class);
+
+        // then
+        assertThat(response.id()).isNotNull();
+    }
+
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
     void getProjectById() {
@@ -246,37 +285,6 @@ public class ProjectApiTest extends BaseApiTest {
                                 targetProjectArticle3.getId()
                         )
         );
-    }
-
-    @DisplayName("POST /projects : 프로젝트 저장 API")
-    @Test
-    void saveProject() {
-        // given
-        repositoryHelper.save(new Member("포포"));
-
-        ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
-                .title("모아온")
-                .summary("프로젝트를 모아모아, 모아온")
-                .description("이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.")
-                .techStacks(List.of("java", "mysql", "docker"))
-                .categories(List.of("web", "it"))
-                .githubUrl("www.moaon.github")
-                .productionUrl("www.moaon.co.kr")
-                .imageUrls(List.of("www.images.com"))
-                .build();
-
-        // when
-        ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
-                .contentType(ContentType.JSON)
-                .body(projectCreateRequest)
-                .filter(document(projectCreateRequestFields(), projectCreateResponseFields()))
-                .when().post("/projects")
-                .then().log().all()
-                .statusCode(200)
-                .extract().as(ProjectCreateResponse.class);
-
-        // then
-        assertThat(response.id()).isNotNull();
     }
 
     private RequestFieldsSnippet projectCreateRequestFields() {
