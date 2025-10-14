@@ -6,25 +6,15 @@ interface UseArticleSubmissionProps {
   projectId?: number;
 }
 
-interface UseArticleSubmissionReturn {
-  articles: ArticleFormDataType[];
-  editingArticle: ArticleFormDataType | null;
-  addArticle: (article: ArticleFormDataType) => void;
-  deleteArticle: (id: string) => void;
-  startEdit: (article: ArticleFormDataType) => void;
-  updateArticle: (updated: ArticleFormDataType) => void;
-  cancelEdit: () => void;
-  postArticlesClick: () => void;
-}
-
 export const useArticleSubmission = ({
   initialArticles,
   projectId,
-}: UseArticleSubmissionProps): UseArticleSubmissionReturn => {
+}: UseArticleSubmissionProps) => {
   const [articles, setArticles] =
     useState<ArticleFormDataType[]>(initialArticles);
-  const [editingArticle, setEditingArticle] =
-    useState<ArticleFormDataType | null>(null);
+  const [editingArticle, setEditingArticle] = useState<
+    ArticleFormDataType | undefined
+  >(undefined);
 
   const addArticle = useCallback((article: ArticleFormDataType) => {
     setArticles((prev) => [article, ...prev]);
@@ -32,7 +22,7 @@ export const useArticleSubmission = ({
 
   const deleteArticle = useCallback((id: string) => {
     setArticles((prev) => prev.filter((item) => item.id !== id));
-    setEditingArticle((current) => (current?.id === id ? null : current));
+    setEditingArticle((current) => (current?.id === id ? undefined : current));
   }, []);
 
   const startEdit = useCallback((article: ArticleFormDataType) => {
@@ -43,11 +33,11 @@ export const useArticleSubmission = ({
     setArticles((prev) =>
       prev.map((item) => (item.id === updatedData.id ? updatedData : item))
     );
-    setEditingArticle(null);
+    setEditingArticle(undefined);
   }, []);
 
   const cancelEdit = useCallback(() => {
-    setEditingArticle(null);
+    setEditingArticle(undefined);
   }, []);
 
   const postArticlesClick = useCallback(() => {

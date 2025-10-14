@@ -1,3 +1,4 @@
+import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
 import ArticleDraftItem from "./ArticleDraftList/ArticleDraftItem/ArticleDraftItem";
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm from "./ArticleForm/ArticleForm";
@@ -32,7 +33,7 @@ function ArticleSubmission({
     <S.ArticleSubmissionContainer>
       <ArticleForm
         onSubmit={addArticle}
-        editingData={editingArticle ?? undefined}
+        editingData={editingArticle}
         onUpdate={updateArticle}
         onCancel={cancelEdit}
       />
