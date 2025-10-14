@@ -2,7 +2,7 @@ package moaon.backend.article.domain;
 
 import java.io.IOException;
 import java.net.URL;
-import moaon.backend.article.dto.ArticleCrawlResponse;
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.jsoup.Connection.Response;
@@ -13,9 +13,9 @@ import org.jsoup.nodes.Element;
 public class BodyFinder extends ContentFinder {
 
     @Override
-    public ArticleCrawlResponse crawl(URL link) {
+    public ArticleCrawlResult crawl(URL url) {
         try {
-            Response response = Jsoup.connect(link.toString())
+            Response response = Jsoup.connect(url.toString())
                     .ignoreHttpErrors(true)
                     .execute();
             validateLink(response.statusCode());
@@ -28,7 +28,9 @@ public class BodyFinder extends ContentFinder {
             int lastIndex = Math.min(description.length(), 255);
             String summary = description.substring(0, lastIndex);
 
-            return new ArticleCrawlResponse(title, summary);
+            String content = doc.body().text();
+
+            return new ArticleCrawlResult(title, summary, content);
         } catch (IOException e) {
             throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e);
         }
@@ -39,7 +41,7 @@ public class BodyFinder extends ContentFinder {
         return true;
     }
 
-    protected void validateLink(int statusCode) {
+    private void validateLink(int statusCode) {
         if (statusCode >= 400) {
             throw new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
         }

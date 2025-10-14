@@ -2,7 +2,7 @@ package moaon.backend.article.domain;
 
 import java.io.IOException;
 import java.net.URL;
-import moaon.backend.article.dto.ArticleCrawlResponse;
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.jsoup.Connection.Response;
@@ -17,7 +17,7 @@ public class TistoryContentFinder extends ContentFinder {
      */
 
     @Override
-    public ArticleCrawlResponse crawl(URL link) {
+    public ArticleCrawlResult crawl(URL link) {
         try {
             Response response = Jsoup.connect(link.toString())
                     .ignoreHttpErrors(true)
@@ -32,7 +32,9 @@ public class TistoryContentFinder extends ContentFinder {
             int lastIndex = Math.min(description.length(), 255);
             String summary = description.substring(0, lastIndex);
 
-            return new ArticleCrawlResponse(title, summary);
+            String content = doc.body().text();
+
+            return new ArticleCrawlResult(title, summary, content);
         } catch (IOException e) {
             throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e);
         }

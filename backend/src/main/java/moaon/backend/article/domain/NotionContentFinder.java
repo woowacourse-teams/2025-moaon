@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleCrawlResponse;
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.openqa.selenium.By;
@@ -50,37 +50,33 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     @Override
-    public ArticleCrawlResponse crawl(URL link) {
+    public ArticleCrawlResult crawl(URL link) {
         String responseBody = getResponseBody(link);
         validateLink(responseBody);
 
         String title = getTitle(responseBody);
 
-        String body = getText(link);
-        int lastIndex = Math.min(body.length(), 255);
-        String summary = body.substring(0, lastIndex);
+        String content = getText(link);
+        int lastIndex = Math.min(content.length(), 255);
+        String summary = content.substring(0, lastIndex);
 
-        return new ArticleCrawlResponse(title, summary);
+        return new ArticleCrawlResult(title, summary, content);
     }
 
-    public String getText(URL link) {
+    private String getText(URL link) {
         WebDriver driver = new ChromeDriver();
 
         try {
             driver.get(link.toString());
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-            List<By> bys = List.of(By.className("notion-page-content"));
-            for (By by : bys) {
-                try {
-                    WebElement webElement = wait.until(presenceOfElementLocated(by));
-                    return webElement.getText().trim();
-                } catch (TimeoutException | NoSuchElementException e) {
-                    throw new CustomException(ErrorCode.UNKNOWN, e);
-                }
+            By by = By.className("notion-page-content");
+            try {
+                WebElement webElement = wait.until(presenceOfElementLocated(by));
+                return webElement.getText().trim();
+            } catch (TimeoutException | NoSuchElementException e) {
+                throw new CustomException(ErrorCode.UNKNOWN, e);
             }
-
-            throw new CustomException(ErrorCode.UNKNOWN);
         } finally {
             driver.quit();
         }

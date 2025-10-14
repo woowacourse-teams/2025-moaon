@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import moaon.backend.article.dto.ArticleCrawlResponse;
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +38,7 @@ class TistoryContentFinderTest {
         TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
         // when
-        ArticleCrawlResponse result = tistoryContentFinder.crawl(normalLink);
+        ArticleCrawlResult result = tistoryContentFinder.crawl(normalLink);
 
         // then
         assertAll(

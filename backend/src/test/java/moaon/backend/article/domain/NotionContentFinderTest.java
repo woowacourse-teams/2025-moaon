@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.net.MalformedURLException;
 import java.net.URL;
 import moaon.backend.api.BaseApiTest;
-import moaon.backend.article.dto.ArticleCrawlResponse;
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.util.EnvLoader;
@@ -45,7 +45,7 @@ class NotionContentFinderTest extends BaseApiTest {
                 "https://tattered-drive-af3.notion.site/2744b522306480b89b42cc6dccb59b99?source=copy_link");
 
         // when
-        ArticleCrawlResponse result = NOTION_CONTENT_FINDER.crawl(normalLink);
+        ArticleCrawlResult result = NOTION_CONTENT_FINDER.crawl(normalLink);
 
         // then
         assertAll(
