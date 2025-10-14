@@ -115,12 +115,19 @@ public class Project extends BaseTimeEntity {
         this.images = images;
         this.views = 0;
         this.author = author;
-        this.lovedMembers = new ArrayList<>();
-        if (techStacks.isEmpty() || techStacks.size() > 20) {
+        if (
+                techStacks.isEmpty() ||
+                        techStacks.size() > 20 ||
+                        techStacks.stream().distinct().count() != techStacks.size()
+        ) {
             throw new CustomException(ErrorCode.PROJECT_INVALID_TECHSTACK);
         }
         techStacks.forEach(this::addTechStack);
-        if (categories.isEmpty() || categories.size() > 5) {
+        if (
+                categories.isEmpty() ||
+                        categories.size() > 5 ||
+                        categories.stream().distinct().count() != categories.size()
+        ) {
             throw new CustomException(ErrorCode.PROJECT_INVALID_CATEGORY);
         }
         categories.forEach(this::addCategory);
