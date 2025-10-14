@@ -2,7 +2,7 @@ package moaon.backend.article.controller;
 
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlRequest;
-import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.service.ArticleCrawlService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +18,10 @@ public class ArticleCrawlingController {
     private final ArticleCrawlService articleCrawlService;
 
     @GetMapping
-    public ResponseEntity<ArticleCrawlResult> crawl(
+    public ResponseEntity<ArticleCrawlResponse> crawl(
             @RequestBody ArticleCrawlRequest request
     ) {
-        ArticleCrawlResult crawl = articleCrawlService.crawl(request);
-        return ResponseEntity.ok(crawl);
+        ArticleCrawlResponse response = articleCrawlService.crawl(request);
+        return ResponseEntity.ok(response);
     }
 }

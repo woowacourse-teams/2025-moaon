@@ -11,6 +11,7 @@ import moaon.backend.article.domain.ContentFinder;
 import moaon.backend.article.domain.ContentFinders;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
@@ -84,8 +85,7 @@ public class ArticleService {
     public void save(List<ArticleCreateRequest> requests) {
         for (ArticleCreateRequest request : requests) {
             ContentFinder finder = FINDER.getFinder(request.url());
-//            String content = finder.getText(request.url());
-            String content = "abcd";
+            ArticleCrawlResult result = finder.crawl(request.url());
             Project project = projectRepository.findById(request.projectId()).orElseThrow(
                     () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)
             );
@@ -93,7 +93,7 @@ public class ArticleService {
             Article article = new Article(
                     request.title(),
                     request.summary(),
-                    content,
+                    result.content(),
                     request.url().toString(),
                     LocalDateTime.now(),
                     project,

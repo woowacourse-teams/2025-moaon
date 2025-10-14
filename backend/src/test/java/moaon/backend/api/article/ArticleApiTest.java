@@ -70,7 +70,7 @@ public class ArticleApiTest extends BaseApiTest {
                 .filter(document(articleCreateRequestFields()))
                 .when().post("/articles")
                 .then().log().all()
-                .statusCode(200);
+                .statusCode(201);
     }
 
     @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
