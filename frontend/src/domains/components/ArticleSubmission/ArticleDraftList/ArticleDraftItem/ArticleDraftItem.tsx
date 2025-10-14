@@ -1,5 +1,5 @@
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
-import CloseIcon from "@shared/components/CloseIcon/CloseIcon";
+import CloseButtonIcon from "@shared/components/CloseButtonIcon/CloseButtonIcon";
 import type { ArticleFormDataType } from "../../types";
 import * as S from "./ArticleDraftItem.styled";
 
@@ -16,15 +16,18 @@ function ArticleDraftItem({
 }: ArticleDraftItemProps) {
   const { title, description, sector, id } = article;
   const { color, label } = ARTICLE_SECTOR_MAP[sector];
+
   const handleDeleteDraft = (id: string) => {
     const confirmDelete = window.confirm("해당 아티클을 삭제하시겠습니까?");
     if (confirmDelete) {
       onDelete(id);
     }
   };
+
   const handleEditDraft = (article: ArticleFormDataType) => {
     onEdit(article);
   };
+
   return (
     <S.ArticleDraftItem>
       <S.ArticleDraftItemDetailButton
@@ -38,15 +41,9 @@ function ArticleDraftItem({
         <S.ArticleDraftTitle>{title}</S.ArticleDraftTitle>
       </S.ArticleDraftHeader>
       <S.ArticleDraftDescription>{description}</S.ArticleDraftDescription>
-      <S.CloseButton
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleDeleteDraft(id);
-        }}
-      >
-        <CloseIcon />
-      </S.CloseButton>
+      <S.CloseButtonBox>
+        <CloseButtonIcon onClick={() => handleDeleteDraft(id)} />
+      </S.CloseButtonBox>
     </S.ArticleDraftItem>
   );
 }

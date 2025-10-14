@@ -50,7 +50,7 @@ export const ArticleDraftDescription = styled.p`
   ${textOverflowEllipsis(3)}
 `;
 
-export const CloseButton = styled.button`
+export const CloseButtonBox = styled.div`
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
