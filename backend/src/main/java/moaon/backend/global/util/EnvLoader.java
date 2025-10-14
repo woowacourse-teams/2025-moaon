@@ -23,7 +23,7 @@ public class EnvLoader {
 
             return env.getOrDefault(key, "empty value");
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.UNKNOWN, e);
+            return "empty value";
         }
     }
 }
