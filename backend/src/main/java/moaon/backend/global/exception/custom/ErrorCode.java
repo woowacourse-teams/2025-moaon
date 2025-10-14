@@ -26,6 +26,10 @@ public enum ErrorCode {
 
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
+    TECHSTACK_NOT_FOUND("TECHSTACK-001", "테크스택을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    CATEGORY_NOT_FOUND("CATEGORY-001", "카테고리를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
     INVALID_CURSOR_FORMAT("CURSOR-001", "커서 파라미터 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
 
     INVALID_SEARCH_KEYWORD_LENGTH(

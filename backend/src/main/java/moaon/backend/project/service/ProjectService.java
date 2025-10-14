@@ -79,13 +79,19 @@ public class ProjectService {
                 request.description(),
                 request.githubUrl(),
                 request.productionUrl(),
-                new Images(request.imageUrls()),
+                new Images(request.imageKeys()),
                 member,
                 request.techStacks().stream()
-                        .map(techStackRepository::findByName)
+                        .map(
+                                techStack -> techStackRepository.findByName(techStack)
+                                        .orElseThrow(() -> new CustomException(ErrorCode.TECHSTACK_NOT_FOUND))
+                        )
                         .toList(),
                 request.categories().stream()
-                        .map(categoryRepository::findByName)
+                        .map(
+                                category -> categoryRepository.findByName(category)
+                                        .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND))
+                        )
                         .toList(),
                 LocalDateTime.now()
         );
