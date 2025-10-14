@@ -84,7 +84,8 @@ public class ArticleService {
     public void save(List<ArticleCreateRequest> requests) {
         for (ArticleCreateRequest request : requests) {
             ContentFinder finder = FINDER.getFinder(request.url());
-            String content = finder.getText(request.url());
+//            String content = finder.getText(request.url());
+            String content = "abcd";
             Project project = projectRepository.findById(request.projectId()).orElseThrow(
                     () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)
             );

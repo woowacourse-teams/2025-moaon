@@ -30,23 +30,23 @@ class NotionContentFinderTest {
 
     @DisplayName("notion 링크에 권한이 없거나 삭제된 페이지라면 예외를 던진다.")
     @Test
-    void validateLink() {
+    void crawl() {
         // given
         String forbiddenLink = "https://www.notion.so/2804b522306480e4bef2c071fe9359b9?source=copy_link";
         String deleteLink = "https://www.notion.so/test-2853a9d1094e8040bd37f18e3a23bd0a?source=copy_link";
-        String normalLink = "https://www.notion.so/hi-2853a9d1094e806bad9af094a38dcaee?source=copy_link";
+        String normalLink = "https://tattered-drive-af3.notion.site/2744b522306480b89b42cc6dccb59b99?source=copy_link";
 
         NotionContentFinder notionContentFinder = new NotionContentFinder();
 
         // when - then
         assertAll(
-                () -> assertThatThrownBy(() -> notionContentFinder.validateLink(forbiddenLink))
+                () -> assertThatThrownBy(() -> notionContentFinder.crawl(forbiddenLink))
                         .isInstanceOf(CustomException.class)
                         .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
-                () -> assertThatThrownBy(() -> notionContentFinder.validateLink(deleteLink))
+                () -> assertThatThrownBy(() -> notionContentFinder.crawl(deleteLink))
                         .isInstanceOf(CustomException.class)
                         .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
-                () -> assertDoesNotThrow(() -> notionContentFinder.validateLink(normalLink))
+                () -> assertDoesNotThrow(() -> notionContentFinder.crawl(normalLink))
         );
     }
 }

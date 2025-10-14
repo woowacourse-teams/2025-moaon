@@ -3,6 +3,7 @@ package moaon.backend.article.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -29,21 +30,25 @@ class TistoryContentFinderTest {
 
     @DisplayName("권한이 없거나 삭제된 티스토리 글은 예외를 발생한다.")
     @Test
-    void validateLink() {
+    void crawl() {
         // given
         String forbiddenLink = "https://minjae8563.tistory.com/3";
         String deleteLink = "https://minjae8563.tistory.com/5";
+        String normalLink = "https://minjae8563.tistory.com/6";
 
         TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
         // when - then
         assertAll(
-                () -> assertThatThrownBy(() -> tistoryContentFinder.validateLink(forbiddenLink))
+                () -> assertThatThrownBy(() -> tistoryContentFinder.crawl(forbiddenLink))
                         .isInstanceOf(CustomException.class)
                         .hasMessage(ErrorCode.ARTICLE_URL_FORBIDDEN.getMessage()),
-                () -> assertThatThrownBy(() -> tistoryContentFinder.validateLink(deleteLink))
+                () -> assertThatThrownBy(() -> tistoryContentFinder.crawl(deleteLink))
                         .isInstanceOf(CustomException.class)
-                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage())
+                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
+                () -> assertDoesNotThrow(
+                        () -> tistoryContentFinder.crawl(normalLink)
+                )
         );
     }
 }

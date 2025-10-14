@@ -1,5 +1,8 @@
 package moaon.backend.article.domain;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -11,10 +14,20 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class NotionContentFinder extends ContentFinder {
     /*
@@ -29,7 +42,7 @@ public class NotionContentFinder extends ContentFinder {
     @Override
     public boolean canHandle(String link) {
         try {
-            URL url = new URL(link);
+            URL url = URI.create(link).toURL();
             String host = url.getHost();
 
             return NOTION_DOMAIN.stream().anyMatch(host::endsWith);
@@ -39,17 +52,75 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     @Override
-    protected List<By> getBy(String link) {
-        return List.of(By.className("notion-page-content"));
+    public ArticleCrawlResponse crawl(String url) {
+        String responseBody = getResponseBody(url);
+        validateLink(responseBody);
+        String title = getTitle(responseBody);
+        String summary = getText(url).substring(0, 255);
+        return new ArticleCrawlResponse(title, summary);
     }
 
-    @Override
-    public void validateLink(String url) {
-        /*
-        노션은 token, notionUserId 가 없다면 잘못된 요청으로 인식
-        무조건 넣어줘야 함.
-        token 은 갱신이 된다. 1 ~ 2 주에 한 번씩 갱신을 해야 하는데, 어떻게 처리할지 생각해 봐야 할듯
-         */
+    public String getText(String link) {
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get(link);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+            List<By> bys = List.of(By.className("notion-page-content"));
+            for (By by : bys) {
+                try {
+                    WebElement webElement = wait.until(presenceOfElementLocated(by));
+                    return webElement.getText().trim();
+                } catch (TimeoutException | NoSuchElementException e) {
+                    throw new CustomException(ErrorCode.UNKNOWN, e);
+                }
+            }
+
+            throw new CustomException(ErrorCode.UNKNOWN);
+        } finally {
+            driver.quit();
+        }
+    }
+
+    private String getTitle(String responseBody) {
+        Pattern pattern = Pattern.compile("\"title\"\\s*:\\s*\\[\\s*\\[\\s*\"(.*?)\"\\s*\\]\\s*\\]");
+        Matcher matcher = pattern.matcher(responseBody);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        throw new CustomException(ErrorCode.UNKNOWN);
+    }
+
+    private void validateLink(String responseBody) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            JsonNode recordMap = mapper.readTree(responseBody).path("recordMap");
+
+            // recordMap 에 아무런 정보가 없다면?
+            if (recordMap.isMissingNode() || recordMap.isEmpty()) {
+                throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
+            }
+
+            // recordMap 에 버전 정보만 있다면?
+            if (recordMap.size() == 1 && recordMap.has("__version__")) {
+                throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
+            }
+
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ErrorCode.UNKNOWN, e);
+        }
+    }
+
+    /*
+    https://developers.notion.com/reference/intro
+    노션 공식문서에 따르면
+    The URL ends in a page ID. It should be a 32 character long string. 라고 명시되어 있습니다.
+    따라서 query, fragment 만 제거한 후 마지막 32자를 pageId 로 추출합니다.
+     */
+    private String getResponseBody(String url) {
         String pageId = extractPageId(url);
         String tokenV2 = "v03%3AeyJhbGciOiJkaXIiLCJraWQiOiJwcm9kdWN0aW9uOnRva2VuLXYzOjIwMjQtMTEtMDciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0..2XaShtLP2AyBCDniklwtWQ.ZI3yAobOmbpCKLu1xL9fImFfdBBwpiCJAZZgj_RzmaX7SkXcoLaNMxPQJeEg0H47LF4bHCT8MPj5uvcw6lvjMebYkibm3Ak94lLGdG9gFTj6oCsv6YSdc6zavoDcgM3S7oarvpB22tXXA2sWty1djvDWhgPxGhqbVhbOu-Ba-NyBgZGjGlohQa-GNPfEivQ3dZ9zYwEFs6gPP8p6hdDQAo3Oq4sEVoi_monMaau2nTCL0NCK1Bm4bPXZRIEQktC9FhUqlhgY1_Ttx1dznMCS206VOcpC9FmVYCIKJjX-n4RXxtnxbjtXVjbNPHd8Ij-V40UDxltyZqaUZvjly0ATminkS7KAiiZd2Ewc-LdKQ4w.Y3d1JaarG_3Rjv_OgyqA92pdAkbqZayo-MYp3rhbvvg";
         String notionUserId = "286d872b-594c-8161-896f-0002c9eb2837";
@@ -80,43 +151,15 @@ public class NotionContentFinder extends ContentFinder {
                 .build();
 
         try {
-            HttpResponse<String> response = HttpClient.newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            /*
-            노션은 정상적인 접근에 대해서는 200 OK 를 반환한다.
-            실질적인 정보는 recordMap 에 담아서 전달한다.
-            권한이 없거나 삭제된 게시글에 대해서는 recordMap 에 버전 정보만 담거나, recordMap 에 아무런 정보가 없다.
-             */
-
-            JsonNode rootNode = mapper.readTree(response.body());
-            JsonNode recordMap = rootNode.path("recordMap");
-
-            // recordMap 에 아무런 정보가 없다면?
-            if (recordMap.isMissingNode() || recordMap.isEmpty()) {
-                throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
-            }
-
-            // recordMap 에 버전 정보만 있다면?
-            if (recordMap.size() == 1 && recordMap.has("__version__")) {
-                throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
-            }
+            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
         } catch (IOException | InterruptedException e) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+            throw new CustomException(ErrorCode.UNKNOWN, e);
         }
     }
 
-    /*
-    https://developers.notion.com/reference/intro
-    노션 공식문서에 따르면
-    The URL ends in a page ID. It should be a 32 character long string. 라고 명시되어 있습니다.
-    따라서 query, fragment 만 제거한 후 마지막 32자를 pageId 로 추출합니다.
-     */
     private String extractPageId(String link) {
         try {
-            String path = new URL(link).getPath();
+            String path = URI.create(link).toURL().getPath();
 
             String lastSegment = path.substring(path.indexOf('/') + 1);
             if (lastSegment.contains("?")) {
@@ -136,7 +179,7 @@ public class NotionContentFinder extends ContentFinder {
                     pageId.substring(20)
             );
         } catch (MalformedURLException e) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+            throw new CustomException(ErrorCode.UNKNOWN, e);
         }
     }
 }

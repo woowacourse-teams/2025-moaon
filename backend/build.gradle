@@ -74,6 +74,9 @@ dependencies {
 
     // selenium
     implementation "org.seleniumhq.selenium:selenium-java:4.35.0"
+
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.21.2'
 }
 
 clean {
