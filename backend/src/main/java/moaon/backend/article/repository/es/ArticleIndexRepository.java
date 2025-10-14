@@ -4,14 +4,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.domain.ArticleDocument;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.index.AliasAction;
 import org.springframework.data.elasticsearch.core.index.AliasAction.Add;
 import org.springframework.data.elasticsearch.core.index.AliasAction.RemoveIndex;
 import org.springframework.data.elasticsearch.core.index.AliasActionParameters;
 import org.springframework.data.elasticsearch.core.index.AliasActions;
+import org.springframework.data.elasticsearch.core.index.Settings;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.stereotype.Repository;
@@ -22,15 +23,16 @@ public class ArticleIndexRepository {
 
     private final ElasticsearchOperations ops;
 
-    public boolean createIndex(IndexCoordinates indexWrapper) {
+    public boolean createIndex(IndexCoordinates indexWrapper, Class<?> documentClass) {
         IndexOperations iops = ops.indexOps(indexWrapper);
         if (iops.exists()) {
             throw new IllegalStateException("index already exists : " + indexWrapper.getIndexName());
         }
 
-        iops.createMapping(ArticleDocument.class);
-        iops.createSettings(ArticleDocument.class);
-        return iops.create();
+        Document mapping = iops.createMapping(documentClass);
+        Settings settings = iops.createSettings(documentClass);
+
+        return iops.create(settings, mapping);
     }
 
     public void bulkIndex(List<IndexQuery> documentQueries, IndexCoordinates indexWrapper) {

@@ -31,7 +31,7 @@ public class ArticleIndexer {
     private final ArticleRepository entityRepository;
     private final ArticleIndexRepository indexRepository;
 
-    public String indexAll(int batchSize) {
+    public void indexAll(int batchSize) {
         log.info("Indexing articles started");
         String newIndexName = DOCUMENT_ANNOTATION.indexName() + "-" + Instant.now().toEpochMilli();
         IndexCoordinates newIndexWrapper = IndexCoordinates.of(newIndexName);
@@ -40,7 +40,6 @@ public class ArticleIndexer {
         rebuild(newIndexWrapper, aliasWrapper, batchSize);
 
         log.info("Indexing articles finished");
-        return newIndexWrapper.getIndexName();
     }
 
     private void rebuild(IndexCoordinates newIndexWrapper, IndexCoordinates aliasWrapper, int batchSize) {
@@ -55,7 +54,7 @@ public class ArticleIndexer {
     }
 
     private void createNewIndex(IndexCoordinates newIndexWrapper) {
-        boolean succeed = indexRepository.createIndex(newIndexWrapper);
+        boolean succeed = indexRepository.createIndex(newIndexWrapper, ArticleDocument.class);
         log.info("index created : {}, {}", succeed, newIndexWrapper.getIndexName());
     }
 
