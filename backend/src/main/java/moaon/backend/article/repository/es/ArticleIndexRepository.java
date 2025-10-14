@@ -45,6 +45,7 @@ public class ArticleIndexRepository {
         AliasAction action = new Add(AliasActionParameters.builder()
                 .withIndices(iops.getIndexCoordinates().getIndexNames())
                 .withAliases(aliasWrapper.getIndexName())
+                .withIsWriteIndex(true)
                 .build());
         aliasActions.add(action);
 
