@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.ArticleContent;
-import moaon.backend.article.domain.ContentFinders;
+import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
@@ -32,8 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ArticleService {
-
-    private static final ContentFinders FINDER = new ContentFinders();
 
     private final ArticleRepository articleRepository;
     private final ArticleContentRepository articleContentRepository;

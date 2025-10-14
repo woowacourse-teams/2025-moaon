@@ -21,11 +21,7 @@ public class EnvLoader {
                             arr -> arr[1].trim()
                     ));
 
-            if (!env.containsKey(key)) {
-                throw new IllegalArgumentException("[ERROR] env 파일에 존재하지 않는 파라미터입니다.");
-            }
-
-            return env.get(key);
+            return env.getOrDefault(key, "empty value");
         } catch (IOException e) {
             throw new CustomException(ErrorCode.UNKNOWN, e);
         }
