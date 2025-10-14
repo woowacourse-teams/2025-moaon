@@ -51,8 +51,12 @@
           "XSV",
           "UNA",
           "NA",
+          "NR",
           "VSV",
-          "VX"
+          "VX",
+          "VCP",
+          "SY",
+          "SF"
         ],
         "type": "nori_part_of_speech"
       }
