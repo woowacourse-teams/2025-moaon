@@ -18,8 +18,8 @@ import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleContent;
 import moaon.backend.article.dto.ArticleCreateRequest;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
@@ -199,7 +199,7 @@ public class ArticleApiTest extends BaseApiTest {
 
         // then
         assertThat(actualResponse.contents())
-                .extracting(ArticleContent::id)
+                .extracting(ArticleData::id)
                 .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
 

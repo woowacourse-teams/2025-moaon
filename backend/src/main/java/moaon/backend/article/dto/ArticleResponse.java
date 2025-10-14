@@ -4,7 +4,7 @@ import java.util.List;
 import moaon.backend.article.domain.Article;
 
 public record ArticleResponse(
-        List<ArticleContent> contents,
+        List<ArticleData> contents,
         int totalCount,
         boolean hasNext,
         String nextCursor
@@ -17,7 +17,7 @@ public record ArticleResponse(
             String nextCursor
     ) {
         return new ArticleResponse(
-                ArticleContent.from(articles),
+                ArticleData.from(articles),
                 totalCount.intValue(),
                 hasNext,
                 nextCursor
