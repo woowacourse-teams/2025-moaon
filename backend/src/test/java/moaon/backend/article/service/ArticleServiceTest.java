@@ -10,7 +10,7 @@ import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Articles;
-import moaon.backend.article.dto.ArticleContent;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
@@ -122,11 +122,6 @@ class ArticleServiceTest {
                 .limit(limit)
                 .sortBy(sortType)
                 .build();
-
-        ArticleContent articleContent1 = ArticleContent.from(article1);
-        ArticleContent articleContent2 = ArticleContent.from(article2);
-        ArticleContent articleContent3 = ArticleContent.from(article3);
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
 
         ArticleData articleData1 = ArticleData.from(article1);
         ArticleData articleData2 = ArticleData.from(article2);

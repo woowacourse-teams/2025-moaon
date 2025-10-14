@@ -18,7 +18,7 @@ public record ArticleResponse(
             Cursor<?> nextCursor
     ) {
         return new ArticleResponse(
-                ArticleContent.from(articles),
+                ArticleData.from(articles),
                 totalCount.intValue(),
                 hasNext,
                 extractNextCursor(nextCursor)
@@ -45,7 +45,7 @@ public record ArticleResponse(
             boolean hasNext
     ) {
         return new ArticleResponse(
-                ArticleContent.from(articles),
+                ArticleData.from(articles),
                 totalCount.intValue(),
                 hasNext,
                 null
