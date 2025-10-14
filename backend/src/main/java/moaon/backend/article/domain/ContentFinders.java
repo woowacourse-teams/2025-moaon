@@ -1,5 +1,6 @@
 package moaon.backend.article.domain;
 
+import java.net.URL;
 import java.util.List;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -17,7 +18,7 @@ public class ContentFinders {
             new BodyFinder()
     );
 
-    public ContentFinder getFinder(String url) {
+    public ContentFinder getFinder(URL url) {
         return FINDERS.stream()
                 .filter(contentFinder -> contentFinder.canHandle(url))
                 .findFirst()

@@ -94,7 +94,7 @@ public class ArticleService {
                     request.title(),
                     request.summary(),
                     content,
-                    request.url(),
+                    request.url().toString(),
                     LocalDateTime.now(),
                     project,
                     Sector.of(request.sector()),

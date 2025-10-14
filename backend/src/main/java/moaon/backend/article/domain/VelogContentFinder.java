@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -21,8 +20,8 @@ public class VelogContentFinder extends ContentFinder {
     이 외 사용자 지정 도메인은 BodyFinder 가 수행한다.
      */
     @Override
-    public ArticleCrawlResponse crawl(String link) {
-        JsonNode post = getPost(link);
+    public ArticleCrawlResponse crawl(URL url) {
+        JsonNode post = getPost(url);
         String title = post.path("title").asText();
 
         String body = post.path("body").asText();
@@ -32,9 +31,8 @@ public class VelogContentFinder extends ContentFinder {
         return new ArticleCrawlResponse(title, summary);
     }
 
-    private JsonNode getPost(String link) {
+    private JsonNode getPost(URL url) {
         try {
-            URL url = URI.create(link).toURL();
             String[] parts = url.getPath().split("/");
 
             if (parts.length < 3) {
@@ -81,14 +79,8 @@ public class VelogContentFinder extends ContentFinder {
     }
 
     @Override
-    public boolean canHandle(String link) {
-        try {
-            URL url = URI.create(link).toURL();
-            String host = url.getHost();
-
-            return host.endsWith("velog.io");
-        } catch (MalformedURLException e) {
-            return false;
-        }
+    public boolean canHandle(URL url) {
+        String host = url.getHost();
+        return host.endsWith("velog.io");
     }
 }

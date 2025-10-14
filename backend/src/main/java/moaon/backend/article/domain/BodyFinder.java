@@ -1,6 +1,7 @@
 package moaon.backend.article.domain;
 
 import java.io.IOException;
+import java.net.URL;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -12,9 +13,9 @@ import org.jsoup.nodes.Element;
 public class BodyFinder extends ContentFinder {
 
     @Override
-    public ArticleCrawlResponse crawl(String link) {
+    public ArticleCrawlResponse crawl(URL link) {
         try {
-            Response response = Jsoup.connect(link)
+            Response response = Jsoup.connect(link.toString())
                     .ignoreHttpErrors(true)
                     .execute();
             validateLink(response.statusCode());
@@ -34,7 +35,7 @@ public class BodyFinder extends ContentFinder {
     }
 
     @Override
-    public boolean canHandle(String link) {
+    public boolean canHandle(URL url) {
         return true;
     }
 

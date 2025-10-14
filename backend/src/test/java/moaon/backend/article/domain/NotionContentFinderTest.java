@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
@@ -23,10 +25,10 @@ class NotionContentFinderTest extends BaseApiTest {
 
     @DisplayName("노션 링크를 다룰 수 있다면 true 를 리턴한다.")
     @Test
-    void canHandle() {
+    void canHandle() throws MalformedURLException {
         // given
-        String notionLink = "https://mint-scissor-943.notion.site/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0";
-        String notNotionLink = "https://mint-scissor-943.velog.io/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0";
+        URL notionLink = new URL("https://mint-scissor-943.notion.site/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0");
+        URL notNotionLink = new URL("https://mint-scissor-943.velog.io/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0");
 
         // when - then
         assertAll(
@@ -37,9 +39,10 @@ class NotionContentFinderTest extends BaseApiTest {
 
     @DisplayName("notion 크롤링")
     @Test
-    void crawl() {
+    void crawl() throws MalformedURLException {
         // given
-        String normalLink = "https://tattered-drive-af3.notion.site/2744b522306480b89b42cc6dccb59b99?source=copy_link";
+        URL normalLink = new URL(
+                "https://tattered-drive-af3.notion.site/2744b522306480b89b42cc6dccb59b99?source=copy_link");
 
         // when
         ArticleCrawlResponse result = NOTION_CONTENT_FINDER.crawl(normalLink);
@@ -54,10 +57,10 @@ class NotionContentFinderTest extends BaseApiTest {
 
     @DisplayName("notion 링크에 권한이 없거나 삭제된 페이지라면 예외를 던진다.")
     @Test
-    void crawlFail() {
+    void crawlFail() throws MalformedURLException {
         // given
-        String forbiddenLink = "https://www.notion.so/2804b522306480e4bef2c071fe9359b9?source=copy_link";
-        String deleteLink = "https://www.notion.so/test-2853a9d1094e8040bd37f18e3a23bd0a?source=copy_link";
+        URL forbiddenLink = new URL("https://www.notion.so/2804b522306480e4bef2c071fe9359b9?source=copy_link");
+        URL deleteLink = new URL("https://www.notion.so/test-2853a9d1094e8040bd37f18e3a23bd0a?source=copy_link");
 
         // when - then
         assertAll(

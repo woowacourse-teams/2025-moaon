@@ -11,6 +11,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
@@ -42,7 +44,7 @@ public class ArticleApiTest extends BaseApiTest {
 
     @DisplayName("POST /articles: 아티클 저장 API")
     @Test
-    void save() {
+    void save() throws MalformedURLException {
         // given
         Project savedProject = repositoryHelper.save(
                 new ProjectFixtureBuilder().build()
@@ -54,7 +56,9 @@ public class ArticleApiTest extends BaseApiTest {
                 .title("fork-ts-checker-webpack-plugin")
                 .summary("webpack-plugin 도입")
                 .techStacks(List.of("react"))
-                .url("https://tattered-drive-af3.notion.site/fork-ts-checker-webpack-plugin-2514b5223064806e96cceac24ff9dafd")
+                .url(
+                        new URL("https://tattered-drive-af3.notion.site/fork-ts-checker-webpack-plugin-2514b5223064806e96cceac24ff9dafd")
+                )
                 .sector("fe")
                 .topics(List.of("etc"))
                 .build();

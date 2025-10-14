@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -45,19 +44,13 @@ public class NotionContentFinder extends ContentFinder {
     );
 
     @Override
-    public boolean canHandle(String link) {
-        try {
-            URL url = URI.create(link).toURL();
-            String host = url.getHost();
-
-            return NOTION_DOMAIN.stream().anyMatch(host::endsWith);
-        } catch (MalformedURLException e) {
-            return false;
-        }
+    public boolean canHandle(URL url) {
+        String host = url.getHost();
+        return NOTION_DOMAIN.stream().anyMatch(host::endsWith);
     }
 
     @Override
-    public ArticleCrawlResponse crawl(String link) {
+    public ArticleCrawlResponse crawl(URL link) {
         String responseBody = getResponseBody(link);
         validateLink(responseBody);
 
@@ -70,11 +63,11 @@ public class NotionContentFinder extends ContentFinder {
         return new ArticleCrawlResponse(title, summary);
     }
 
-    public String getText(String link) {
+    public String getText(URL link) {
         WebDriver driver = new ChromeDriver();
 
         try {
-            driver.get(link);
+            driver.get(link.toString());
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
             List<By> bys = List.of(By.className("notion-page-content"));
@@ -124,7 +117,7 @@ public class NotionContentFinder extends ContentFinder {
         }
     }
 
-    private String getResponseBody(String url) {
+    private String getResponseBody(URL url) {
         String pageId = extractPageId(url);
         String decodedToken = URLDecoder.decode(tokenV2, StandardCharsets.UTF_8);
 
@@ -165,29 +158,22 @@ public class NotionContentFinder extends ContentFinder {
     The URL ends in a page ID. It should be a 32 character long string. 라고 명시되어 있습니다.
     따라서 query, fragment 만 제거한 후 마지막 32자를 pageId 로 추출합니다.
      */
-    private String extractPageId(String link) {
-        try {
-            String path = URI.create(link).toURL().getPath();
-
-            String lastSegment = path.substring(path.indexOf('/') + 1);
-            if (lastSegment.contains("?")) {
-                lastSegment = lastSegment.substring(0, lastSegment.indexOf('?'));
-            }
-            if (lastSegment.contains("#")) {
-                lastSegment = lastSegment.substring(0, lastSegment.indexOf('#'));
-            }
-
-            String pageId = lastSegment.substring(lastSegment.length() - 32);
-
-            return String.format("%s-%s-%s-%s-%s",
-                    pageId.substring(0, 8),
-                    pageId.substring(8, 12),
-                    pageId.substring(12, 16),
-                    pageId.substring(16, 20),
-                    pageId.substring(20)
-            );
-        } catch (MalformedURLException e) {
-            throw new CustomException(ErrorCode.UNKNOWN, e);
+    private String extractPageId(URL link) {
+        String path = link.toString();
+        String lastSegment = path.substring(path.indexOf('/') + 1);
+        if (lastSegment.contains("?")) {
+            lastSegment = lastSegment.substring(0, lastSegment.indexOf('?'));
         }
+        if (lastSegment.contains("#")) {
+            lastSegment = lastSegment.substring(0, lastSegment.indexOf('#'));
+        }
+        String pageId = lastSegment.substring(lastSegment.length() - 32);
+        return String.format("%s-%s-%s-%s-%s",
+                pageId.substring(0, 8),
+                pageId.substring(8, 12),
+                pageId.substring(12, 16),
+                pageId.substring(16, 20),
+                pageId.substring(20)
+        );
     }
 }

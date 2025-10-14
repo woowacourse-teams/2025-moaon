@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -14,10 +16,10 @@ class TistoryContentFinderTest {
 
     @DisplayName("티스토리 링크를 다룰 수 있다면 true 를 리턴한다.")
     @Test
-    void canHandle() {
+    void canHandle() throws MalformedURLException {
         // given
-        String tistoryLink = "https://nnoco.tistory.com/239";
-        String notTistroyLink = "https://nnoco.notion.site/239";
+        URL tistoryLink = new URL("https://nnoco.tistory.com/239");
+        URL notTistroyLink = new URL("https://nnoco.notion.site/239");
 
         TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
@@ -30,9 +32,9 @@ class TistoryContentFinderTest {
 
     @DisplayName("tistory 크롤링")
     @Test
-    void crawl() {
+    void crawl() throws MalformedURLException {
         // given
-        String normalLink = "https://minjae8563.tistory.com/6";
+        URL normalLink = new URL("https://minjae8563.tistory.com/6");
         TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
         // when
@@ -48,10 +50,10 @@ class TistoryContentFinderTest {
 
     @DisplayName("권한이 없거나 삭제된 티스토리 글은 예외를 발생한다.")
     @Test
-    void crawlFail() {
+    void crawlFail() throws MalformedURLException {
         // given
-        String forbiddenLink = "https://minjae8563.tistory.com/3";
-        String deleteLink = "https://minjae8563.tistory.com/5";
+        URL forbiddenLink = new URL("https://minjae8563.tistory.com/3");
+        URL deleteLink = new URL("https://minjae8563.tistory.com/5");
 
         TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 

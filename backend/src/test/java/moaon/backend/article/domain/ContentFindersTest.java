@@ -2,6 +2,8 @@ package moaon.backend.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,9 +17,9 @@ class ContentFindersTest {
     @DisplayName("URL에 맞는 Finder를 반환한다.")
     @ParameterizedTest
     @MethodSource("provideUrls")
-    void getFinder(String url, Class<? extends ContentFinder> expectedClass) {
+    void getFinder(String url, Class<? extends ContentFinder> expectedClass) throws MalformedURLException {
         // when
-        ContentFinder finder = contentFinders.getFinder(url);
+        ContentFinder finder = contentFinders.getFinder(new URL(url));
 
         // then
         assertThat(finder).isInstanceOf(expectedClass);

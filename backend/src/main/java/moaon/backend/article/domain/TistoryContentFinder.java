@@ -1,8 +1,6 @@
 package moaon.backend.article.domain;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
@@ -19,9 +17,9 @@ public class TistoryContentFinder extends ContentFinder {
      */
 
     @Override
-    public ArticleCrawlResponse crawl(String link) {
+    public ArticleCrawlResponse crawl(URL link) {
         try {
-            Response response = Jsoup.connect(link)
+            Response response = Jsoup.connect(link.toString())
                     .ignoreHttpErrors(true)
                     .execute();
             validateLink(response.statusCode());
@@ -41,15 +39,9 @@ public class TistoryContentFinder extends ContentFinder {
     }
 
     @Override
-    public boolean canHandle(String link) {
-        try {
-            URL url = URI.create(link).toURL();
-            String host = url.getHost();
-
-            return host.endsWith("tistory.com");
-        } catch (MalformedURLException e) {
-            return false;
-        }
+    public boolean canHandle(URL url) {
+        String host = url.getHost();
+        return host.endsWith("tistory.com");
     }
 
     protected void validateLink(int statusCode) {

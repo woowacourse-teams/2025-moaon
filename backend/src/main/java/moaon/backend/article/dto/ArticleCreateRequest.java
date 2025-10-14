@@ -1,5 +1,6 @@
 package moaon.backend.article.dto;
 
+import java.net.URL;
 import java.util.List;
 import lombok.Builder;
 
@@ -10,7 +11,7 @@ public record ArticleCreateRequest(
         String title,
         String summary,
         List<String> techStacks,
-        String url,
+        URL url,
         String sector,
         List<String> topics
 ) {
