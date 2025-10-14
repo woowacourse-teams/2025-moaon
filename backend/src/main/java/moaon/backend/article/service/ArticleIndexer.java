@@ -48,7 +48,7 @@ public class ArticleIndexer {
         createNewIndex(newIndexWrapper);
 
         indexAllInBatch(newIndexWrapper, batchSize);
-        indexRepository.setAlias(newIndexWrapper, aliasWrapper);
+        indexRepository.switchAlias(newIndexWrapper, oldIndexNames, aliasWrapper);
 
         deleteOldIndices(oldIndexNames, aliasWrapper);
     }
@@ -84,6 +84,10 @@ public class ArticleIndexer {
     }
 
     private void deleteOldIndices(Set<String> oldIndexNames, IndexCoordinates aliasWrapper) {
+        if (oldIndexNames == null || oldIndexNames.isEmpty()) {
+            log.info("no old indices to delete for alias {}", Arrays.toString(aliasWrapper.getIndexNames()));
+            return;
+        }
         IndexCoordinates oldIndicesWrapper = IndexCoordinates.of(oldIndexNames.toArray(String[]::new));
         indexRepository.removeAlias(oldIndicesWrapper, aliasWrapper);
         indexRepository.deleteIndex(oldIndicesWrapper);

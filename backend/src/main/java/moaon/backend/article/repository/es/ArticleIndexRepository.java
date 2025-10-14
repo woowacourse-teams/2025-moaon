@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.index.AliasAction;
 import org.springframework.data.elasticsearch.core.index.AliasAction.Add;
+import org.springframework.data.elasticsearch.core.index.AliasAction.Remove;
 import org.springframework.data.elasticsearch.core.index.AliasAction.RemoveIndex;
 import org.springframework.data.elasticsearch.core.index.AliasActionParameters;
 import org.springframework.data.elasticsearch.core.index.AliasActions;
@@ -39,17 +40,33 @@ public class ArticleIndexRepository {
         ops.bulkIndex(documentQueries, indexWrapper);
     }
 
-    public void setAlias(IndexCoordinates indexWrapper, IndexCoordinates aliasWrapper) {
-        IndexOperations iops = ops.indexOps(indexWrapper);
+    public void switchAlias(
+            IndexCoordinates newIndexWrapper,
+            Set<String> oldIndexNames,
+            IndexCoordinates aliasWrapper
+    ) {
+        IndexOperations iops = ops.indexOps(newIndexWrapper);
         AliasActions aliasActions = new AliasActions();
-        AliasAction action = new Add(AliasActionParameters.builder()
+
+        aliasActions.add(addNewIndex(aliasWrapper, iops));
+        aliasActions.add(removeOldIndices(oldIndexNames, aliasWrapper));
+
+        iops.alias(aliasActions);
+    }
+
+    private AliasAction addNewIndex(IndexCoordinates aliasWrapper, IndexOperations iops) {
+        return new Add(AliasActionParameters.builder()
                 .withIndices(iops.getIndexCoordinates().getIndexNames())
                 .withAliases(aliasWrapper.getIndexName())
                 .withIsWriteIndex(true)
                 .build());
-        aliasActions.add(action);
+    }
 
-        iops.alias(aliasActions);
+    private Remove removeOldIndices(Set<String> oldIndexNames, IndexCoordinates aliasWrapper) {
+        return new Remove(AliasActionParameters.builder()
+                .withIndices(oldIndexNames.toArray(String[]::new))
+                .withAliases(aliasWrapper.getIndexName())
+                .build());
     }
 
     public void removeAlias(IndexCoordinates indexWrapper, IndexCoordinates aliasWrapper) {
