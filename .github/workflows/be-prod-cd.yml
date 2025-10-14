@@ -94,3 +94,23 @@ jobs:
         run: |
           sudo docker compose -f compose.prod.yaml up -d
           sudo docker image prune -af
+
+  deploy-es:
+    runs-on: es-self-hosted
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: change permission
+        run: |
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Pull latest image and deploy
+        run: |
+          sudo docker compose -f compose.es.yaml up -d
+          sudo docker image prune -af
