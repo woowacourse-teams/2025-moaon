@@ -7,11 +7,14 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class ArticleDocumentRepository {
+
+    private static final IndexCoordinates ARTICLE_ALIAS = IndexCoordinates.of("articles");
 
     private final ElasticsearchOperations ops;
 
@@ -24,10 +27,12 @@ public class ArticleDocumentRepository {
                 .withSort(condition.sortBy())
                 .withPagination(condition.limit(), condition.cursor())
                 .build();
-        return ops.search(esArticleQuery, ArticleDocument.class);
+        return ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
     }
 
     public ArticleDocument save(ArticleDocument articleDocument) {
-        return ops.withRefreshPolicy(RefreshPolicy.IMMEDIATE).save(articleDocument);
+        return ops
+                .withRefreshPolicy(RefreshPolicy.IMMEDIATE)
+                .save(articleDocument, ARTICLE_ALIAS);
     }
 }
