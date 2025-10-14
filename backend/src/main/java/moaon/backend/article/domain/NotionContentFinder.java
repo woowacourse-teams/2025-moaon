@@ -29,9 +29,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-@Component
 public class NotionContentFinder extends ContentFinder {
     /*
     노션이 사용중인 도메인: notion.site, notion.com, notion.so

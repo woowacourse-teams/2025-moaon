@@ -29,7 +29,7 @@ public class BodyFinder extends ContentFinder {
 
             return new ArticleCrawlResponse(title, summary);
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.UNKNOWN, e);
+            throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e);
         }
     }
 

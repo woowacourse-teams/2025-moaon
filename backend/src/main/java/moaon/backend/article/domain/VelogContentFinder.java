@@ -76,7 +76,7 @@ public class VelogContentFinder extends ContentFinder {
             return postNode;
 
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+            throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
         }
     }
 

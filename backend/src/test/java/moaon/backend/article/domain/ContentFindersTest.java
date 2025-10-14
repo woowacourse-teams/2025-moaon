@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,12 +11,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 class ContentFindersTest {
 
     private final ContentFinders contentFinders = new ContentFinders();
-
-    @Test
-    public void temp() {
-        String url = "https://mint-scissor-943.notion.site/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0";
-        contentFinders.getFinder(url).crawl(url);
-    }
 
     @DisplayName("URL에 맞는 Finder를 반환한다.")
     @ParameterizedTest

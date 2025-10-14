@@ -20,11 +20,13 @@ public enum ErrorCode {
 
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     // 권한이 필요한 url
-    ARTICLE_URL_FORBIDDEN("URL-403", "접근 권한이 없는 URL입니다.", HttpStatus.FORBIDDEN),
+    ARTICLE_URL_FORBIDDEN("URL-001", "접근 권한이 없는 URL 입니다.", HttpStatus.FORBIDDEN),
     // 잘못된 url
-    ARTICLE_URL_NOT_FOUND("URL-404", "존재하지 않는 URL입니다.", HttpStatus.NOT_FOUND),
+    ARTICLE_URL_NOT_FOUND("URL-002", "존재하지 않는 URL 입니다.", HttpStatus.NOT_FOUND),
     // 삭제된 url
-    ARTICLE_URL_GONE("URL-410", "삭제된 페이지입니다.", HttpStatus.GONE),
+    ARTICLE_URL_GONE("URL-003", "삭제된 페이지입니다.", HttpStatus.GONE),
+    // 크롤 실패
+    ARTICLE_CRAWL_FAILED("URL-004", "아티클 크롤링 실패입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
     CONTENT_FINDER_NOT_FOUND("CONTENT-001", "해당 URL을 처리할 수 있는 ContentFinder가 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
 
