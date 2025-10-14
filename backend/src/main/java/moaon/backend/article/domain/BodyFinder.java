@@ -1,29 +1,35 @@
 package moaon.backend.article.domain;
 
 import java.io.IOException;
-import java.util.List;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.openqa.selenium.By;
 
 public class BodyFinder extends ContentFinder {
 
     @Override
-    public ArticleCrawlResponse crawl(String url) {
-        validateLink(url);
+    public ArticleCrawlResponse crawl(String link) {
         try {
-            Document doc = Jsoup.connect(url).get();
-            Element metaDesc = doc.selectFirst("meta[name=description]");
-            String summary = metaDesc != null ? metaDesc.attr("content") : "";
+            Response response = Jsoup.connect(link)
+                    .ignoreHttpErrors(true)
+                    .execute();
+            validateLink(response.statusCode());
+
+            Document doc = response.parse();
             String title = doc.title();
+
+            Element metaDesc = doc.selectFirst("meta[name=description]");
+            String description = metaDesc != null ? metaDesc.attr("content") : "";
+            int lastIndex = Math.min(description.length(), 255);
+            String summary = description.substring(0, lastIndex);
 
             return new ArticleCrawlResponse(title, summary);
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+            throw new CustomException(ErrorCode.UNKNOWN, e);
         }
     }
 
@@ -32,11 +38,9 @@ public class BodyFinder extends ContentFinder {
         return true;
     }
 
-    protected List<By> getBy(String link) {
-        return List.of(By.tagName("body"));
-    }
-
-    protected void validateLink(String link) {
-
+    protected void validateLink(int statusCode) {
+        if (statusCode >= 400) {
+            throw new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
+        }
     }
 }
