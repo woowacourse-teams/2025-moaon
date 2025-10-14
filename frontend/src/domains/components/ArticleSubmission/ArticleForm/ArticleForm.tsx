@@ -108,7 +108,7 @@ function ArticleForm({
           </FormField>
         )}
       </S.FormFieldList>
-      <S.ArticleButtonList>
+      <S.ArticleButtonGroup>
         <S.ArticleAddButton
           type="submit"
           onClick={(e) => {
@@ -123,7 +123,7 @@ function ArticleForm({
             취소
           </S.ArticleCancelButton>
         )}
-      </S.ArticleButtonList>
+      </S.ArticleButtonGroup>
     </S.FormBox>
   );
 }

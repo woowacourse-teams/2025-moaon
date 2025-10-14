@@ -37,7 +37,7 @@ export const ArticleAddressButton = styled.button`
   }
 `;
 
-export const ArticleButtonList = styled.div`
+export const ArticleButtonGroup = styled.div`
   display: flex;
   gap: 1rem;
 `;
