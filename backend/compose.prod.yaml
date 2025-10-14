@@ -2,10 +2,6 @@ services:
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
-    depends_on:
-      elastic:
-        condition: service_healthy
-
     ports:
       - "80:8080"
     logging:
