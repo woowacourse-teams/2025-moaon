@@ -71,6 +71,7 @@ public class ProjectService {
 
     @Transactional
     public Long save(ProjectCreateRequest from) {
+        // TODO: 로그인 기능 구현
         Member member = memberRepository.findById(1L).orElseThrow();
         Project project = new Project(
                 from.title(),
