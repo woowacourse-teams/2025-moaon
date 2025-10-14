@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ContentFinder;
+import moaon.backend.article.domain.ArticleContent;
 import moaon.backend.article.domain.ContentFinders;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
@@ -35,6 +35,7 @@ public class ArticleService {
     private static final ContentFinders FINDER = new ContentFinders();
 
     private final ArticleRepository articleRepository;
+    private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
 
@@ -84,8 +85,6 @@ public class ArticleService {
     @Transactional
     public void save(List<ArticleCreateRequest> requests) {
         for (ArticleCreateRequest request : requests) {
-            ContentFinder finder = FINDER.getFinder(request.url());
-            ArticleCrawlResult result = finder.crawl(request.url());
             Project project = projectRepository.findById(request.projectId()).orElseThrow(
                     () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)
             );
@@ -93,7 +92,9 @@ public class ArticleService {
             Article article = new Article(
                     request.title(),
                     request.summary(),
-                    result.content(),
+                    articleContentRepository.findByUrl(request.url())
+                            .map(ArticleContent::getContent)
+                            .orElse(""),
                     request.url().toString(),
                     LocalDateTime.now(),
                     project,
