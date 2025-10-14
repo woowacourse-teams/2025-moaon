@@ -70,21 +70,21 @@ public class ProjectService {
     }
 
     @Transactional
-    public Long save(ProjectCreateRequest from) {
+    public Long save(ProjectCreateRequest request) {
         // TODO: 로그인 기능 구현
         Member member = memberRepository.findById(1L).orElseThrow();
         Project project = new Project(
-                from.title(),
-                from.summary(),
-                from.description(),
-                from.githubUrl(),
-                from.productionUrl(),
-                new Images(from.imageUrls()),
+                request.title(),
+                request.summary(),
+                request.description(),
+                request.githubUrl(),
+                request.productionUrl(),
+                new Images(request.imageUrls()),
                 member,
-                from.techStacks().stream()
+                request.techStacks().stream()
                         .map(techStackRepository::findByName)
                         .toList(),
-                from.categories().stream()
+                request.categories().stream()
                         .map(categoryRepository::findByName)
                         .toList(),
                 LocalDateTime.now()
