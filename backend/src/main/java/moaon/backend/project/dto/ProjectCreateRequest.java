@@ -16,7 +16,7 @@ public record ProjectCreateRequest(
         List<String> techStacks,
         @NotNull
         List<String> categories,
-        List<String> imageUrls,
+        List<String> imageKeys,
         String githubUrl,
         String productionUrl
 ) {
@@ -27,7 +27,7 @@ public record ProjectCreateRequest(
             String description,
             List<String> techStacks,
             List<String> categories,
-            List<String> imageUrls,
+            List<String> imageKeys,
             String githubUrl,
             String productionUrl
     ) {
@@ -37,7 +37,7 @@ public record ProjectCreateRequest(
                 description,
                 techStacks,
                 categories,
-                imageUrls,
+                imageKeys,
                 githubUrl,
                 productionUrl
         );
