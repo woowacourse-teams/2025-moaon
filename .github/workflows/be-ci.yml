@@ -3,6 +3,8 @@ name: BE CI
 on:
   pull_request:
     branches: [ "develop", "main" ]
+  push:
+    branches: ["develop"]
 
 jobs:
   build:
@@ -35,7 +37,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle Wrapper using cache
-        run: ./gradlew build --build-cache --no-daemon
+        run: ./gradlew build --build-cache --no-daemon --stacktrace
 
   check-dependencies-changed:
     outputs:
