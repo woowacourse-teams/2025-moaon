@@ -7,6 +7,7 @@ import ArticlePage from "./pages/article/ArticlePage";
 import LandingPage from "./pages/landing/LandingPage";
 import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
+import RegisterPage from "./pages/register/RegisterPage";
 import Header from "./shared/components/Header/Header";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
 
@@ -35,6 +36,7 @@ function App() {
                 </>
               }
             />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </Suspense>
       </GlobalLayout>
