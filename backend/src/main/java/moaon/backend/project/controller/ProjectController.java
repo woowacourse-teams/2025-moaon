@@ -2,6 +2,7 @@ package moaon.backend.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import java.util.List;
 import moaon.backend.article.service.ArticleService;
@@ -47,7 +48,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectCreateResponse> saveProject(
-            @RequestBody ProjectCreateRequest projectCreateRequest
+            @RequestBody @Valid ProjectCreateRequest projectCreateRequest
     ) {
         Long savedId = projectService.save(projectCreateRequest);
         ProjectCreateResponse response = ProjectCreateResponse.from(savedId);
