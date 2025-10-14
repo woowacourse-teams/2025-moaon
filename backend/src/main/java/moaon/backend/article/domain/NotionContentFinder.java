@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -28,18 +29,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Value;
 
+@RequiredArgsConstructor
 public class NotionContentFinder extends ContentFinder {
     /*
     노션이 사용중인 도메인: notion.site, notion.com, notion.so
     이 외 사용자 지정 도메인은 bodyFinder 가 수행한다.
      */
 
-    @Value("${notion.user_id}")
-    private String notionUserId;
-    @Value("${notion.tokenV2}")
-    private String tokenV2;
+    private final String notionUserId;
+    private final String tokenV2;
 
     private static final List<String> NOTION_DOMAIN = List.of(
             "notion.site", "notion.com", "notion.so"

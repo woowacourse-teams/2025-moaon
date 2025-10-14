@@ -8,12 +8,17 @@ import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
-import org.junit.jupiter.api.Disabled;
+import moaon.backend.global.util.EnvLoader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@Disabled
+//@Disabled
 class NotionContentFinderTest extends BaseApiTest {
+
+    private static final NotionContentFinder NOTION_CONTENT_FINDER = new NotionContentFinder(
+            EnvLoader.getEnv("NOTION_USER_ID"),
+            EnvLoader.getEnv("NOTION_TOKEN_V2")
+    );
 
     @DisplayName("노션 링크를 다룰 수 있다면 true 를 리턴한다.")
     @Test
@@ -22,12 +27,10 @@ class NotionContentFinderTest extends BaseApiTest {
         String notionLink = "https://mint-scissor-943.notion.site/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0";
         String notNotionLink = "https://mint-scissor-943.velog.io/Suspense-use-2470c7355c2a80a9a5eefefae76ea9f0";
 
-        NotionContentFinder notionContentFinder = new NotionContentFinder();
-
         // when - then
         assertAll(
-                () -> assertThat(notionContentFinder.canHandle(notionLink)).isTrue(),
-                () -> assertThat(notionContentFinder.canHandle(notNotionLink)).isFalse()
+                () -> assertThat(NOTION_CONTENT_FINDER.canHandle(notionLink)).isTrue(),
+                () -> assertThat(NOTION_CONTENT_FINDER.canHandle(notNotionLink)).isFalse()
         );
     }
 
@@ -36,10 +39,9 @@ class NotionContentFinderTest extends BaseApiTest {
     void crawl() {
         // given
         String normalLink = "https://tattered-drive-af3.notion.site/2744b522306480b89b42cc6dccb59b99?source=copy_link";
-        NotionContentFinder notionContentFinder = new NotionContentFinder();
 
         // when
-        ArticleCrawlResponse result = notionContentFinder.crawl(normalLink);
+        ArticleCrawlResponse result = NOTION_CONTENT_FINDER.crawl(normalLink);
 
         // then
         assertAll(
@@ -56,14 +58,12 @@ class NotionContentFinderTest extends BaseApiTest {
         String forbiddenLink = "https://www.notion.so/2804b522306480e4bef2c071fe9359b9?source=copy_link";
         String deleteLink = "https://www.notion.so/test-2853a9d1094e8040bd37f18e3a23bd0a?source=copy_link";
 
-        NotionContentFinder notionContentFinder = new NotionContentFinder();
-
         // when - then
         assertAll(
-                () -> assertThatThrownBy(() -> notionContentFinder.crawl(forbiddenLink))
+                () -> assertThatThrownBy(() -> NOTION_CONTENT_FINDER.crawl(forbiddenLink))
                         .isInstanceOf(CustomException.class)
                         .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
-                () -> assertThatThrownBy(() -> notionContentFinder.crawl(deleteLink))
+                () -> assertThatThrownBy(() -> NOTION_CONTENT_FINDER.crawl(deleteLink))
                         .isInstanceOf(CustomException.class)
                         .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage())
         );
