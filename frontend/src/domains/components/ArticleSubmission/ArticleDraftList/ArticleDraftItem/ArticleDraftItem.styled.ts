@@ -13,7 +13,8 @@ export const ArticleDraftItem = styled.li`
   isolation: isolate;
 
   &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: 0.25s linear;
+    box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
   }
 `;
 
