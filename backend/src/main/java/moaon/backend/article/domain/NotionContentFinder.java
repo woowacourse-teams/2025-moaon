@@ -28,12 +28,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NotionContentFinder extends ContentFinder {
     /*
     노션이 사용중인 도메인: notion.site, notion.com, notion.so
     이 외 사용자 지정 도메인은 bodyFinder 가 수행한다.
      */
+
+    @Value("${notion.user_id}")
+    private String notionUserId;
+    @Value("${notion.tokenV2}")
+    private String tokenV2;
 
     private static final List<String> NOTION_DOMAIN = List.of(
             "notion.site", "notion.com", "notion.so"
@@ -52,11 +60,16 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     @Override
-    public ArticleCrawlResponse crawl(String url) {
-        String responseBody = getResponseBody(url);
+    public ArticleCrawlResponse crawl(String link) {
+        String responseBody = getResponseBody(link);
         validateLink(responseBody);
+
         String title = getTitle(responseBody);
-        String summary = getText(url).substring(0, 255);
+
+        String body = getText(link);
+        int lastIndex = Math.min(body.length(), 255);
+        String summary = body.substring(0, lastIndex);
+
         return new ArticleCrawlResponse(title, summary);
     }
 
@@ -99,12 +112,12 @@ public class NotionContentFinder extends ContentFinder {
         try {
             JsonNode recordMap = mapper.readTree(responseBody).path("recordMap");
 
-            // recordMap 에 아무런 정보가 없다면?
+            // recordMap 에 아무런 정보가 없는 상황입니다.
             if (recordMap.isMissingNode() || recordMap.isEmpty()) {
                 throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
             }
 
-            // recordMap 에 버전 정보만 있다면?
+            // recordMap 에 버전 정보만 있는 상황입니다.
             if (recordMap.size() == 1 && recordMap.has("__version__")) {
                 throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
             }
@@ -114,16 +127,8 @@ public class NotionContentFinder extends ContentFinder {
         }
     }
 
-    /*
-    https://developers.notion.com/reference/intro
-    노션 공식문서에 따르면
-    The URL ends in a page ID. It should be a 32 character long string. 라고 명시되어 있습니다.
-    따라서 query, fragment 만 제거한 후 마지막 32자를 pageId 로 추출합니다.
-     */
     private String getResponseBody(String url) {
         String pageId = extractPageId(url);
-        String tokenV2 = "v03%3AeyJhbGciOiJkaXIiLCJraWQiOiJwcm9kdWN0aW9uOnRva2VuLXYzOjIwMjQtMTEtMDciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0..2XaShtLP2AyBCDniklwtWQ.ZI3yAobOmbpCKLu1xL9fImFfdBBwpiCJAZZgj_RzmaX7SkXcoLaNMxPQJeEg0H47LF4bHCT8MPj5uvcw6lvjMebYkibm3Ak94lLGdG9gFTj6oCsv6YSdc6zavoDcgM3S7oarvpB22tXXA2sWty1djvDWhgPxGhqbVhbOu-Ba-NyBgZGjGlohQa-GNPfEivQ3dZ9zYwEFs6gPP8p6hdDQAo3Oq4sEVoi_monMaau2nTCL0NCK1Bm4bPXZRIEQktC9FhUqlhgY1_Ttx1dznMCS206VOcpC9FmVYCIKJjX-n4RXxtnxbjtXVjbNPHd8Ij-V40UDxltyZqaUZvjly0ATminkS7KAiiZd2Ewc-LdKQ4w.Y3d1JaarG_3Rjv_OgyqA92pdAkbqZayo-MYp3rhbvvg";
-        String notionUserId = "286d872b-594c-8161-896f-0002c9eb2837";
         String decodedToken = URLDecoder.decode(tokenV2, StandardCharsets.UTF_8);
 
         String notionInternalApiUrl = "https://www.notion.so/api/v3/loadPageChunk";
@@ -157,6 +162,12 @@ public class NotionContentFinder extends ContentFinder {
         }
     }
 
+    /*
+    https://developers.notion.com/reference/intro
+    노션 공식문서에 따르면
+    The URL ends in a page ID. It should be a 32 character long string. 라고 명시되어 있습니다.
+    따라서 query, fragment 만 제거한 후 마지막 32자를 pageId 로 추출합니다.
+     */
     private String extractPageId(String link) {
         try {
             String path = URI.create(link).toURL().getPath();

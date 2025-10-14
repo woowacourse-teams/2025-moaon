@@ -2,6 +2,7 @@ package moaon.backend.article.domain;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
@@ -18,22 +19,23 @@ public class TistoryContentFinder extends ContentFinder {
      */
 
     @Override
-    public ArticleCrawlResponse crawl(String url) {
-
+    public ArticleCrawlResponse crawl(String link) {
         try {
-            Response response = Jsoup.connect(url)
+            Response response = Jsoup.connect(link)
                     .ignoreHttpErrors(true)
                     .execute();
             validateLink(response.statusCode());
 
             Document doc = response.parse();
-            Element metaDesc = doc.selectFirst("meta[name=description]");
-            String summary = metaDesc != null ? metaDesc.attr("content") : "";
             String title = doc.title();
+
+            Element metaDesc = doc.selectFirst("meta[name=description]");
+            String description = metaDesc != null ? metaDesc.attr("content") : "";
+            int lastIndex = Math.min(description.length(), 255);
+            String summary = description.substring(0, lastIndex);
 
             return new ArticleCrawlResponse(title, summary);
         } catch (IOException e) {
-            System.out.println("e = " + e);
             throw new CustomException(ErrorCode.UNKNOWN, e);
         }
     }
@@ -41,7 +43,7 @@ public class TistoryContentFinder extends ContentFinder {
     @Override
     public boolean canHandle(String link) {
         try {
-            URL url = new URL(link);
+            URL url = URI.create(link).toURL();
             String host = url.getHost();
 
             return host.endsWith("tistory.com");

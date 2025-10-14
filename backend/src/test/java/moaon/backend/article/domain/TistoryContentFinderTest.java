@@ -3,8 +3,8 @@ package moaon.backend.article.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -28,13 +28,30 @@ class TistoryContentFinderTest {
         );
     }
 
-    @DisplayName("권한이 없거나 삭제된 티스토리 글은 예외를 발생한다.")
+    @DisplayName("tistory 크롤링")
     @Test
     void crawl() {
         // given
+        String normalLink = "https://minjae8563.tistory.com/6";
+        TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
+
+        // when
+        ArticleCrawlResponse result = tistoryContentFinder.crawl(normalLink);
+
+        // then
+        assertAll(
+                () -> assertThat(result.title()).isEqualTo("공개 게시글입니다."),
+                () -> assertThat(result.summary()).startsWith("안녕하세요"),
+                () -> assertThat(result.summary().length()).isLessThanOrEqualTo(255)
+        );
+    }
+
+    @DisplayName("권한이 없거나 삭제된 티스토리 글은 예외를 발생한다.")
+    @Test
+    void crawlFail() {
+        // given
         String forbiddenLink = "https://minjae8563.tistory.com/3";
         String deleteLink = "https://minjae8563.tistory.com/5";
-        String normalLink = "https://minjae8563.tistory.com/6";
 
         TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
@@ -45,10 +62,7 @@ class TistoryContentFinderTest {
                         .hasMessage(ErrorCode.ARTICLE_URL_FORBIDDEN.getMessage()),
                 () -> assertThatThrownBy(() -> tistoryContentFinder.crawl(deleteLink))
                         .isInstanceOf(CustomException.class)
-                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage()),
-                () -> assertDoesNotThrow(
-                        () -> tistoryContentFinder.crawl(normalLink)
-                )
+                        .hasMessage(ErrorCode.ARTICLE_URL_NOT_FOUND.getMessage())
         );
     }
 }

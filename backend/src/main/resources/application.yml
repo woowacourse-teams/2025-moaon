@@ -30,3 +30,7 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: trace
     org.flywaydb: debug
+
+notion:
+  user_id: "${NOTION_USER_ID}"
+  tokenV2: "${NOTION_TOKEN_V2}"

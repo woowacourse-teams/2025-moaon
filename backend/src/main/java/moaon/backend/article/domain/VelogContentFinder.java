@@ -21,10 +21,14 @@ public class VelogContentFinder extends ContentFinder {
     이 외 사용자 지정 도메인은 BodyFinder 가 수행한다.
      */
     @Override
-    public ArticleCrawlResponse crawl(String url) {
-        JsonNode post = getPost(url);
+    public ArticleCrawlResponse crawl(String link) {
+        JsonNode post = getPost(link);
         String title = post.path("title").asText();
-        String summary = post.path("summary").asText();
+
+        String body = post.path("body").asText();
+        int lastIndex = Math.min(body.length(), 255);
+        String summary = body.substring(0, lastIndex);
+
         return new ArticleCrawlResponse(title, summary);
     }
 
@@ -40,19 +44,9 @@ public class VelogContentFinder extends ContentFinder {
             String username = parts[1].replaceFirst("@", "");
             String urlSlug = URLDecoder.decode(parts[2], StandardCharsets.UTF_8);
 
-//            String graphqlQuery = """
-//                    {
-//                      "query": "query($username: String!, $url_slug: String!) { post(username: $username, url_slug: $url_slug) { id title } }",
-//                      "variables": {
-//                        "username": "%s",
-//                        "url_slug": "%s"
-//                      }
-//                    }
-//                    """.formatted(username, urlSlug);
-
             String graphqlQuery = """
                     {
-                      "query":"query ReadPost($username: String, $url_slug: String) { post(username: $username, url_slug: $url_slug) { title body short_description} }",
+                      "query":"query ReadPost($username: String, $url_slug: String) { post(username: $username, url_slug: $url_slug) { title body } }",
                       "operationName":"ReadPost",
                       "variables": {
                         "username": "%s",
