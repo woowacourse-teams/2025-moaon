@@ -22,7 +22,6 @@ public class ArticleCrawlService {
     private final ArticleContentRepository repository;
 
     public ArticleCrawlResult crawl(ArticleCrawlRequest request) {
-
         ContentFinder finder = FINDER.getFinder(request.url());
         return finder.crawl(request.url());
     }
