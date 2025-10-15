@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toSet;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -71,15 +72,15 @@ public class ArticleDocument {
         this.content = article.getContent();
         this.sector = article.getSector();
         this.topics = new HashSet<>(article.getTopics());
-        this.techStacks = setTechStacks(article);
+        this.techStacks = setTechStacks(article.getTechStacks());
         this.clicks = article.getClicks();
         this.createdAt = article.getCreatedAt();
     }
 
-    private Set<String> setTechStacks(Article article) {
+    private Set<String> setTechStacks(List<TechStack> techStacks) {
         if (CollectionUtils.isEmpty(techStacks)) {
             return new HashSet<>();
         }
-        return article.getTechStacks().stream().map(TechStack::getName).collect(toSet());
+        return techStacks.stream().map(TechStack::getName).collect(toSet());
     }
 }
