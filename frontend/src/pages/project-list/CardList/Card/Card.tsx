@@ -1,6 +1,6 @@
 import eyeIcon from "@assets/icons/eye.svg";
-import grayHeartIcon from "@assets/icons/gray-heart.svg";
-import redHeartIcon from "@assets/icons/pink-heart.svg";
+// import grayHeartIcon from "@assets/icons/gray-heart.svg";
+// import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-image.png";
 import notFoundImage from "@assets/images/image-not-found.png";
 import type { SyntheticEvent } from "react";
@@ -20,8 +20,8 @@ function Card({ project }: CardProps) {
     summary,
     techStacks,
     thumbnailUrl,
-    isLoved,
-    loves,
+    // isLoved,
+    // loves,
     views,
   } = project;
 

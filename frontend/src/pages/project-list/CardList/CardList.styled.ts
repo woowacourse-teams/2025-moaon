@@ -6,15 +6,57 @@ export const CardList = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
   gap: 1.5rem;
+  @media screen and (max-width: 1280px) {
+    width: 64rem;
+    gap: 1.5rem;
+  }
+  @media screen and (max-width: 1024px) {
+    width: 48rem;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 1.25rem;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 0 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
 `;
 
 export const ProjectIntro = styled.p`
   color: #73798d;
   font-size: 1.125rem;
-  margin-bottom: 1.25rem;
+  width: 80rem;
+  margin: 0 auto 1.25rem;
+  @media screen and (max-width: 1024px) {
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 0.9375rem;
+    width: 100%;
+    padding: 0 1.25rem;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.875rem;
+    padding: 0 1rem;
+  }
+  @media screen and (max-width: 1280px) {
+    width: 64rem;
+  }
+  @media screen and (max-width: 1024px) {
+    width: 48rem;
+  }
 `;
 
 export const ProjectIntroText = styled.span`
   color: #007bff;
   font-weight: 500;
+  @media screen and (max-width: 768px) {
+    font-weight: 600;
+  }
 `;
