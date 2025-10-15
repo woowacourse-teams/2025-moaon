@@ -28,7 +28,7 @@ public enum ErrorCode {
     // 크롤 실패
     ARTICLE_CRAWL_FAILED("URL-004", "아티클 크롤링 실패입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
-    CONTENT_FINDER_NOT_FOUND("CONTENT-001", "해당 URL을 처리할 수 있는 ContentFinder가 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
+    CONTENT_FINDER_NOT_FOUND("CONTENT-001", "등록할 수 없는 URL 입니다.", HttpStatus.BAD_REQUEST),
 
     INVALID_CURSOR_FORMAT("CURSOR-001", "커서 파라미터 형식이 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
 
