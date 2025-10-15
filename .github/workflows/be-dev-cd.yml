@@ -85,6 +85,8 @@ jobs:
           SPRING_DATASOURCE_USERNAME_DEV=${{ secrets.SPRING_DATASOURCE_USERNAME_DEV }}
           SPRING_DATASOURCE_PASSWORD_DEV=${{ secrets.SPRING_DATASOURCE_PASSWORD_DEV }}
           IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
           EOF
 
       - name: Log in to Docker Hub

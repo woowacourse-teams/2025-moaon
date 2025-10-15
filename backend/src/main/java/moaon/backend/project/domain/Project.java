@@ -24,6 +24,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.article.domain.Article;
 import moaon.backend.global.domain.BaseTimeEntity;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.techStack.domain.ProjectTechStack;
 import moaon.backend.techStack.domain.TechStack;
@@ -76,10 +78,10 @@ public class Project extends BaseTimeEntity {
     private List<Member> lovedMembers;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectTechStack> techStacks;
+    private List<ProjectTechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectCategory> categories;
+    private List<ProjectCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articles;
@@ -92,21 +94,43 @@ public class Project extends BaseTimeEntity {
             String productionUrl,
             Images images,
             Member author,
-            List<ProjectTechStack> techStacks,
-            List<ProjectCategory> categories,
+            List<TechStack> techStacks,
+            List<Category> categories,
             LocalDateTime createdAt
     ) {
+        if (title.length() < 2 || title.length() > 30 || title.matches("[^a-zA-Z0-9가-힣ㄱ-하-ㅣ\\s]")) {
+            throw new CustomException(ErrorCode.PROJECT_INVALID_TITLE);
+        }
         this.title = title;
+        if (summary.length() < 10 || summary.length() > 50) {
+            throw new CustomException(ErrorCode.PROJECT_INVALID_SUMMARY);
+        }
         this.summary = summary;
+        if (description.length() < 100 || description.length() > 8000) {
+            throw new CustomException(ErrorCode.PROJECT_INVALID_DESCRIPTION);
+        }
         this.description = description;
         this.githubUrl = githubUrl;
         this.productionUrl = productionUrl;
         this.images = images;
         this.views = 0;
         this.author = author;
-        this.lovedMembers = new ArrayList<>();
-        this.techStacks = new ArrayList<>(techStacks);
-        this.categories = new ArrayList<>(categories);
+        if (
+                techStacks.isEmpty() ||
+                        techStacks.size() > 40 ||
+                        techStacks.stream().distinct().count() != techStacks.size()
+        ) {
+            throw new CustomException(ErrorCode.PROJECT_INVALID_TECHSTACK);
+        }
+        techStacks.forEach(this::addTechStack);
+        if (
+                categories.isEmpty() ||
+                        categories.size() > 5 ||
+                        categories.stream().distinct().count() != categories.size()
+        ) {
+            throw new CustomException(ErrorCode.PROJECT_INVALID_CATEGORY);
+        }
+        categories.forEach(this::addCategory);
         this.createdAt = createdAt;
     }
 

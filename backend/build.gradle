@@ -69,7 +69,14 @@ dependencies {
     // flyway
     implementation 'org.flywaydb:flyway-mysql'
 
+    // dataFaker
     testImplementation 'net.datafaker:datafaker:2.1.0'
+
+    // selenium
+    implementation "org.seleniumhq.selenium:selenium-java:4.35.0"
+
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.21.2'
 
     // jjwt
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'

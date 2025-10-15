@@ -15,6 +15,11 @@ const NAV_LIST = [
     href: "/article",
     text: "아티클 탐색",
   },
+  {
+    id: 3,
+    href: "/wooteco",
+    text: "우아한테크코스",
+  },
 ];
 
 function NavBar() {
