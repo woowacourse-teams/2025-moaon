@@ -25,12 +25,12 @@ function Event1() {
 
       <S.Grid>
         {COMPANY_LIST.map((company) => (
-          <li key={company}>
+          <S.CompanyListItem key={company}>
             <S.CompanyLogo
               src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-logo.svg`}
               alt=""
             />
-          </li>
+          </S.CompanyListItem>
         ))}
       </S.Grid>
       <S.ButtonBox>
