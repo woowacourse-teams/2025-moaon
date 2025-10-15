@@ -31,10 +31,6 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    public Member(String name) {
-        this.name = name;
-    }
-
     public Member(String socialId, String email, String name) {
         this.socialId = socialId;
         this.email = email;

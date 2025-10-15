@@ -56,8 +56,8 @@ public class ProjectApiTest extends BaseApiTest {
 
         repositoryHelper.save(new Category("web"));
         repositoryHelper.save(new Category("it"));
-        
-        repositoryHelper.save(new Member("포포"));
+
+        repositoryHelper.save(new Member("123", "popo@gmail.com", "포포"));
 
         ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
                 .title("모아온")
