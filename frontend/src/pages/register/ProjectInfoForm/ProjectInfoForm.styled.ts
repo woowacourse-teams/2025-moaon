@@ -36,3 +36,19 @@ export const TechStackTag = styled.div`
     margin-bottom: 0.125rem;
   }
 `;
+
+export const NextButton = styled.button`
+  align-self: flex-end;
+  padding: 0.6rem 2rem;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0472e8ff;
+  }
+`;

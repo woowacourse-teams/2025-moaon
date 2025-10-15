@@ -40,6 +40,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
       };
     });
   };
+
   const toggleTopic = (key: ProjectCategoryKey) => {
     setFormData((prev) => {
       const isSelected = prev.categories.includes(key);
@@ -150,9 +151,9 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         />
       </FormField>
 
-      <button type="button" onClick={onNext}>
+      <S.NextButton type="button" onClick={onNext}>
         다음
-      </button>
+      </S.NextButton>
     </S.FormFieldGroups>
   );
 }
