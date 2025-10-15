@@ -3,12 +3,14 @@ package moaon.backend.api.project;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
@@ -21,16 +23,20 @@ import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectArticleResponse;
+import moaon.backend.project.dto.ProjectCreateRequest;
+import moaon.backend.project.dto.ProjectCreateResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
 
@@ -39,6 +45,52 @@ public class ProjectApiTest extends BaseApiTest {
 
     @Autowired
     protected RepositoryHelper repositoryHelper;
+
+    @DisplayName("POST /projects : 프로젝트 저장 API")
+    @Test
+    void saveProject() {
+        // given
+        repositoryHelper.save(new TechStack("java"));
+        repositoryHelper.save(new TechStack("mysql"));
+        repositoryHelper.save(new TechStack("docker"));
+
+        repositoryHelper.save(new Category("web"));
+        repositoryHelper.save(new Category("it"));
+        
+        repositoryHelper.save(new Member("포포"));
+
+        ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
+                .title("모아온")
+                .summary("프로젝트를 모아모아, 모아온")
+                .description(
+                        """
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                """
+                )
+                .techStacks(List.of("java", "mysql", "docker"))
+                .categories(List.of("web", "it"))
+                .githubUrl("www.moaon.github")
+                .productionUrl("www.moaon.co.kr")
+                .imageKeys(List.of("www.images.com"))
+                .build();
+
+        // when
+        ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
+                .contentType(ContentType.JSON)
+                .body(projectCreateRequest)
+                .filter(document(projectCreateRequestFields(), projectCreateResponseFields()))
+                .when().post("/projects")
+                .then().log().all()
+                .statusCode(201)
+                .extract().as(ProjectCreateResponse.class);
+
+        // then
+        assertThat(response.id()).isNotNull();
+    }
 
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
@@ -239,6 +291,25 @@ public class ProjectApiTest extends BaseApiTest {
                                 targetProjectArticle2.getId(),
                                 targetProjectArticle3.getId()
                         )
+        );
+    }
+
+    private RequestFieldsSnippet projectCreateRequestFields() {
+        return requestFields(
+                fieldWithPath("title").description("프로젝트 제목"),
+                fieldWithPath("summary").description("프로젝트 요약"),
+                fieldWithPath("description").description("프로젝트 상세 설명"),
+                fieldWithPath("techStacks").description("사용된 기술 스택 목록"),
+                fieldWithPath("categories").description("프로젝트 카테고리 목록"),
+                fieldWithPath("githubUrl").description("GitHub 저장소 URL").optional(),
+                fieldWithPath("productionUrl").description("배포 URL").optional(),
+                fieldWithPath("imageKeys").description("프로젝트 이미지 URL 목록").optional()
+        );
+    }
+
+    private ResponseFieldsSnippet projectCreateResponseFields() {
+        return responseFields(
+                fieldWithPath("id").description("생성된 프로젝트 ID")
         );
     }
 
