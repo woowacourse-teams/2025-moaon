@@ -95,6 +95,9 @@ jobs:
     name: Deploy to Production Server 2
     needs: deploy-prod-1
     runs-on: prod-2
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
