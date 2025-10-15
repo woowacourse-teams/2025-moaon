@@ -20,6 +20,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
+import org.springframework.util.CollectionUtils;
 
 @Document(indexName = "articles")
 @Setting(settingPath = "/elasticsearch/article-settings.json")
@@ -70,8 +71,15 @@ public class ArticleDocument {
         this.content = article.getContent();
         this.sector = article.getSector();
         this.topics = new HashSet<>(article.getTopics());
-        this.techStacks = article.getTechStacks().stream().map(TechStack::getName).collect(toSet());
+        this.techStacks = setTechStacks(article);
         this.clicks = article.getClicks();
         this.createdAt = article.getCreatedAt();
+    }
+
+    private Set<String> setTechStacks(Article article) {
+        if (CollectionUtils.isEmpty(techStacks)) {
+            return new HashSet<>();
+        }
+        return article.getTechStacks().stream().map(TechStack::getName).collect(toSet());
     }
 }

@@ -7,12 +7,12 @@ import io.restassured.RestAssured;
 import java.time.Duration;
 import java.util.List;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleContent;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
-import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
@@ -205,7 +205,7 @@ public class ArticleESApiTest {
 
         // then
         assertThat(actualResponse.contents())
-                .extracting(ArticleContent::id)
+                .extracting(ArticleData::id)
                 .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
 }
