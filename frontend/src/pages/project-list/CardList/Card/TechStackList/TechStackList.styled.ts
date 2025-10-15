@@ -9,7 +9,6 @@ export const TechStackList = styled.ul`
   height: 1.25rem;
   overflow: hidden;
   @media screen and (max-width: 768px) {
-    height: auto;
     gap: 0.3125rem;
   }
   @media screen and (max-width: 480px) {

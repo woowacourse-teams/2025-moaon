@@ -113,13 +113,15 @@ export const CardSummary = styled.p`
   ${textOverflowEllipsis(2)}
   @media screen and (max-width: 1024px) {
     font-size: 0.9rem;
+    height: 2.8rem;
   }
   @media screen and (max-width: 768px) {
     font-size: 0.875rem;
-    height: auto;
+    height: 2.6rem;
   }
   @media screen and (max-width: 480px) {
     font-size: 0.84375rem;
+    height: 2.4rem;
   }
 `;
 
