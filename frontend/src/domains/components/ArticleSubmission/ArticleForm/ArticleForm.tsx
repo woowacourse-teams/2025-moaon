@@ -1,13 +1,9 @@
-import { ARTICLE_SECTOR_ENTRY } from "@domains/filter/articleSector";
-
-import {
-  getTechStackBySector,
-  getTopicsBySector,
-} from "@domains/utils/sectorHandlers";
 import type { ArticleFormDataType } from "../types";
 import * as S from "./ArticleForm.styled";
-import FormField from "./components/FormField/FormField";
-import TagList from "./components/TagList/TagList";
+import InputFormField from "./components/InputFormField/InputFormField";
+import InputFormFieldWithButton from "./components/InputFormFieldWithButton/InputFormFieldWithButton";
+import SectorFormField from "./components/SectorFormField/SectorFormField";
+import TextareaFormField from "./components/TextareaFormField/TextareaFormField";
 import { useArticleForm } from "./hooks/useArticleForm";
 
 interface ArticleFormProps {
@@ -29,84 +25,42 @@ function ArticleForm({
     onUpdate,
     onCancel,
   });
-  const techStackEntry = getTechStackBySector(formData.sector);
-  const topicEntry = getTopicsBySector(formData.sector);
-  const sectorEntriesWithoutAll = ARTICLE_SECTOR_ENTRY.filter(
-    ([key]) => key !== "all",
-  );
-  const isSectorAll = formData.sector === "all";
-  const isNonTech = formData.sector === "nonTech";
+
+  const updateFormFieldData = <K extends keyof ArticleFormDataType>(
+    field: K,
+    value: ArticleFormDataType[K],
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
   return (
     <S.FormBox>
       <S.FormTitle>
         {editingData ? "아티클 수정" : "새 아티클 추가"}
       </S.FormTitle>
       <S.FormFieldList>
-        <FormField title="아티클 주소">
-          <S.ArticleAddressBox>
-            <input
-              type="text"
-              name="address"
-              placeholder="https://moaon.co.kr"
-              value={formData.address}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, address: e.target.value }))
-              }
-            />
-            <S.ArticleAddressButton
-              type="button"
-              onClick={handlers.handleFetchMeta}
-            >
-              가져오기
-            </S.ArticleAddressButton>
-          </S.ArticleAddressBox>
-        </FormField>
-        <FormField title="아티클 제목">
-          <input
-            type="text"
-            name="title"
-            placeholder="아티클 제목을 입력해주세요."
-            value={formData.title}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, title: e.target.value }))
-            }
-          />
-        </FormField>
-        <FormField title="아티클 내용">
-          <textarea
-            name="description"
-            placeholder="아티클 내용 요약.."
-            value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, description: e.target.value }))
-            }
-          />
-        </FormField>
-        <FormField title="직군 선택">
-          <TagList
-            entries={sectorEntriesWithoutAll}
-            onSelect={handlers.updateSectorParams}
-            isActive={(data) => data === formData.sector}
-          />
-        </FormField>
-        {!(isSectorAll || isNonTech) && (
-          <FormField title="기술스택">
-            <TagList
-              entries={techStackEntry}
-              onSelect={handlers.toggleTechStack}
-              isActive={(data) => formData.techStacks.includes(data)}
-            />
-          </FormField>
-        )}
-        {!isSectorAll && (
-          <FormField title="주제">
-            <TagList
-              entries={topicEntry}
-              onSelect={handlers.toggleTopic}
-              isActive={(data) => formData.topics.includes(data)}
-            />
-          </FormField>
-        )}
+        <InputFormFieldWithButton
+          title="아티클 주소"
+          name="address"
+          placeholder="https://moaon.co.kr"
+          value={formData.address}
+          onChange={(e) => updateFormFieldData("address", e.target.value)}
+          buttonEvent={handlers.handleFetchMeta}
+        />
+        <InputFormField
+          title="아티클 제목"
+          name="title"
+          placeholder="아티클 제목을 입력해주세요."
+          value={formData.title}
+          onChange={(e) => updateFormFieldData("title", e.target.value)}
+        />
+        <TextareaFormField
+          title="아티클 내용"
+          name="description"
+          placeholder="아티클 내용 요약.."
+          value={formData.description}
+          onChange={(e) => updateFormFieldData("description", e.target.value)}
+        />
+        <SectorFormField formData={formData} onChange={updateFormFieldData} />
       </S.FormFieldList>
       <S.ArticleButtonGroup>
         <S.ArticleAddButton
