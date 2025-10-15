@@ -3,6 +3,7 @@ package moaon.backend.article.domain;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -57,22 +58,28 @@ public class VelogContentFinder extends ContentFinder {
                     .openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(5_000);
+            connection.setReadTimeout(5_000);
             connection.setDoOutput(true);
 
             try (OutputStream os = connection.getOutputStream()) {
-                os.write(graphqlQuery.getBytes());
+                os.write(graphqlQuery.getBytes(StandardCharsets.UTF_8));
             }
 
-            String responseJson = new String(connection.getInputStream().readAllBytes());
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(responseJson);
+            try (InputStream inputStream = connection.getInputStream()) {
+                String responseJson = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode root = mapper.readTree(responseJson);
 
-            JsonNode postNode = root.path("data").path("post");
-            if (postNode.isNull() || postNode.isMissingNode()) {
-                throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
+                JsonNode postNode = root.path("data").path("post");
+                if (postNode.isNull() || postNode.isMissingNode()) {
+                    throw new CustomException(ErrorCode.ARTICLE_URL_NOT_FOUND);
+                }
+                return postNode;
+            } finally {
+                connection.disconnect();
             }
-            return postNode;
-
         } catch (IOException e) {
             throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
         }
