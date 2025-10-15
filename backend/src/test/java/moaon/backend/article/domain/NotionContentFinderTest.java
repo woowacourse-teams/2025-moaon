@@ -6,17 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.util.EnvLoader;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@Disabled
-class NotionContentFinderTest extends BaseApiTest {
+class NotionContentFinderTest {
 
     private static final NotionContentFinder NOTION_CONTENT_FINDER = new NotionContentFinder(
             EnvLoader.getEnv("NOTION_USER_ID"),
