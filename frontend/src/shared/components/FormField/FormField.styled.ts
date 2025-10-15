@@ -5,8 +5,7 @@ export const FormFieldWrapper = styled.div`
   flex-direction: column;
   gap: 0.75rem;
 
-  & input,
-  & textarea {
+  & input {
     flex: 1;
     padding: 0.75rem 0.5rem;
     border: 1px solid #d1d5db;
@@ -17,10 +16,6 @@ export const FormFieldWrapper = styled.div`
       border-color: #005eff;
       box-shadow: 0 0 0 4px rgba(0, 94, 255, 0.12);
     }
-  }
-
-  & textarea {
-    min-height: 6rem;
   }
 `;
 
