@@ -27,8 +27,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      elastic:
-        condition: service_healthy
     ports:
       - "8080:8080"
     logging:
@@ -45,4 +43,3 @@ services:
 
 volumes:
   db-data:
-  es_data:
