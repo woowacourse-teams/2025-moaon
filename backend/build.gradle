@@ -71,9 +71,6 @@ dependencies {
 
     // data
     testImplementation 'net.datafaker:datafaker:2.1.0'
-
-    // healthcheck
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 clean {
