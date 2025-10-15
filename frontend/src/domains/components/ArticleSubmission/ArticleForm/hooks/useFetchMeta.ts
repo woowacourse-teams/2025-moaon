@@ -1,5 +1,5 @@
 import { toast } from "@shared/components/Toast/toast";
-import { type RefObject, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { fetchAndParseMeta, type Meta } from "../utils/fetchAndParseMeta";
 
 const normalizeUrl = (raw: string) => {
