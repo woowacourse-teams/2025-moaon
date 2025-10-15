@@ -6,6 +6,12 @@ export const NavLinkList = styled.ul`
   display: flex;
   gap: 1.5rem;
   position: relative;
+  @media screen and (max-width: 768px) {
+    gap: 1.125rem;
+  }
+  @media screen and (max-width: 480px) {
+    gap: 0.875rem;
+  }
 `;
 
 export const NavLinkItem = styled.li`
@@ -32,9 +38,20 @@ export const NavLinkItem = styled.li`
 export const Link = styled.button<{ isSelected: boolean }>`
   color: ${({ isSelected }) => (isSelected ? "#007bff" : "#000")};
   font-weight: ${({ isSelected }) => (isSelected ? 700 : 400)};
-  padding: 1.75rem 0;
+  padding: 1.5rem 0;
   display: inline-block;
   font-size: 1rem;
+  @media screen and (max-width: 1024px) {
+    padding: 1.25rem 0;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 1rem 0;
+    font-size: 0.9375rem;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 0.875rem 0;
+    font-size: 0.9rem;
+  }
 
   &:hover {
     font-weight: ${({ isSelected }) => (isSelected ? 700 : 600)};
