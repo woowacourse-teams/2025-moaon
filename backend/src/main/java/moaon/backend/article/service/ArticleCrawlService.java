@@ -39,7 +39,7 @@ public class ArticleCrawlService {
             return new ArticleCrawlResponse(title, summary);
         }
 
-        repository.save(new ArticleContent(url, result.content()));
+        repository.save(new ArticleContent(url.toString(), result.content()));
         return new ArticleCrawlResponse(title, summary);
     }
 }

@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.net.URL;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +19,12 @@ public class ArticleContent {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private URL url;
+    private String url;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    public ArticleContent(URL url, String content) {
+    public ArticleContent(String url, String content) {
         this.url = url;
         this.content = content;
     }
