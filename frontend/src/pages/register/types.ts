@@ -5,11 +5,11 @@ import type { TechStackKey } from "@domains/filter/techStack";
 
 export interface ProjectFormDataType {
   title: string;
-  description: string;
+  summary: string;
   githubUrl: string;
-  serviceUrl: string;
-  overview: string;
-  topics: ProjectCategoryKey[];
+  productionUrl: string;
+  description: string;
+  categories: ProjectCategoryKey[];
   techStacks: TechStackKey[];
 }
 

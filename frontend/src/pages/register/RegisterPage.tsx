@@ -13,11 +13,11 @@ import type { ProjectFormDataType } from "./types";
 function RegisterPage() {
   const [formData, setFormData] = useState<ProjectFormDataType>({
     title: "",
-    description: "",
+    summary: "",
     githubUrl: "",
-    serviceUrl: "",
-    overview: "",
-    topics: [],
+    productionUrl: "",
+    description: "",
+    categories: [],
     techStacks: [],
   });
 
@@ -25,12 +25,12 @@ function RegisterPage() {
 
   const toggleTopic = (key: ProjectCategoryKey) => {
     setFormData((prev) => {
-      const isSelected = prev.topics.includes(key);
+      const isSelected = prev.categories.includes(key);
       return {
         ...prev,
-        topics: isSelected
-          ? prev.topics.filter((t) => t !== key)
-          : [...prev.topics, key],
+        categories: isSelected
+          ? prev.categories.filter((t) => t !== key)
+          : [...prev.categories, key],
       };
     });
   };
@@ -68,11 +68,11 @@ function RegisterPage() {
               type="text"
               name="description"
               placeholder="프로젝트를 한 문장으로 소개해주세요"
-              value={formData.description}
+              value={formData.summary}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  description: e.target.value,
+                  summary: e.target.value,
                 }))
               }
             />
@@ -80,9 +80,9 @@ function RegisterPage() {
 
           <FormField title="프로젝트 개요">
             <ProjectOverviewEditor
-              value={formData.overview}
+              value={formData.description}
               onChange={(value) =>
-                setFormData((prev) => ({ ...prev, overview: value }))
+                setFormData((prev) => ({ ...prev, description: value }))
               }
             />
           </FormField>
@@ -91,7 +91,7 @@ function RegisterPage() {
             <TagList
               entries={PROJECT_CATEGORY_ENTRY}
               onSelect={toggleTopic}
-              isActive={(key) => formData.topics.includes(key)}
+              isActive={(key) => formData.categories.includes(key)}
             />
           </FormField>
           <FormField title="GitHub 주소" required={false}>
@@ -111,9 +111,12 @@ function RegisterPage() {
               type="text"
               name="serviceUrl"
               placeholder="https://your-service.com"
-              value={formData.serviceUrl}
+              value={formData.productionUrl}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, serviceUrl: e.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  productionUrl: e.target.value,
+                }))
               }
             />
           </FormField>
