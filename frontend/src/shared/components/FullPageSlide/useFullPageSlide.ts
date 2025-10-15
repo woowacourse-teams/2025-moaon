@@ -30,10 +30,11 @@ export const useFullPageSlide = ({
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault();
+    const wheelThreshold = 10;
 
-    if (e.deltaY > 0) {
+    if (e.deltaY > wheelThreshold) {
       goToPage(currentIndex + 1);
-    } else if (e.deltaY < 0) {
+    } else if (e.deltaY < -wheelThreshold) {
       goToPage(currentIndex - 1);
     }
   };
