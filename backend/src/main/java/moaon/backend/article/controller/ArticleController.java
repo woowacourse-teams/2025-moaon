@@ -2,6 +2,7 @@ package moaon.backend.article.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import java.util.List;
 import moaon.backend.article.dto.ArticleCreateRequest;
@@ -39,7 +40,7 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<Void> saveArticles(
-            @RequestBody List<ArticleCreateRequest> requests
+            @RequestBody @Valid List<ArticleCreateRequest> requests
     ) {
         articleService.save(requests);
         return ResponseEntity.status(HttpStatus.CREATED).build();
