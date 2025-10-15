@@ -7,6 +7,7 @@ import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
@@ -30,24 +31,14 @@ public class ProjectService {
     }
 
     public PagedProjectResponse getPagedProjects(ProjectQueryCondition projectQueryCondition) {
-        List<Project> projects = projectRepository.findWithSearchConditions(projectQueryCondition);
-        long totalCount = projectRepository.countWithSearchCondition(projectQueryCondition);
+        Projects projects = projectRepository.findWithSearchConditions(projectQueryCondition);
 
-        if (projects.size() > projectQueryCondition.limit()) {
-            List<Project> projectsToReturn = projects.subList(0, projectQueryCondition.limit());
-            Project lastProject = projectsToReturn.getLast();
+        List<Project> projectsToReturn = projects.getProjectsToReturn();
+        long count = projects.getCount();
+        boolean hasNext = projects.hasNext();
+        Cursor<?> nextCursor = projects.getNextCursor(projectQueryCondition.projectSortType());
 
-            Cursor<?> projectCursor = projectQueryCondition.projectSortType().toCursor(lastProject);
-
-            return PagedProjectResponse.from(
-                    projectsToReturn,
-                    totalCount,
-                    true,
-                    projectCursor.getNextCursor()
-            );
-        }
-
-        return PagedProjectResponse.from(projects, totalCount, false, null);
+        return PagedProjectResponse.from(projectsToReturn, count, hasNext, nextCursor);
     }
 
     @Transactional

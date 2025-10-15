@@ -18,7 +18,7 @@ export const LogoBox = styled.div`
   transform: translate(-50%, -50%);
   display: inline-block;
   opacity: 0;
-  animation: fadeIn 1.5s forwards;
+  animation: fadeIn 1s forwards;
 
   @keyframes fadeIn {
     to {
@@ -38,7 +38,7 @@ export const LogoGlow = styled.div`
   filter: blur(40px);
   opacity: 0.6;
   z-index: -1;
-  animation: pulse 3s ease-in-out backwards;
+  animation: pulse 2s ease-in-out backwards;
 
   @keyframes pulse {
     0% {

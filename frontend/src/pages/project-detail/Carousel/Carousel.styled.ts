@@ -16,6 +16,7 @@ const CarouselImage = styled.img`
   border: 2px solid #ddd;
   background-color: #fff;
   object-fit: contain;
+  cursor: pointer;
 
   -webkit-user-drag: none;
   -khtml-user-drag: none;
@@ -94,4 +95,12 @@ export const NextButton = styled(MoveButton)`
 
 export const PrevButton = styled(MoveButton)`
   left: 0;
+`;
+
+export const ModalImage = styled.img`
+  max-width: 80dvw;
+  max-height: 80dvh;
+  min-width: 25dvw;
+  min-height: 25dvw;
+  object-fit: contain;
 `;

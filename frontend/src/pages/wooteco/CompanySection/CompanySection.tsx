@@ -15,7 +15,7 @@ function CompanySection({ company }: CompanySectionProps) {
           src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-logo.svg`}
           alt=""
         />
-        {COMPANY_NAME[company]} 개발자가 참여한 프로젝트
+        {COMPANY_NAME[company]}에 합격한 프로젝트
       </S.SubTitle>
       <S.Box>
         <S.Description>
