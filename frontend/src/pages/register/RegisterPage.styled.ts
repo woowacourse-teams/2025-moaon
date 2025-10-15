@@ -26,9 +26,3 @@ export const FormBox = styled.form`
   box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
   border: 1px solid #cacacaff;
 `;
-
-export const FormFieldGroups = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
