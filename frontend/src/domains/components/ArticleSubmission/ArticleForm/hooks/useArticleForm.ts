@@ -31,7 +31,7 @@ export const useArticleForm = ({
     setFormData(editingData);
   }, [editingData]);
 
-  const handleFetchMeta = async () => {
+  const handleMetaDataFetchButtonClick = async () => {
     const result = await fill({
       urlInput: formData.address,
     });
@@ -94,7 +94,7 @@ export const useArticleForm = ({
     formData,
     updateFormFieldData,
     updateNestedField,
-    handleFetchMeta,
+    handleMetaDataFetchButtonClick,
     handleSubmit,
     handleCancel,
   };

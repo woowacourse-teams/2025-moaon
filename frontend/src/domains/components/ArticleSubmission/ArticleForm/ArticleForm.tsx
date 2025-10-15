@@ -23,7 +23,7 @@ function ArticleForm({
     formData,
     updateFormFieldData,
     updateNestedField,
-    handleFetchMeta,
+    handleMetaDataFetchButtonClick,
     handleSubmit,
     handleCancel,
   } = useArticleForm({
@@ -46,7 +46,7 @@ function ArticleForm({
           type="url"
           value={formData.address}
           onChange={(e) => updateFormFieldData("address", e.target.value)}
-          buttonEvent={handleFetchMeta}
+          buttonEvent={handleMetaDataFetchButtonClick}
         />
         <InputFormField
           title="아티클 제목"
