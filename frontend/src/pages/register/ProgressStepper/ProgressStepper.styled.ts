@@ -4,6 +4,7 @@ export const ProgressStepperContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 3rem;
 `;
 
 export const StepWrapper = styled.div`
@@ -58,5 +59,4 @@ export const Divider = styled.div<{ isCompleted: boolean }>`
   border-radius: 2px;
   background-color: ${({ isCompleted }) =>
     isCompleted ? "#2563eb" : "#e5e7eb"};
-  transition: background-color 0.2s ease;
 `;

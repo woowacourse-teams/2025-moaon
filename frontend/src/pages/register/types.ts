@@ -8,6 +8,7 @@ export interface ProjectFormDataType {
   description: string;
   githubUrl: string;
   serviceUrl: string;
+  overview: string;
   topics: ProjectCategoryKey[];
   techStacks: TechStackKey[];
 }
