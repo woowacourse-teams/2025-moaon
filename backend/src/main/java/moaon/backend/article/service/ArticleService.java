@@ -97,7 +97,8 @@ public class ArticleService {
                             .toList(),
                     request.techStacks()
                             .stream()
-                            .map(techStackRepository::findByName)
+                            .map(techStack -> techStackRepository.findByName(techStack)
+                                    .orElseThrow(() -> new CustomException(ErrorCode.TECHSTACK_NOT_FOUND)))
                             .toList()
             );
 

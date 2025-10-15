@@ -55,6 +55,8 @@ public class ArticleApiTest extends BaseApiTest {
                 new ProjectFixtureBuilder().build()
         );
 
+        repositoryHelper.save(new TechStack("react"));
+
         ArticleCreateRequest articleCreateRequest = ArticleCreateRequest.builder()
                 .projectId(savedProject.getId())
                 .projectTitle(savedProject.getTitle())
