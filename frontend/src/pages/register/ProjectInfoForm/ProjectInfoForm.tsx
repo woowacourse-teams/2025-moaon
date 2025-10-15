@@ -9,10 +9,12 @@ import {
 } from "@domains/filter/techStack";
 import FormField from "@shared/components/FormField/FormField";
 import TagList from "@shared/components/TagList/TagList";
+import { toast } from "@shared/components/Toast/toast";
 import { useState } from "react";
 import ProjectOverviewEditor from "../ProjectOverviewEditor/ProjectOverviewEditor";
 import type { ProjectFormDataType } from "../types";
 import * as S from "./ProjectInfoForm.styled";
+import { validateProjectInfoFormData } from "./utils/ProjectInfoFormUtils";
 
 interface ProjectInfoFormProps {
   onNext: () => void;
@@ -28,6 +30,17 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
     categories: [],
     techStacks: [],
   });
+
+  const handleNextClick = () => {
+    const errorMessage = validateProjectInfoFormData(formData);
+
+    if (errorMessage) {
+      toast.warning(errorMessage);
+      return;
+    }
+
+    onNext();
+  };
 
   const handleTechStackChange = (techStack: TechStackKey) => {
     setFormData((prev) => {
@@ -151,7 +164,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         />
       </FormField>
 
-      <S.NextButton type="button" onClick={onNext}>
+      <S.NextButton type="button" onClick={handleNextClick}>
         다음
       </S.NextButton>
     </S.FormFieldGroups>
