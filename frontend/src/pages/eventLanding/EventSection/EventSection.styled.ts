@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_480 } from "@/styles/global.styled";
 
 export const Container = styled.section`
   width: 100%;
@@ -26,6 +27,10 @@ export const Wrap = styled.div`
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  ${BP_480} {
+    width: 100%;
   }
 `;
 
