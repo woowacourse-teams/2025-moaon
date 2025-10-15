@@ -1,5 +1,6 @@
 package moaon.backend.article.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlRequest;
 import moaon.backend.article.dto.ArticleCrawlResponse;
@@ -20,7 +21,7 @@ public class ArticleCrawlingController {
 
     @GetMapping
     public ResponseEntity<ArticleCrawlResponse> crawl(
-            @RequestBody ArticleCrawlRequest request
+            @RequestBody @Valid ArticleCrawlRequest request
     ) {
         ArticleCrawlResult result = articleCrawlService.crawl(request);
         ArticleCrawlResponse saved = articleCrawlService.save(request.url(), result);

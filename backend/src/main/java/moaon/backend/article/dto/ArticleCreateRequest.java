@@ -13,7 +13,7 @@ public record ArticleCreateRequest(
         @NotBlank String projectTitle,
         @NotBlank String title,
         @NotBlank String summary,
-        @NotEmpty List<String> techStacks,
+        List<String> techStacks,
         @NotNull URL url,
         @NotBlank String sector,
         @NotEmpty List<String> topics
