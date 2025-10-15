@@ -28,8 +28,9 @@ function rollback() {
   # 이전 이미지 태그가 존재하고, 현재 태그와 다른 경우에만 롤백 실행
   if [ "${CURRENT_IMAGE_TAG}" != "none" ] && [ "${CURRENT_IMAGE_TAG}" != "${NEW_IMAGE_TAG}" ]; then
     echo "이전 이미지(${IMAGE_NAME}:${CURRENT_IMAGE_TAG})로 되돌립니다."
-    # docker compose가 사용할 이미지 태그를 이전 버전으로 지정하여 실행
-    export IMAGE_TAG=${CURRENT_IMAGE_TAG}
+    # .env 파일의 IMAGE_TAG 값을 롤백할 버전으로 직접 수정합니다.
+    sed -i "s/IMAGE_TAG=${IMAGE_TAG}/IMAGE_TAG=${CURRENT_IMAGE_TAG}/g" .env
+
     sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
     echo "롤백 완료."
   else
