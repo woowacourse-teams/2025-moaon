@@ -21,6 +21,7 @@ import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.member.service.OAuthService;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
@@ -39,6 +40,7 @@ public class ArticleService {
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
+    private final OAuthService oAuthService;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         Articles articles = articleRepository.findWithSearchConditions(queryCondition);
@@ -75,7 +77,9 @@ public class ArticleService {
     }
 
     @Transactional
-    public void save(List<ArticleCreateRequest> requests) {
+    public void save(String token, List<ArticleCreateRequest> requests) {
+        oAuthService.validateToken(token);
+
         for (ArticleCreateRequest request : requests) {
             Project project = projectRepository.findById(request.projectId()).orElseThrow(
                     () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)

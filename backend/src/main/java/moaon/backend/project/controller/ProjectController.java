@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,9 +49,10 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectCreateResponse> saveProject(
+            @CookieValue(value = "token") String token,
             @RequestBody @Valid ProjectCreateRequest projectCreateRequest
     ) {
-        Long savedId = projectService.save(projectCreateRequest);
+        Long savedId = projectService.save(token, projectCreateRequest);
         ProjectCreateResponse response = ProjectCreateResponse.from(savedId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

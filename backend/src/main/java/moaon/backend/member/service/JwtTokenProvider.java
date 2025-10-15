@@ -1,6 +1,7 @@
 package moaon.backend.member.service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Jwts.SIG;
@@ -30,8 +31,8 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractAuthenticationInfo(final String token) {
-        isValidToken(token);
+    public String extractSocialId(final String token) {
+        validToken(token);
         return Jwts.parser()
                 .verifyWith(SECRET_KEY)
                 .build()
@@ -40,15 +41,15 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    private void isValidToken(final String token) {
+    public void validToken(final String token) {
         try {
-            var claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token);
-            var isExpired = claims.getPayload().getExpiration().before(new Date());
+            Jws<Claims> claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token);
+            boolean isExpired = claims.getPayload().getExpiration().before(new Date());
             if (!isExpired) {
-                throw new CustomException(ErrorCode.UNKNOWN);
+                throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
             }
         } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+            throw new CustomException(ErrorCode.UNKNOWN, e);
         }
     }
 }

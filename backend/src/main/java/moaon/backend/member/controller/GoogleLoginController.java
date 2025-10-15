@@ -15,17 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/login/oauth2/code/google")
 @RequiredArgsConstructor
 public class GoogleLoginController {
-    /*
-    todo
-    환경변수 설정
-    ci, cd 워크플로우 수정
-
-    ----dev 머지----
-
-    플라이웨이
-    resolver
-    pr 까지
-     */
 
     private final GoogleLoginService googleLoginService;
 
