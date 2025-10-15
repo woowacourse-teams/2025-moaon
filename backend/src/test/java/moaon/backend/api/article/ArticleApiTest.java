@@ -3,19 +3,25 @@ package moaon.backend.api.article;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleContent;
+import moaon.backend.article.dto.ArticleCreateRequest;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -27,14 +33,52 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ArticleApiTest extends BaseApiTest {
 
     @Autowired
     protected RepositoryHelper repositoryHelper;
+
+    @MockitoBean
+    private ArticleDocumentRepository documentRepository;
+
+    @DisplayName("POST /articles: 아티클 저장 API")
+    @Test
+    void save() throws MalformedURLException {
+        // given
+        Project savedProject = repositoryHelper.save(
+                new ProjectFixtureBuilder().build()
+        );
+
+        repositoryHelper.save(new TechStack("react"));
+
+        ArticleCreateRequest articleCreateRequest = ArticleCreateRequest.builder()
+                .projectId(savedProject.getId())
+                .projectTitle(savedProject.getTitle())
+                .title("fork-ts-checker-webpack-plugin")
+                .summary("webpack-plugin 도입")
+                .techStacks(List.of("react"))
+                .url(
+                        new URL("https://tattered-drive-af3.notion.site/fork-ts-checker-webpack-plugin-2514b5223064806e96cceac24ff9dafd")
+                )
+                .sector("fe")
+                .topics(List.of("etc"))
+                .build();
+
+        // when
+        RestAssured.given(documentationSpecification).log().all()
+                .contentType(ContentType.JSON)
+                .body(List.of(articleCreateRequest))
+                .filter(document(articleCreateRequestFields()))
+                .when().post("/articles")
+                .then().log().all()
+                .statusCode(201);
+    }
 
     @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
     @Test
@@ -162,7 +206,7 @@ public class ArticleApiTest extends BaseApiTest {
 
         // then
         assertThat(actualResponse.contents())
-                .extracting(ArticleContent::id)
+                .extracting(ArticleData::id)
                 .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
 
@@ -199,6 +243,19 @@ public class ArticleApiTest extends BaseApiTest {
 
         // then 클릭수 미증가 검증
         assertThat(secondResult.getClicks()).isEqualTo(1);
+    }
+
+    private RequestFieldsSnippet articleCreateRequestFields() {
+        return requestFields(
+                fieldWithPath("[].projectId").description("프로젝트 ID"),
+                fieldWithPath("[].projectTitle").description("프로젝트 제목"),
+                fieldWithPath("[].title").description("아티클 제목"),
+                fieldWithPath("[].summary").description("아티클 요약"),
+                fieldWithPath("[].techStacks").description("기술 스택 목록"),
+                fieldWithPath("[].url").description("아티클 URL"),
+                fieldWithPath("[].sector").description("직군"),
+                fieldWithPath("[].topics").description("아티클 주제")
+        );
     }
 
     private static QueryParametersSnippet articleQueryParameters() {

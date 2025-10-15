@@ -1,5 +1,29 @@
 == /articles
 
+=== POST /articles
+
+====
+operation::article-api-test/save[snippets='curl-request,http-request,request-fields,http-response']
+
+Error Codes
+
+- GLOBAL-001
+- GLOBAL-005
+- ARTICLE-001
+====
+
+=== POST /articles/{id}/clicks
+
+====
+operation::article-api-test/update-article-clicks[snippets='curl-request,http-request,http-response']
+
+Error Codes
+
+- GLOBAL-001
+- GLOBAL-005
+- ARTICLE-001
+====
+
 === GET /articles
 
 ====
@@ -15,14 +39,8 @@ Error Codes
 
 ====
 
-=== POST /articles/{id}/clicks
+=== GET /crawl
 
 ====
-operation::article-api-test/update-article-clicks[snippets='curl-request,http-request,http-response']
-
-Error Codes
-
-- GLOBAL-001
-- GLOBAL-005
-- ARTICLE-001
+자세한 내용은 노션 문서 참고해주세요.
 ====
