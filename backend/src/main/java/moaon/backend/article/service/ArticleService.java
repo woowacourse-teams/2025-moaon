@@ -81,7 +81,7 @@ public class ArticleService {
             Article article = new Article(
                     request.title(),
                     request.summary(),
-                    articleContentRepository.findByUrl(request.url())
+                    articleContentRepository.findByUrl(request.url().toString())
                             .map(ArticleContent::getContent)
                             .orElse(""),
                     request.url().toString(),

@@ -18,7 +18,7 @@ public class ArticleContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "TEXT")
     private String url;
 
     @Column(nullable = false, columnDefinition = "TEXT")

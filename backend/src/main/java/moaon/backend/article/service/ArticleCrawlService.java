@@ -29,7 +29,7 @@ public class ArticleCrawlService {
 
     @Transactional
     public ArticleCrawlResponse save(URL url, ArticleCrawlResult result) {
-        Optional<ArticleContent> content = repository.findByUrl(url);
+        Optional<ArticleContent> content = repository.findByUrl(url.toString());
 
         String title = result.title();
         String summary = result.summary();
