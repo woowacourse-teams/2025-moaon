@@ -43,6 +43,7 @@ function ArticleForm({
           title="아티클 주소"
           name="address"
           placeholder="https://moaon.co.kr"
+          type="url"
           value={formData.address}
           onChange={(e) => updateFormFieldData("address", e.target.value)}
           buttonEvent={handleFetchMeta}
