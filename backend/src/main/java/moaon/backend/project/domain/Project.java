@@ -117,7 +117,7 @@ public class Project extends BaseTimeEntity {
         this.author = author;
         if (
                 techStacks.isEmpty() ||
-                        techStacks.size() > 20 ||
+                        techStacks.size() > 40 ||
                         techStacks.stream().distinct().count() != techStacks.size()
         ) {
             throw new CustomException(ErrorCode.PROJECT_INVALID_TECHSTACK);
