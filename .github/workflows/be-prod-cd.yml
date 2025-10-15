@@ -121,19 +121,3 @@ jobs:
 
       - name: Deploy to Server 2
         run: ./scripts/deploy.sh
-
-  deploy-es:
-    runs-on: es-self-hosted
-
-    defaults:
-      run:
-        working-directory: ./backend
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Pull latest image and deploy
-        run: |
-          sudo docker compose -f compose.es.yaml up -d
-          sudo docker image prune -af
