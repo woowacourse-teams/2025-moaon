@@ -81,6 +81,9 @@ jobs:
           IMAGE_TAG=${{ github.sha }}
           NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
           NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
           EOF
 
       - name: Log in to Docker Hub
