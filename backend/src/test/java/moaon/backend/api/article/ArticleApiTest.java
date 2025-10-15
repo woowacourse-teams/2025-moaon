@@ -21,6 +21,7 @@ import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -35,12 +36,16 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ArticleApiTest extends BaseApiTest {
 
     @Autowired
     protected RepositoryHelper repositoryHelper;
+
+    @MockitoBean
+    private ArticleDocumentRepository documentRepository;
 
     @DisplayName("POST /articles: 아티클 저장 API")
     @Test
