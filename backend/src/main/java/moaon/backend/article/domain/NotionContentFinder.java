@@ -27,6 +27,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RequiredArgsConstructor
@@ -64,7 +65,11 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     private String getText(URL link) {
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        WebDriver driver = new ChromeDriver(options);
 
         try {
             driver.get(link.toString());
