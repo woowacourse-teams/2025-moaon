@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
+import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -16,6 +17,7 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -32,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private final ArticleDocumentRepository articleDocumentRepository;
     private final ArticleRepository articleRepository;
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
@@ -99,6 +102,7 @@ public class ArticleService {
             );
 
             articleRepository.save(article);
+            articleDocumentRepository.save(new ArticleDocument(article));
         }
     }
 }
