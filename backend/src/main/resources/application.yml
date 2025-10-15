@@ -30,3 +30,8 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: trace
     org.flywaydb: debug
+
+google:
+  clientId: ${GOOGLE_CLIENT_ID}
+  clientSecret: ${GOOGLE_CLIENT_SECRET}
+  redirectUri: ${GOOGLE_REDIRECT_URI}
