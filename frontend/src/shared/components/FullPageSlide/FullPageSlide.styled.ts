@@ -3,7 +3,9 @@ import styled from "@emotion/styled";
 export const Container = styled.main<{ excludedHeight: number }>`
   height: 100dvh;
   overflow: hidden;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
 export const Wrap = styled.div<{ currentIndex: number }>`
