@@ -1,5 +1,10 @@
 import { css, keyframes } from "@emotion/react";
 
+export const BP_1280 = "@media (max-width: 1280px)";
+export const BP_1024 = "@media (max-width: 1024px)";
+export const BP_768 = "@media (max-width: 768px)";
+export const BP_480 = "@media (max-width: 480px)";
+
 export const textOverflowEllipsis = (lineClamp: number) => css`
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -27,4 +32,25 @@ export const shimmerGradient = css`
 export const flexCenter = css`
   display: flex;
   align-items: center;
+`;
+
+export const hoverUnderline = (bgColor: string = "#000") => css`
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 0.0938rem;
+    bottom: -0.1875rem;
+    left: 0;
+    background-color: ${bgColor};
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+  }
+
+  &:hover:after {
+    transform: scaleX(1);
+  }
 `;
