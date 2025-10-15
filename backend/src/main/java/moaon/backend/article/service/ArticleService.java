@@ -89,9 +89,9 @@ public class ArticleService {
                     project,
                     Sector.of(request.sector()),
                     request.topics()
-                            .stream().
-                            map(Topic::of).
-                            toList(),
+                            .stream()
+                            .map(Topic::of)
+                            .toList(),
                     request.techStacks()
                             .stream()
                             .map(techStackRepository::findByName)
