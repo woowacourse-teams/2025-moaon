@@ -21,7 +21,7 @@ sudo docker pull ${IMAGE_NAME}:${IMAGE_TAG}
 echo "새로운 컨테이너를 실행합니다."
 # docker-compose.yml이 있는 경로로 이동해야 합니다.
 # 이 스크립트는 backend 디렉터리 외부에서 실행된다고 가정
-sudo docker compose -f ./backend/compose.yaml up -d
+sudo docker compose -f compose.prod.yaml up -d
 
 # 4. 헬스 체크 (Polling)
 echo "헬스 체크를 시작합니다..."
