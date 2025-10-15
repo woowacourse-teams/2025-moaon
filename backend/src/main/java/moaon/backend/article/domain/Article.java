@@ -25,6 +25,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.global.domain.BaseTimeEntity;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.ArticleTechStack;
 import moaon.backend.techStack.domain.TechStack;
@@ -98,7 +100,13 @@ public class Article extends BaseTimeEntity {
         this.createdAt = createdAt;
         this.project = project;
         this.sector = sector;
+        if (topics.size() > 3) {
+            throw new CustomException(ErrorCode.ARTICLE_INVALID_TOPICS);
+        }
         this.topics = topics;
+        if (techStacks.size() > 3) {
+            throw new CustomException(ErrorCode.ARTICLE_INVALID_TECHSTACK);
+        }
         techStacks.forEach(this::addTechStack);
     }
 

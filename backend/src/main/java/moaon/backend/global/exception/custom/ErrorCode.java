@@ -25,13 +25,15 @@ public enum ErrorCode {
     PROJECT_INVALID_IMAGE("PROJECT-007", "프로젝트의 이미지는 0 ~ 10 개입니다.", HttpStatus.BAD_REQUEST),
 
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    ARTICLE_INVALID_TECHSTACK("ARTICLE-005", "아티클의 기술 스택은 중복을 제외하고 0 ~ 3 개 입니다.", HttpStatus.BAD_REQUEST),
+    ARTICLE_INVALID_TOPICS("ARTICLE-005", "아티클의 토픽은 중복을 제외하고 1 ~ 3 개 입니다.", HttpStatus.BAD_REQUEST),
     // 권한이 필요한 url
     ARTICLE_URL_FORBIDDEN("URL-001", "접근 권한이 없는 URL 입니다.", HttpStatus.FORBIDDEN),
     // 잘못된 url
     ARTICLE_URL_NOT_FOUND("URL-002", "존재하지 않는 URL 입니다.", HttpStatus.NOT_FOUND),
     // 삭제된 url
     ARTICLE_URL_GONE("URL-003", "삭제된 페이지입니다.", HttpStatus.GONE),
-    // 크롤 실패
+    // 크롤 실패,
     ARTICLE_CRAWL_FAILED("URL-004", "아티클 크롤링 실패입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
     CONTENT_FINDER_NOT_FOUND("CONTENT-001", "등록할 수 없는 URL 입니다.", HttpStatus.BAD_REQUEST),
