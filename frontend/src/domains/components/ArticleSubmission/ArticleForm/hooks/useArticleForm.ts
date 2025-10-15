@@ -91,14 +91,17 @@ export const useArticleForm = ({
 
     if (onUpdate && editingData) {
       onUpdate(formData);
-      return;
+    } else {
+      onSubmit(formData);
     }
 
-    onSubmit(formData);
     setFormData(createEmptyFormData());
   }, [formData, onSubmit, onUpdate, editingData]);
 
-  const handleCancel = useCallback(() => onCancel(), [onCancel]);
+  const handleCancel = useCallback(() => {
+    onCancel();
+    setFormData(createEmptyFormData());
+  }, [onCancel]);
 
   return {
     formData,
