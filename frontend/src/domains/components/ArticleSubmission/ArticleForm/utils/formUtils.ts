@@ -5,12 +5,16 @@ export const createEmptyFormData = (): ArticleFormDataType => ({
   address: "",
   title: "",
   description: "",
-  sector: "all",
-  topics: [],
-  techStacks: [],
+  sector: {
+    value: "all",
+    topics: [],
+    techStacks: [],
+  },
 });
 
 export const validateFormData = (formData: ArticleFormDataType) => {
+  const { value: sectorValue, techStacks, topics } = formData.sector;
+
   if (!formData.address) {
     return "아티클 주소를 입력해주세요.";
   }
@@ -23,15 +27,15 @@ export const validateFormData = (formData: ArticleFormDataType) => {
     return "아티클 내용을 입력해주세요.";
   }
 
-  if (formData.sector === "all") {
+  if (sectorValue === "all") {
     return "직군을 선택해주세요.";
   }
 
-  if (formData.sector !== "nonTech" && formData.techStacks.length === 0) {
+  if (sectorValue !== "nonTech" && techStacks.length === 0) {
     return "기술스택을 하나 이상 선택해주세요.";
   }
 
-  if (formData.topics.length === 0) {
+  if (topics.length === 0) {
     return "주제를 하나 이상 선택해주세요.";
   }
 

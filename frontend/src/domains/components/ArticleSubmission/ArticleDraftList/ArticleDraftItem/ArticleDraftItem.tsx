@@ -15,7 +15,7 @@ function ArticleDraftItem({
   article,
 }: ArticleDraftItemProps) {
   const { title, description, sector, id } = article;
-  const { color, label } = ARTICLE_SECTOR_MAP[sector];
+  const { color, label } = ARTICLE_SECTOR_MAP[sector.value];
 
   const handleDeleteDraft = (id: string) => {
     const confirmDelete = window.confirm("해당 아티클을 삭제하시겠습니까?");

@@ -1,6 +1,6 @@
 import { toast } from "@shared/components/Toast/toast";
 import { useCallback, useEffect, useState } from "react";
-import type { ArticleFormDataType } from "../../types";
+import type { ArticleFormDataType, SectorType } from "../../types";
 import { createEmptyFormData, validateFormData } from "../utils/formUtils";
 import { useFetchMeta } from "./useFetchMeta";
 
@@ -45,42 +45,29 @@ export const useArticleForm = ({
     }
   };
 
-  const updateSectorParams = useCallback(
-    (sector: ArticleFormDataType["sector"]) => {
-      setFormData((prev) => ({ ...prev, sector, topics: [], techStacks: [] }));
-    },
-    []
-  );
+  const updateFormFieldData = <K extends keyof ArticleFormDataType>(
+    field: K,
+    value: ArticleFormDataType[K]
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const toggleTopic = useCallback(
-    (topic: ArticleFormDataType["topics"][number]) => {
-      setFormData((prev) => {
-        const exists = prev.topics.includes(topic);
-        return {
-          ...prev,
-          topics: exists
-            ? prev.topics.filter((t) => t !== topic)
-            : [...prev.topics, topic],
-        };
-      });
-    },
-    []
-  );
-
-  const toggleTechStack = useCallback(
-    (tech: ArticleFormDataType["techStacks"][number]) => {
-      setFormData((prev) => {
-        const exists = prev.techStacks.includes(tech);
-        return {
-          ...prev,
-          techStacks: exists
-            ? prev.techStacks.filter((t) => t !== tech)
-            : [...prev.techStacks, tech],
-        };
-      });
-    },
-    []
-  );
+  const updateNestedField = <
+    K extends keyof ArticleFormDataType,
+    T extends keyof NonNullable<ArticleFormDataType[K]>
+  >(
+    field: K,
+    subField: T,
+    subValue: NonNullable<ArticleFormDataType[K]>[T]
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: {
+        ...(prev[field] as SectorType),
+        [subField]: subValue,
+      },
+    }));
+  };
 
   const handleSubmit = useCallback(() => {
     const errorMessage = validateFormData(formData);
@@ -105,14 +92,10 @@ export const useArticleForm = ({
 
   return {
     formData,
-    setFormData,
-    handlers: {
-      handleFetchMeta,
-      updateSectorParams,
-      toggleTopic,
-      toggleTechStack,
-      handleSubmit,
-      handleCancel,
-    },
+    updateFormFieldData,
+    updateNestedField,
+    handleFetchMeta,
+    handleSubmit,
+    handleCancel,
   };
 };

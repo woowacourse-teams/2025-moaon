@@ -19,19 +19,20 @@ function ArticleForm({
   onUpdate,
   onCancel,
 }: ArticleFormProps) {
-  const { formData, setFormData, handlers } = useArticleForm({
+  const {
+    formData,
+    updateFormFieldData,
+    updateNestedField,
+    handleFetchMeta,
+    handleSubmit,
+    handleCancel,
+  } = useArticleForm({
     editingData,
     onSubmit,
     onUpdate,
     onCancel,
   });
 
-  const updateFormFieldData = <K extends keyof ArticleFormDataType>(
-    field: K,
-    value: ArticleFormDataType[K],
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
   return (
     <S.FormBox>
       <S.FormTitle>
@@ -44,7 +45,7 @@ function ArticleForm({
           placeholder="https://moaon.co.kr"
           value={formData.address}
           onChange={(e) => updateFormFieldData("address", e.target.value)}
-          buttonEvent={handlers.handleFetchMeta}
+          buttonEvent={handleFetchMeta}
         />
         <InputFormField
           title="아티클 제목"
@@ -60,20 +61,25 @@ function ArticleForm({
           value={formData.description}
           onChange={(e) => updateFormFieldData("description", e.target.value)}
         />
-        <SectorFormField formData={formData} onChange={updateFormFieldData} />
+        <SectorFormField
+          sector={formData.sector}
+          onChange={(subField, subValue) =>
+            updateNestedField("sector", subField, subValue)
+          }
+        />
       </S.FormFieldList>
       <S.ArticleButtonGroup>
         <S.ArticleAddButton
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            handlers.handleSubmit();
+            handleSubmit();
           }}
         >
           {editingData ? "아티클 수정" : "+ 아티클 추가"}
         </S.ArticleAddButton>
         {editingData && (
-          <S.ArticleCancelButton type="button" onClick={handlers.handleCancel}>
+          <S.ArticleCancelButton type="button" onClick={handleCancel}>
             취소
           </S.ArticleCancelButton>
         )}

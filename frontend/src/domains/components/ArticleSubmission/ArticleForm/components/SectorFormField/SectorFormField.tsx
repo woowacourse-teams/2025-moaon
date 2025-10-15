@@ -1,5 +1,10 @@
-import type { ArticleFormDataType } from "@domains/components/ArticleSubmission/types";
-import { ARTICLE_SECTOR_ENTRY } from "@domains/filter/articleSector";
+import type { SectorType } from "@domains/components/ArticleSubmission/types";
+import {
+  ARTICLE_SECTOR_ENTRY,
+  type ArticleSectorKey,
+} from "@domains/filter/articleSector";
+import type { AllTopicKey } from "@domains/filter/articleTopic";
+import type { TechStackKey } from "@domains/filter/techStack";
 import {
   getTechStackBySector,
   getTopicsBySector,
@@ -7,23 +12,31 @@ import {
 import SelectionInputFormField from "../SelectionInputFormField/SelectionInputFormField";
 
 function SectorFormField({
-  formData,
+  sector,
   onChange,
 }: {
-  formData: ArticleFormDataType;
-  onChange: <K extends keyof ArticleFormDataType>(
-    field: K,
-    value: ArticleFormDataType[K],
+  sector: SectorType;
+  onChange: <K extends keyof SectorType>(
+    subField: K,
+    subValue: SectorType[K],
   ) => void;
 }) {
-  const techStackEntry = getTechStackBySector(formData.sector);
-  const topicEntry = getTopicsBySector(formData.sector);
   const sectorEntriesWithoutAll = ARTICLE_SECTOR_ENTRY.filter(
     ([key]) => key !== "all",
   );
 
-  const isSectorAll = formData.sector === "all";
-  const isNonTech = formData.sector === "nonTech";
+  const techStackEntry = getTechStackBySector(sector.value);
+  const topicEntry = getTopicsBySector(sector.value);
+
+  const isSectorAll = sector.value === "all";
+  const isNonTech = sector.value === "nonTech";
+
+  const handleSectorValueChange = (next: ArticleSectorKey) => {
+    onChange("value", next);
+    onChange("techStacks", [] as TechStackKey[]);
+    onChange("topics", [] as AllTopicKey[]);
+  };
+
   return (
     <>
       <SelectionInputFormField
@@ -31,10 +44,8 @@ function SectorFormField({
         title="직군 선택"
         name="sector"
         type="radio"
-        value={formData.sector}
-        onChange={(next) =>
-          onChange("sector", next as ArticleFormDataType["sector"])
-        }
+        value={sector.value}
+        onChange={(next) => handleSectorValueChange(next as ArticleSectorKey)}
       />
       {!(isSectorAll || isNonTech) && (
         <SelectionInputFormField
@@ -42,10 +53,8 @@ function SectorFormField({
           title="기술스택"
           name="techStacks"
           type="checkbox"
-          value={formData.techStacks}
-          onChange={(next) =>
-            onChange("techStacks", next as ArticleFormDataType["techStacks"])
-          }
+          value={sector.techStacks}
+          onChange={(next) => onChange("techStacks", next as TechStackKey[])}
         />
       )}
       {!isSectorAll && (
@@ -54,10 +63,8 @@ function SectorFormField({
           title="주제"
           name="techStacks"
           type="checkbox"
-          value={formData.topics}
-          onChange={(next) =>
-            onChange("topics", next as ArticleFormDataType["topics"])
-          }
+          value={sector.topics}
+          onChange={(next) => onChange("topics", next as AllTopicKey[])}
         />
       )}
     </>
