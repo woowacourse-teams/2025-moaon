@@ -46,7 +46,7 @@ public class TistoryContentFinder extends ContentFinder {
         return host.endsWith("tistory.com");
     }
 
-    protected void validateLink(int statusCode) {
+    private void validateLink(int statusCode) {
         if (statusCode == 403) {
             throw new CustomException(ErrorCode.ARTICLE_URL_FORBIDDEN);
         }
