@@ -33,7 +33,7 @@ export const FormFieldButton = styled.button`
 
 export const FormFieldInput = styled.input`
   flex: 1;
-  padding: 0.75rem 0.5rem;
+  padding: 0.75rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
 

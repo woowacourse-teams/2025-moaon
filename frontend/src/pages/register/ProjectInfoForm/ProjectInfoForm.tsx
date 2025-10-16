@@ -1,18 +1,12 @@
-import TechStackSearchBar from "@domains/components/TechStackFilterBox/TechStackSearchBar/TechStackSearchBar";
-import {
-  PROJECT_CATEGORY_ENTRY,
-  type ProjectCategoryKey,
-} from "@domains/filter/projectCategory";
-import {
-  TECH_STACK_ICON_MAP,
-  type TechStackKey,
-} from "@domains/filter/techStack";
-import FormField from "@shared/components/FormField/FormField";
-import TagList from "@shared/components/TagList/TagList";
+import InputFormField from "@domains/components/ArticleSubmission/ArticleForm/components/InputFormField/InputFormField";
+import type { ProjectCategoryKey } from "@domains/filter/projectCategory";
+import type { TechStackKey } from "@domains/filter/techStack";
 import { toast } from "@shared/components/Toast/toast";
 import { useState } from "react";
-import ProjectOverviewEditor from "../ProjectOverviewEditor/ProjectOverviewEditor";
 import type { ProjectFormDataType } from "../types";
+import MarkdownFormField from "./components/MarkdownFormField/MarkdownFormField";
+import ProjectCategoryFormField from "./components/ProjectCategoryFormField/ProjectCategoryFormField";
+import TechStackFormField from "./components/TechStackFormField/TechStackFormField";
 import * as S from "./ProjectInfoForm.styled";
 import { validateProjectInfoFormData } from "./utils/ProjectInfoFormUtils";
 
@@ -68,101 +62,76 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
 
   return (
     <S.FormFieldGroups>
-      <FormField title="프로젝트 제목">
-        <input
-          type="text"
-          name="title"
-          placeholder="프로젝트 이름을 입력하세요"
-          value={formData.title}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, title: e.target.value }))
-          }
-        />
-      </FormField>
+      <InputFormField
+        title="프로젝트 제목"
+        name="title"
+        placeholder="프로젝트 이름을 입력하세요"
+        value={formData.title}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, title: e.target.value }))
+        }
+      />
 
-      <FormField title="한 줄 소개">
-        <input
-          type="text"
-          name="description"
-          placeholder="프로젝트를 한 문장으로 소개해주세요"
-          value={formData.summary}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              summary: e.target.value,
-            }))
-          }
-        />
-      </FormField>
+      <InputFormField
+        title="한 줄 소개"
+        name="summary"
+        placeholder="프로젝트를 한 문장으로 소개해주세요"
+        value={formData.summary}
+        onChange={(e) =>
+          setFormData((prev) => ({
+            ...prev,
+            summary: e.target.value,
+          }))
+        }
+      />
 
-      <FormField title="프로젝트 개요">
-        <ProjectOverviewEditor
-          value={formData.description}
-          onChange={(value) =>
-            setFormData((prev) => ({ ...prev, description: value }))
-          }
-        />
-      </FormField>
+      <MarkdownFormField
+        title="프로젝트 개요"
+        name="description"
+        value={formData.description}
+        onChange={(value) =>
+          setFormData((prev) => ({ ...prev, description: value }))
+        }
+      />
 
-      <FormField title="기술 스택">
-        <TechStackSearchBar
-          mode="controlled"
-          selectedTechStacks={formData.techStacks}
-          onTechStackChange={handleTechStackChange}
-        />
+      <TechStackFormField
+        title="기술 스택"
+        name="techStacks"
+        selectedTechStacks={formData.techStacks}
+        onTechStackChange={handleTechStackChange}
+      />
 
-        {formData.techStacks.length > 0 && (
-          <S.SelectedTechStacks>
-            {formData.techStacks.map((techStack) => (
-              <S.TechStackTag key={techStack}>
-                {TECH_STACK_ICON_MAP[techStack].label}
-                {/* TODO: CloseIconButton으로 교체 */}
-                <button
-                  type="button"
-                  onClick={() => handleTechStackChange(techStack)}
-                >
-                  ×
-                </button>
-              </S.TechStackTag>
-            ))}
-          </S.SelectedTechStacks>
-        )}
-      </FormField>
+      <ProjectCategoryFormField
+        title="주제"
+        name="categories"
+        selectedCategories={formData.categories}
+        onCategoryChange={toggleTopic}
+      />
 
-      <FormField title="주제">
-        <TagList
-          entries={PROJECT_CATEGORY_ENTRY}
-          onSelect={toggleTopic}
-          isActive={(key) => formData.categories.includes(key)}
-        />
-      </FormField>
+      <InputFormField
+        title="GitHub 주소"
+        name="githubUrl"
+        placeholder="https://github.com/username/repository"
+        value={formData.githubUrl}
+        onChange={(e) =>
+          setFormData((prev) => ({ ...prev, githubUrl: e.target.value }))
+        }
+        required={false}
+      />
 
-      <FormField title="GitHub 주소" required={false}>
-        <input
-          type="text"
-          name="githubUrl"
-          placeholder="https://github.com/username/repository"
-          value={formData.githubUrl}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, githubUrl: e.target.value }))
-          }
-        />
-      </FormField>
-
-      <FormField title="서비스 주소" required={false}>
-        <input
-          type="text"
-          name="serviceUrl"
-          placeholder="https://your-service.com"
-          value={formData.productionUrl}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              productionUrl: e.target.value,
-            }))
-          }
-        />
-      </FormField>
+      <InputFormField
+        title="서비스 주소"
+        name="productionUrl"
+        placeholder="https://your-service.com"
+        value={formData.productionUrl}
+        onChange={(e) =>
+          setFormData((prev) => ({
+            ...prev,
+            productionUrl: e.target.value,
+          }))
+        }
+        required={false}
+      />
 
       <S.NextButton type="button" onClick={handleNextClick}>
         다음
