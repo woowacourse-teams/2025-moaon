@@ -1,4 +1,5 @@
-import { useState } from "react";
+import type { Player } from "@lottiefiles/react-lottie-player";
+import { useRef, useState } from "react";
 import * as S from "./AnimationPlayer.styled";
 
 interface Animation {
@@ -6,11 +7,14 @@ interface Animation {
   translateY: number;
 }
 
+const INITIAL_ANIMATION: Animation = {
+  src: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/ball.json",
+  translateY: -50,
+};
+
 export default function AnimationPlayer() {
-  const [animation, setAnimation] = useState<Animation>({
-    src: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/ball.json",
-    translateY: -50,
-  });
+  const [animation, setAnimation] = useState<Animation>(INITIAL_ANIMATION);
+  const playerRef = useRef<Player>(null);
 
   const handleAnimationEnd = () => {
     setAnimation({
@@ -19,18 +23,45 @@ export default function AnimationPlayer() {
     });
   };
 
-  return (
-    <S.AnimationPlayer
-      autoplay
-      loop={false}
-      keepLastFrame={true}
-      src={animation.src}
-      translateY={animation.translateY}
-      onEvent={(event) => {
-        if (event === "complete") {
-          handleAnimationEnd();
+  const ref = (node: HTMLElement | null) => {
+    if (!node) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          playerRef.current?.play();
+        } else {
+          playerRef.current?.stop();
+          setAnimation(INITIAL_ANIMATION);
         }
-      }}
-    />
+      },
+      { threshold: 0.5 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.unobserve(node);
+    };
+  };
+
+  return (
+    <div ref={ref}>
+      <S.AnimationPlayer
+        ref={playerRef}
+        autoplay
+        loop={false}
+        keepLastFrame={true}
+        src={animation.src}
+        translateY={animation.translateY}
+        onEvent={(event) => {
+          if (event === "complete") {
+            handleAnimationEnd();
+          }
+        }}
+      />
+    </div>
   );
 }
