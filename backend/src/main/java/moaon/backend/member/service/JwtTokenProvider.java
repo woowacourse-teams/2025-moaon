@@ -45,7 +45,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token);
             boolean isExpired = claims.getPayload().getExpiration().before(new Date());
-            if (!isExpired) {
+            if (isExpired) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
             }
         } catch (JwtException | IllegalArgumentException e) {
