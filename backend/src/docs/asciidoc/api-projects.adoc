@@ -1,5 +1,21 @@
 == /projects
 
+=== POST /projects
+
+====
+operation::project-api-test/save-project[snippets='curl-request,http-request,request-fields,http-response,response-fields']
+
+**Error Codes **
+
+- PROJECT-002
+- PROJECT-003
+- PROJECT-004
+- PROJECT-005
+- PROJECT-006
+- PROJECT-007
+
+====
+
 === GET /projects
 
 ====

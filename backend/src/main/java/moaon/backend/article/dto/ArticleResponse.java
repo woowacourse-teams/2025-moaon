@@ -5,7 +5,7 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.global.cursor.Cursor;
 
 public record ArticleResponse(
-        List<ArticleContent> contents,
+        List<ArticleData> contents,
         int totalCount,
         boolean hasNext,
         String nextCursor
@@ -18,7 +18,7 @@ public record ArticleResponse(
             Cursor<?> nextCursor
     ) {
         return new ArticleResponse(
-                ArticleContent.from(articles),
+                ArticleData.from(articles),
                 totalCount.intValue(),
                 hasNext,
                 extractNextCursor(nextCursor)
@@ -32,7 +32,7 @@ public record ArticleResponse(
             String nextCursor
     ) {
         return new ArticleResponse(
-                ArticleContent.from(articles),
+                ArticleData.from(articles),
                 totalCount.intValue(),
                 hasNext,
                 nextCursor
@@ -45,7 +45,7 @@ public record ArticleResponse(
             boolean hasNext
     ) {
         return new ArticleResponse(
-                ArticleContent.from(articles),
+                ArticleData.from(articles),
                 totalCount.intValue(),
                 hasNext,
                 null

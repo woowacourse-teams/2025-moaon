@@ -20,6 +20,7 @@ import {
   ANDROID_STACK_ENTRY,
   BACKEND_STACK_ENTRY,
   FRONTEND_STACK_ENTRY,
+  INFRA_STACK_ENTRY,
   IOS_STACK_ENTRY,
   TECH_STACK_ENTRY,
 } from "@domains/filter/techStack";
@@ -34,6 +35,8 @@ export const getTechStackBySector = (sector: ArticleSectorKey) => {
       return ANDROID_STACK_ENTRY;
     case "ios":
       return IOS_STACK_ENTRY;
+    case "infra":
+      return INFRA_STACK_ENTRY;
     case "all":
     case null:
       return TECH_STACK_ENTRY;

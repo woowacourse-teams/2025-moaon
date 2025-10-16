@@ -25,6 +25,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.global.domain.BaseTimeEntity;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.ArticleTechStack;
 import moaon.backend.techStack.domain.TechStack;
@@ -68,7 +70,7 @@ public class Article extends BaseTimeEntity {
     private Project project;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ArticleTechStack> techStacks;
+    private List<ArticleTechStack> techStacks = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -88,7 +90,7 @@ public class Article extends BaseTimeEntity {
             Project project,
             Sector sector,
             List<Topic> topics,
-            List<ArticleTechStack> techStacks
+            List<TechStack> techStacks
     ) {
         this.title = title;
         this.summary = summary;
@@ -98,8 +100,14 @@ public class Article extends BaseTimeEntity {
         this.createdAt = createdAt;
         this.project = project;
         this.sector = sector;
+        if (topics.size() > 3) {
+            throw new CustomException(ErrorCode.ARTICLE_INVALID_TOPICS);
+        }
         this.topics = topics;
-        this.techStacks = new ArrayList<>(techStacks);
+        if (techStacks.size() > 3) {
+            throw new CustomException(ErrorCode.ARTICLE_INVALID_TECHSTACK);
+        }
+        techStacks.forEach(this::addTechStack);
     }
 
     public void addClickCount() {
