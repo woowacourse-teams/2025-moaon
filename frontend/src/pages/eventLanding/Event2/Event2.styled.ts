@@ -16,7 +16,7 @@ export const Wrap = styled.div`
   display: flex;
   justify-content: space-around;
   width: 100%;
-  margin-top: 3rem;
+  margin: 3rem auto 0;
 `;
 
 export const Box = styled.div`

@@ -65,7 +65,7 @@ export const ButtonBox = styled.div`
 `;
 
 export const LinkButton = styled(Link)`
-  padding: 1.25rem 5rem;
+  padding: 1.25rem 7rem;
   display: flex;
   align-items: center;
   justify-content: center;

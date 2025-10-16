@@ -19,7 +19,8 @@ function Event2() {
   return (
     <S.Container>
       <S.Title>
-        우아한테크코스 크루 출신 코치들이 <br /> 참여한 프로젝트를 살펴보세요
+        우아한테크코스 코치들이 크루 시절에 <br />
+        참여한 프로젝트를 살펴보세요
       </S.Title>
       <S.Wrap>
         {COACH.map(({ subTitle, data, position }) => (
