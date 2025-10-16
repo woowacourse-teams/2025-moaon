@@ -31,7 +31,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractSocialId(final String token) {
+    public String extractSocialId(String token) {
         validToken(token);
         return Jwts.parser()
                 .verifyWith(SECRET_KEY)
@@ -41,7 +41,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    public void validToken(final String token) {
+    public void validToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token);
             boolean isExpired = claims.getPayload().getExpiration().before(new Date());
