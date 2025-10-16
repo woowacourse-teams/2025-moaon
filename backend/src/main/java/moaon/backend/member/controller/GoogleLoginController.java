@@ -24,7 +24,15 @@ public class GoogleLoginController {
             HttpServletResponse response
     ) {
         JwtToken token = googleLoginService.login(code);
+        Cookie cookie = new Cookie("token", token.token());
         response.addCookie(new Cookie("token", token.token()));
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setAttribute("SameSite", "None");
+
+        response.addCookie(cookie);
         return ResponseEntity.ok().build();
     }
 }
