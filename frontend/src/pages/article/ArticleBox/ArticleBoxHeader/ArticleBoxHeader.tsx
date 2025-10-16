@@ -4,6 +4,7 @@ import FilterContainer from "@shared/components/FilterContainer/FilterContainer"
 import { useGetSectorLocation } from "../../../../domains/hooks/useGetSectorLocation";
 import * as S from "./ArticleBoxHeader.styled";
 import { useUpdateSectorParams } from "./hooks/useUpdateSectorParams";
+import SectorDropdown from "./SectorDropdown/SectorDropdown";
 import SectorTab from "./SectorTab/SectorTab";
 import { getArticleFilterList } from "./utils/getArticleFilterList";
 
@@ -27,14 +28,21 @@ function ArticleBoxHeader({
 
   return (
     <S.ArticleHeader>
-      <SectorTab onSelect={updateSectorParams} />
+      <S.SectorTabContainer>
+        <SectorTab onSelect={updateSectorParams} />
+      </S.SectorTabContainer>
+      <S.SectorDropdownContainer>
+        <SectorDropdown onSelect={updateSectorParams} />
+      </S.SectorDropdownContainer>
       <FilterContainer filterList={filterList} onSelect={onSelectSort} />
       <S.ArticleHeaderBox>
         <S.ArticleIntro>
           {totalCount > 0 && (
             <>
-              <S.ArticleIntroText>{totalCount}개</S.ArticleIntroText>의 아티클이
-              모여있어요.
+              <S.ArticleIntroText>
+                {totalCount.toLocaleString()}개
+              </S.ArticleIntroText>
+              의 아티클이 모여있어요.
             </>
           )}
         </S.ArticleIntro>
