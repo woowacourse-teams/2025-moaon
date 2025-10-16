@@ -17,10 +17,15 @@ export default function AnimationPlayer() {
   const playerRef = useRef<Player>(null);
 
   const handleAnimationEnd = () => {
-    setAnimation({
-      src: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/gift-box.json",
-      translateY: 0,
-    });
+    if (animation.src === INITIAL_ANIMATION.src) {
+      setAnimation({
+        src: "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/gift-box.json",
+        translateY: 0,
+      });
+      return;
+    }
+
+    playerRef.current?.pause();
   };
 
   const ref = (node: HTMLElement | null) => {
@@ -31,13 +36,14 @@ export default function AnimationPlayer() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          playerRef.current?.setSeeker(0);
           playerRef.current?.play();
         } else {
           playerRef.current?.stop();
           setAnimation(INITIAL_ANIMATION);
         }
       },
-      { threshold: 0.5 },
+      { threshold: 0.1 },
     );
 
     observer.observe(node);
@@ -51,8 +57,7 @@ export default function AnimationPlayer() {
     <div ref={ref}>
       <S.AnimationPlayer
         ref={playerRef}
-        autoplay
-        loop={false}
+        autoplay={true}
         keepLastFrame={true}
         src={animation.src}
         translateY={animation.translateY}
