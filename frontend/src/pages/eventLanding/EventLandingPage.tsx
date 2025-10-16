@@ -5,8 +5,8 @@ import Event3 from "./Event3/Event3";
 import EventSection from "./EventSection/EventSection";
 
 const pages = [
-  { id: 2, color: "#00A8FF", title: "Event 2", render: () => <Event2 /> },
   { id: 1, color: "#FF6B6B", title: "Event 1", render: () => <Event1 /> },
+  { id: 2, color: "#00A8FF", title: "Event 2", render: () => <Event2 /> },
   { id: 3, color: "#45B7D1", title: "Event 3", render: () => <Event3 /> },
 ];
 

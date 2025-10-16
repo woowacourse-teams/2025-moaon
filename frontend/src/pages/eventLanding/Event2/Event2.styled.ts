@@ -4,6 +4,7 @@ import { BP_480, BP_768 } from "@/styles/global.styled";
 
 export const Container = styled.div`
   width: 100vw;
+  position: relative;
 `;
 
 export const Title = styled.h2`
@@ -14,19 +15,28 @@ export const Title = styled.h2`
   margin-top: 1.5rem;
 
   ${BP_768} {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    padding-bottom: 1rem;
   }
 
   ${BP_480} {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
   }
 `;
 
 export const Wrap = styled.div`
   display: flex;
   justify-content: space-around;
-  width: 100%;
+  width: 80%;
   margin: 3rem auto 0;
+
+  ${BP_768} {
+    width: 100%;
+  }
+
+  ${BP_480} {
+    margin: 1rem auto 0;
+  }
 `;
 
 export const Box = styled.div`
@@ -46,6 +56,10 @@ export const Box = styled.div`
     gap: 2rem;
     height: 400px;
   }
+
+  ${BP_480} {
+    height: 275px;
+  }
 `;
 
 export const SubTitle = styled.p<{ color: string }>`
@@ -58,13 +72,13 @@ export const SubTitle = styled.p<{ color: string }>`
   }
 
   ${BP_480} {
-    font-size: 1rem;
+    font-size: 0.875rem;
     word-break: break-all;
   }
 `;
 
 export const Image = styled.img`
-  width: 18.75rem;
+  width: 15.625rem;
   aspect-ratio: 1/1;
 
   ${BP_768} {
@@ -81,7 +95,7 @@ export const Link = styled(ReactRouterLink)<{ $backgroundColor: string }>`
   font-weight: 500;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   color: #fff;
-  padding: 1.25rem 4rem;
+  padding: 1.25rem 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;

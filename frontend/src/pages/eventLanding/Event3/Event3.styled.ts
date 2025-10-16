@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Player } from "@lottiefiles/react-lottie-player";
 import { Link } from "react-router";
 import { BP_480, BP_768 } from "@/styles/global.styled";
 

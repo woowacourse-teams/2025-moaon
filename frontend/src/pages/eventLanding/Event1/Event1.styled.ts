@@ -6,7 +6,7 @@ export const Title = styled.h2`
   font-size: 1.75rem;
   color: #333;
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.7;
   margin-top: 1.5rem;
 
   ${BP_480} {
@@ -25,7 +25,7 @@ export const Grid = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, auto);
   justify-content: center;
-  gap: 2rem 4rem;
+  gap: 2.5rem 4rem;
   width: 100%;
   padding: 0 2rem;
   height: 21.875rem;
