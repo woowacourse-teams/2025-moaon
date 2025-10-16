@@ -15,8 +15,8 @@ public class OAuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public Member getUserByToken(String token) {
-        String socialId = jwtTokenProvider.extractSocialId(token);
-        return memberRepository.findBySocialId(socialId)
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+        return memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_MEMBER));
     }
 

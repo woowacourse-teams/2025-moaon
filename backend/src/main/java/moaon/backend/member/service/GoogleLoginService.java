@@ -18,16 +18,21 @@ public class GoogleLoginService {
 
     public JwtToken login(String code) {
         UserInformation userInformation = client.getUserInformation(code);
-        registerIfNewUser(userInformation);
-        return new JwtToken(jwtTokenProvider.createToken(userInformation.id()));
+        Member member = registerIfNewUser(userInformation);
+        return new JwtToken(jwtTokenProvider.createToken(member.getId()));
     }
 
-    private void registerIfNewUser(UserInformation userInformation) {
-        Optional<Member> member = memberRepository.findBySocialId(userInformation.id());
-        if (member.isPresent()) {
-            return;
+    private Member registerIfNewUser(UserInformation userInformation) {
+        Optional<Member> memberOptional = memberRepository.findBySocialId(userInformation.id());
+        if (memberOptional.isPresent()) {
+            return memberOptional.get();
         }
 
-        memberRepository.save(new Member(userInformation.id(), userInformation.email(), userInformation.name()));
+        Member member = new Member(
+                userInformation.id(),
+                userInformation.email(),
+                userInformation.name()
+        );
+        return memberRepository.save(member);
     }
 }

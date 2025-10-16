@@ -17,9 +17,9 @@ public class JwtTokenProvider {
     private static final SecretKey SECRET_KEY = SIG.HS256.key().build();
     private static final long EXPIRATION_DURATION_IN_MILLISECONDS = 900_000L;
 
-    public String createToken(String payload) {
+    public String createToken(Long payload) {
         Claims claims = Jwts.claims()
-                .subject(payload)
+                .subject(payload.toString())
                 .build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + EXPIRATION_DURATION_IN_MILLISECONDS);
@@ -31,14 +31,16 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractSocialId(String token) {
+    public Long extractMemberId(String token) {
         validToken(token);
-        return Jwts.parser()
+        String id = Jwts.parser()
                 .verifyWith(SECRET_KEY)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
+
+        return Long.parseLong(id);
     }
 
     public void validToken(String token) {
