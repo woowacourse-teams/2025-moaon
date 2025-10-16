@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -44,8 +43,7 @@ public class GoogleOAuthClient {
     }
 
     private GoogleAccessToken getGoogleAccessToken(String code) {
-        String decodedCode = URLDecoder.decode(code, StandardCharsets.UTF_8);
-        String body = "code=" + URLEncoder.encode(decodedCode, StandardCharsets.UTF_8)
+        String body = "code=" + URLEncoder.encode(code, StandardCharsets.UTF_8)
                 + "&client_id=" + URLEncoder.encode(clientId, StandardCharsets.UTF_8)
                 + "&client_secret=" + URLEncoder.encode(clientSecret, StandardCharsets.UTF_8)
                 + "&redirect_uri=" + URLEncoder.encode(redirectUri, StandardCharsets.UTF_8)
