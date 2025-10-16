@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const FormFieldGroups = styled.div`
+export const ProjectInfoForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;

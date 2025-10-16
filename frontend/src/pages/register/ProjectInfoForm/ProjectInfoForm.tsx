@@ -61,7 +61,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
   };
 
   return (
-    <S.FormFieldGroups>
+    <S.ProjectInfoForm>
       <InputFormField
         title="프로젝트 제목"
         name="title"
@@ -136,7 +136,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
       <S.NextButton type="button" onClick={handleNextClick}>
         다음
       </S.NextButton>
-    </S.FormFieldGroups>
+    </S.ProjectInfoForm>
   );
 }
 

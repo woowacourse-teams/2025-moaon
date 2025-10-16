@@ -1,3 +1,4 @@
+import ArticleSubmission from "@domains/components/ArticleSubmission/ArticleSubmission";
 import { useState } from "react";
 import ProgressStepper from "./ProgressStepper/ProgessStepper";
 import ProjectInfoForm from "./ProjectInfoForm/ProjectInfoForm";
@@ -24,6 +25,7 @@ function RegisterPage() {
 
       <S.FormBox>
         {currentStep === 1 && <ProjectInfoForm onNext={handleNextStepClick} />}
+        {currentStep === 2 && <ArticleSubmission projectId={1} />}
       </S.FormBox>
     </>
   );

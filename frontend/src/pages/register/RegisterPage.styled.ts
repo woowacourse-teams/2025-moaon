@@ -18,7 +18,7 @@ export const TitleSection = styled.section`
   margin-bottom: 2.5rem;
 `;
 
-export const FormBox = styled.form`
+export const FormBox = styled.div`
   margin: 0 auto;
   width: 60%;
   padding: 2rem;
