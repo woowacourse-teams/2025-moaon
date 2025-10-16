@@ -10,8 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
+import java.time.Duration;
 import moaon.backend.member.dto.UserInformation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -57,23 +56,27 @@ public class GoogleOAuthClient {
     }
 
     private <T> T getResponse(HttpRequest request, Class<T> clazz) {
-        try {
-            HttpClient httpClient = HttpClient.newHttpClient();
-            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
-            validateStatusCode(response.statusCode());
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try (HttpClient httpClient = HttpClient.newBuilder()
+                    .connectTimeout(Duration.ofSeconds(2L))
+                    .build()) {
+                HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 
-            String body = response.body();
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            return objectMapper.readValue(body, clazz);
-        } catch (IOException | InterruptedException e) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+                validateStatusCode(response.statusCode());
+
+                String body = response.body();
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                return objectMapper.readValue(body, clazz);
+            } catch (IOException | InterruptedException ignored) {
+            }
         }
+        throw new IllegalStateException("[ERROR] 구글 로그인 과정에 실패했습니다.");
     }
 
     private void validateStatusCode(int statusCode) {
         if (statusCode != 200) {
-            throw new CustomException(ErrorCode.UNKNOWN);
+            throw new IllegalStateException("[ERROR] 구글 로그인 과정에 실패했습니다.");
         }
     }
 
