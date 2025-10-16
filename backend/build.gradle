@@ -80,6 +80,9 @@ dependencies {
 
     // healthcheck
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 clean {
