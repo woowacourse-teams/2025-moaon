@@ -1,7 +1,7 @@
 import { httpClient } from "../HttpClient";
 
-const postArticle = async (id: number) => {
+const postArticleView = async (id: number) => {
   await httpClient.post(`/articles/${id}/clicks`);
 };
 
-export default postArticle;
+export default postArticleView;
