@@ -70,9 +70,9 @@ public class NotionContentFinder extends ContentFinder {
 
     private String getText(URL link) {
         URL url = URLParser.parse(SELENIUM_URL);
-        WebDriver driver = new RemoteWebDriver(url, new ChromeOptions()); // 3초 <- 크롬 실행
+        WebDriver driver = new RemoteWebDriver(url, new ChromeOptions());
         try {
-            driver.get(link.toString()); // 2초 <- 링크 치고 들어가고
+            driver.get(link.toString());
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             By by = By.className("notion-page-content");
 
@@ -88,7 +88,7 @@ public class NotionContentFinder extends ContentFinder {
     private String getTextWithRetry(WebDriverWait wait, By by) throws InterruptedException {
         for (int attempts = 0; attempts < 3; attempts++) {
             try {
-                WebElement webElement = wait.until(presenceOfElementLocated(by)); // 4초 <- 읽는건데
+                WebElement webElement = wait.until(presenceOfElementLocated(by));
                 return webElement.getText().trim();
 
             } catch (StaleElementReferenceException e) {
