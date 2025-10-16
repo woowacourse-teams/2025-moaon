@@ -2,7 +2,7 @@ import type { ProjectCategoryKey } from "@domains/filter/projectCategory";
 import type { TechStackKey } from "@domains/filter/techStack";
 import { toast } from "@shared/components/Toast/toast";
 import { useCallback, useState } from "react";
-import type { ProjectFormDataType } from "../../types";
+import type { ProjectFormData } from "../../../../apis/projectRegister/postProjectRegister.type";
 import { validateProjectInfoFormData } from "../utils/ProjectInfoFormUtils";
 
 interface UseProjectInfoFormProps {
@@ -10,7 +10,7 @@ interface UseProjectInfoFormProps {
 }
 
 export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
-  const [formData, setFormData] = useState<ProjectFormDataType>({
+  const [formData, setFormData] = useState<ProjectFormData>({
     title: "",
     summary: "",
     githubUrl: "",
@@ -56,10 +56,7 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
   }, []);
 
   const updateFormField = useCallback(
-    <K extends keyof ProjectFormDataType>(
-      field: K,
-      value: ProjectFormDataType[K]
-    ) => {
+    <K extends keyof ProjectFormData>(field: K, value: ProjectFormData[K]) => {
       setFormData((prev) => ({ ...prev, [field]: value }));
     },
     []

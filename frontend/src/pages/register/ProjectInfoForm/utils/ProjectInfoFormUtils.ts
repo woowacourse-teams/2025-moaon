@@ -1,6 +1,6 @@
-import type { ProjectFormDataType } from "../../types";
+import type { ProjectFormData } from "../../../../apis/projectRegister/postProjectRegister.type";
 
-export const validateProjectInfoFormData = (formData: ProjectFormDataType) => {
+export const validateProjectInfoFormData = (formData: ProjectFormData) => {
   const { title, summary, description, categories, techStacks } = formData;
 
   if (!title) {
