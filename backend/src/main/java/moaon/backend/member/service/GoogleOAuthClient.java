@@ -1,5 +1,6 @@
 package moaon.backend.member.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
@@ -79,6 +80,7 @@ public class GoogleOAuthClient {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private record GoogleAccessToken(
             String access_token
     ) {
