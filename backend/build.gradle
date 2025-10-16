@@ -73,10 +73,13 @@ dependencies {
     testImplementation 'net.datafaker:datafaker:2.1.0'
 
     // selenium
-    implementation "org.seleniumhq.selenium:selenium-java:4.35.0"
+    implementation 'org.seleniumhq.selenium:selenium-java:4.8.0'
 
     // jsoup
     implementation 'org.jsoup:jsoup:1.21.2'
+
+    // healthcheck
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     // jjwt
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'

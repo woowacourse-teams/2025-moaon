@@ -1,37 +1,7 @@
 services:
-  elastic:
-    build:
-      context: .
-      dockerfile: elastic.Dockerfile
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - xpack.security.http.ssl.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  #  kibana:
-  #    image: docker.elastic.co/kibana/kibana:9.1.4
-  #    ports:
-  #      - "5601:5601"
-  #    environment:
-  #      - ELASTICSEARCH_HOSTS=http://elastic:9200
-
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
-    depends_on:
-      elastic:
-        condition: service_healthy
-
     ports:
       - "80:8080"
     logging:
@@ -49,5 +19,12 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
 
-volumes:
-  es_data:
+  selenium:
+    image: selenium/standalone-chrome:139.0-20250909
+    container_name: selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: "2g"
+    platform: linux/amd64
+    restart: unless-stopped
