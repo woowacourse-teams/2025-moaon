@@ -33,7 +33,7 @@ public class ESArticleService {
             ESCursor cursor = nextCursorFor(searchHits);
             return ArticleResponse.from(articles, totalHits, true, cursor.getNextCursor());
         }
-        return ArticleResponse.from(articles, totalHits, false, null);
+        return ArticleResponse.withoutNextCursor(articles, totalHits, false);
     }
 
     private List<Article> getOriginArticles(SearchHits<ArticleDocument> searchHits) {

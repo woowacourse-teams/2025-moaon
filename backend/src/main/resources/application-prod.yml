@@ -4,3 +4,5 @@ spring:
     url: ${SPRING_DATASOURCE_URL_PROD}
     username: ${SPRING_DATASOURCE_USERNAME_PROD}
     password: ${SPRING_DATASOURCE_PASSWORD_PROD}
+  elasticsearch:
+    uris: http://10.0.20.116:9200

@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.article.dto.ArticleContent;
+import moaon.backend.article.domain.Articles;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
@@ -62,27 +63,29 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
-        Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(articles);
+        int limit = 2;
+        long totalCount = 5L;
+        ArticleSortType sortType = ArticleSortType.CREATED_AT;
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(2)
+                .limit(limit)
+                .sortBy(sortType)
                 .build();
 
-        Cursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
+        Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
+                .thenReturn(new Articles(articles, totalCount, limit, sortType));
 
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
+        Cursor<?> articleCursor = articleQueryCondition.sortType().toCursor(article2);
 
-        ArticleContent articleContent1 = ArticleContent.from(article1);
-        ArticleContent articleContent2 = ArticleContent.from(article2);
+        ArticleData articleData1 = ArticleData.from(article1);
+        ArticleData articleData2 = ArticleData.from(article2);
 
         // when
         ArticleResponse actual = articleService.getPagedArticles(articleQueryCondition);
 
         // then
         assertAll(
-                () -> assertThat(actual.contents()).containsExactly(articleContent1, articleContent2),
+                () -> assertThat(actual.contents()).containsExactly(articleData1, articleData2),
                 () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
                 () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
@@ -108,27 +111,29 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
+        int limit = 3;
+        long totalCount = 5L;
+        ArticleSortType sortType = ArticleSortType.CREATED_AT;
+
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(articles);
+                .thenReturn(new Articles(articles, totalCount, limit, sortType));
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(3)
+                .limit(limit)
+                .sortBy(sortType)
                 .build();
 
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
-
-        ArticleContent articleContent1 = ArticleContent.from(article1);
-        ArticleContent articleContent2 = ArticleContent.from(article2);
-        ArticleContent articleContent3 = ArticleContent.from(article3);
+        ArticleData articleData1 = ArticleData.from(article1);
+        ArticleData articleData2 = ArticleData.from(article2);
+        ArticleData articleData3 = ArticleData.from(article3);
 
         // when
         ArticleResponse actual = articleService.getPagedArticles(articleQueryCondition);
 
         // then
         assertAll(
-                () -> assertThat(actual.contents()).containsExactly(articleContent1, articleContent2,
-                        articleContent3),
+                () -> assertThat(actual.contents()).containsExactly(articleData1, articleData2,
+                        articleData3),
                 () -> assertThat(actual.hasNext()).isFalse(),
                 () -> assertThat(actual.nextCursor()).isNull()
         );

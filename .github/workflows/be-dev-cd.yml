@@ -90,6 +90,8 @@ jobs:
           MYSQL_EXPORTER_USER=${{ secrets.MYSQL_EXPORTER_USER }}
           MYSQL_EXPORTER_PASSWORD=${{ secrets.MYSQL_EXPORTER_PASSWORD }}
           IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
           EOF
 
       - name: Log in to Docker Hub

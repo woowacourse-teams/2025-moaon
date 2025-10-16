@@ -20,11 +20,11 @@ spring:
       ddl-auto: validate
     open-in-view: false
 
-  elasticsearch:
-    uris: http://elastic:9200
-
 management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: prometheus, health
+  endpoint:
+    health:
+      show-details: never

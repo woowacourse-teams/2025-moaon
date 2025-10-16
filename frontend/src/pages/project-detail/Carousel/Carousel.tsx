@@ -1,4 +1,7 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
+import Modal from "@shared/components/Modal/Modal";
+import { useOverlay } from "@shared/hooks/useOverlay";
+import { useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
@@ -8,6 +11,22 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
     imageUrls,
   });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
+
+  const imageModal = useOverlay();
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
+
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    imageModal.open();
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImageIndex(null);
+    imageModal.close();
+  };
 
   const getImagePosition = (index: number) => {
     const nextIndex = (currentImageIndex + 1) % imageUrls.length;
@@ -33,9 +52,11 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
             isSingleImage={imageUrls.length === 1}
+            onClick={() => handleImageClick(index)}
           />
         );
       })}
+
       {imageUrls.length > 1 && (
         <>
           <S.PrevButton onClick={handleSlidePrev}>
@@ -46,6 +67,12 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
           </S.NextButton>
         </>
       )}
+
+      <Modal isOpen={imageModal.isOpen} onClose={handleCloseModal}>
+        {selectedImageIndex !== null && (
+          <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
+        )}
+      </Modal>
     </S.CarouselContainer>
   );
 }
