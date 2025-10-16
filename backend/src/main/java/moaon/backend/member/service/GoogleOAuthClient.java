@@ -29,10 +29,8 @@ public class GoogleOAuthClient {
     @Value("${google.redirectUri:@null}")
     private String redirectUri;
 
-
     public UserInformation getUserInformation(String code) {
         GoogleAccessToken token = getGoogleAccessToken(code);
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(USER_INFORMATION_URL))
                 .header("Authorization", "Bearer " + token.access_token())
