@@ -22,12 +22,14 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.global.parser.URLParser;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RequiredArgsConstructor
@@ -65,26 +67,33 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     private String getText(URL link) {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        WebDriver driver = new ChromeDriver(options);
-
+        URL url = URLParser.parse("http://localhost:4444/wd/hub");
+        WebDriver driver = new RemoteWebDriver(url, new ChromeOptions()); // 3초 <- 크롬 실행
         try {
-            driver.get(link.toString());
+            driver.get(link.toString()); // 2초 <- 링크 치고 들어가고
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
             By by = By.className("notion-page-content");
-            try {
-                WebElement webElement = wait.until(presenceOfElementLocated(by));
-                return webElement.getText().trim();
-            } catch (TimeoutException | NoSuchElementException e) {
-                throw new CustomException(ErrorCode.UNKNOWN, e);
-            }
+
+            return getTextWithRetry(wait, by);
+        } catch (TimeoutException | NoSuchElementException | InterruptedException e) {
+            throw new CustomException(ErrorCode.UNKNOWN, e);
+
         } finally {
             driver.quit();
         }
+    }
+
+    private String getTextWithRetry(WebDriverWait wait, By by) throws InterruptedException {
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement webElement = wait.until(presenceOfElementLocated(by)); // 4초 <- 읽는건데
+                return webElement.getText().trim();
+
+            } catch (StaleElementReferenceException e) {
+                Thread.sleep(50);
+            }
+        }
+        throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
     }
 
     private String getTitle(String responseBody) {
