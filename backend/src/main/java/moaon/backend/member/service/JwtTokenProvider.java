@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-    private static final long EXPIRATION_DURATION_IN_MILLISECONDS = 900_000L;
+    private static final long EXPIRATION_DURATION_IN_MILLISECONDS = 24 * 60 * 60 * 1000L;
 
     private final SecretKey secretKey;
 
