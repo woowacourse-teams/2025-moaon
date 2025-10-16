@@ -59,7 +59,6 @@ public class ArticleApiTest extends BaseApiTest {
 
         ArticleCreateRequest articleCreateRequest = ArticleCreateRequest.builder()
                 .projectId(savedProject.getId())
-                .projectTitle(savedProject.getTitle())
                 .title("fork-ts-checker-webpack-plugin")
                 .summary("webpack-plugin 도입")
                 .techStacks(List.of("react"))
@@ -248,7 +247,6 @@ public class ArticleApiTest extends BaseApiTest {
     private RequestFieldsSnippet articleCreateRequestFields() {
         return requestFields(
                 fieldWithPath("[].projectId").description("프로젝트 ID"),
-                fieldWithPath("[].projectTitle").description("프로젝트 제목"),
                 fieldWithPath("[].title").description("아티클 제목"),
                 fieldWithPath("[].summary").description("아티클 요약"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록"),
