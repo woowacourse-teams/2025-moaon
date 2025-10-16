@@ -56,7 +56,7 @@ public class ProjectApiTest extends BaseApiTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private MemberRepository memberRepositor;
+    private MemberRepository memberRepository;
 
     @MockitoBean
     private OAuthService oAuthService;
@@ -68,7 +68,7 @@ public class ProjectApiTest extends BaseApiTest {
         Member member = Fixture.anyMember();
         repositoryHelper.save(member);
 
-        token = jwtTokenProvider.createToken(member.getSocialId());
+        token = jwtTokenProvider.createToken(member.getId());
     }
 
 

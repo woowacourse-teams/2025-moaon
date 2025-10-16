@@ -49,9 +49,13 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectCreateResponse> saveProject(
-            @CookieValue(value = "token") String token,
+            @CookieValue(value = "token", required = false) String token,
             @RequestBody @Valid ProjectCreateRequest projectCreateRequest
     ) {
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         Long savedId = projectService.save(token, projectCreateRequest);
         ProjectCreateResponse response = ProjectCreateResponse.from(savedId);
 

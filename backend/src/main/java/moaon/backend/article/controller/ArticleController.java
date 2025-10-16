@@ -11,6 +11,7 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
+import moaon.backend.member.service.OAuthService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,21 +31,28 @@ public class ArticleController {
 
     private final TrackingCookieManager cookieManager;
     private final ArticleService articleService;
+    private final OAuthService oAuthService;
 
     public ArticleController(
             @Qualifier("articleClickCookieManager") TrackingCookieManager cookieManager,
-            ArticleService articleService
+            ArticleService articleService,
+            OAuthService oAuthService
     ) {
         this.cookieManager = cookieManager;
         this.articleService = articleService;
+        this.oAuthService = oAuthService;
     }
 
     @PostMapping
     public ResponseEntity<Void> saveArticles(
-            @CookieValue(value = "token") String token,
+            @CookieValue(value = "token", required = false) String token,
             @RequestBody @Valid List<ArticleCreateRequest> requests
     ) {
-        articleService.save(token, requests);
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        oAuthService.validateToken(token);
+        articleService.save(requests);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

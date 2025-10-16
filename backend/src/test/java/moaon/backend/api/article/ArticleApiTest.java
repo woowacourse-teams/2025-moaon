@@ -69,7 +69,7 @@ public class ArticleApiTest extends BaseApiTest {
         Member member = Fixture.anyMember();
         repositoryHelper.save(member);
 
-        token = jwtTokenProvider.createToken(member.getSocialId());
+        token = jwtTokenProvider.createToken(member.getId());
     }
 
     @DisplayName("POST /articles: 아티클 저장 API")

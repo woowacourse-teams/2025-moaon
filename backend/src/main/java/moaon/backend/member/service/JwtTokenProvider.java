@@ -51,7 +51,7 @@ public class JwtTokenProvider {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
             }
         } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException(ErrorCode.UNKNOWN, e);
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER, e);
         }
     }
 }
