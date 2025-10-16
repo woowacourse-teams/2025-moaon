@@ -1,15 +1,13 @@
 package moaon.backend.article.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleCrawlRequest;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.service.ArticleCrawlService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,10 +19,10 @@ public class ArticleCrawlingController {
 
     @GetMapping
     public ResponseEntity<ArticleCrawlResponse> crawl(
-            @RequestBody @Valid ArticleCrawlRequest request
+            @RequestParam(value = "url") String url
     ) {
-        ArticleCrawlResult result = articleCrawlService.crawl(request);
-        ArticleCrawlResponse saved = articleCrawlService.save(request.url(), result);
+        ArticleCrawlResult result = articleCrawlService.crawl(url);
+        ArticleCrawlResponse saved = articleCrawlService.save(url, result);
         return ResponseEntity.ok(saved);
     }
 }
