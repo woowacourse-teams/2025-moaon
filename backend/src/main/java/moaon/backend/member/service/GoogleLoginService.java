@@ -28,6 +28,6 @@ public class GoogleLoginService {
             return;
         }
 
-        memberRepository.save(new Member(userInformation.id(), userInformation.name(), userInformation.email()));
+        memberRepository.save(new Member(userInformation.id(), userInformation.email(), userInformation.name()));
     }
 }
