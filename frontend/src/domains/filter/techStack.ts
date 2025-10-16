@@ -742,23 +742,114 @@ export const IOS_STACK_ICON_MAP = {
   },
 } as const;
 
+export const INFRA_STACK_ICON_MAP = {
+  aws: {
+    label: "AWS",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/AWS.svg",
+  },
+  ec2: {
+    label: "EC2",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/EC2.svg",
+  },
+  s3: {
+    label: "S3",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/S3.svg",
+  },
+  cloudfront: {
+    label: "CloudFront",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CloudFront.svg",
+  },
+  cloudwatch: {
+    label: "CloudWatch",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CloudWatch.svg",
+  },
+  docker: {
+    label: "Docker",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Docker.svg",
+  },
+  kubernetes: {
+    label: "Kubernetes",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kubernetes.svg",
+  },
+  nginx: {
+    label: "Nginx",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nginx.svg",
+  },
+  jenkins: {
+    label: "Jenkins",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jenkins.svg",
+  },
+  grafana: {
+    label: "Grafana",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Grafana.svg",
+  },
+  prometheus: {
+    label: "Prometheus",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Prometheus.svg",
+  },
+  sonarqube: {
+    label: "SonarQube",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SonarQube.svg",
+  },
+  sonarcloud: {
+    label: "SonarCloud",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SonarCloud.svg",
+  },
+  logstash: {
+    label: "Logstash",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Logstash.svg",
+  },
+  kibana: {
+    label: "Kibana",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kibana.svg",
+  },
+  flyway: {
+    label: "Flyway",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flyway.svg",
+  },
+  githubAction: {
+    label: "Github Action",
+    imgUrl:
+      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+  },
+} as const;
+
 export const TECH_STACK_ICON_MAP = {
   ...FRONTEND_STACK_ICON_MAP,
   ...BACKEND_STACK_ICON_MAP,
   ...ANDROID_STACK_ICON_MAP,
   ...IOS_STACK_ICON_MAP,
+  ...INFRA_STACK_ICON_MAP,
 } as const;
 
 export type FrontendStackKey = keyof typeof FRONTEND_STACK_ICON_MAP;
 export type BackendStackKey = keyof typeof BACKEND_STACK_ICON_MAP;
 export type AndroidStackKey = keyof typeof ANDROID_STACK_ICON_MAP;
 export type IosStackKey = keyof typeof IOS_STACK_ICON_MAP;
+export type InfraStackKey = keyof typeof INFRA_STACK_ICON_MAP;
 
 export type TechStackKey =
   | FrontendStackKey
   | BackendStackKey
   | AndroidStackKey
-  | IosStackKey;
+  | IosStackKey
+  | InfraStackKey;
 
 export const FRONTEND_STACK_ENTRY = typeSafeObjectEntries(
   FRONTEND_STACK_ICON_MAP
@@ -779,5 +870,9 @@ export const IOS_STACK_ENTRY = typeSafeObjectEntries(IOS_STACK_ICON_MAP).sort(
 export const TECH_STACK_ENTRY = typeSafeObjectEntries(TECH_STACK_ICON_MAP).sort(
   ([a], [b]) => a.localeCompare(b)
 );
+
+export const INFRA_STACK_ENTRY = typeSafeObjectEntries(
+  INFRA_STACK_ICON_MAP
+).sort(([a], [b]) => a.localeCompare(b));
 
 export type AllTechStackEntry = typeof TECH_STACK_ENTRY;
