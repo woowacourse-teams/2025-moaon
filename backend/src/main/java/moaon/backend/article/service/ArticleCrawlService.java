@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ArticleContent;
 import moaon.backend.article.domain.ContentFinder;
 import moaon.backend.article.domain.ContentFinders;
-import moaon.backend.article.dto.ArticleCrawlRequest;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.repository.ArticleContentRepository;
@@ -22,10 +21,10 @@ public class ArticleCrawlService {
 
     private final ArticleContentRepository repository;
 
-    public ArticleCrawlResult crawl(ArticleCrawlRequest request) {
-        URL url = URLParser.parse(request.url());
-        ContentFinder finder = FINDER.getFinder(url);
-        return finder.crawl(url);
+    public ArticleCrawlResult crawl(String url) {
+        URL parsedUrl = URLParser.parse(url);
+        ContentFinder finder = FINDER.getFinder(parsedUrl);
+        return finder.crawl(parsedUrl);
     }
 
     @Transactional
