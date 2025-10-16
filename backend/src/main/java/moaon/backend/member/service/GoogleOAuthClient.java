@@ -1,6 +1,6 @@
 package moaon.backend.member.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
@@ -64,6 +64,7 @@ public class GoogleOAuthClient {
 
             String body = response.body();
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             return objectMapper.readValue(body, clazz);
         } catch (IOException | InterruptedException e) {
             throw new CustomException(ErrorCode.UNKNOWN);
@@ -76,7 +77,6 @@ public class GoogleOAuthClient {
         }
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private record GoogleAccessToken(
             String access_token
     ) {
