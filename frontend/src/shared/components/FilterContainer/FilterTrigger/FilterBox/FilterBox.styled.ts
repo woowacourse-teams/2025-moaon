@@ -39,6 +39,19 @@ export const Container = styled.div<{ isOpen: boolean }>`
       transform: translateY(-30px);
     }
   }
+  @media screen and (max-width: 768px) {
+    min-width: 22rem;
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+  @media screen and (max-width: 480px) {
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: calc(100vw - 2rem);
+    padding: 1rem;
+    gap: 1rem;
+    top: 2.75rem;
+  }
 `;
 
 export const Wrap = styled.div``;
