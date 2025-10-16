@@ -29,7 +29,7 @@ export const Grid = styled.ul`
   width: 100%;
   padding: 0 2rem;
   height: 21.875rem;
-  margin-top: 3rem;
+  margin-top: 3.5rem;
 
   ${BP_768} {
     gap: 1rem 2rem;
@@ -74,7 +74,7 @@ export const LinkButton = styled(Link)`
   border-radius: 24px;
   font-size: 1.25rem;
   font-weight: 600;
-  margin-top: 3rem;
+  margin-top: 3.5rem;
   display: inline-block;
 
   &:hover {
