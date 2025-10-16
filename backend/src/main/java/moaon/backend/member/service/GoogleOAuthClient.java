@@ -56,22 +56,20 @@ public class GoogleOAuthClient {
     }
 
     private <T> T getResponse(HttpRequest request, Class<T> clazz) {
-        for (int attempts = 0; attempts < 3; attempts++) {
-            try (HttpClient httpClient = HttpClient.newBuilder()
-                    .connectTimeout(Duration.ofSeconds(2L))
-                    .build()) {
-                HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+        try (HttpClient httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(5L))
+                .build()) {
+            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 
-                validateStatusCode(response.statusCode());
+            validateStatusCode(response.statusCode());
 
-                String body = response.body();
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                return objectMapper.readValue(body, clazz);
-            } catch (IOException | InterruptedException ignored) {
-            }
+            String body = response.body();
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            return objectMapper.readValue(body, clazz);
+        } catch (IOException | InterruptedException e) {
+            throw new IllegalStateException("[ERROR] 구글 로그인 과정에 실패했습니다.");
         }
-        throw new IllegalStateException("[ERROR] 구글 로그인 과정에 실패했습니다.");
     }
 
     private void validateStatusCode(int statusCode) {

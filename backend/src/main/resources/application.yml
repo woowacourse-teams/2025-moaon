@@ -41,3 +41,6 @@ google:
   clientId: ${GOOGLE_CLIENT_ID}
   clientSecret: ${GOOGLE_CLIENT_SECRET}
   redirectUri: ${GOOGLE_REDIRECT_URI}
+
+jwt:
+  secret: ${JWT_SECRET}

@@ -4,18 +4,25 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Jwts.SIG;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
 
-    private static final SecretKey SECRET_KEY = SIG.HS256.key().build();
     private static final long EXPIRATION_DURATION_IN_MILLISECONDS = 900_000L;
+
+    private final SecretKey secretKey;
+
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    }
 
     public String createToken(Long payload) {
         Claims claims = Jwts.claims()
@@ -27,14 +34,14 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .claims(claims)
                 .expiration(validity)
-                .signWith(SECRET_KEY)
+                .signWith(secretKey)
                 .compact();
     }
 
     public Long extractMemberId(String token) {
         validToken(token);
         String id = Jwts.parser()
-                .verifyWith(SECRET_KEY)
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
@@ -45,7 +52,7 @@ public class JwtTokenProvider {
 
     public void validToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token);
+            Jws<Claims> claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
             boolean isExpired = claims.getPayload().getExpiration().before(new Date());
             if (isExpired) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);

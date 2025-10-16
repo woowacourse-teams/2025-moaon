@@ -56,6 +56,14 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/temp")
+    public ResponseEntity<Void> saveArticlesTemp(
+            @RequestBody @Valid List<ArticleCreateRequest> requests
+    ) {
+        articleService.save(requests);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @GetMapping
     public ResponseEntity<ArticleResponse> getPagedArticles(
             @RequestParam(value = "sort", required = false) String sortType,

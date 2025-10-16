@@ -90,6 +90,7 @@ jobs:
           GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_DEV_REDIRECT_URI }}
+          JWT_TOKEN=${{ secrets.JWT_SECRET }}
           EOF
 
       - name: Log in to Docker Hub

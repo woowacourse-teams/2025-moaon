@@ -18,6 +18,7 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      JWT_TOKEN: ${JWT_SECRET}
 
   selenium:
     image: selenium/standalone-chrome:139.0-20250909
