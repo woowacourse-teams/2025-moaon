@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.member.dto.JwtToken;
 import moaon.backend.member.service.GoogleLoginService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ public class GoogleLoginController {
 
     private final GoogleLoginService googleLoginService;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<Void> login(
             @RequestParam String code,
             HttpServletResponse response
