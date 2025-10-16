@@ -22,27 +22,31 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.global.parser.URLParser;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RequiredArgsConstructor
 public class NotionContentFinder extends ContentFinder {
+
     /*
     노션이 사용중인 도메인: notion.site, notion.com, notion.so
     이 외 사용자 지정 도메인은 bodyFinder 가 수행한다.
      */
+    private static final List<String> NOTION_DOMAIN = List.of(
+            "notion.site", "notion.com", "notion.so"
+    );
+    private static final String SELENIUM_URL = "http://selenium:4444/wd/hub";
 
     private final String notionUserId;
     private final String tokenV2;
 
-    private static final List<String> NOTION_DOMAIN = List.of(
-            "notion.site", "notion.com", "notion.so"
-    );
 
     @Override
     public boolean canHandle(URL url) {
@@ -65,26 +69,33 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     private String getText(URL link) {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        WebDriver driver = new ChromeDriver(options);
-
+        URL url = URLParser.parse(SELENIUM_URL);
+        WebDriver driver = new RemoteWebDriver(url, new ChromeOptions());
         try {
             driver.get(link.toString());
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
             By by = By.className("notion-page-content");
-            try {
-                WebElement webElement = wait.until(presenceOfElementLocated(by));
-                return webElement.getText().trim();
-            } catch (TimeoutException | NoSuchElementException e) {
-                throw new CustomException(ErrorCode.UNKNOWN, e);
-            }
+
+            return getTextWithRetry(wait, by);
+        } catch (TimeoutException | NoSuchElementException | InterruptedException e) {
+            throw new CustomException(ErrorCode.UNKNOWN, e);
+
         } finally {
             driver.quit();
         }
+    }
+
+    private String getTextWithRetry(WebDriverWait wait, By by) throws InterruptedException {
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement webElement = wait.until(presenceOfElementLocated(by));
+                return webElement.getText().trim();
+
+            } catch (StaleElementReferenceException e) {
+                Thread.sleep(50);
+            }
+        }
+        throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
     }
 
     private String getTitle(String responseBody) {

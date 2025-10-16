@@ -15,3 +15,13 @@ services:
       SPRING_DATASOURCE_URL_PROD: ${SPRING_DATASOURCE_URL_PROD}
       SPRING_DATASOURCE_USERNAME_PROD: ${SPRING_DATASOURCE_USERNAME_PROD}
       SPRING_DATASOURCE_PASSWORD_PROD: ${SPRING_DATASOURCE_PASSWORD_PROD}
+
+  selenium:
+    image: selenium/standalone-chrome:139.0-20250909
+    container_name: selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: "2g"
+    platform: linux/amd64
+    restart: unless-stopped

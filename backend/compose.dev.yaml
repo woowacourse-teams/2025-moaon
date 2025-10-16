@@ -81,6 +81,16 @@ services:
       - ./promtail-config.yml:/etc/promtail/config.yml:ro
     command: -config.file=/etc/promtail/config.yml
 
+  selenium:
+    image: selenium/standalone-chrome:139.0-20250909
+    container_name: selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: "2g"
+    platform: linux/amd64
+    restart: unless-stopped
+
 volumes:
   db-data:
   log_data:
