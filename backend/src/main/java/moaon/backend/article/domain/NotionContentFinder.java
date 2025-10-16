@@ -34,17 +34,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RequiredArgsConstructor
 public class NotionContentFinder extends ContentFinder {
+
     /*
     노션이 사용중인 도메인: notion.site, notion.com, notion.so
     이 외 사용자 지정 도메인은 bodyFinder 가 수행한다.
      */
+    private static final List<String> NOTION_DOMAIN = List.of(
+            "notion.site", "notion.com", "notion.so"
+    );
+    private static final String SELENIUM_URL = "http://selenium:4444/wd/hub";
 
     private final String notionUserId;
     private final String tokenV2;
 
-    private static final List<String> NOTION_DOMAIN = List.of(
-            "notion.site", "notion.com", "notion.so"
-    );
 
     @Override
     public boolean canHandle(URL url) {
@@ -67,7 +69,7 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     private String getText(URL link) {
-        URL url = URLParser.parse("http://localhost:4444/wd/hub");
+        URL url = URLParser.parse(SELENIUM_URL);
         WebDriver driver = new RemoteWebDriver(url, new ChromeOptions()); // 3초 <- 크롬 실행
         try {
             driver.get(link.toString()); // 2초 <- 링크 치고 들어가고
