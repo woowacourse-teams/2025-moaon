@@ -1,6 +1,7 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
 import { useEffect, useState } from "react";
 import MobileHeader from "../MobileHeader/MobileHeader";
+import GoogleLoginButton from "./GoogleLoginButton/GoogleLoginButton";
 import * as S from "./Header.styled";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
@@ -35,6 +36,7 @@ function Header() {
         </S.Wrap>
         <S.Wrap>
           <RegisterProjectButton />
+          <GoogleLoginButton />
         </S.Wrap>
       </S.HeaderBox>
     </S.Header>

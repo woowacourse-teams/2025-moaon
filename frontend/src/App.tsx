@@ -1,3 +1,4 @@
+import OAuthCallback from "@/pages/oauth/OAuthCallback";
 import { LoadingSpinner } from "@shared/components/LoadingSpinner/LoadingSpinner";
 import { ScrollToTop } from "@shared/components/ScrollToTop/ScrollToTop";
 import { Suspense } from "react";
@@ -30,6 +31,7 @@ function App() {
             <Route path="/wooteco" element={<WootecoEventPage />} />
             <Route path="/wooteco/:company" element={<CompanyEventPage />} />
             <Route path="/event" element={<EventLandingPage />} />
+            <Route path="/oauth/callback" element={<OAuthCallback />} />
             <Route
               path="*"
               element={
