@@ -18,6 +18,6 @@ scrape_configs:
           __path__: /var/log/app/*/*.log
     pipeline_stages:
       - regex:
-          expression: ".*/logs/(?P<env>\\w+)/.*\\.log"
+          expression: "/var/log/app/(?P<env>\\w+)/.*\\.log"
       - labels:
           env:
