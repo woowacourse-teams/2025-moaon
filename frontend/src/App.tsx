@@ -8,6 +8,7 @@ import EventLandingPage from "./pages/eventLanding/EventLandingPage";
 import LandingPage from "./pages/landing/LandingPage";
 import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
+import RegisterPage from "./pages/register/RegisterPage";
 import CompanyEventPage from "./pages/wooteco/company/CompanyEventPage";
 import WootecoEventPage from "./pages/wooteco/WootecoEventPage";
 import Header from "./shared/components/Header/Header";
@@ -41,6 +42,7 @@ function App() {
                 </>
               }
             />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </Suspense>
       </GlobalLayout>

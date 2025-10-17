@@ -82,6 +82,7 @@ export const resetStyle = css`
   mark,
   audio,
   video {
+    font-weight: normal;
     margin: 0;
     padding: 0;
     border: 0;

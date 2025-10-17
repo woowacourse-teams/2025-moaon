@@ -37,9 +37,6 @@ function ArticleForm({
 
   return (
     <S.FormBox>
-      <S.FormTitle>
-        {editingData ? "아티클 수정" : "새 아티클 추가"}
-      </S.FormTitle>
       <S.FormFieldList>
         <InputFormFieldWithButton
           title="아티클 주소"

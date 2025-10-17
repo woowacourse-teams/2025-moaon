@@ -1,9 +1,11 @@
-import { toast } from "@shared/components/Toast/toast";
+import { useNavigate } from "react-router";
 import * as S from "./RegisterProjectButton.styled";
 
 function RegisterProjectButton() {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    toast.info("프로젝트 등록은 추후에 추가될 예정입니다.");
+    navigate(`/register`);
   };
 
   return (

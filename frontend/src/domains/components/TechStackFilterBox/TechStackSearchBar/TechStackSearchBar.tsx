@@ -32,26 +32,47 @@ const getFilteredListWithoutSelected = (
 };
 
 interface TechStackSearchBarProps {
-  onSelect: () => void;
+  onSelect?: () => void;
+  mode?: "query" | "controlled";
+  selectedTechStacks?: TechStackKey[];
+  onTechStackChange?: (techStack: TechStackKey) => void;
 }
 
-function TechStackSearchBar({ onSelect }: TechStackSearchBarProps) {
+function TechStackSearchBar({
+  onSelect,
+  mode = "query",
+  selectedTechStacks: controlledSelectedTechStacks,
+  onTechStackChange,
+}: TechStackSearchBarProps) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filterList, setFilterList] = useState<AllTechStackEntry>([]);
-  const { techStacks: selectedTechStacks } = useFilterParams();
-  const { updateTechStackParam } = useFilterParams();
+
+  const { techStacks: queryTechStacks, updateTechStackParam } =
+    useFilterParams();
   const inputRef = useRef<HTMLInputElement>(null);
+
   useKeyDown({
     Escape: () => setIsOpen(false),
   });
+
   const sector = useGetSectorLocation();
 
+  const selectedTechStacks =
+    mode === "controlled"
+      ? controlledSelectedTechStacks || []
+      : queryTechStacks;
+
   const handleTechStackItemClick = (techStack: TechStackKey) => {
-    updateTechStackParam(techStack);
+    if (mode === "controlled" && onTechStackChange) {
+      onTechStackChange(techStack);
+    } else if (mode === "query") {
+      updateTechStackParam(techStack);
+    }
+
     setValue("");
     setIsOpen(false);
-    onSelect();
+    onSelect?.();
   };
 
   const handleArrowUp = () => {
