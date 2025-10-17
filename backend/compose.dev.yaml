@@ -52,7 +52,7 @@ services:
       S3_REGION: ${S3_REGION}
 
     volumes:
-      - log_data:/app/logs
+      - log-data:/app/logs
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -100,4 +100,4 @@ services:
 
 volumes:
   db-data:
-  log_data:
+  log-data:

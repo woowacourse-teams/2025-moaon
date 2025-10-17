@@ -54,11 +54,13 @@ echo "배포할 새 이미지 태그: ${NEW_IMAGE_TAG}"
 
 
 # 2. 최신 이미지 pull
-echo "새 이미지를 pull합니다: ${IMAGE_NAME}:${NEW_IMAGE_TAG}"
+echo "새 이미지를 pull합니다"
+echo "docker pull ${IMAGE_NAME}:${NEW_IMAGE_TAG}"
 sudo docker pull "${IMAGE_NAME}:${NEW_IMAGE_TAG}"
 
 # 3. 새 버전 컨테이너 실행
 echo "새로운 컨테이너(${IMAGE_NAME}:${NEW_IMAGE_TAG})를 실행합니다."
+echo "docker compose -f ${COMPOSE_FILE_PATH} up -d"
 # 배포할 이미지 태그를 명시적으로 export하여 compose 파일에 전달합니다.
 export IMAGE_TAG=${NEW_IMAGE_TAG}
 sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
