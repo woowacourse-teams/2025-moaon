@@ -21,11 +21,10 @@ services:
       JWT_SECRET: ${JWT_SECRET}
 
   selenium:
-    image: selenium/standalone-chrome:139.0-20250909
+    image: selenium/standalone-chromium:latest
     container_name: selenium
     ports:
       - "4444:4444"
       - "7900:7900"
     shm_size: "2g"
-    platform: linux/amd64
     restart: unless-stopped
