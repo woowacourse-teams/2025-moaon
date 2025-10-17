@@ -20,6 +20,7 @@
     "@babel/preset-typescript": "^7.27.1",
     "@biomejs/biome": "^2.1.1",
     "@emotion/babel-plugin": "^11.13.5",
+    "@lottiefiles/react-lottie-player": "^3.6.0",
     "@sentry/webpack-plugin": "^4.0.2",
     "@types/node": "^24.1.0",
     "@types/react": "^19.1.8",
