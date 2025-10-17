@@ -29,16 +29,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
+        logging(e, errorCode);
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.from(errorCode));
+    }
+
+    private void logging(CustomException e, ErrorCode errorCode) {
+        if (e.getCause() != null) {
+            log.warn("[{}] {} {} \\n {}",
+                    errorCode.name(),
+                    errorCode.getId(),
+                    errorCode.getMessage(),
+                    e.getCause().getMessage()
+            );
+            return;
+        }
 
         log.warn("[{}] {} {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage()
         );
-
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ErrorResponse.from(errorCode));
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
