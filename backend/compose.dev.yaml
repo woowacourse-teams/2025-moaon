@@ -75,7 +75,9 @@ services:
     image: grafana/promtail:2.9.0
     container_name: moaon-promtail
     restart: unless-stopped
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml -config.expand-env=true
+    environment:
+      - INSTANCE_NAME=${INSTANCE_NAME}
     volumes:
       - ./promtail-config.yml:/etc/promtail/config.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
