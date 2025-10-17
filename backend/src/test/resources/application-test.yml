@@ -36,3 +36,7 @@ google:
 
 jwt:
   secret: g/DGwpKK2nrqQC2lWweIWX+od76/qs6mMZIpz6OKd0ogo0HLkMOs5dkG9dLUtKtN65xjcgnPMJNrzyGTiCjA/g==
+
+s3:
+  bucket: testbucket
+  region: testregion

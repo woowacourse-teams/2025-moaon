@@ -20,6 +20,7 @@ import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.repository.CategoryRepository;
 import moaon.backend.project.repository.ProjectRepository;
 import moaon.backend.techStack.repository.TechStackRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,11 @@ public class ProjectService {
     private final TechStackRepository techStackRepository;
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
+
+    @Value("${s3.region}")
+    private String region;
+    @Value("${s3.bucket}")
+    private String bucket;
 
     public ProjectDetailResponse getById(Long id) {
         Project project = projectRepository.findById(id)
@@ -104,7 +110,7 @@ public class ProjectService {
                 request.description(),
                 request.githubUrl(),
                 request.productionUrl(),
-                new Images(request.imageKeys()),
+                imagesFrom(request.imageKeys()),
                 member,
                 request.techStacks().stream()
                         .map(
@@ -123,5 +129,13 @@ public class ProjectService {
 
         Project saved = projectRepository.save(project);
         return saved.getId();
+    }
+
+    private Images imagesFrom(List<String> imageKeys) {
+        // https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/~~.png
+        List<String> urls = imageKeys.stream()
+                .map(k -> String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, region, k))
+                .toList();
+        return new Images(urls);
     }
 }
