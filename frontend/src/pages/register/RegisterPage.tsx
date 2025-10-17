@@ -6,8 +6,12 @@ import * as S from "./RegisterPage.styled";
 
 function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [projectId, setProjectId] = useState<number | null>(null);
 
-  const handleNextStepClick = () => setCurrentStep((prev) => prev + 1);
+  const handleNextStepClick = (id: number) => {
+    setProjectId(id);
+    setCurrentStep((prev) => prev + 1);
+  };
 
   return (
     <>
@@ -25,7 +29,9 @@ function RegisterPage() {
 
       <S.FormBox>
         {currentStep === 1 && <ProjectInfoForm onNext={handleNextStepClick} />}
-        {currentStep === 2 && <ArticleSubmission projectId={1} />}
+        {currentStep === 2 && projectId !== null && (
+          <ArticleSubmission projectId={projectId} />
+        )}
       </S.FormBox>
     </>
   );

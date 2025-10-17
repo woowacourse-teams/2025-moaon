@@ -6,9 +6,8 @@ import { useProjectInfoForm } from "./hooks/useProjectInfoForm";
 import * as S from "./ProjectInfoForm.styled";
 
 interface ProjectInfoFormProps {
-  onNext: () => void;
+  onNext: (projectId: number) => void;
 }
-
 function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
   const {
     formData,
