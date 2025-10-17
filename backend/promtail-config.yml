@@ -17,7 +17,15 @@ scrape_configs:
         regex: '/(.*)'
         target_label: 'container'
     pipeline_stages:
-      - json: { }
+      - json:
+          expressions:
+            time: time
+            level: level
+            thread: thread
+            logger: logger
+            msg: msg
+            app: app
+            env: env
       - timestamp:
           source: time
           format: RFC3339Nano
