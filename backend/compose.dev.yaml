@@ -22,11 +22,32 @@ services:
       timeout: 5s
       retries: 5
 
+  elastic:
+    build:
+      context: .
+      dockerfile: elastic.Dockerfile
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
     depends_on:
       db:
+        condition: service_healthy
+      elastic:
         condition: service_healthy
     ports:
       - "8080:8080"
