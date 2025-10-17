@@ -19,6 +19,8 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
       JWT_SECRET: ${JWT_SECRET}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_REGION: ${S3_REGION}
 
   selenium:
     image: selenium/standalone-chromium:latest

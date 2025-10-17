@@ -36,3 +36,7 @@ google:
 
 jwt:
   secret: ${JWT_SECRET}
+
+s3:
+  bucket: ${S3_BUCKET}
+  region: ${S3_REGION}
