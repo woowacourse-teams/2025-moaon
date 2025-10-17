@@ -15,7 +15,7 @@ scrape_configs:
           - localhost
         labels:
           job: moaon-app
-          __path__: /var/log/app/logs/*/*.log
+          __path__: /var/log/app/*/*.log
     pipeline_stages:
       - regex:
           expression: ".*/logs/(?P<env>\\w+)/.*\\.log"
