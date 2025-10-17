@@ -1,6 +1,7 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import Modal from "@shared/components/Modal/Modal";
 import { useOverlay } from "@shared/hooks/useOverlay";
+import { useSwipe } from "@shared/hooks/useSwipe";
 import { useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
@@ -11,6 +12,11 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
     imageUrls,
   });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
+
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: handleSlideNext,
+    onSwipedRight: handleSlidePrev,
+  });
 
   const imageModal = useOverlay();
 
@@ -40,7 +46,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
   };
 
   return (
-    <S.CarouselContainer>
+    <S.CarouselContainer {...swipeHandlers}>
       {imageUrls.map((image, index) => {
         const imagePosition = getImagePosition(index);
 
@@ -65,6 +71,23 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
           <S.NextButton onClick={handleSlideNext}>
             <ArrowIcon direction="right" />
           </S.NextButton>
+          <S.Indicators>
+            {imageUrls.map((url, index) => (
+              <S.Indicator
+                key={`indicator-${url}`}
+                $active={index === currentImageIndex}
+                onClick={() => {
+                  const diff = index - currentImageIndex;
+                  if (diff > 0) {
+                    for (let i = 0; i < diff; i++) handleSlideNext();
+                  } else if (diff < 0) {
+                    for (let i = 0; i < Math.abs(diff); i++) handleSlidePrev();
+                  }
+                }}
+                aria-label={`슬라이드 ${index + 1}로 이동`}
+              />
+            ))}
+          </S.Indicators>
         </>
       )}
 

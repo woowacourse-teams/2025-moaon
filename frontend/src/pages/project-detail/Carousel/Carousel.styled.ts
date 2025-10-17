@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_480, BP_768, BP_1024 } from "@/styles/global.styled";
 
 export const CarouselContainer = styled.div`
   width: 100%;
@@ -9,6 +10,21 @@ export const CarouselContainer = styled.div`
   gap: 1.5rem;
   position: relative;
   margin: 2rem 0 3rem;
+
+  ${BP_1024} {
+    height: 20rem;
+    gap: 1rem;
+  }
+
+  ${BP_768} {
+    height: 16rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  ${BP_480} {
+    height: 12rem;
+    margin: 1rem 0 1.5rem;
+  }
 `;
 
 const CarouselImage = styled.img`
@@ -42,6 +58,24 @@ export const Image = styled(CarouselImage)<{
         opacity: 1;
         transform: translateX(${isSingleImage ? "0" : "-15rem"});
         z-index: 1;
+
+        ${BP_1024} {
+          width: 35rem;
+          height: 19rem;
+          transform: translateX(${isSingleImage ? "0" : "-12rem"});
+        }
+
+        ${BP_768} {
+          width: 28rem;
+          height: 15rem;
+          transform: translateX(${isSingleImage ? "0" : "-9rem"});
+        }
+
+        ${BP_480} {
+          width: 90vw;
+          height: 50vw;
+          transform: translateX(0);
+        }
       `;
       case "next":
         return `
@@ -50,6 +84,22 @@ export const Image = styled(CarouselImage)<{
         opacity: 0.5;
         transform: translateX(23rem);
         z-index: 1;
+
+        ${BP_1024} {
+          width: 22rem;
+          height: 12.5rem;
+          transform: translateX(18rem);
+        }
+
+        ${BP_768} {
+          width: 18rem;
+          height: 10rem;
+          transform: translateX(14rem);
+        }
+
+        ${BP_480} {
+          display: none;
+        }
       `;
       case "prev":
         return `
@@ -58,6 +108,22 @@ export const Image = styled(CarouselImage)<{
         opacity: 0.5;
         transform: translateX(-12.5rem);
         z-index: 0;
+
+        ${BP_1024} {
+          width: 22rem;
+          height: 12.5rem;
+          transform: translateX(-10rem);
+        }
+
+        ${BP_768} {
+          width: 18rem;
+          height: 10rem;
+          transform: translateX(-8rem);
+        }
+
+        ${BP_480} {
+          display: none;
+        }
       `;
       case "hidden":
         return `
@@ -66,6 +132,22 @@ export const Image = styled(CarouselImage)<{
         opacity: 0;
         transform: translateX(43.75rem);
         z-index: -1;
+
+        ${BP_1024} {
+          width: 22rem;
+          height: 12.5rem;
+          transform: translateX(35rem);
+        }
+
+        ${BP_768} {
+          width: 18rem;
+          height: 10rem;
+          transform: translateX(28rem);
+        }
+
+        ${BP_480} {
+          display: none;
+        }
       `;
     }
   }}
@@ -83,24 +165,113 @@ const MoveButton = styled.button`
   background-color: #d9d9d9;
   color: #636b76;
   z-index: 5;
+  transition: all 0.2s ease;
 
   &:hover {
     background-color: #a9a9a9;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  ${BP_768} {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+    background-color: rgba(217, 217, 217, 0.9);
+  }
+
+  ${BP_480} {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1rem;
   }
 `;
 
 export const NextButton = styled(MoveButton)`
   right: 0;
+
+  ${BP_768} {
+    right: 0.5rem;
+  }
+
+  ${BP_480} {
+    right: 0.25rem;
+  }
 `;
 
 export const PrevButton = styled(MoveButton)`
   left: 0;
+
+  ${BP_768} {
+    left: 0.5rem;
+  }
+
+  ${BP_480} {
+    left: 0.25rem;
+  }
 `;
 
 export const ModalImage = styled.img`
-  max-width: 80dvw;
+  max-width: min(80dvw, 1200px);
   max-height: 80dvh;
   min-width: 25dvw;
   min-height: 25dvw;
   object-fit: contain;
+
+  ${BP_768} {
+    max-width: 90dvw;
+    max-height: 85dvh;
+    min-width: auto;
+    min-height: auto;
+  }
+
+  ${BP_480} {
+    max-width: 95dvw;
+    max-height: 90dvh;
+  }
+`;
+
+export const Indicators = styled.div`
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+
+  ${BP_768} {
+    bottom: 0.75rem;
+    gap: 0.375rem;
+  }
+
+  ${BP_480} {
+    bottom: 0.5rem;
+    gap: 0.25rem;
+  }
+`;
+
+export const Indicator = styled.button<{ $active: boolean }>`
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: none;
+  background: ${({ $active }) =>
+    $active ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.5)"};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+  }
+
+  ${BP_480} {
+    width: 0.375rem;
+    height: 0.375rem;
+  }
 `;
