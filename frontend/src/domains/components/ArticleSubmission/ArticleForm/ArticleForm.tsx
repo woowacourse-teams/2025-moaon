@@ -1,3 +1,4 @@
+import { LoadingSpinner } from "@shared/components/LoadingSpinner/LoadingSpinner";
 import type { ArticleFormDataType } from "../types";
 import * as S from "./ArticleForm.styled";
 import InputFormField from "./components/InputFormField/InputFormField";
@@ -26,6 +27,7 @@ function ArticleForm({
     handleMetaDataFetchButtonClick,
     handleSubmit,
     handleCancel,
+    loading,
   } = useArticleForm({
     editingData,
     onSubmit,
@@ -85,6 +87,7 @@ function ArticleForm({
           </S.ArticleCancelButton>
         )}
       </S.ArticleButtonGroup>
+      {loading && <LoadingSpinner />}
     </S.FormBox>
   );
 }
