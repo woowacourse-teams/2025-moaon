@@ -7,9 +7,8 @@ positions:
 
 clients:
   - url: http://10.0.3.18:3100/loki/api/v1/push
-    global:
-      external_labels:
-        instance: ${INSTANCE_NAME}
+    external_labels:
+      instance: ${INSTANCE_NAME}
 
 scrape_configs:
   - job_name: containers
