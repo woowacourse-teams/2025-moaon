@@ -11,9 +11,14 @@ export const CardContainer = styled.li`
   align-items: flex-start;
   gap: 0.75rem;
   overflow: hidden;
+
   &:hover {
     transition: 0.25s linear;
     box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
   }
 `;
 
@@ -23,6 +28,10 @@ export const CardTitle = styled.h2`
   line-height: 1.25;
   height: 2.8125rem;
   ${textOverflowEllipsis(2)}
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 export const CardSummary = styled.span`
@@ -54,11 +63,19 @@ export const CardClickBox = styled.div`
 
 export const CardClickIcon = styled.img`
   width: 1.125rem;
+
+  @media (max-width: 768px) {
+    width: 1rem;
+  }
 `;
 
 export const CardClickCount = styled.span`
   font-size: 0.8125rem;
   color: #595858;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
 
 export const ArticleLink = styled.a``;
@@ -85,10 +102,18 @@ export const ProjectLinkButton = styled.div`
   &:hover::after {
     width: 90%;
   }
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
 export const BadgeList = styled.ul`
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 0.25rem;
+  }
 `;

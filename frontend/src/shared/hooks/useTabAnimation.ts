@@ -18,7 +18,7 @@ export const useTabAnimation = ({
   });
   const isMounted = useIsMounted();
 
-  useLayoutEffect(() => {
+  const updateSelectedStyle = useCallback(() => {
     const targetRef = elementRefs.current[selectedIndex];
     if (!targetRef) {
       return;
@@ -33,17 +33,36 @@ export const useTabAnimation = ({
     });
   }, [selectedIndex, duration, isMounted]);
 
+  useLayoutEffect(() => {
+    updateSelectedStyle();
+  }, [updateSelectedStyle]);
+
+  useLayoutEffect(() => {
+    const targetRef = elementRefs.current[selectedIndex];
+    if (!targetRef) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateSelectedStyle();
+    });
+
+    resizeObserver.observe(targetRef);
+    if (targetRef.parentElement) {
+      resizeObserver.observe(targetRef.parentElement);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [selectedIndex, updateSelectedStyle]);
+
   const setTabElementsRef = useCallback(
     (element: HTMLElement | null, index: number) => {
       if (!element) {
         return;
       }
-
       elementRefs.current[index] = element;
-
-      return () => {
-        elementRefs.current[index] = null;
-      };
     },
     []
   );
