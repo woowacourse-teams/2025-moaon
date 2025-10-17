@@ -31,10 +31,10 @@ function rollback() {
     # .env 파일의 IMAGE_TAG 값을 롤백할 버전으로 직접 수정합니다.
     sed -i "s/IMAGE_TAG=${IMAGE_TAG}/IMAGE_TAG=${CURRENT_IMAGE_TAG}/g" .env
 
-    sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
-    echo "롤백 완료."
+    sudo docker compose -f ${COMPOSE_FILE_PATH} up
+    echo "✅ 롤백 완료."
   else
-    echo "롤백할 이전 버전이 없거나, 이전 버전과 현재 버전이 동일합니다. 현재 컨테이너를 중지합니다."
+    echo "❌ 롤백할 이전 버전이 없거나, 이전 버전과 현재 버전이 동일합니다. 현재 컨테이너를 중지합니다."
     sudo docker compose -f ${COMPOSE_FILE_PATH} down
   fi
 }
@@ -56,7 +56,7 @@ sudo docker pull "${IMAGE_NAME}:${NEW_IMAGE_TAG}"
 echo "새로운 컨테이너(${IMAGE_NAME}:${NEW_IMAGE_TAG})를 실행합니다."
 # 배포할 이미지 태그를 명시적으로 export하여 compose 파일에 전달합니다.
 export IMAGE_TAG=${NEW_IMAGE_TAG}
-sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
+sudo docker compose -f ${COMPOSE_FILE_PATH} up
 
 # 4. 헬스 체크 (Polling)
 echo "헬스 체크를 시작합니다..."
