@@ -25,7 +25,7 @@ services:
       S3_BUCKET: ${S3_BUCKET}
       S3_REGION: ${S3_REGION}
     volumes:
-      - log_data:/app/logs
+      - log-data:/app/logs
 
   promtail:
     image: grafana/promtail:2.9.0
