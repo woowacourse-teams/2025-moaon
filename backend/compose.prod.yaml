@@ -4,12 +4,6 @@ services:
     container_name: moaon-app
     ports:
       - "80:8080"
-    logging:
-      driver: "awslogs"
-      options:
-        awslogs-group: "moaon-prod"
-        awslogs-region: "ap-northeast-2"
-        awslogs-stream: "prod-docker"
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL_PROD: ${SPRING_DATASOURCE_URL_PROD}
@@ -24,17 +18,15 @@ services:
       #      OTEL_EXPORTER_OTLP_ENDPOINT: http://10.0.3.18:4318
       S3_BUCKET: ${S3_BUCKET}
       S3_REGION: ${S3_REGION}
-    volumes:
-      - log-data:/app/logs
 
   promtail:
     image: grafana/promtail:2.9.0
     container_name: moaon-promtail
     restart: unless-stopped
-    volumes:
-      - log-data:/var/log/app:ro
-      - ./promtail-config.yml:/etc/promtail/config.yml:ro
     command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   selenium:
     image: selenium/standalone-chromium:latest
@@ -44,6 +36,3 @@ services:
       - "7900:7900"
     shm_size: "2g"
     restart: unless-stopped
-
-volumes:
-  log-data:

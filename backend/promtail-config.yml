@@ -9,15 +9,21 @@ clients:
   - url: http://10.0.3.18:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: spring-app-logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: moaon-app
-          __path__: /var/log/app/*/*.log
+  - job_name: containers
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+    relabel_configs:
+      - source_labels: [ '__meta_docker_container_name' ]
+        regex: '/(.*)'
+        target_label: 'container'
     pipeline_stages:
-      - regex:
-          expression: "/var/log/app/(?P<env>\\w+)/.*\\.log"
+      - json: { }
+      - timestamp:
+          source: time
+          format: RFC3339Nano
       - labels:
+          app:
           env:
+          level:
+      - output:
+          source: msg

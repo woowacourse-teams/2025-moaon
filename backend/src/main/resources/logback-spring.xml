@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
+    <springProperty scope="local" name="APP_NAME" source="spring.application.name" defaultValue="moaon-app"/>
+    <springProperty scope="local" name="PROFILE" source="spring.profiles.active" defaultValue="local"/>
 
-    <property name="APP_NAME" value="moaon"/>
-    <springProperty scope="context" name="PROFILE" source="spring.profiles.active" defaultValue="local"/>
+    <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -14,39 +14,19 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/${PROFILE}/application.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/${PROFILE}/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>100MB</maxFileSize>
-            <maxHistory>14</maxHistory>
-            <totalSizeCap>2GB</totalSizeCap>
-        </rollingPolicy>
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp/>
-                <logLevel/>
-                <loggerName/>
-                <message/>
-                <mdc/>
-                <stackTrace>
-                    <maxLength>8192</maxLength>
-                </stackTrace>
-                <pattern>
-                    <pattern>
-                        {
-                        "app": "${APP_NAME}",
-                        "env": "${PROFILE}",
-                        "level": "%level",
-                        "message": "%message",
-                        "trace_id": "%X{trace_id}",
-                        "span_id": "%X{span_id}",
-                        "thread": "%thread",
-                        "logger": "%logger{36}"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <timestamp>time</timestamp>
+                <version>[ignore]</version>
+                <level>level</level>
+                <thread>thread</thread>
+                <logger>logger</logger>
+                <message>msg</message>
+                <stackTrace>stack_trace</stackTrace>
+            </fieldNames>
+            <includeMdc>true</includeMdc>
+            <customFields>{"app":"${APP_NAME}", "env":"${PROFILE}"}</customFields>
         </encoder>
     </appender>
 
@@ -58,14 +38,7 @@
 
     <springProfile name="dev,prod">
         <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE"/>
+            <appender-ref ref="JSON"/>
         </root>
-    </springProfile>
-
-    <springProfile name="local,test">
-        <logger name="org.hibernate.SQL" level="DEBUG"/>
-        <logger name="org.hibernate.orm.jdbc.bind" level="TRACE"/>
-        <logger name="org.flywaydb" level="DEBUG"/>
     </springProfile>
 </configuration>
