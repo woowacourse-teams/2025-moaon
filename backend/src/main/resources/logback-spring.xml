@@ -61,7 +61,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="!prod">
+    <springProfile name="local,test">
         <logger name="org.hibernate.SQL" level="DEBUG"/>
         <logger name="org.hibernate.orm.jdbc.bind" level="TRACE"/>
         <logger name="org.flywaydb" level="DEBUG"/>
