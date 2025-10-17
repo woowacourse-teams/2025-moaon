@@ -11,6 +11,8 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.service.OAuthService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -49,7 +51,7 @@ public class ArticleController {
             @RequestBody @Valid List<ArticleCreateRequest> requests
     ) {
         if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
         }
         oAuthService.validateToken(token);
         articleService.save(requests);

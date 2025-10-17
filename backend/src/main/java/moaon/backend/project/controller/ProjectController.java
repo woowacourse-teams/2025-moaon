@@ -8,6 +8,8 @@ import java.util.List;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
@@ -53,7 +55,7 @@ public class ProjectController {
             @RequestBody @Valid ProjectCreateRequest projectCreateRequest
     ) {
         if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
         }
 
         Long savedId = projectService.save(token, projectCreateRequest);
