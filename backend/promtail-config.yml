@@ -33,5 +33,3 @@ scrape_configs:
           app:
           env:
           level:
-      - output:
-          source: msg
