@@ -27,10 +27,16 @@ import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.member.domain.Member;
+import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.member.service.JwtTokenProvider;
+import moaon.backend.member.service.OAuthService;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.RequestFieldsSnippet;
@@ -47,6 +53,25 @@ public class ArticleApiTest extends BaseApiTest {
     @MockitoBean
     private ArticleDocumentRepository documentRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @MockitoBean
+    private OAuthService oAuthService;
+
+    private String token;
+
+    @BeforeEach
+    void cookieSetUp() {
+        Member member = Fixture.anyMember();
+        repositoryHelper.save(member);
+
+        token = jwtTokenProvider.createToken(member.getId());
+    }
+
     @DisplayName("POST /articles: 아티클 저장 API")
     @Test
     void save() throws MalformedURLException {
@@ -59,7 +84,6 @@ public class ArticleApiTest extends BaseApiTest {
 
         ArticleCreateRequest articleCreateRequest = ArticleCreateRequest.builder()
                 .projectId(savedProject.getId())
-                .projectTitle(savedProject.getTitle())
                 .title("fork-ts-checker-webpack-plugin")
                 .summary("webpack-plugin 도입")
                 .techStacks(List.of("react"))
@@ -70,9 +94,12 @@ public class ArticleApiTest extends BaseApiTest {
                 .topics(List.of("etc"))
                 .build();
 
+        Mockito.doNothing().when(oAuthService).validateToken(Mockito.any());
+
         // when
         RestAssured.given(documentationSpecification).log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .body(List.of(articleCreateRequest))
                 .filter(document(articleCreateRequestFields()))
                 .when().post("/articles")
@@ -248,7 +275,6 @@ public class ArticleApiTest extends BaseApiTest {
     private RequestFieldsSnippet articleCreateRequestFields() {
         return requestFields(
                 fieldWithPath("[].projectId").description("프로젝트 ID"),
-                fieldWithPath("[].projectTitle").description("프로젝트 제목"),
                 fieldWithPath("[].title").description("아티클 제목"),
                 fieldWithPath("[].summary").description("아티클 요약"),
                 fieldWithPath("[].techStacks").description("기술 스택 목록"),

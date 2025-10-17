@@ -11,10 +11,14 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.member.service.OAuthService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,17 +33,33 @@ public class ArticleController {
 
     private final TrackingCookieManager cookieManager;
     private final ArticleService articleService;
+    private final OAuthService oAuthService;
 
     public ArticleController(
             @Qualifier("articleClickCookieManager") TrackingCookieManager cookieManager,
-            ArticleService articleService
+            ArticleService articleService,
+            OAuthService oAuthService
     ) {
         this.cookieManager = cookieManager;
         this.articleService = articleService;
+        this.oAuthService = oAuthService;
     }
 
     @PostMapping
     public ResponseEntity<Void> saveArticles(
+            @CookieValue(value = "token", required = false) String token,
+            @RequestBody @Valid List<ArticleCreateRequest> requests
+    ) {
+        if (token == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
+        }
+        oAuthService.validateToken(token);
+        articleService.save(requests);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/temp")
+    public ResponseEntity<Void> saveArticlesTemp(
             @RequestBody @Valid List<ArticleCreateRequest> requests
     ) {
         articleService.save(requests);
