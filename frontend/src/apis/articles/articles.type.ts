@@ -22,3 +22,13 @@ export interface Article {
   sector: ArticleSectorKey;
   createdAt: string;
 }
+
+export interface PostArticleData {
+  projectId: number;
+  title: string;
+  summary: string;
+  techStacks: TechStackKey[];
+  url: string;
+  topics: AllTopicKey[];
+  sector: ArticleSectorKey;
+}

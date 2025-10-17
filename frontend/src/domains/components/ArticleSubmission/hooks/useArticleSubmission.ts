@@ -1,9 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
+import { articlesQueries } from "@/apis/articles/articles.queries";
 import type { ArticleFormDataType } from "../types";
 
 interface UseArticleSubmissionProps {
   initialArticles: ArticleFormDataType[];
-  projectId?: number;
+  projectId: number;
 }
 
 export const useArticleSubmission = ({
@@ -40,12 +42,21 @@ export const useArticleSubmission = ({
     setEditingArticle(undefined);
   }, []);
 
+  const postArticleClickMutation = useMutation(articlesQueries.postArticles());
+
   const postArticlesClick = useCallback(() => {
-    /**
-     * 아티클 등록 API가 나올 시 연동할 예정입니다.
-     */
-    console.log(projectId, articles);
-  }, [projectId, articles]);
+    postArticleClickMutation.mutate(
+      articles.map((article) => ({
+        projectId,
+        title: article.title,
+        summary: article.description,
+        techStacks: article.sector.techStacks,
+        url: article.address,
+        sector: article.sector.value,
+        topics: article.sector.topics,
+      }))
+    );
+  }, [projectId, articles, postArticleClickMutation]);
 
   return {
     articles,
