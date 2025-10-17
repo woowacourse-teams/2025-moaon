@@ -29,7 +29,9 @@
                 <loggerName/>
                 <message/>
                 <mdc/>
-                <stackTrace/>
+                <stackTrace>
+                    <maxLength>8192</maxLength>
+                </stackTrace>
                 <pattern>
                     <pattern>
                         {
