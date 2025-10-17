@@ -1,4 +1,9 @@
 import styled from "@emotion/styled";
+import { BP_768 } from "@/styles/global.styled";
+
+export const RegisterPageContainer = styled.div`
+  padding: 2rem 1rem;
+`;
 
 export const Title = styled.h1`
   font-size: 2rem;
@@ -25,4 +30,8 @@ export const FormBox = styled.div`
   border-radius: 8px;
   box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
   border: 1px solid #cacacaff;
+
+  ${BP_768} {
+    width: 100%;
+  }
 `;

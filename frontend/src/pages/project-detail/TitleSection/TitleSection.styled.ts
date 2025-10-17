@@ -81,10 +81,12 @@ export const View = styled(Overline)`
 export const ProductName = styled.h2`
   font-size: 2rem;
   font-weight: 700;
+  word-break: break-all;
 `;
 
 export const ProductDescription = styled(Body)`
   color: #73798d;
+  word-break: break-all;
 `;
 
 export const ActionButtons = styled.div`
