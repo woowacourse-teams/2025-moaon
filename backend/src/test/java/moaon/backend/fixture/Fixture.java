@@ -12,7 +12,11 @@ public class Fixture {
     private static final AtomicLong SEQUENCE = new AtomicLong(0L);
 
     public static Member anyMember() {
-        return new Member(nameWithSequence("testMember"));
+        return new Member(
+                socialIdWithSequence("testSocialId"),
+                emailWithSequence("testEmail@gmail.com"),
+                nameWithSequence("testMember")
+        );
     }
 
     public static TechStack anyTechStack() {
@@ -29,5 +33,13 @@ public class Fixture {
 
     protected static String nameWithSequence(String name) {
         return name + SEQUENCE.incrementAndGet();
+    }
+
+    protected static String emailWithSequence(String email) {
+        return email + SEQUENCE.incrementAndGet();
+    }
+
+    protected static String socialIdWithSequence(String socialId) {
+        return socialId + SEQUENCE.incrementAndGet();
     }
 }

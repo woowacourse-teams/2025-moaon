@@ -38,7 +38,7 @@ function CompanyEventPage() {
   return (
     <S.Main>
       <VisuallyHidden>
-        <h1>{company}개발자가 참여한 프로젝트 모아보기</h1>
+        <h1>{company} 합격한 프로젝트 모아보기</h1>
       </VisuallyHidden>
       <S.Image
         src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}

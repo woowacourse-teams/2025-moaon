@@ -24,6 +24,9 @@ import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
+import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.member.service.JwtTokenProvider;
+import moaon.backend.member.service.OAuthService;
 import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.PagedProjectResponse;
@@ -32,19 +35,42 @@ import moaon.backend.project.dto.ProjectCreateRequest;
 import moaon.backend.project.dto.ProjectCreateResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ProjectApiTest extends BaseApiTest {
 
     @Autowired
     protected RepositoryHelper repositoryHelper;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @MockitoBean
+    private OAuthService oAuthService;
+
+    private String token;
+
+    @BeforeEach
+    void cookieSetUp() {
+        Member member = Fixture.anyMember();
+        repositoryHelper.save(member);
+
+        token = jwtTokenProvider.createToken(member.getId());
+    }
+
 
     @DisplayName("POST /projects : 프로젝트 저장 API")
     @Test
@@ -56,8 +82,8 @@ public class ProjectApiTest extends BaseApiTest {
 
         repositoryHelper.save(new Category("web"));
         repositoryHelper.save(new Category("it"));
-        
-        repositoryHelper.save(new Member("포포"));
+
+        Member member = repositoryHelper.save(new Member("123", "popo@gmail.com", "포포"));
 
         ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
                 .title("모아온")
@@ -78,9 +104,12 @@ public class ProjectApiTest extends BaseApiTest {
                 .imageKeys(List.of("www.images.com"))
                 .build();
 
+        Mockito.when(oAuthService.getUserByToken(Mockito.any())).thenReturn(member);
+
         // when
         ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .body(projectCreateRequest)
                 .filter(document(projectCreateRequestFields(), projectCreateResponseFields()))
                 .when().post("/projects")

@@ -2,10 +2,12 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
+import Dropdown from "@shared/components/Dropdown/Dropdown";
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
 import { toast } from "@shared/components/Toast/toast";
 import type { QueryObserverResult } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import type {
   ProjectArticle,
   ProjectArticleCount,
@@ -28,6 +30,8 @@ interface ArticleSectionProps {
   isRefetching: boolean;
   isLoading: boolean;
 }
+
+const MOBILE_BREAKPOINT = 1280;
 
 function ArticleSection({
   articles,
@@ -61,16 +65,36 @@ function ArticleSection({
   const hasArticles = articles.length > 0;
   const shouldShowSearchBar = hasArticles || searchValue !== undefined;
 
+  const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
+    typeof window === "undefined"
+      ? false
+      : window.innerWidth <= MOBILE_BREAKPOINT,
+  );
+
+  useEffect(() => {
+    const onResize = () =>
+      setIsMobileLike(window.innerWidth <= MOBILE_BREAKPOINT);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   return (
     <S.ArticleSectionContainer>
       <SectionTitle title="프로젝트 아티클" />
-
-      <Tab
-        items={articleSectors}
-        onSelect={handleTabSelect}
-        selected={selectedSector}
-        width={100}
-      />
+      {isMobileLike ? (
+        <Dropdown
+          items={articleSectors}
+          onSelect={handleTabSelect}
+          selected={selectedSector}
+        />
+      ) : (
+        <Tab
+          items={articleSectors}
+          onSelect={handleTabSelect}
+          selected={selectedSector}
+          width={100}
+        />
+      )}
 
       {shouldShowSearchBar && (
         <S.SearchHeader hasArticles={hasArticles}>

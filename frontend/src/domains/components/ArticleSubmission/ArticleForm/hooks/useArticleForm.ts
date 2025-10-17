@@ -2,7 +2,7 @@ import { toast } from "@shared/components/Toast/toast";
 import { useCallback, useEffect, useState } from "react";
 import type { ArticleFormDataType, SectorType } from "../../types";
 import { createEmptyFormData, validateFormData } from "../utils/formUtils";
-import { useFetchMeta } from "./useFetchMeta";
+import { useCrawlArticleMutation } from "./useCrawlArticleMutation";
 
 interface UseArticleFormProps {
   editingData?: ArticleFormDataType;
@@ -17,11 +17,11 @@ export const useArticleForm = ({
   onUpdate,
   onCancel,
 }: UseArticleFormProps) => {
-  const { fill } = useFetchMeta();
-
   const [formData, setFormData] = useState<ArticleFormDataType>(() =>
     createEmptyFormData()
   );
+
+  const fetchMetaMutation = useCrawlArticleMutation(setFormData);
 
   useEffect(() => {
     if (!editingData) {
@@ -31,19 +31,14 @@ export const useArticleForm = ({
     setFormData(editingData);
   }, [editingData]);
 
-  const handleMetaDataFetchButtonClick = async () => {
-    const result = await fill({
-      urlInput: formData.address,
-    });
-    if (result) {
-      const { title, description } = result;
-      setFormData((prev) => ({
-        ...prev,
-        title: title,
-        description: description,
-      }));
+  const handleMetaDataFetchButtonClick = useCallback(() => {
+    if (!formData.address) {
+      toast.warning("아티클 주소를 입력해주세요.");
+      return;
     }
-  };
+
+    fetchMetaMutation.mutate(formData.address);
+  }, [formData.address, fetchMetaMutation]);
 
   const updateFormFieldData = <K extends keyof ArticleFormDataType>(
     field: K,
@@ -71,6 +66,7 @@ export const useArticleForm = ({
 
   const handleSubmit = useCallback(() => {
     const errorMessage = validateFormData(formData);
+
     if (errorMessage !== "") {
       toast.warning(errorMessage);
       return;
@@ -78,9 +74,10 @@ export const useArticleForm = ({
 
     if (onUpdate && editingData) {
       onUpdate(formData);
-    } else {
-      onSubmit(formData);
+      return;
     }
+
+    onSubmit(formData);
 
     setFormData(createEmptyFormData());
   }, [formData, onSubmit, onUpdate, editingData]);
@@ -97,5 +94,6 @@ export const useArticleForm = ({
     handleMetaDataFetchButtonClick,
     handleSubmit,
     handleCancel,
+    loading: fetchMetaMutation.isPending,
   };
 };

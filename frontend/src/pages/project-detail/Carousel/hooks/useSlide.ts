@@ -17,5 +17,18 @@ export const useSlide = ({ imageUrls }: useSlideProps) => {
     );
   }, [imageUrls.length]);
 
-  return { currentImageIndex, handleSlideNext, handleSlidePrev };
+  const goToIndex = useCallback(
+    (index: number) => {
+      if (imageUrls.length === 0) {
+        return;
+      }
+
+      const normalized =
+        ((index % imageUrls.length) + imageUrls.length) % imageUrls.length;
+      setCurrentImageIndex(normalized);
+    },
+    [imageUrls.length]
+  );
+
+  return { currentImageIndex, handleSlideNext, handleSlidePrev, goToIndex };
 };

@@ -15,13 +15,16 @@ services:
       SPRING_DATASOURCE_URL_PROD: ${SPRING_DATASOURCE_URL_PROD}
       SPRING_DATASOURCE_USERNAME_PROD: ${SPRING_DATASOURCE_USERNAME_PROD}
       SPRING_DATASOURCE_PASSWORD_PROD: ${SPRING_DATASOURCE_PASSWORD_PROD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      JWT_SECRET: ${JWT_SECRET}
 
   selenium:
-    image: selenium/standalone-chrome:139.0-20250909
+    image: selenium/standalone-chromium:latest
     container_name: selenium
     ports:
       - "4444:4444"
       - "7900:7900"
     shm_size: "2g"
-    platform: linux/amd64
     restart: unless-stopped
