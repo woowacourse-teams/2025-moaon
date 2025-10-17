@@ -9,7 +9,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 public class URLParser {
 
     private static final Pattern URL_PATTERN = Pattern.compile(
-            "^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(:\\d+)?(/[^\\s]*)?(\\?[^\\s]*)?$",
+            "^(https?://)?([a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*)(:\\d+)?(/[^\\\\s]*)?(\\?[^\\\\s]*)?$",
             Pattern.CASE_INSENSITIVE
     );
 

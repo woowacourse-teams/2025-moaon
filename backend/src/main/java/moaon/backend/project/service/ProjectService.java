@@ -9,6 +9,7 @@ import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.member.service.OAuthService;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.Projects;
@@ -29,9 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;
+    private final OAuthService oAuthService;
     private final TechStackRepository techStackRepository;
     private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
 
     public ProjectDetailResponse getById(Long id) {
         Project project = projectRepository.findById(id)
@@ -62,8 +64,40 @@ public class ProjectService {
 
     @Transactional
     public Long save(ProjectCreateRequest request) {
-        // TODO: 로그인 기능 구현
-        Member member = memberRepository.findById(1L).orElseThrow();
+        Member member = memberRepository.findById(1L).orElseThrow(
+                () -> new CustomException(ErrorCode.UNAUTHORIZED_MEMBER)
+        );
+
+        Project project = new Project(
+                request.title(),
+                request.summary(),
+                request.description(),
+                request.githubUrl(),
+                request.productionUrl(),
+                new Images(request.imageKeys()),
+                member,
+                request.techStacks().stream()
+                        .map(
+                                techStack -> techStackRepository.findByName(techStack)
+                                        .orElseThrow(() -> new CustomException(ErrorCode.TECHSTACK_NOT_FOUND))
+                        )
+                        .toList(),
+                request.categories().stream()
+                        .map(
+                                category -> categoryRepository.findByName(category)
+                                        .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND))
+                        )
+                        .toList(),
+                LocalDateTime.now()
+        );
+
+        Project saved = projectRepository.save(project);
+        return saved.getId();
+    }
+
+    @Transactional
+    public Long save(String token, ProjectCreateRequest request) {
+        Member member = oAuthService.getUserByToken(token);
         Project project = new Project(
                 request.title(),
                 request.summary(),

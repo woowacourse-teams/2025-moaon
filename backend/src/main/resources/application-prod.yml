@@ -6,10 +6,3 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD_PROD}
   elasticsearch:
     uris: http://10.0.20.116:9200
-
-logging:
-  pattern:
-    console: "[%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
-  level:
-    org.hibernate.SQL: off
-    org.hibernate.orm.jdbc.bind: off

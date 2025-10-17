@@ -69,6 +69,11 @@ dependencies {
     // flyway
     implementation 'org.flywaydb:flyway-mysql'
 
+    // monitoring
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+
     // dataFaker
     testImplementation 'net.datafaker:datafaker:2.1.0'
 
@@ -80,6 +85,11 @@ dependencies {
 
     // healthcheck
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // jjwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 }
 
 clean {
