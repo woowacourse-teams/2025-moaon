@@ -25,13 +25,18 @@ COMPOSE_FILE_PATH="compose.prod.yaml"
 # --- 롤백 함수 정의 ---
 function rollback() {
   echo "❌ 배포 실패. 롤백을 시작합니다..."
+
+  echo "--- ❌ 실패한 컨테이너(${CONTAINER_NAME}) 로그 출력 (최근 100줄) ---"
+  sudo docker compose -f ${COMPOSE_FILE_PATH} logs --tail="100" ${CONTAINER_NAME}
+  echo "--- 로그 출력 완료 ---"
+
   # 이전 이미지 태그가 존재하고, 현재 태그와 다른 경우에만 롤백 실행
   if [ "${CURRENT_IMAGE_TAG}" != "none" ] && [ "${CURRENT_IMAGE_TAG}" != "${NEW_IMAGE_TAG}" ]; then
     echo "이전 이미지(${IMAGE_NAME}:${CURRENT_IMAGE_TAG})로 되돌립니다."
     # .env 파일의 IMAGE_TAG 값을 롤백할 버전으로 직접 수정합니다.
     sed -i "s/IMAGE_TAG=${IMAGE_TAG}/IMAGE_TAG=${CURRENT_IMAGE_TAG}/g" .env
 
-    sudo docker compose -f ${COMPOSE_FILE_PATH} up
+    sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
     echo "✅ 롤백 완료."
   else
     echo "❌ 롤백할 이전 버전이 없거나, 이전 버전과 현재 버전이 동일합니다. 현재 컨테이너를 중지합니다."
@@ -56,7 +61,7 @@ sudo docker pull "${IMAGE_NAME}:${NEW_IMAGE_TAG}"
 echo "새로운 컨테이너(${IMAGE_NAME}:${NEW_IMAGE_TAG})를 실행합니다."
 # 배포할 이미지 태그를 명시적으로 export하여 compose 파일에 전달합니다.
 export IMAGE_TAG=${NEW_IMAGE_TAG}
-sudo docker compose -f ${COMPOSE_FILE_PATH} up
+sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
 
 # 4. 헬스 체크 (Polling)
 echo "헬스 체크를 시작합니다..."
