@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.annotation.Nullable;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -48,7 +49,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<ErrorResponse> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
         log.info("error: {}", e.getMessage());
-        return handleMvcStandardException(ErrorCode.HANDLER_METHOD_VALIDATION, e);
+        return handleMvcStandardException(
+                ErrorCode.HANDLER_METHOD_VALIDATION,
+                e,
+                Arrays.toString(e.getDetailMessageArguments())
+        );
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

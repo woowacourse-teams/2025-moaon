@@ -12,7 +12,6 @@ import org.springframework.util.CollectionUtils;
 @Builder
 public record ArticleCreateRequest(
         @NotNull Long projectId,
-        @NotBlank String projectTitle,
         @NotBlank String title,
         @NotBlank String summary,
         List<String> techStacks,
