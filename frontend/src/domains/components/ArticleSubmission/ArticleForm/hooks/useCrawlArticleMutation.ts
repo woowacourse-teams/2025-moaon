@@ -1,38 +1,35 @@
 import { toast } from "@shared/components/Toast/toast";
-import { useMutation } from "@tanstack/react-query";
-import type { Dispatch } from "react";
-import getCrawlArticle from "@/apis/crawl/getCrawlArticle";
+import type { Dispatch, SetStateAction } from "react";
+import { crawlArticleQueries } from "@/apis/crawl/crawlArticle.queries";
 import type { ArticleFormDataType } from "../../types";
 
-const useCrawlArticleMutation = (
-  setFormData: Dispatch<React.SetStateAction<ArticleFormDataType>>
+export const useCrawlArticleMutation = (
+  setFormData: Dispatch<SetStateAction<ArticleFormDataType>>
 ) => {
-  const fetchMetaMutation = useMutation({
-    mutationFn: (url: string) => getCrawlArticle(url),
-    onSuccess: ({ title, summary }) => {
-      if (title || summary) {
+  const { mutate, isPending } = crawlArticleQueries.fetchCrawl();
+
+  const handleFetch = (url: string) => {
+    mutate(url, {
+      onSuccess: ({ title, summary }) => {
+        console.log("title:", title, "summary:", summary);
         setFormData((prev) => ({
           ...prev,
-          ...(title && { title }),
-          ...(summary && { description: summary }),
+          ...(title ? { title } : {}),
+          ...(summary ? { description: summary } : {}),
         }));
+      },
+      onError: (error) => {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          return;
+        }
 
-        return;
-      }
-    },
-    onError: (error) => {
-      if (error instanceof Error) {
-        toast.error(error.message);
-        return;
-      }
+        toast.error(
+          "메타데이터를 가져오는데 실패했어요. 아티클 제목과 줄거리를 직접 작성해주세요."
+        );
+      },
+    });
+  };
 
-      toast.error(
-        "메타데이터를 가져오는데 실패했어요. 주소를 다시 확인해주세요."
-      );
-    },
-  });
-
-  return fetchMetaMutation;
+  return { mutate: handleFetch, isPending };
 };
-
-export default useCrawlArticleMutation;

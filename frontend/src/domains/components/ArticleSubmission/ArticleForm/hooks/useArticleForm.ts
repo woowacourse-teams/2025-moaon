@@ -2,7 +2,7 @@ import { toast } from "@shared/components/Toast/toast";
 import { useCallback, useEffect, useState } from "react";
 import type { ArticleFormDataType, SectorType } from "../../types";
 import { createEmptyFormData, validateFormData } from "../utils/formUtils";
-import useCrawlArticleMutation from "./useCrawlArticleMutation";
+import { useCrawlArticleMutation } from "./useCrawlArticleMutation";
 
 interface UseArticleFormProps {
   editingData?: ArticleFormDataType;
@@ -94,5 +94,6 @@ export const useArticleForm = ({
     handleMetaDataFetchButtonClick,
     handleSubmit,
     handleCancel,
+    loading: fetchMetaMutation.isPending,
   };
 };
