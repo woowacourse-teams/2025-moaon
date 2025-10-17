@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "develop" ]
 
-
 jobs:
   build-and-push-image:
     if: |
