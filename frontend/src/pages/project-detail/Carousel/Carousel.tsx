@@ -1,16 +1,25 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import Modal from "@shared/components/Modal/Modal";
 import { useOverlay } from "@shared/hooks/useOverlay";
-import { useState } from "react";
+import { useSwipe } from "@shared/hooks/useSwipe";
+import { useEffect, useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
 
+const MOBILE_BREAKPOINT = 480;
+
 function Carousel({ imageUrls }: { imageUrls: string[] }) {
-  const { currentImageIndex, handleSlidePrev, handleSlideNext } = useSlide({
-    imageUrls,
-  });
+  const { currentImageIndex, handleSlidePrev, handleSlideNext, goToIndex } =
+    useSlide({
+      imageUrls,
+    });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
+
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: handleSlideNext,
+    onSwipedRight: handleSlidePrev,
+  });
 
   const imageModal = useOverlay();
 
@@ -39,8 +48,21 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
     return "hidden";
   };
 
+  const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
+    typeof window === "undefined"
+      ? false
+      : window.innerWidth <= MOBILE_BREAKPOINT,
+  );
+
+  useEffect(() => {
+    const onResize = () =>
+      setIsMobileLike(window.innerWidth <= MOBILE_BREAKPOINT);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   return (
-    <S.CarouselContainer>
+    <S.CarouselContainer {...swipeHandlers}>
       {imageUrls.map((image, index) => {
         const imagePosition = getImagePosition(index);
 
@@ -57,7 +79,18 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
         );
       })}
 
-      {imageUrls.length > 1 && (
+      {imageUrls.length > 1 && isMobileLike ? (
+        <S.Indicators>
+          {imageUrls.map((url, index) => (
+            <S.Indicator
+              key={`indicator-${url}`}
+              $active={index === currentImageIndex}
+              onClick={() => goToIndex(index)}
+              aria-label={`슬라이드 ${index + 1}로 이동`}
+            />
+          ))}
+        </S.Indicators>
+      ) : (
         <>
           <S.PrevButton onClick={handleSlidePrev}>
             <ArrowIcon direction="left" />
