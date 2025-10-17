@@ -95,6 +95,8 @@ jobs:
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_DEV_REDIRECT_URI }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
           EOF
 
       - name: Log in to Docker Hub

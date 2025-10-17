@@ -48,6 +48,9 @@ services:
       OTEL_SERVICE_NAME: moaon-app-dev
       OTEL_TRACES_EXPORTER: otlp
       OTEL_EXPORTER_OTLP_ENDPOINT: http://10.0.3.18:4318
+      S3_BUCKET: ${S3_BUCKET}
+      S3_REGION: ${S3_REGION}
+
     volumes:
       - log_data:/app/logs
 

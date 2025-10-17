@@ -4,9 +4,11 @@ import { Suspense } from "react";
 import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
 import ArticlePage from "./pages/article/ArticlePage";
+import EventLandingPage from "./pages/eventLanding/EventLandingPage";
 import LandingPage from "./pages/landing/LandingPage";
 import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
+import RegisterPage from "./pages/register/RegisterPage";
 import CompanyEventPage from "./pages/wooteco/company/CompanyEventPage";
 import WootecoEventPage from "./pages/wooteco/WootecoEventPage";
 import Header from "./shared/components/Header/Header";
@@ -27,6 +29,7 @@ function App() {
             <Route path="/article" element={<ArticlePage />} />
             <Route path="/wooteco" element={<WootecoEventPage />} />
             <Route path="/wooteco/:company" element={<CompanyEventPage />} />
+            <Route path="/event" element={<EventLandingPage />} />
             <Route
               path="*"
               element={
@@ -39,6 +42,7 @@ function App() {
                 </>
               }
             />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </Suspense>
       </GlobalLayout>

@@ -1,3 +1,4 @@
+import { LoadingSpinner } from "@shared/components/LoadingSpinner/LoadingSpinner";
 import type { ArticleFormDataType } from "../types";
 import * as S from "./ArticleForm.styled";
 import InputFormField from "./components/InputFormField/InputFormField";
@@ -26,6 +27,7 @@ function ArticleForm({
     handleMetaDataFetchButtonClick,
     handleSubmit,
     handleCancel,
+    loading,
   } = useArticleForm({
     editingData,
     onSubmit,
@@ -35,9 +37,6 @@ function ArticleForm({
 
   return (
     <S.FormBox>
-      <S.FormTitle>
-        {editingData ? "아티클 수정" : "새 아티클 추가"}
-      </S.FormTitle>
       <S.FormFieldList>
         <InputFormFieldWithButton
           title="아티클 주소"
@@ -85,6 +84,7 @@ function ArticleForm({
           </S.ArticleCancelButton>
         )}
       </S.ArticleButtonGroup>
+      {loading && <LoadingSpinner />}
     </S.FormBox>
   );
 }

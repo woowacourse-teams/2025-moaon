@@ -4,6 +4,7 @@ import ArticleSection from "./ArticleSection/ArticleSection";
 import Carousel from "./Carousel/Carousel";
 import useProjectDetailData from "./hooks/useProjectDetailData";
 import OverviewSection from "./OverviewSection/OverviewSection";
+import * as S from "./ProjectDetailPage.styled";
 import TechStacksSection from "./TechStacksSection/TechStacksSection";
 import TitleSection from "./TitleSection/TitleSection";
 
@@ -27,7 +28,7 @@ function ProjectDetailPage() {
   });
 
   return (
-    <div>
+    <S.DetailPageContainer>
       <TitleSection projectDetail={projectDetail} />
       {projectDetail.imageUrls.length > 0 && (
         <Carousel imageUrls={projectDetail.imageUrls} />
@@ -41,7 +42,7 @@ function ProjectDetailPage() {
         isRefetching={isProjectArticleRefetching}
         isLoading={isProjectArticleLoading}
       />
-    </div>
+    </S.DetailPageContainer>
   );
 }
 
