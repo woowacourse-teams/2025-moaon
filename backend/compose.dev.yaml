@@ -88,3 +88,6 @@ services:
       - "7900:7900"
     shm_size: "2g"
     restart: unless-stopped
+
+volumes:
+  db-data:
