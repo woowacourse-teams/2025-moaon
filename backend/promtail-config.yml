@@ -9,10 +9,15 @@ clients:
   - url: http://10.0.3.18:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: server-logs
+  - job_name: spring-app-logs
     static_configs:
       - targets:
           - localhost
         labels:
-          job: server
-          __path__: /var/log/app/*.log
+          job: moaon-app
+          __path__: /var/log/app/logs/*/*.log
+    pipeline_stages:
+      - regex:
+          expression: ".*/logs/(?P<env>\\w+)/.*\\.log"
+      - labels:
+          env:

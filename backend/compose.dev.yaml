@@ -21,6 +21,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app

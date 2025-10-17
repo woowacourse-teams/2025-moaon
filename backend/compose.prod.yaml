@@ -15,6 +15,17 @@ services:
       SPRING_DATASOURCE_URL_PROD: ${SPRING_DATASOURCE_URL_PROD}
       SPRING_DATASOURCE_USERNAME_PROD: ${SPRING_DATASOURCE_USERNAME_PROD}
       SPRING_DATASOURCE_PASSWORD_PROD: ${SPRING_DATASOURCE_PASSWORD_PROD}
+    volumes:
+      - log_data:/app/logs
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: moaon-promtail
+    restart: unless-stopped
+    volumes:
+      - log_data:/var/log/app:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+    command: -config.file=/etc/promtail/config.yml
 
   selenium:
     image: selenium/standalone-chrome:139.0-20250909
@@ -25,3 +36,6 @@ services:
     shm_size: "2g"
     platform: linux/amd64
     restart: unless-stopped
+
+volumes:
+  log_data:
