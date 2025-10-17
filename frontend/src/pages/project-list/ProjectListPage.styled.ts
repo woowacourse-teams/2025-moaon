@@ -5,16 +5,18 @@ export const Main = styled.main`
   margin-top: 5rem;
   @media screen and (max-width: 1280px) {
     margin-top: 4.5rem;
+    padding: 0 1.5rem;
   }
   @media screen and (max-width: 1024px) {
     margin-top: 4rem;
+    padding: 0 1rem;
   }
   @media screen and (max-width: 768px) {
     margin-top: 3.5rem;
   }
   @media screen and (max-width: 480px) {
     margin-top: 3rem;
-    padding-bottom: 2rem;
+    padding: 0 0.5rem 2rem;
   }
 `;
 
@@ -123,7 +125,7 @@ export const Wrap = styled.div`
   flex-wrap: nowrap;
   flex: 1 1 auto;
   min-width: 0;
-  overflow: hidden;
+
   @media screen and (max-width: 768px) {
     gap: 0.5rem;
   }
