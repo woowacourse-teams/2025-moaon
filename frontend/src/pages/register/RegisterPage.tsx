@@ -14,11 +14,13 @@ function RegisterPage() {
   };
 
   return (
-    <>
+    <S.RegisterPageContainer>
       <S.TitleSection>
-        <S.Title>프로젝트 등록</S.Title>
+        <S.Title>{currentStep === 1 ? "프로젝트" : "아티클"} 등록</S.Title>
         <S.Description>
-          프로젝트를 소개할 수 있도록 필요한 정보를 입력해주세요
+          {currentStep === 1
+            ? "프로젝트를 소개할 수 있도록 필요한 정보를 입력해주세요"
+            : "아티클을 등록해서 여러분의 경험을 공유해주세요."}
         </S.Description>
       </S.TitleSection>
 
@@ -33,7 +35,7 @@ function RegisterPage() {
           <ArticleSubmission projectId={projectId} />
         )}
       </S.FormBox>
-    </>
+    </S.RegisterPageContainer>
   );
 }
 

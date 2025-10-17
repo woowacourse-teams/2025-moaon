@@ -33,7 +33,12 @@ export const ProjectIntro = styled.p`
   font-size: 1.125rem;
   width: 80rem;
   margin: 0 auto 1.25rem;
+
+  @media screen and (max-width: 1280px) {
+    width: 64rem;
+  }
   @media screen and (max-width: 1024px) {
+    width: 48rem;
     font-size: 1rem;
   }
   @media screen and (max-width: 768px) {
@@ -44,12 +49,6 @@ export const ProjectIntro = styled.p`
   @media screen and (max-width: 480px) {
     font-size: 0.875rem;
     padding: 0 1rem;
-  }
-  @media screen and (max-width: 1280px) {
-    width: 64rem;
-  }
-  @media screen and (max-width: 1024px) {
-    width: 48rem;
   }
 `;
 
