@@ -32,18 +32,27 @@ services:
     volumes:
       - '/:/host:ro,rslave'
 
-  mysqld-exporter:
+  mysqld-exporter-writer:
     image: prom/mysqld-exporter:latest
-    container_name: mysqld-exporter
+    container_name: mysqld-exporter-writer
     restart: unless-stopped
     ports:
       - "9104:9104"
     command:
-      - "--mysqld.username=${MYSQL_EXPORTER_USER}:${MYSQL_EXPORTER_PASSWORD}"
-      - "--mysqld.address=db:3306"
-    depends_on:
-      db:
-        condition: service_healthy
+      - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}"
+      - "--mysqld.password=${PROD_MYSQL_EXPORTER_PASSWORD}"
+      - "--mysqld.address=${MYSQLD_EXPORTER_WRITER_ADDRESS}"
+
+  mysqld-exporter-reader:
+    image: prom/mysqld-exporter:latest
+    container_name: mysqld-exporter-reader
+    restart: unless-stopped
+    ports:
+      - "9105:9104"
+    command:
+      - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}"
+      - "--mysqld.password=${PROD_MYSQL_EXPORTER_PASSWORD}"
+      - "--mysqld.address=${MYSQLD_EXPORTER_READER_ADDRESS}"
 
   promtail:
     image: grafana/promtail:2.9.0
