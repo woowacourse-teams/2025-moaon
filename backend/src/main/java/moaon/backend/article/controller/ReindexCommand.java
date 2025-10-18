@@ -26,4 +26,3 @@ public class ReindexCommand implements ApplicationRunner {
         }
     }
 }
-
