@@ -5,13 +5,14 @@
         "char_filter": [
           "html_strip"
         ],
-        "tokenizer": "nori_tokenizer",
         "filter": [
-          "nori_part_of_speech",
+          "nori_pos_with_stoptags",
           "nori_readingform",
           "lowercase",
           "article_common_synonym"
-        ]
+        ],
+        "tokenizer": "nori_tokenizer_with_dict",
+        "type": "custom"
       }
     },
     "filter": {
@@ -19,6 +20,53 @@
         "type": "synonym",
         "synonyms": [
           "java, 자바"
+        ]
+      },
+      "nori_pos_with_stoptags": {
+        "stoptags": [
+          "EC",
+          "EF",
+          "EP",
+          "ETM",
+          "ETN",
+          "IC",
+          "JC",
+          "JKB",
+          "JKC",
+          "JKG",
+          "JKO",
+          "JKQ",
+          "JKS",
+          "JKV",
+          "JX",
+          "MAG",
+          "MAJ",
+          "MM",
+          "SP",
+          "SSC",
+          "SSO",
+          "SC",
+          "SE",
+          "XPN",
+          "XSA",
+          "XSN",
+          "XSV",
+          "UNA",
+          "NA",
+          "VSV",
+          "VX"
+        ],
+        "type": "nori_part_of_speech"
+      }
+    },
+    "tokenizer": {
+      "nori_tokenizer_with_dict": {
+        "decompound_mode": "mixed",
+        "discard_punctuation": "false",
+        "type": "nori_tokenizer",
+        "user_dictionary_rules": [
+          "데이터베이스",
+          "프레임워크"
         ]
       }
     }

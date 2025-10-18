@@ -1,7 +1,6 @@
 package moaon.backend.article.controller;
 
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleESQuery;
