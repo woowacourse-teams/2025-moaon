@@ -84,6 +84,9 @@ jobs:
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           S3_BUCKET=${{ secrets.S3_BUCKET }}
           S3_REGION=${{ secrets.S3_REGION }}
+          PROD_MYSQL_EXPORTER_USER=${{ secrets.PROD_MYSQL_EXPORTER_USER }}
+          PROD_MYSQL_EXPORTER_PASSWORD=${{ secrets.PROD_MYSQL_EXPORTER_PASSWORD }}
+          MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
           EOF
 
       - name: Log in to Docker Hub
