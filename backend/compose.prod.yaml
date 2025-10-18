@@ -39,8 +39,7 @@ services:
     ports:
       - "9104:9104"
     command:
-      - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}"
-      - "--mysqld.password=${PROD_MYSQL_EXPORTER_PASSWORD}"
+      - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}:${PROD_MYSQL_EXPORTER_PASSWORD}"
       - "--mysqld.address=${MYSQLD_EXPORTER_WRITER_ADDRESS}"
 
   mysqld-exporter-reader:
@@ -50,8 +49,7 @@ services:
     ports:
       - "9105:9104"
     command:
-      - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}"
-      - "--mysqld.password=${PROD_MYSQL_EXPORTER_PASSWORD}"
+      - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}:${PROD_MYSQL_EXPORTER_PASSWORD}"
       - "--mysqld.address=${MYSQLD_EXPORTER_READER_ADDRESS}"
 
   promtail:
