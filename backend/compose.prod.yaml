@@ -52,6 +52,7 @@ services:
       - "--mysqld.username=${PROD_MYSQL_EXPORTER_USER}:${PROD_MYSQL_EXPORTER_PASSWORD}"
       - "--mysqld.address=${MYSQLD_EXPORTER_READER_ADDRESS}"
 
+
   promtail:
     image: grafana/promtail:2.9.0
     container_name: moaon-promtail
