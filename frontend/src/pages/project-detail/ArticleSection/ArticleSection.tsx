@@ -22,6 +22,7 @@ import useProjectArticleSearch from "./hooks/useProjectArticleSearch";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 const SEARCH_INPUT_MAX_LENGTH = 50;
+const MOBILE_BREAKPOINT = 1280;
 
 interface ArticleSectionProps {
   articles: ProjectArticle[];
@@ -30,8 +31,6 @@ interface ArticleSectionProps {
   isRefetching: boolean;
   isLoading: boolean;
 }
-
-const MOBILE_BREAKPOINT = 1280;
 
 function ArticleSection({
   articles,
@@ -42,6 +41,12 @@ function ArticleSection({
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
   const { handleSearchSubmit, searchValue } = useProjectArticleSearch();
+
+  const [inputValue, setInputValue] = useState(searchValue ?? "");
+
+  useEffect(() => {
+    setInputValue(searchValue ?? "");
+  }, [searchValue]);
 
   const articleSectors = ARTICLE_SECTOR_ENTRY.map(([sector, { label }]) => ({
     key: sector,
@@ -56,10 +61,13 @@ function ArticleSection({
     }
   };
 
-  const onSearchSubmit = async (value: string) => {
+  const handleSearchChange = async (value: string) => {
+    setInputValue(value);
     handleSearchSubmit(value);
     const result = await refetch();
-    if (result.isError) toast.warning(result.error.message);
+    if (result.isError) {
+      toast.warning(result.error?.message || "검색 중 오류가 발생했습니다.");
+    }
   };
 
   const hasArticles = articles.length > 0;
@@ -109,8 +117,8 @@ function ArticleSection({
               size="small"
               placeholder="아티클 제목, 내용을 검색해보세요"
               maxLength={SEARCH_INPUT_MAX_LENGTH}
-              onSubmit={onSearchSubmit}
-              defaultValue={searchValue}
+              value={inputValue}
+              onChange={handleSearchChange}
             />
           </S.SearchBarBox>
         </S.SearchHeader>

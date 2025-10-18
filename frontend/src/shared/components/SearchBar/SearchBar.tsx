@@ -1,48 +1,32 @@
 import searchIcon from "@assets/icons/search.svg";
-import { type ChangeEvent, useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
 import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
 export type Test = "small" | "medium";
 
 interface SearchBarProps {
   placeholder: string;
+  value: string;
   onChange: (value: string) => void;
-  defaultValue?: string;
   maxLength: number;
   size?: Test;
 }
 
 function SearchBar({
   placeholder,
+  value,
   onChange,
-  defaultValue = "",
   maxLength,
   size = "medium",
 }: SearchBarProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [hasSearchValue, setHasSearchValue] = useState(
-    defaultValue.trim() !== "",
-  );
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = defaultValue;
-      setHasSearchValue(defaultValue.trim() !== "");
-    }
-  }, [defaultValue]);
+  const hasSearchValue = value.trim() !== "";
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setHasSearchValue(value.trim() !== "");
-    onChange(value);
+    onChange(e.target.value);
   };
 
   const handleClearSearch = () => {
-    if (inputRef.current) {
-      inputRef.current.value = "";
-      setHasSearchValue(false);
-      onChange("");
-    }
+    onChange("");
   };
 
   return (
@@ -53,8 +37,7 @@ function SearchBar({
           variant={size}
           type="text"
           placeholder={placeholder}
-          ref={inputRef}
-          defaultValue={defaultValue}
+          value={value}
           id="search-input"
           onChange={handleInputChange}
           maxLength={maxLength}
@@ -68,4 +51,5 @@ function SearchBar({
     </S.SearchWrapper>
   );
 }
+
 export default SearchBar;

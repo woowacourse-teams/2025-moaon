@@ -1,28 +1,54 @@
 import SearchBar from "@shared/components/SearchBar/SearchBar";
-import { toast } from "@shared/components/Toast/toast";
+import useDebounce from "@shared/hooks/useDebounce";
 import useSearchParams from "@shared/hooks/useSearchParams";
+import { useEffect, useRef, useState } from "react";
 import useProjectList from "../hooks/useProjectList";
 
-const MIN_SEARCH_LENGTH = 2;
 const MAX_SEARCH_LENGTH = 50;
+const DEBOUNCE_DELAY = 400;
 
 function ProjectSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
   const { refetch } = useProjectList();
 
-  const handleSearchChange = (value: string) => {
-    if (value.length < MIN_SEARCH_LENGTH) return;
+  const searchValue = params.get()[0] ?? "";
+  const [inputValue, setInputValue] = useState(searchValue);
 
-    params.update(value, { replace: true });
-    refetch();
-  };
+  const debouncedValue = useDebounce({
+    value: inputValue,
+    delay: DEBOUNCE_DELAY,
+  });
 
-  const searchValue = params.get()[0];
+  const paramsRef = useRef(params);
+  const refetchRef = useRef(refetch);
+
+  useEffect(() => {
+    paramsRef.current = params;
+    refetchRef.current = refetch;
+  }, [params, refetch]);
+
+  useEffect(() => {
+    const currentParam = paramsRef.current.get()[0] ?? "";
+
+    if (currentParam === debouncedValue) return;
+
+    if (debouncedValue.trim() === "") {
+      if (currentParam !== "") {
+        paramsRef.current.deleteAll({ replace: true });
+        refetchRef.current();
+      }
+      return;
+    }
+
+    paramsRef.current.update(debouncedValue, { replace: true });
+    refetchRef.current();
+  }, [debouncedValue]);
+
   return (
     <SearchBar
       placeholder="프로젝트 제목, 한 줄 설명, 개요를 검색해 보세요"
-      onChange={handleSearchChange}
-      defaultValue={searchValue}
+      value={inputValue}
+      onChange={setInputValue}
       maxLength={MAX_SEARCH_LENGTH}
     />
   );
