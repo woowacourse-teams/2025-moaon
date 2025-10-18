@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "main"
+  pull_request:
+    branches: [ "develop" ]
 
 jobs:
   build-and-push-image:
@@ -80,8 +82,12 @@ jobs:
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
+          PROD_MYSQL_EXPORTER_USER=${{ secrets.PROD_MYSQL_EXPORTER_USER }}
+          PROD_MYSQL_EXPORTER_PASSWORD=${{ secrets.PROD_MYSQL_EXPORTER_PASSWORD }}
+          MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
+          MYSQLD_EXPORTER_READER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_READER_ADDRESS }}
           EOF
 
       - name: Log in to Docker Hub
@@ -122,8 +128,8 @@ jobs:
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
           EOF
 
       - name: Log in to Docker Hub
