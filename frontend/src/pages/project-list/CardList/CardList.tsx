@@ -37,8 +37,10 @@ function CardList() {
       {totalCount > 0 && (
         <>
           <S.ProjectIntro>
-            <S.ProjectIntroText>{totalCount}개</S.ProjectIntroText>의 프로젝트가
-            모여있어요.
+            <S.ProjectIntroText>
+              {totalCount.toLocaleString()}개
+            </S.ProjectIntroText>
+            의 프로젝트가 모여있어요.
           </S.ProjectIntro>
           <S.CardList>
             {projects?.map((project) => (

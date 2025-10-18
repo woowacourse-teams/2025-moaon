@@ -6,7 +6,7 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.techStack.domain.TechStack;
 
-public record ArticleContent(
+public record ArticleData(
         Long id,
         Long projectId,
         String projectTitle,
@@ -20,8 +20,8 @@ public record ArticleContent(
         LocalDateTime createdAt
 ) {
 
-    public static ArticleContent from(Article article) {
-        return new ArticleContent(
+    public static ArticleData from(Article article) {
+        return new ArticleData(
                 article.getId(),
                 article.getProject().getId(),
                 article.getProject().getTitle(),
@@ -38,9 +38,9 @@ public record ArticleContent(
         );
     }
 
-    public static List<ArticleContent> from(List<Article> articles) {
+    public static List<ArticleData> from(List<Article> articles) {
         return articles.stream()
-                .map(ArticleContent::from)
+                .map(ArticleData::from)
                 .toList();
     }
 }

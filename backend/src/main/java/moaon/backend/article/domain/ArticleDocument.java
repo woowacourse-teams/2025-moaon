@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toSet;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
+import org.springframework.util.CollectionUtils;
 
 @Document(indexName = "articles_idx", aliases = {@Alias(value = "articles", isWriteIndex = true)})
 @Setting(settingPath = "/elasticsearch/article-settings.json")
@@ -71,8 +73,15 @@ public class ArticleDocument {
         this.content = article.getContent();
         this.sector = article.getSector();
         this.topics = new HashSet<>(article.getTopics());
-        this.techStacks = article.getTechStacks().stream().map(TechStack::getName).collect(toSet());
+        this.techStacks = setTechStacks(article.getTechStacks());
         this.clicks = article.getClicks();
         this.createdAt = article.getCreatedAt();
+    }
+
+    private Set<String> setTechStacks(List<TechStack> techStacks) {
+        if (CollectionUtils.isEmpty(techStacks)) {
+            return new HashSet<>();
+        }
+        return techStacks.stream().map(TechStack::getName).collect(toSet());
     }
 }

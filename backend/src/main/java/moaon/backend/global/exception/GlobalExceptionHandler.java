@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.annotation.Nullable;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -28,16 +29,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
+        logging(e, errorCode);
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.from(errorCode));
+    }
+
+    private void logging(CustomException e, ErrorCode errorCode) {
+        if (e.getCause() != null) {
+            log.warn("[{}] {} {} \\n {}",
+                    errorCode.name(),
+                    errorCode.getId(),
+                    errorCode.getMessage(),
+                    e.getCause().getMessage()
+            );
+            return;
+        }
 
         log.warn("[{}] {} {}",
                 errorCode.name(),
                 errorCode.getId(),
                 errorCode.getMessage()
         );
-
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ErrorResponse.from(errorCode));
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
@@ -48,7 +62,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<ErrorResponse> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
         log.info("error: {}", e.getMessage());
-        return handleMvcStandardException(ErrorCode.HANDLER_METHOD_VALIDATION, e);
+        return handleMvcStandardException(
+                ErrorCode.HANDLER_METHOD_VALIDATION,
+                e,
+                Arrays.toString(e.getDetailMessageArguments())
+        );
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

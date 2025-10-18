@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_1280 } from "@/styles/global.styled";
 
 const Body = styled.p`
   font-size: 1.125rem;
@@ -18,6 +19,12 @@ export const TitleSectionContainer = styled.section`
   align-items: flex-start;
   justify-content: space-between;
   padding-bottom: 1rem;
+
+  ${BP_1280} {
+    position: relative;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 `;
 
 export const TitleSectionLeft = styled.div`
@@ -25,6 +32,10 @@ export const TitleSectionLeft = styled.div`
   flex-direction: column;
   gap: 0.875rem;
   width: calc(100% - 14.375rem);
+
+  ${BP_1280} {
+    width: 100%;
+  }
 `;
 
 export const TitleSectionRight = styled.div`
@@ -33,6 +44,12 @@ export const TitleSectionRight = styled.div`
   justify-content: flex-start;
   gap: 0.875rem;
   align-items: flex-end;
+
+  ${BP_1280} {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+  }
 `;
 
 export const OverlineSection = styled.div`
@@ -53,15 +70,23 @@ export const View = styled(Overline)`
   & > img {
     width: 1.25rem;
   }
+
+  ${BP_1280} {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 `;
 
 export const ProductName = styled.h2`
   font-size: 2rem;
   font-weight: 700;
+  word-break: break-all;
 `;
 
 export const ProductDescription = styled(Body)`
   color: #73798d;
+  word-break: break-all;
 `;
 
 export const ActionButtons = styled.div`
@@ -93,6 +118,10 @@ export const ButtonBar = styled.div`
   gap: 0.625rem;
   /* border-left: 1px solid #535353; */
   padding-left: 1.5rem;
+
+  ${BP_1280} {
+    padding-left: 0;
+  }
 `;
 
 const NavLink = styled.a`

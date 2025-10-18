@@ -1,15 +1,16 @@
 import styled from "@emotion/styled";
+import { BP_768 } from "@/styles/global.styled";
 
 const VAR1 = "rgba(96,165,250,0.22)";
 const VAR2 = "rgba(125,211,252,0.16)";
 const VAR3 = "rgba(59,130,246,0.22)";
 
-export const IconBadge = styled.li<{ fontSize: number }>`
+export const IconBadge = styled.li<{ $fontSize: number }>`
   padding: 0.5rem 1rem;
   border-radius: 25px;
   display: flex;
   align-items: center;
-  font-size: ${({ fontSize }) => fontSize}px;
+  font-size: ${({ $fontSize }) => $fontSize}px;
   gap: 0.5rem;
   color: #464646;
 
@@ -26,9 +27,18 @@ export const IconBadge = styled.li<{ fontSize: number }>`
   box-shadow: 0 3px 8px rgba(59, 130, 246, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(255, 255, 255, 0.16);
+
+  ${BP_768} {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 export const Icon = styled.img<{ iconsSize: number }>`
   width: ${({ iconsSize }) => iconsSize}px;
   aspect-ratio: 1/1;
+
+  ${BP_768} {
+    width: 1rem;
+  }
 `;

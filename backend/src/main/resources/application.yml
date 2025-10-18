@@ -20,13 +20,23 @@ spring:
       ddl-auto: validate
     open-in-view: false
 
-  elasticsearch:
-    uris: http://elastic:9200
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health
+  endpoint:
+    health:
+      show-details: never
 
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: trace
-    org.flywaydb: debug
+google:
+  clientId: ${GOOGLE_CLIENT_ID}
+  clientSecret: ${GOOGLE_CLIENT_SECRET}
+  redirectUri: ${GOOGLE_REDIRECT_URI}
+
+jwt:
+  secret: ${JWT_SECRET}
+
+s3:
+  bucket: ${S3_BUCKET}
+  region: ${S3_REGION}
