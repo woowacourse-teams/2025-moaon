@@ -32,6 +32,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    testImplementation 'org.testcontainers:elasticsearch'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -63,6 +65,34 @@ dependencies {
     // rest docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    // flyway
+    implementation 'org.flywaydb:flyway-mysql'
+
+    // monitoring
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+
+    // dataFaker
+    testImplementation 'net.datafaker:datafaker:2.1.0'
+
+    // selenium
+    implementation 'org.seleniumhq.selenium:selenium-java:4.8.0'
+
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.21.2'
+
+    // healthcheck
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // jjwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+
+    // aws s3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.792'
 }
 
 clean {
@@ -72,10 +102,11 @@ clean {
 sourceSets {
     main {
         java {
-            srcDir "$buildDir/generated/sources/annotationProcessor/main"
+            srcDir "$buildDir/generated/sources/annotationProcessor/java/main"
         }
     }
 }
+
 
 tasks.named('test', Test) {
     useJUnitPlatform()

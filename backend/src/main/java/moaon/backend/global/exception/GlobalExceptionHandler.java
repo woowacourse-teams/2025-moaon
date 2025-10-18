@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.annotation.Nullable;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
@@ -27,21 +29,44 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
-
-        log.warn("[{}] {} {}",
-                errorCode.name(),
-                errorCode.getId(),
-                errorCode.getMessage()
-        );
+        logging(e, errorCode);
 
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.from(errorCode));
     }
 
+    private void logging(CustomException e, ErrorCode errorCode) {
+        if (e.getCause() != null) {
+            log.warn("[{}] {} {} \\n {}",
+                    errorCode.name(),
+                    errorCode.getId(),
+                    errorCode.getMessage(),
+                    e.getCause().getMessage()
+            );
+            return;
+        }
+
+        log.warn("[{}] {} {}",
+                errorCode.name(),
+                errorCode.getId(),
+                errorCode.getMessage()
+        );
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
         return handleMvcStandardException(ErrorCode.RESOURCE_NOT_FOUND, e);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorResponse> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
+        log.info("error: {}", e.getMessage());
+        return handleMvcStandardException(
+                ErrorCode.HANDLER_METHOD_VALIDATION,
+                e,
+                Arrays.toString(e.getDetailMessageArguments())
+        );
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

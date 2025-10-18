@@ -2,12 +2,14 @@ import searchIcon from "@assets/icons/search.svg";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
+export type Test = "small" | "medium";
 
 interface SearchBarProps {
   placeholder: string;
   onChange: (value: string) => void;
   defaultValue?: string;
   maxLength: number;
+  size?: Test;
 }
 
 function SearchBar({
@@ -15,6 +17,7 @@ function SearchBar({
   onChange,
   defaultValue = "",
   maxLength,
+  size = "medium",
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasSearchValue, setHasSearchValue] = useState(
@@ -45,8 +48,9 @@ function SearchBar({
   return (
     <S.SearchWrapper>
       <S.SearchLabel htmlFor="search-input">
-        <S.SearchIcon src={searchIcon} alt="검색" />
+        <S.SearchIcon variant={size} src={searchIcon} alt="검색" />
         <S.SearchInput
+          variant={size}
           type="text"
           placeholder={placeholder}
           ref={inputRef}

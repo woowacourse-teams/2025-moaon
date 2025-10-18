@@ -2,13 +2,13 @@ package moaon.backend.global.cursor;
 
 import static moaon.backend.project.domain.QProject.project;
 
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreatedAtProjectCursor implements ProjectCursor<LocalDateTime> {
+public class CreatedAtProjectCursor implements Cursor<LocalDateTime> {
 
     private final LocalDateTime createdAt;
     private final Long id;
@@ -31,13 +31,11 @@ public class CreatedAtProjectCursor implements ProjectCursor<LocalDateTime> {
     }
 
     @Override
-    public void applyCursor(BooleanBuilder whereBuilder) {
-        whereBuilder.and(
-                project.createdAt.lt(getSortValue())
-                        .or(
-                                project.createdAt.eq(getSortValue())
-                                        .and(project.id.lt(getLastId()))
-                        )
-        );
+    public BooleanExpression getCursorExpression() {
+        return project.createdAt.lt(getSortValue())
+                .or(
+                        project.createdAt.eq(getSortValue())
+                                .and(project.id.lt(getLastId()))
+                );
     }
 }

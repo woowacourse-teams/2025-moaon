@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router";
 import * as S from "./RegisterProjectButton.styled";
 
 function RegisterProjectButton() {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    alert("프로젝트 등록은 추후에 추가될 예정입니다.");
+    navigate(`/register`);
   };
 
   return (

@@ -2,6 +2,9 @@ spring:
   application:
     name: backend
 
+  flyway:
+    enabled: false
+
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:mysql:8.4://testDB
@@ -25,3 +28,15 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: trace
+
+google:
+  clientId: abcd
+  clientSecret: abcd
+  redirectUri: abcd
+
+jwt:
+  secret: g/DGwpKK2nrqQC2lWweIWX+od76/qs6mMZIpz6OKd0ogo0HLkMOs5dkG9dLUtKtN65xjcgnPMJNrzyGTiCjA/g==
+
+s3:
+  bucket: testbucket
+  region: testregion

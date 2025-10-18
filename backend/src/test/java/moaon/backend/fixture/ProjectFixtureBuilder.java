@@ -4,10 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import moaon.backend.article.domain.Article;
 import moaon.backend.member.domain.Member;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.techStack.domain.TechStack;
 
 public class ProjectFixtureBuilder {
@@ -21,10 +22,11 @@ public class ProjectFixtureBuilder {
     private Images images;
     private Member author;
     private List<TechStack> techStacks;
-    private List<ProjectCategory> categories;
+    private List<Category> categories;
     private LocalDateTime createdAt;
     private int views = 0;
     private List<Member> lovedMembers;
+    private List<Article> articles;
 
     public ProjectFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 프로젝트 제목");
@@ -38,6 +40,7 @@ public class ProjectFixtureBuilder {
         this.categories = new ArrayList<>(List.of(Fixture.anyProjectCategory()));
         this.createdAt = LocalDateTime.now();
         this.lovedMembers = new ArrayList<>();
+        this.articles = new ArrayList<>();
     }
 
     public ProjectFixtureBuilder title(String title) {
@@ -85,7 +88,7 @@ public class ProjectFixtureBuilder {
         return this;
     }
 
-    public ProjectFixtureBuilder categories(ProjectCategory... categories) {
+    public ProjectFixtureBuilder categories(Category... categories) {
         this.categories = new ArrayList<>(Arrays.asList(categories));
         return this;
     }
@@ -110,12 +113,21 @@ public class ProjectFixtureBuilder {
                 .lovedMembers(this.lovedMembers)
                 .createdAt(this.createdAt)
                 .summary(this.summary)
-                .categories(this.categories)
+                .categories(new ArrayList<>())
                 .description(this.description)
                 .githubUrl(this.githubUrl)
                 .images(this.images)
-                .techStacks(this.techStacks)
+                .techStacks(new ArrayList<>())
+                .articles(this.articles)
                 .build();
+
+        for (Category category : categories) {
+            project.addCategory(category);
+        }
+        for (TechStack techStack : techStacks) {
+            project.addTechStack(techStack);
+        }
+
         for (int i = 0; i < views; i++) {
             project.addViewCount();
         }

@@ -1,4 +1,5 @@
 import SearchBar from "@shared/components/SearchBar/SearchBar";
+import { toast } from "@shared/components/Toast/toast";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import useProjectList from "../hooks/useProjectList";
 

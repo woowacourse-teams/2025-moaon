@@ -15,19 +15,23 @@ const NAV_LIST = [
     href: "/article",
     text: "아티클 탐색",
   },
+  {
+    id: 3,
+    href: "/wooteco",
+    text: "우아한테크코스",
+  },
 ];
 
 function NavBar() {
   const pathname = useLocation().pathname;
   const selectedIndex = NAV_LIST.findIndex((item) => item.href === pathname);
-  const { setTabElementsRef, selectedStyle } = useTabAnimation({
+  const { setTabElementsRef } = useTabAnimation({
     selectedIndex,
     duration: 0.3,
   });
   const navigate = useNavigate();
   const { refetch: projectListRefetch } = useProjectList();
   const { refetch: articleListRefetch } = useArticleList();
-  const hasActive = selectedIndex > -1;
 
   const handleNavigation = (href: string) => {
     navigate(href);
@@ -56,13 +60,6 @@ function NavBar() {
             </S.Link>
           </S.NavLinkItem>
         ))}
-        {hasActive && (
-          <S.Underline
-            translateX={selectedStyle.translateX}
-            width={selectedStyle.width}
-            duration={selectedStyle.duration}
-          />
-        )}
       </S.NavLinkList>
     </S.NavBar>
   );

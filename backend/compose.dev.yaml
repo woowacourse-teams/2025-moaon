@@ -40,6 +40,63 @@ services:
       SPRING_DATASOURCE_URL_DEV: ${SPRING_DATASOURCE_URL_DEV}
       SPRING_DATASOURCE_USERNAME_DEV: ${SPRING_DATASOURCE_USERNAME_DEV}
       SPRING_DATASOURCE_PASSWORD_DEV: ${SPRING_DATASOURCE_PASSWORD_DEV}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      JWT_SECRET: ${JWT_SECRET}
+      OTEL_SERVICE_NAME: moaon-app-dev
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://10.0.3.18:4318
+      S3_BUCKET: ${S3_BUCKET}
+      S3_REGION: ${S3_REGION}
+
+    volumes:
+      - log_data:/app/logs
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    network_mode: host
+    pid: host
+    ports:
+      - "9100:9100"
+    command:
+      - "--path.rootfs=/host"
+    volumes:
+      - '/:/host:ro,rslave'
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter:latest
+    container_name: mysqld-exporter
+    restart: unless-stopped
+    ports:
+      - "9104:9104"
+    command:
+      - "--mysqld.username=${MYSQL_EXPORTER_USER}:${MYSQL_EXPORTER_PASSWORD}"
+      - "--mysqld.address=db:3306"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: moaon-promtail
+    restart: unless-stopped
+    volumes:
+      - log_data:/var/log/app:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+    command: -config.file=/etc/promtail/config.yml
+
+  selenium:
+    image: selenium/standalone-chromium:latest
+    container_name: selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: "2g"
+    restart: unless-stopped
 
 volumes:
   db-data:
+  log_data:

@@ -12,7 +12,7 @@ jobs:
       github.actor == 'Minuring' ||
       github.actor == 'eueo8259' ||
       github.actor == 'minjae8563'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     defaults:
       run:
@@ -35,7 +35,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle Wrapper using cache
-        run: ./gradlew build --build-cache --no-daemon
+        run: ./gradlew build --build-cache --no-daemon --stacktrace
 
   check-dependencies-changed:
     outputs:

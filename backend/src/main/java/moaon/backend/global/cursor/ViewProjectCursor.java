@@ -2,11 +2,11 @@ package moaon.backend.global.cursor;
 
 import static moaon.backend.project.domain.QProject.project;
 
-import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ViewProjectCursor implements ProjectCursor<Integer> {
+public class ViewProjectCursor implements Cursor<Integer> {
 
     private final int views;
     private final Long id;
@@ -27,13 +27,11 @@ public class ViewProjectCursor implements ProjectCursor<Integer> {
     }
 
     @Override
-    public void applyCursor(BooleanBuilder whereBuilder) {
-        whereBuilder.and(
-                project.views.lt(getSortValue())
-                        .or(
-                                project.views.eq(getSortValue())
-                                        .and(project.id.lt(getLastId()))
-                        )
-        );
+    public BooleanExpression getCursorExpression() {
+        return project.views.lt(getSortValue())
+                .or(
+                        project.views.eq(getSortValue())
+                                .and(project.id.lt(getLastId()))
+                );
     }
 }

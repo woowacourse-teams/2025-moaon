@@ -18,7 +18,6 @@ function ArticleBox() {
     refetch,
     isLoading,
   } = useArticleList();
-
   const { targetRef } = useInfiniteScroll({
     hasNext,
     nextCursor,
@@ -44,6 +43,7 @@ function ArticleBox() {
         showSkeleton={showSkeleton}
         scrollEnabled={scrollEnabled}
         targetRef={targetRef}
+        isLoading={isLoading}
       />
     </S.ArticleBoxContainer>
   );

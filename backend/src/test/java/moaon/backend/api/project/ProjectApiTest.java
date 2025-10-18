@@ -3,39 +3,123 @@ package moaon.backend.api.project;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleCategory;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.article.dto.ArticleSectorCount;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.member.domain.Member;
+import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.member.service.JwtTokenProvider;
+import moaon.backend.member.service.OAuthService;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.dto.PagedProjectResponse;
+import moaon.backend.project.dto.ProjectArticleResponse;
+import moaon.backend.project.dto.ProjectCreateRequest;
+import moaon.backend.project.dto.ProjectCreateResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.payload.RequestFieldsSnippet;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.request.QueryParametersSnippet;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 public class ProjectApiTest extends BaseApiTest {
 
     @Autowired
     protected RepositoryHelper repositoryHelper;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @MockitoBean
+    private OAuthService oAuthService;
+
+    private String token;
+
+    @BeforeEach
+    void cookieSetUp() {
+        Member member = Fixture.anyMember();
+        repositoryHelper.save(member);
+
+        token = jwtTokenProvider.createToken(member.getId());
+    }
+
+
+    @DisplayName("POST /projects : 프로젝트 저장 API")
+    @Test
+    void saveProject() {
+        // given
+        repositoryHelper.save(new TechStack("java"));
+        repositoryHelper.save(new TechStack("mysql"));
+        repositoryHelper.save(new TechStack("docker"));
+
+        repositoryHelper.save(new Category("web"));
+        repositoryHelper.save(new Category("it"));
+
+        Member member = repositoryHelper.save(new Member("123", "popo@gmail.com", "포포"));
+
+        ProjectCreateRequest projectCreateRequest = ProjectCreateRequest.builder()
+                .title("모아온")
+                .summary("프로젝트를 모아모아, 모아온")
+                .description(
+                        """
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                이제 모아온에서 나의 성장을 위한 프로젝트를 발견하세요.
+                                """
+                )
+                .techStacks(List.of("java", "mysql", "docker"))
+                .categories(List.of("web", "it"))
+                .githubUrl("www.moaon.github")
+                .productionUrl("www.moaon.co.kr")
+                .imageKeys(List.of("www.images.com"))
+                .build();
+
+        Mockito.when(oAuthService.getUserByToken(Mockito.any())).thenReturn(member);
+
+        // when
+        ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
+                .contentType(ContentType.JSON)
+                .cookie("token", token)
+                .body(projectCreateRequest)
+                .filter(document(projectCreateRequestFields(), projectCreateResponseFields()))
+                .when().post("/projects")
+                .then().log().all()
+                .statusCode(201)
+                .extract().as(ProjectCreateResponse.class);
+
+        // then
+        assertThat(response.id()).isNotNull();
+    }
 
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
@@ -85,50 +169,50 @@ public class ProjectApiTest extends BaseApiTest {
         // given
         String filteredSearch = "moaon";
         String unfilteredSearch = "momoon";
-        ProjectCategory filteredProjectCategory = Fixture.anyProjectCategory();
-        ProjectCategory unfilteredProjectCategory = Fixture.anyProjectCategory();
+        Category filteredCategory = Fixture.anyProjectCategory();
+        Category unfilteredCategory = Fixture.anyProjectCategory();
         TechStack filteredTechStack = Fixture.anyTechStack();
         TechStack unfilteredTechStack = Fixture.anyTechStack();
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(unfilteredSearch)
-                        .categories(filteredProjectCategory)
+                        .categories(filteredCategory)
                         .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(filteredSearch)
-                        .categories(unfilteredProjectCategory)
+                        .categories(unfilteredCategory)
                         .techStacks(filteredTechStack)
                         .build()
         );
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
                         .description(filteredSearch)
-                        .categories(filteredProjectCategory)
+                        .categories(filteredCategory)
                         .techStacks(unfilteredTechStack)
                         .build()
         );
 
         Project projectViewRankThird = repositoryHelper.save(new ProjectFixtureBuilder()
                 .description(filteredSearch)
-                .categories(filteredProjectCategory)
+                .categories(filteredCategory)
                 .techStacks(filteredTechStack)
                 .views(1)
                 .build()
         );
         Project projectViewRankSecond = repositoryHelper.save(new ProjectFixtureBuilder()
                 .summary(filteredSearch)
-                .categories(filteredProjectCategory)
+                .categories(filteredCategory)
                 .techStacks(filteredTechStack)
                 .views(2)
                 .build()
         );
         Project projectViewRankFirst = repositoryHelper.save(new ProjectFixtureBuilder()
                 .title(filteredSearch)
-                .categories(filteredProjectCategory)
+                .categories(filteredCategory)
                 .techStacks(filteredTechStack)
                 .views(3)
                 .build()
@@ -138,7 +222,7 @@ public class ProjectApiTest extends BaseApiTest {
         PagedProjectResponse actualResponses = RestAssured.given(documentationSpecification).log().all()
                 .queryParams("search", filteredSearch)
                 .queryParams("sort", "views")
-                .queryParams("categories", List.of(filteredProjectCategory.getName()))
+                .queryParams("categories", List.of(filteredCategory.getName()))
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .filter(document(projectQueryParameters(), pagedProjectResponseFields()))
@@ -160,38 +244,102 @@ public class ProjectApiTest extends BaseApiTest {
     void getArticlesByProjectId() {
         // given
         Project targetProject = repositoryHelper.save(new ProjectFixtureBuilder().build());
-        ArticleCategory filterCategory = Fixture.anyArticleCategory();
-        ArticleCategory unfilterCategory = Fixture.anyArticleCategory();
+        Sector filteredSector = Sector.BE;
+        Sector unfilteredSector = Sector.FE;
+        String filteredSearch = "모아온";
+        String unfilteredSearch = "핏토링";
 
         Article targetProjectArticle1 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
         );
         Article targetProjectArticle2 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .summary(filteredSearch)
+                        .build()
         );
         Article targetProjectArticle3 = repositoryHelper.save(
-                new ArticleFixtureBuilder().project(targetProject).category(filterCategory).build()
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .content(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .sector(filteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(unfilteredSector)
+                        .title(filteredSearch)
+                        .build()
+        );
+        repositoryHelper.save(
+                new ArticleFixtureBuilder()
+                        .project(targetProject)
+                        .sector(filteredSector)
+                        .title(unfilteredSearch)
+                        .build()
         );
 
-        repositoryHelper.save(new ArticleFixtureBuilder().category(unfilterCategory).build());
-
         // when
-        ArticleDetailResponse[] actualArticles = RestAssured.given(documentationSpecification).log().all()
-                .queryParams("category", filterCategory.getName())
-                .filter(document(projectArticlesResponseFields()))
+        ProjectArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
+                .queryParams("sector", filteredSector.getName())
+                .queryParams("search", filteredSearch)
+                .filter(document(projectArticlesResponseFields(), projectArticleQueryParameters()))
                 .when().get("/projects/{id}/articles", targetProject.getId())
                 .then().log().all()
                 .statusCode(200)
-                .extract().as(ArticleDetailResponse[].class);
+                .extract().as(ProjectArticleResponse.class);
 
         // then
-        assertThat(actualArticles)
-                .extracting(ArticleDetailResponse::id)
-                .containsExactlyInAnyOrder(
-                        targetProjectArticle1.getId(),
-                        targetProjectArticle2.getId(),
-                        targetProjectArticle3.getId()
-                );
+        assertAll(
+                () -> assertThat(actualResponse.counts())
+                        .containsExactlyInAnyOrder(
+                                new ArticleSectorCount("all", 5),
+                                ArticleSectorCount.of(Sector.BE, 4),
+                                ArticleSectorCount.of(Sector.FE, 1),
+                                ArticleSectorCount.of(Sector.IOS, 0),
+                                ArticleSectorCount.of(Sector.ANDROID, 0),
+                                ArticleSectorCount.of(Sector.INFRA, 0),
+                                ArticleSectorCount.of(Sector.NON_TECH, 0)
+                        ),
+                () -> assertThat(actualResponse.articles())
+                        .extracting(ArticleDetailResponse::id)
+                        .containsExactlyInAnyOrder(
+                                targetProjectArticle1.getId(),
+                                targetProjectArticle2.getId(),
+                                targetProjectArticle3.getId()
+                        )
+        );
+    }
+
+    private RequestFieldsSnippet projectCreateRequestFields() {
+        return requestFields(
+                fieldWithPath("title").description("프로젝트 제목"),
+                fieldWithPath("summary").description("프로젝트 요약"),
+                fieldWithPath("description").description("프로젝트 상세 설명"),
+                fieldWithPath("techStacks").description("사용된 기술 스택 목록"),
+                fieldWithPath("categories").description("프로젝트 카테고리 목록"),
+                fieldWithPath("githubUrl").description("GitHub 저장소 URL").optional(),
+                fieldWithPath("productionUrl").description("배포 URL").optional(),
+                fieldWithPath("imageKeys").description("프로젝트 이미지 URL 목록").optional()
+        );
+    }
+
+    private ResponseFieldsSnippet projectCreateResponseFields() {
+        return responseFields(
+                fieldWithPath("id").description("생성된 프로젝트 ID")
+        );
     }
 
     private ResponseFieldsSnippet projectDetailResponseFields() {
@@ -233,24 +381,37 @@ public class ProjectApiTest extends BaseApiTest {
     private QueryParametersSnippet projectQueryParameters() {
         return queryParameters(
                 parameterWithName("search").description("검색어").optional(),
-                parameterWithName("sort").description("정렬 기준 (views, loves, createdAt)").optional(),
+                parameterWithName("sort").description("정렬 기준 (views, loves, createdAt, articleCount)").optional(),
                 parameterWithName("categories").description("카테고리 목록").optional(),
                 parameterWithName("techStacks").description("기술 스택 목록").optional(),
-                parameterWithName("limit").description("요청 데이터 개수"),
+                parameterWithName("limit").description("요청 데이터 개수 | Max: 100"),
                 parameterWithName("cursor").description("이전 요청의 마지막 데이터 식별자 (정렬기준_id)").optional()
         );
     }
 
     private ResponseFieldsSnippet projectArticlesResponseFields() {
         return responseFields(
-                fieldWithPath("[].id").description("아티클 ID"),
-                fieldWithPath("[].title").description("아티클 제목"),
-                fieldWithPath("[].summary").description("아티클 요약"),
-                fieldWithPath("[].clicks").description("아티클 클릭수"),
-                fieldWithPath("[].techStacks").description("기술 스택 목록").optional(),
-                fieldWithPath("[].url").description("아티클 URL"),
-                fieldWithPath("[].category").description("아티클 카테고리"),
-                fieldWithPath("[].createdAt").description("생성일시")
+                subsectionWithPath("counts").description("직군별 아티클 개수 목록"),
+                fieldWithPath("counts[].sector").description("직군"),
+                fieldWithPath("counts[].count").description("해당 직군 아티클 개수"),
+
+                subsectionWithPath("articles").description("아티클 데이터 목록"),
+                fieldWithPath("articles[].id").description("아티클 ID"),
+                fieldWithPath("articles[].title").description("아티클 제목"),
+                fieldWithPath("articles[].summary").description("아티클 요약"),
+                fieldWithPath("articles[].clicks").description("아티클 클릭수"),
+                fieldWithPath("articles[].techStacks").description("기술 스택 목록").optional(),
+                fieldWithPath("articles[].url").description("아티클 URL"),
+                fieldWithPath("articles[].sector").description("직군"),
+                fieldWithPath("articles[].topics").description("아티클 주제"),
+                fieldWithPath("articles[].createdAt").description("생성일시")
+        );
+    }
+
+    private QueryParametersSnippet projectArticleQueryParameters() {
+        return queryParameters(
+                parameterWithName("search").description("검색어").optional(),
+                parameterWithName("sector").description("직군").optional()
         );
     }
 }

@@ -1,9 +1,9 @@
 import eyeIcon from "@assets/icons/eye.svg";
-import grayHeartIcon from "@assets/icons/gray-heart.svg";
-import redHeartIcon from "@assets/icons/pink-heart.svg";
+// import grayHeartIcon from "@assets/icons/gray-heart.svg";
+// import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-image.png";
 import notFoundImage from "@assets/images/image-not-found.png";
-import type { SyntheticEvent } from "react";
+import { memo, type SyntheticEvent } from "react";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import * as S from "./Card.styled";
 import StatBox from "./StatBox/StatBox";
@@ -11,17 +11,18 @@ import TechStackList from "./TechStackList/TechStackList";
 
 interface CardProps {
   project: ProjectCard;
+  isEyeIcon?: boolean; // TODO: 이벤트 기간이 끝난 후 제거 예정
 }
 
-function Card({ project }: CardProps) {
+function Card({ project, isEyeIcon = true }: CardProps) {
   const {
     id,
     title,
     summary,
     techStacks,
     thumbnailUrl,
-    isLoved,
-    loves,
+    // isLoved,
+    // loves,
     views,
   } = project;
 
@@ -55,7 +56,7 @@ function Card({ project }: CardProps) {
           <S.CardSummary>{summary}</S.CardSummary>
           <TechStackList techStacks={techStacks} />
           <S.CardFooter>
-            <StatBox
+            {/* <StatBox
               icon={
                 <S.HeartIcon
                   src={isLoved ? redHeartIcon : grayHeartIcon}
@@ -63,11 +64,13 @@ function Card({ project }: CardProps) {
                 />
               }
               count={loves}
-            />
-            <StatBox
-              icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
-              count={views}
-            />
+            /> */}
+            {isEyeIcon && (
+              <StatBox
+                icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
+                count={views}
+              />
+            )}
           </S.CardFooter>
         </S.CardInfo>
       </S.CardLink>
@@ -75,4 +78,4 @@ function Card({ project }: CardProps) {
   );
 }
 
-export default Card;
+export default memo(Card);

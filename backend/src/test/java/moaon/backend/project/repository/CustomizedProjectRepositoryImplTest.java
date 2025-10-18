@@ -3,16 +3,18 @@ package moaon.backend.project.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
+import moaon.backend.project.dao.ProjectDao;
+import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
-import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.ProjectSortType;
+import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @SpringBootTest
-@Import({RepositoryHelper.class, QueryDslConfig.class})
+@Import({RepositoryHelper.class, QueryDslConfig.class, ProjectDao.class})
 class CustomizedProjectRepositoryImplTest {
 
     @Autowired
@@ -44,48 +46,48 @@ class CustomizedProjectRepositoryImplTest {
         ProjectQueryCondition projectQueryCondition = new ProjectQueryConditionFixtureBuilder().build();
 
         //when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(projectQueryCondition);
 
         //then
-        assertThat(projects.size()).isEqualTo(3);
+        assertThat(projects.getCount()).isEqualTo(3);
     }
 
     @DisplayName("카테고리 필터를 이용해 프로젝트를 조회한다.")
     @Test
     void findWithCategoryFilter() {
         // given
-        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory4 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory5 = Fixture.anyProjectCategory();
+        Category category1 = Fixture.anyProjectCategory();
+        Category category2 = Fixture.anyProjectCategory();
+        Category category3 = Fixture.anyProjectCategory();
+        Category category4 = Fixture.anyProjectCategory();
+        Category category5 = Fixture.anyProjectCategory();
 
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(projectCategory1, projectCategory2)
+                .categories(category1, category2)
                 .build()
         );
         repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(projectCategory2, projectCategory3)
+                .categories(category2, category3)
                 .build()
         );
         Project projectWantToFind = repositoryHelper.save(new ProjectFixtureBuilder()
-                .categories(projectCategory1, projectCategory3, projectCategory4, projectCategory5)
+                .categories(category1, category3, category4, category5)
                 .build()
         );
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .categoryNames(
-                                projectCategory1.getName(),
-                                projectCategory3.getName(),
-                                projectCategory4.getName(),
-                                projectCategory5.getName())
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .categoryNames(
+                        category1.getName(),
+                        category3.getName(),
+                        category4.getName(),
+                        category5.getName())
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsOnlyOnce(projectWantToFind);
+        assertThat(projects.getProjects()).containsOnlyOnce(projectWantToFind);
     }
 
     @DisplayName("기술스택 필터를 이용해 프로젝트를 조회한다.")
@@ -112,59 +114,62 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder().
-                        techStackNames(techStack1.getName(), techStack2.getName(), techStack3.getName(),
-                                techStack4.getName())
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder().
+                techStackNames(
+                        techStack1.getName(),
+                        techStack2.getName(),
+                        techStack3.getName(),
+                        techStack4.getName())
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactlyInAnyOrder(projectWantToFind);
+        assertThat(projects.getProjects()).containsExactlyInAnyOrder(projectWantToFind);
     }
 
     @DisplayName("카테고리 기술스택 필터를 모두 이용하여 조회한다.")
     @Test
     void findWithTechStackFilterAndCategory() {
         // given
-        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+        Category category1 = Fixture.anyProjectCategory();
+        Category category2 = Fixture.anyProjectCategory();
+        Category category3 = Fixture.anyProjectCategory();
 
         TechStack techStack1 = Fixture.anyTechStack();
         TechStack techStack2 = Fixture.anyTechStack();
 
         Project wantToFindProject = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2)
+                        .categories(category1, category2)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1)
                         .build()
         );
 
         ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
-                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .categoryNames(category1.getName(), category2.getName(), category3.getName())
                 .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 
         // when
-        List<Project> actual = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
+        Projects actual = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(actual).containsOnlyOnce(wantToFindProject);
+        assertThat(actual.getProjects()).containsOnlyOnce(wantToFindProject);
     }
 
     @DisplayName("프로젝트를 조회순을 기준으로 정렬한다.")
@@ -182,14 +187,41 @@ class CustomizedProjectRepositoryImplTest {
         Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.VIEWS)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.VIEWS)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(high, middle, low);
+        assertThat(projects.getProjects()).containsExactly(high, middle, low);
+    }
+
+    @DisplayName("프로젝트의 아티클 갯수를 기준으로 정렬한다.")
+    @Test
+    void toOrderByArticleCount() {
+        // given
+        Project low = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(low).build());
+
+        Project middle = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(middle).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(middle).build());
+
+        Project high = repositoryHelper.save(new ProjectFixtureBuilder().build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+        repositoryHelper.save(new ArticleFixtureBuilder().project(high).build());
+
+        // when
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.ARTICLE_COUNT)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
+
+        // then
+        assertThat(projects.getProjects()).containsExactly(high, middle, low);
     }
 
     @DisplayName("프로젝트를 생성일자 기준으로 정렬한다.")
@@ -213,14 +245,14 @@ class CustomizedProjectRepositoryImplTest {
         );
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.CREATED_AT)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.CREATED_AT)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(tomorrowProject, todayProject, yesterdayProject);
+        assertThat(projects.getProjects()).containsExactly(tomorrowProject, todayProject, yesterdayProject);
     }
 
     @DisplayName("프로젝트를 좋아요 순으로 정렬한다.")
@@ -240,57 +272,57 @@ class CustomizedProjectRepositoryImplTest {
         middle.addLovedMember(author1);
 
         // when
-        List<Project> projects = customizedProjectRepositoryImpl.findWithSearchConditions(
-                new ProjectQueryConditionFixtureBuilder()
-                        .sortBy(ProjectSortType.LOVES)
-                        .build()
-        );
+        ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
+                .sortBy(ProjectSortType.LOVES)
+                .build();
+
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(projects).containsExactly(high, middle, low);
+        assertThat(projects.getProjects()).containsExactly(high, middle, low);
     }
 
     @DisplayName("필터링을 거친 프로젝트의 개수를 가져온다.")
     @Test
     void countWithSearchCondition() {
         // given
-        ProjectCategory projectCategory1 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory2 = Fixture.anyProjectCategory();
-        ProjectCategory projectCategory3 = Fixture.anyProjectCategory();
+        Category category1 = Fixture.anyProjectCategory();
+        Category category2 = Fixture.anyProjectCategory();
+        Category category3 = Fixture.anyProjectCategory();
 
         TechStack techStack1 = Fixture.anyTechStack();
         TechStack techStack2 = Fixture.anyTechStack();
 
         Project wantToFindProject1 = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         Project wantToFindProject2 = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         Project wantToFindProject3 = repositoryHelper.save(
                 new ProjectFixtureBuilder()
-                        .categories(projectCategory1, projectCategory2, projectCategory3)
+                        .categories(category1, category2, category3)
                         .techStacks(techStack1, techStack2)
                         .build()
         );
 
         ProjectQueryCondition queryCondition = new ProjectQueryConditionFixtureBuilder()
-                .categoryNames(projectCategory1.getName(), projectCategory2.getName(), projectCategory3.getName())
+                .categoryNames(category1.getName(), category2.getName(), category3.getName())
                 .techStackNames(techStack1.getName(), techStack2.getName())
                 .build();
 
         // when
-        long count = customizedProjectRepositoryImpl.countWithSearchCondition(queryCondition);
+        Projects projects = customizedProjectRepositoryImpl.findWithSearchConditions(queryCondition);
 
         // then
-        assertThat(count).isEqualTo(3);
+        assertThat(projects.getCount()).isEqualTo(3);
     }
 }

@@ -1,0 +1,47 @@
+import styled from "@emotion/styled";
+import { BP_768 } from "@/styles/global.styled";
+
+export const ArticleSectionContainer = styled.section`
+  border-top: 1px solid #d4d4d4;
+  padding-top: 2rem;
+`;
+
+export const EmptyContainer = styled.div`
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+  height: 13.6875rem;
+`;
+
+export const SearchHeader = styled.div<{ hasArticles: boolean }>`
+  display: flex;
+  align-items: flex-end;
+  justify-content: ${({ hasArticles }) =>
+    hasArticles ? "space-between" : "flex-end"};
+  margin: 1rem 0 2rem;
+
+  ${BP_768} {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+`;
+
+export const ArticleIntroText = styled.span`
+  font-weight: 500;
+  color: #007bff;
+`;
+
+export const ArticleDescriptionText = styled.p`
+  font-size: 1.125rem;
+`;
+
+export const SearchBarBox = styled.div`
+  width: 25.25rem;
+  ${BP_768} {
+    margin-right: auto;
+    width: auto;
+  }
+`;

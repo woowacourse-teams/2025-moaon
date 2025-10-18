@@ -3,7 +3,7 @@ services:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
     ports:
-      - "8080:8080"
+      - "80:8080"
     logging:
       driver: "awslogs"
       options:
@@ -15,3 +15,18 @@ services:
       SPRING_DATASOURCE_URL_PROD: ${SPRING_DATASOURCE_URL_PROD}
       SPRING_DATASOURCE_USERNAME_PROD: ${SPRING_DATASOURCE_USERNAME_PROD}
       SPRING_DATASOURCE_PASSWORD_PROD: ${SPRING_DATASOURCE_PASSWORD_PROD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      JWT_SECRET: ${JWT_SECRET}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_REGION: ${S3_REGION}
+
+  selenium:
+    image: selenium/standalone-chromium:latest
+    container_name: selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    shm_size: "2g"
+    restart: unless-stopped

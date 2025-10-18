@@ -7,6 +7,7 @@ import java.util.List;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.ProjectQueryConditionFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
+import moaon.backend.project.dao.ProjectDao;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @SpringBootTest
-@Import(RepositoryHelper.class)
+@Import({RepositoryHelper.class, ProjectDao.class})
 public class ProjectRepositorySearchTest {
 
     @Autowired
@@ -51,9 +52,9 @@ public class ProjectRepositorySearchTest {
         );
 
         // when
-        List<Project> aboutMoaon = repository.findWithSearchConditions(aboutSearchKeyword("모아"));
-        List<Project> aboutShare = repository.findWithSearchConditions(aboutSearchKeyword("공유"));
-        List<Project> aboutHub = repository.findWithSearchConditions(aboutSearchKeyword("허브"));
+        List<Project> aboutMoaon = repository.findWithSearchConditions(aboutSearchKeyword("모아")).getProjects();
+        List<Project> aboutShare = repository.findWithSearchConditions(aboutSearchKeyword("공유")).getProjects();
+        List<Project> aboutHub = repository.findWithSearchConditions(aboutSearchKeyword("허브")).getProjects();
 
         // then
         assertAll(
@@ -72,9 +73,9 @@ public class ProjectRepositorySearchTest {
                 .description("칵테일 픽은 칵테일 정보 제공, 추천 서비스입니다. \"좋은 술을, 고민 없이\"라는 모토를 가지고 개발하고 있습니다.")
                 .build());
 
-        List<Project> aboutCocktail = repository.findWithSearchConditions(aboutSearchKeyword("칵테일"));
-        List<Project> aboutSooleul = repository.findWithSearchConditions(aboutSearchKeyword("술을"));
-        List<Project> aboutGomin = repository.findWithSearchConditions(aboutSearchKeyword("고민"));
+        List<Project> aboutCocktail = repository.findWithSearchConditions(aboutSearchKeyword("칵테일")).getProjects();
+        List<Project> aboutSooleul = repository.findWithSearchConditions(aboutSearchKeyword("술을")).getProjects();
+        List<Project> aboutGomin = repository.findWithSearchConditions(aboutSearchKeyword("고민")).getProjects();
 
         // then
         assertAll(

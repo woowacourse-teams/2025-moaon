@@ -10,5 +10,6 @@ export const projectQueries = {
       getNextPageParam: (lastPage) =>
         lastPage.hasNext ? lastPage.nextCursor : "",
       initialPageParam: "",
+      throwOnError: true,
     }),
 };

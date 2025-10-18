@@ -1,4 +1,5 @@
-import type { ArticleCategoryKey } from "@domains/filter/articleCategory";
+import type { ArticleSectorKey } from "@domains/filter/articleSector";
+import type { AllTopicKey } from "@domains/filter/articleTopic";
 import type { TechStackKey } from "@domains/filter/techStack";
 
 export interface ArticleListResponse {
@@ -10,12 +11,24 @@ export interface ArticleListResponse {
 
 export interface Article {
   id: number;
-  projectId?: number;
+  projectId: number;
+  projectTitle: string;
   clicks: number;
   title: string;
   summary: string;
   techStacks: TechStackKey[];
   url: string;
-  category: ArticleCategoryKey;
+  topics: AllTopicKey[];
+  sector: ArticleSectorKey;
   createdAt: string;
+}
+
+export interface PostArticleData {
+  projectId: number;
+  title: string;
+  summary: string;
+  techStacks: TechStackKey[];
+  url: string;
+  topics: AllTopicKey[];
+  sector: ArticleSectorKey;
 }

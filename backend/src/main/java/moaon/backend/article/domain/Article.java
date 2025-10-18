@@ -1,14 +1,18 @@
 package moaon.backend.article.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,21 +25,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.global.domain.BaseTimeEntity;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
+import moaon.backend.techStack.domain.ArticleTechStack;
 import moaon.backend.techStack.domain.TechStack;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString
+@ToString(exclude = {"project", "techStacks", "topics"})
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Table(indexes = {
         @Index(name = "idx_article_created_at_id", columnList = "createdAt DESC, id DESC"),
         @Index(name = "idx_article_clicks_id", columnList = "clicks DESC, id DESC")
 })
-
 public class Article extends BaseTimeEntity {
 
     @Id
@@ -51,7 +57,7 @@ public class Article extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String articleUrl;
 
     @Column(nullable = false)
@@ -63,12 +69,18 @@ public class Article extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ArticleCategory category;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleTechStack> techStacks = new ArrayList<>();
 
-    @ManyToMany
-    private List<TechStack> techStacks;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Sector sector;
 
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<Topic> topics;
+
+    // todo topic과 sector의 포함 관계 확인?
     public Article(
             String title,
             String summary,
@@ -76,7 +88,8 @@ public class Article extends BaseTimeEntity {
             String articleUrl,
             LocalDateTime createdAt,
             Project project,
-            ArticleCategory category,
+            Sector sector,
+            List<Topic> topics,
             List<TechStack> techStacks
     ) {
         this.title = title;
@@ -86,15 +99,29 @@ public class Article extends BaseTimeEntity {
         this.clicks = 0;
         this.createdAt = createdAt;
         this.project = project;
-        this.category = category;
-        this.techStacks = new ArrayList<>(techStacks);
+        this.sector = sector;
+        if (topics.size() > 3) {
+            throw new CustomException(ErrorCode.ARTICLE_INVALID_TOPICS);
+        }
+        this.topics = topics;
+        if (techStacks.size() > 3) {
+            throw new CustomException(ErrorCode.ARTICLE_INVALID_TECHSTACK);
+        }
+        techStacks.forEach(this::addTechStack);
     }
 
     public void addClickCount() {
         clicks++;
     }
 
+    public void addTechStack(TechStack techStack) {
+        ArticleTechStack articleTechStack = new ArticleTechStack(this, techStack);
+        this.techStacks.add(articleTechStack);
+    }
+
     public List<TechStack> getTechStacks() {
-        return List.copyOf(techStacks);
+        return techStacks.stream()
+                .map(ArticleTechStack::getTechStack)
+                .toList();
     }
 }

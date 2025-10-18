@@ -9,16 +9,20 @@ import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.article.dto.ArticleContent;
+import moaon.backend.article.domain.Articles;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
+import moaon.backend.fixture.ArticleQueryConditionBuilder;
+import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.cursor.ArticleCursor;
+import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,31 +63,29 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
+        int limit = 2;
+        long totalCount = 5L;
+        ArticleSortType sortType = ArticleSortType.CREATED_AT;
+
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .limit(limit)
+                .sortBy(sortType)
+                .build();
+
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(articles);
+                .thenReturn(new Articles(articles, totalCount, limit, sortType));
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
-                null,
-                null,
-                null,
-                ArticleSortType.CREATED_AT,
-                2,
-                null
-        );
+        Cursor<?> articleCursor = articleQueryCondition.sortType().toCursor(article2);
 
-        ArticleCursor<?> articleCursor = articleQueryCondition.sortBy().toCursor(article2);
-
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
-
-        ArticleContent articleContent1 = ArticleContent.from(article1);
-        ArticleContent articleContent2 = ArticleContent.from(article2);
+        ArticleData articleData1 = ArticleData.from(article1);
+        ArticleData articleData2 = ArticleData.from(article2);
 
         // when
         ArticleResponse actual = articleService.getPagedArticles(articleQueryCondition);
 
         // then
         assertAll(
-                () -> assertThat(actual.contents()).containsExactly(articleContent1, articleContent2),
+                () -> assertThat(actual.contents()).containsExactly(articleData1, articleData2),
                 () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
                 () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
@@ -109,31 +111,29 @@ class ArticleServiceTest {
                 .build();
         List<Article> articles = List.of(article1, article2, article3);
 
+        int limit = 3;
+        long totalCount = 5L;
+        ArticleSortType sortType = ArticleSortType.CREATED_AT;
+
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(articles);
+                .thenReturn(new Articles(articles, totalCount, limit, sortType));
 
-        ArticleQueryCondition articleQueryCondition = new ArticleQueryCondition(
-                null,
-                null,
-                null,
-                ArticleSortType.CREATED_AT,
-                3,
-                null
-        );
+        ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
+                .limit(limit)
+                .sortBy(sortType)
+                .build();
 
-        Mockito.when(articleRepository.countWithSearchCondition(articleQueryCondition)).thenReturn(5L);
-
-        ArticleContent articleContent1 = ArticleContent.from(article1);
-        ArticleContent articleContent2 = ArticleContent.from(article2);
-        ArticleContent articleContent3 = ArticleContent.from(article3);
+        ArticleData articleData1 = ArticleData.from(article1);
+        ArticleData articleData2 = ArticleData.from(article2);
+        ArticleData articleData3 = ArticleData.from(article3);
 
         // when
         ArticleResponse actual = articleService.getPagedArticles(articleQueryCondition);
 
         // then
         assertAll(
-                () -> assertThat(actual.contents()).containsExactly(articleContent1, articleContent2,
-                        articleContent3),
+                () -> assertThat(actual.contents()).containsExactly(articleData1, articleData2,
+                        articleData3),
                 () -> assertThat(actual.hasNext()).isFalse(),
                 () -> assertThat(actual.nextCursor()).isNull()
         );
@@ -144,12 +144,14 @@ class ArticleServiceTest {
     void getByProjectId() {
         // given
         long projectId = 1L;
-        String category = "all";
         given(projectRepository.findById(projectId)).willReturn(Optional.empty());
+
+        ProjectArticleQueryCondition condition = new ProjectArticleQueryConditionFixtureBuilder()
+                .build();
 
         // when
         // then
-        assertThatThrownBy(() -> articleService.getByProjectIdAndCategory(projectId, category))
+        assertThatThrownBy(() -> articleService.getByProjectId(projectId, condition))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
     }

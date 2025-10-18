@@ -1,5 +1,21 @@
 == /projects
 
+=== POST /projects
+
+====
+operation::project-api-test/save-project[snippets='curl-request,http-request,request-fields,http-response,response-fields']
+
+**Error Codes **
+
+- PROJECT-002
+- PROJECT-003
+- PROJECT-004
+- PROJECT-005
+- PROJECT-006
+- PROJECT-007
+
+====
+
 === GET /projects
 
 ====
@@ -32,7 +48,7 @@ operation::project-api-test/get-project-by-id[snippets='curl-request,http-reques
 === GET /projects/{id}/articles
 
 ====
-operation::project-api-test/get-articles-by-project-id[snippets='curl-request,http-request,http-response,response-fields']
+operation::project-api-test/get-articles-by-project-id[snippets='curl-request,http-request,http-response,query-parameters,response-fields']
 
 **Error Codes **
 

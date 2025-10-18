@@ -7,17 +7,15 @@ on:
 
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     defaults:
       run:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
@@ -25,6 +23,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Gradle cache for Docker
+        id: gradle_cache
+        uses: actions/cache@v4
+        with:
+          path: ./gradle-cache-prod-home
+          key: ${{ runner.os }}-gradle-cache-prod-${{ hashFiles('build.gradle', 'settings.gradle', 'gradle/wrapper/**') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-cache-prod-
+
+      - name: Restore Gradle cache mounts to BuildKit
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: ./gradle-cache-prod-home
+          dockerfile: ./backend/Dockerfile
+          skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
 
       - name: Build and push Docker image
         id: build
@@ -39,23 +54,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
+  deploy-prod-1:
+    name: Deploy to Production Server 1
     needs: build-and-push-image
-    runs-on: prod-self-hosted
-
+    runs-on: prod-1
     defaults:
       run:
         working-directory: ./backend
-
     steps:
-      - name: change permission
-        run: |
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .env file from Secrets
+      - name: Create .env file
         run: |
           echo "Creating .env file from GitHub Secrets"
           cat <<EOF > .env
@@ -64,6 +74,14 @@ jobs:
           SPRING_DATASOURCE_USERNAME_PROD=${{ secrets.SPRING_DATASOURCE_USERNAME_PROD }}
           SPRING_DATASOURCE_PASSWORD_PROD=${{ secrets.SPRING_DATASOURCE_PASSWORD_PROD }}
           IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
           EOF
 
       - name: Log in to Docker Hub
@@ -72,7 +90,50 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Pull latest image and deploy
+      - name: Grant execute permission to deploy script
+        run: chmod +x ./scripts/deploy.sh
+
+      - name: Deploy to Server 1
+        run: ./scripts/deploy.sh
+
+  deploy-prod-2:
+    name: Deploy to Production Server 2
+    needs: deploy-prod-1
+    runs-on: prod-2
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
         run: |
-          sudo docker compose -f compose.prod.yaml up -d
-          sudo docker image prune -af
+          echo "Creating .env file from GitHub Secrets"
+          cat <<EOF > .env
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          SPRING_DATASOURCE_URL_PROD=${{ secrets.SPRING_DATASOURCE_URL_PROD }}
+          SPRING_DATASOURCE_USERNAME_PROD=${{ secrets.SPRING_DATASOURCE_USERNAME_PROD }}
+          SPRING_DATASOURCE_PASSWORD_PROD=${{ secrets.SPRING_DATASOURCE_PASSWORD_PROD }}
+          IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+          EOF
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Grant execute permission to deploy script
+        run: chmod +x ./scripts/deploy.sh
+
+      - name: Deploy to Server 2
+        run: ./scripts/deploy.sh

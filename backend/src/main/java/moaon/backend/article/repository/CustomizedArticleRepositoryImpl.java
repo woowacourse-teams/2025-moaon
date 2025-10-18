@@ -1,159 +1,99 @@
 package moaon.backend.article.repository;
 
-import static moaon.backend.article.domain.QArticle.article;
-import static moaon.backend.article.domain.QArticleCategory.articleCategory;
-import static moaon.backend.techStack.domain.QTechStack.techStack;
-
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.Articles;
+import moaon.backend.article.domain.Sector;
+import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.global.cursor.ArticleCursor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class CustomizedArticleRepositoryImpl implements CustomizedArticleRepository {
 
-    private static final int FETCH_EXTRA_FOR_HAS_NEXT = 1;
-    private static final double MINIMUM_MATCH_SCORE = 0.0;
-    private static final String BLANK = " ";
-    private static final String ALL = "all";
-
-    private final JPAQueryFactory jpaQueryFactory;
+    private final ArticleDao articleDao;
 
     @Override
-    public List<Article> findWithSearchConditions(ArticleQueryCondition queryCondition) {
-        ArticleCursor<?> articleCursor = queryCondition.articleCursor();
+    public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
+        FilteringIds filteringIds = FilteringIds.init();
+        filteringIds = applyTechStackFilter(filteringIds, queryCondition.techStackNames());
+        filteringIds = applyTopicFilter(filteringIds, queryCondition.topics());
+        filteringIds = applySearchFilter(filteringIds, queryCondition.search());
+        filteringIds = applySectorFilter(filteringIds, queryCondition.sector());
 
-        JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
-                .distinct()
-                .leftJoin(article.category, articleCategory)
-                .leftJoin(article.techStacks, techStack);
-
-        BooleanBuilder whereBuilder = new BooleanBuilder();
-
-        applyWhereAndHaving(whereBuilder, queryCondition, query);
-
-        if (articleCursor != null) {
-            articleCursor.applyCursor(whereBuilder);
+        if (filteringIds.hasEmptyResult()) {
+            return Articles.empty();
         }
 
-        if (whereBuilder.hasValue()) {
-            query.where(whereBuilder);
-        }
-
-        query.groupBy(article.id)
-                .orderBy(toOrderBy(queryCondition.sortBy()))
-                .limit(queryCondition.limit() + FETCH_EXTRA_FOR_HAS_NEXT);
-
-        return query.fetch();
+        List<Article> articles = articleDao.findAllBy(
+                filteringIds.getIds(),
+                queryCondition.cursor(),
+                queryCondition.limit(),
+                queryCondition.sortType()
+        );
+        long totalCount = calculateTotalCount(filteringIds);
+        return new Articles(articles, totalCount, queryCondition.limit(), queryCondition.sortType());
     }
 
     @Override
-    public long countWithSearchCondition(ArticleQueryCondition queryCondition) {
-        JPAQuery<Long> query = jpaQueryFactory.select(article.countDistinct())
-                .from(article)
-                .leftJoin(article.category, articleCategory)
-                .leftJoin(article.techStacks, techStack);
-
-        BooleanBuilder whereBuilder = new BooleanBuilder();
-
-        applyWhereAndHaving(whereBuilder, queryCondition, query);
-
-        if (whereBuilder.hasValue()) {
-            query.where(whereBuilder);
-        }
-
-        return query.groupBy(article.id)
-                .fetch()
-                .size();
+    public List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition) {
+        return articleDao.findAllBy(
+                id,
+                condition.sector(),
+                condition.search()
+        );
     }
 
-    @Override
-    public List<Article> findAllByProjectIdAndCategory(long id, String category) {
-        JPAQuery<Article> query = jpaQueryFactory.selectFrom(article)
-                .distinct()
-                .leftJoin(article.category, articleCategory)
-                .leftJoin(article.techStacks, techStack);
-
-        BooleanBuilder whereBuilder = new BooleanBuilder();
-
-        whereBuilder.and(article.project.id.eq(id));
-
-        applyWhereCategory(whereBuilder, category);
-        if (whereBuilder.hasValue()) {
-            query.where(whereBuilder);
-        }
-        return query.fetch();
-    }
-
-    private void applyWhereAndHaving(
-            BooleanBuilder whereBuilder,
-            ArticleQueryCondition queryCondition,
-            JPAQuery<?> query
-    ) {
-        String categoryName = queryCondition.categoryName();
-        List<String> techStackNames = queryCondition.techStackNames();
-        SearchKeyword searchKeyword = queryCondition.search();
-
-        applyWhereCategory(whereBuilder, categoryName);
-
-        if (!CollectionUtils.isEmpty(techStackNames)) {
-            whereBuilder.and(techStack.name.in(techStackNames));
-            query.having(techStack.name.countDistinct().eq((long) techStackNames.size()));
+    public FilteringIds applyTechStackFilter(FilteringIds filteringIds, List<String> techStackNames) {
+        if (filteringIds.hasEmptyResult() || CollectionUtils.isEmpty(techStackNames)) {
+            return filteringIds;
         }
 
-        if (searchKeyword.hasValue()) {
-            whereBuilder.and(satisfiesMatchScore(searchKeyword));
-        }
+        Set<Long> filterByTechstacks = articleDao.findIdsByTechStackNames(techStackNames);
+        return filteringIds.addFilterResult(filterByTechstacks);
     }
 
-    private void applyWhereCategory(BooleanBuilder whereBuilder, String category) {
-        if (StringUtils.hasText(category) && !category.equals(ALL)) {
-            whereBuilder.and(article.category.name.eq(category));
-        }
-    }
-
-    private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
-        return Expressions.numberTemplate(
-                Double.class,
-                ArticleFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
-                formatSearchKeyword(searchKeyword)
-        ).gt(MINIMUM_MATCH_SCORE);
-    }
-
-    private String formatSearchKeyword(SearchKeyword searchKeyword) {
-        String search = searchKeyword.replaceSpecialCharacters(BLANK);
-        return Arrays.stream(search.split(BLANK))
-                .map(this::applyExpressions)
-                .collect(Collectors.joining(BLANK));
-    }
-
-    private String applyExpressions(String keyword) {
-        if (keyword.length() == 1) {
-            return String.format("%s*", keyword);
-        }
-        return String.format("+%s*", keyword.toLowerCase());
-    }
-
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
-        if (sortBy == ArticleSortType.CLICKS) {
-            return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
+    private FilteringIds applyTopicFilter(FilteringIds filteringIds, List<Topic> topics) {
+        if (filteringIds.hasEmptyResult() || CollectionUtils.isEmpty(topics)) {
+            return filteringIds;
         }
 
-        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
+        Set<Long> filterByTopics = articleDao.findIdsByTopics(topics);
+        return filteringIds.addFilterResult(filterByTopics);
+    }
+
+    private FilteringIds applySearchFilter(FilteringIds filteringIds, SearchKeyword search) {
+        if (filteringIds.hasEmptyResult() || search == null || !search.hasValue()) {
+            return filteringIds;
+        }
+
+        Set<Long> filterBySearch = articleDao.findIdsBySearchKeyword(search);
+        return filteringIds.addFilterResult(filterBySearch);
+    }
+
+    private FilteringIds applySectorFilter(FilteringIds filteringIds, Sector sector) {
+        if (filteringIds.hasEmptyResult() || sector == null) {
+            return filteringIds;
+        }
+
+        Set<Long> filterBySector = articleDao.findIdsBySectorAndIds(sector, filteringIds.getIds());
+        return FilteringIds.of(filterBySector);
+    }
+
+    private long calculateTotalCount(FilteringIds filteringIds) {
+        if (filteringIds.isEmpty()) {
+            return articleDao.count();
+        }
+
+        return filteringIds.size();
     }
 }

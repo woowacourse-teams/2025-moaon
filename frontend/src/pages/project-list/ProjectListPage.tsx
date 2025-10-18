@@ -1,19 +1,30 @@
 import resetIcon from "@assets/icons/reset.svg";
+import TechStackFilterBox from "@domains/components/TechStackFilterBox/TechStackFilterBox";
+import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
+import FilterContainer from "@shared/components/FilterContainer/FilterContainer";
+import { useMeta } from "@shared/hooks/useMeta";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
+import CategoryFilterBox from "../../domains/components/CategoryFilterBox/CategoryFilterBox";
 import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
-import FilterContainer from "./FilterContainer/FilterContainer";
 import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
 import * as S from "./ProjectListPage.styled";
 import ProjectSearchBar from "./ProjectSearchBar/ProjectSearchBar";
 
 const DEFAULT_SORT_TYPE = "createdAt";
+const PROJECT_LIST_PAGE_DESCRIPTION =
+  "다양한 개발자들의 프로젝트를 탐색하고 학습하세요";
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount, isLoading } = useProjectList();
+
+  useMeta({
+    title: `${META_TITLE_PREFIX}프로젝트 탐색`,
+    description: PROJECT_LIST_PAGE_DESCRIPTION,
+  });
 
   const handleFilterResetButtonClick = () => {
     resetFilter();
@@ -25,29 +36,45 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
-  const hasItems = (totalCount ?? 0) > 0;
+  const shouldShowSort = isLoading || totalCount > 0;
 
   return (
     <S.Main>
       <S.MainBox>
         <S.TitleBox>
           <S.MainTitle>프로젝트 탐색</S.MainTitle>
-          <S.MainDescription>
-            다양한 개발자들의 프로젝트를 탐색하고 학습하세요
-          </S.MainDescription>
+          <S.MainDescription>{PROJECT_LIST_PAGE_DESCRIPTION}</S.MainDescription>
         </S.TitleBox>
         <ProjectSearchBar />
       </S.MainBox>
       <S.Box>
         <S.Wrap>
-          <FilterContainer onSelect={handleSelect} />
+          <FilterContainer
+            filterList={[
+              {
+                label: "주제",
+                param: "categories",
+                render: (onSelect: () => void) => (
+                  <CategoryFilterBox onSelect={onSelect} />
+                ),
+              },
+              {
+                label: "기술 스택",
+                param: "techStacks",
+                render: (onSelect: () => void) => (
+                  <TechStackFilterBox onSelect={onSelect} />
+                ),
+              },
+            ]}
+            onSelect={handleSelect}
+          />
           {isSelected && (
             <S.ResetButton type="button" onClick={handleFilterResetButtonClick}>
               <S.ResetIcon src={resetIcon} alt="필터 초기화" />
             </S.ResetButton>
           )}
         </S.Wrap>
-        {(isLoading || hasItems) && (
+        {shouldShowSort && (
           <SortList
             sortMap={PROJECT_SORT_MAP}
             onSelect={handleSelect}
