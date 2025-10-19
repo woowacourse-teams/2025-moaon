@@ -28,6 +28,7 @@ public class ESArticleQueryBuilder {
     private final List<Query> filters = new ArrayList<>();
     private Pageable pageable;
     private Sort sort;
+    private boolean trackScores = false;
     private List<Object> searchAfter;
 
     public ESArticleQueryBuilder withTextSearch(SearchKeyword searchKeyword) {
@@ -91,7 +92,7 @@ public class ESArticleQueryBuilder {
         NativeQueryBuilder builder = NativeQuery.builder()
                 .withQuery(combineBoolQuery())
                 .withTrackTotalHits(true)
-                .withTrackScores(true)
+                .withTrackScores(trackScores)
                 .withPageable(pageable);
 
         if (sort != null) {
@@ -214,7 +215,10 @@ public class ESArticleQueryBuilder {
 
     private Sort createSort(ArticleSortType sortType) {
         return switch (sortType) {
-            case RELEVANCE -> Sort.by(Order.desc("_score"), Order.asc("id"));
+            case RELEVANCE -> {
+                this.trackScores = true;
+                yield Sort.by(Order.desc("_score"), Order.asc("id"));
+            }
             case CLICKS -> Sort.by(Order.desc("clicks"), Order.asc("id"));
             case CREATED_AT -> Sort.by(Order.desc("createdAt"), Order.asc("id"));
         };
