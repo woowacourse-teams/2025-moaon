@@ -27,6 +27,10 @@ management:
   endpoint:
     health:
       show-details: never
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
 
 google:
   clientId: ${GOOGLE_CLIENT_ID}
