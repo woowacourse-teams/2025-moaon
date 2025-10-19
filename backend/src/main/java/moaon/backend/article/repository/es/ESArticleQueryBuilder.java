@@ -4,7 +4,6 @@ import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery.Builder;
 import co.elastic.clients.elasticsearch._types.query_dsl.DisMaxQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.PrefixQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
@@ -112,7 +111,7 @@ public class ESArticleQueryBuilder {
         }
 
         /*
-        1. 토큰의 갯수와 상관없이 마지막 토큰은 OR( Match + Prefix ) 매칭
+        1. 토큰의 갯수와 상관없이 마지막 토큰은 OR( Match + Edge-ngram(1~30) ) 매칭
         - 마지막 토큰은 입력중인 지, 입력 완료인 지 판단할 수 없습니다. 사용자 의도에 따라 다르기도 합니다.
 
         2. 토큰의 갯수가 2개 이상이면, 마지막 토큰 이전의 모든 검색어는 "필수" 매칭
@@ -121,14 +120,14 @@ public class ESArticleQueryBuilder {
         String lastToken = searchKeyword.lastToken();
         BoolQuery.Builder lastTokenBoolQueryBuilder = QueryBuilders.bool()
                 .should(Query.of(q -> q.multiMatch(multiMatchForText(lastToken, 2.0f, 1.5f, 1.0f))),
-                        Query.of(q -> q.disMax(dismaxPrefix(lastToken))))
+                        Query.of(q -> q.disMax(dismaxEdgeNgram(lastToken))))
                 .minimumShouldMatch("1");
 
         return createQueryConsideringNumOfTokens(searchKeyword, lastTokenBoolQueryBuilder);
     }
 
     private Query createQueryConsideringNumOfTokens(SearchKeyword searchKeyword, Builder lastTokenBoolQueryBuilder) {
-        // --- 검색어가 한 단어인 경우 마지막 토큰에 대해 OR(match, prefix) ---
+        // --- 검색어가 한 단어인 경우 마지막 토큰에 대해 OR(match, Edge-ngram) ---
         if (searchKeyword.hasOnlyOneToken()) {
             return lastTokenBoolQueryBuilder.build()._toQuery();
         }
@@ -147,15 +146,16 @@ public class ESArticleQueryBuilder {
         return MultiMatchQuery.of(m -> m.query(token).fields(title, summary, content));
     }
 
-    private DisMaxQuery dismaxPrefix(String token) {
+    private DisMaxQuery dismaxEdgeNgram(String token) {
         return DisMaxQuery.of(d -> d
                 .tieBreaker(0.4)
                 .queries(
-                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("title").value(token).boost(1.0f)))),
-                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("summary").value(token).boost(0.5f))))
+                        Query.of(b -> b.match(m -> m.field("title.auto").query(token).boost(1.0f))),
+                        Query.of(b -> b.match(m -> m.field("summary.auto").query(token).boost(0.5f)))
                 )
         );
     }
+
 
     private Query createSectorQuery(Sector sector) {
         return TermQuery.of(t -> t

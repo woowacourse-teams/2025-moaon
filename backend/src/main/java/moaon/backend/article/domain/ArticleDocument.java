@@ -36,13 +36,34 @@ public class ArticleDocument {
     @Field(type = FieldType.Keyword)
     private Long id;
 
-    @Field(type = FieldType.Text, analyzer = "article_common_analyzer")
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, analyzer = "article_common_analyzer"),
+            otherFields = {
+                    @InnerField(suffix = "auto", type = FieldType.Text,
+                            analyzer = "article_autocomplete_index",
+                            searchAnalyzer = "article_autocomplete_search")
+            }
+    )
     private String title;
 
-    @Field(type = FieldType.Text, analyzer = "article_common_analyzer")
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, analyzer = "article_common_analyzer"),
+            otherFields = {
+                    @InnerField(suffix = "auto", type = FieldType.Text,
+                            analyzer = "article_autocomplete_index",
+                            searchAnalyzer = "article_autocomplete_search")
+            }
+    )
     private String summary;
 
-    @Field(type = FieldType.Text, analyzer = "article_common_analyzer")
+    @MultiField(
+            mainField = @Field(type = FieldType.Text, analyzer = "article_common_analyzer"),
+            otherFields = {
+                    @InnerField(suffix = "auto", type = FieldType.Text,
+                            analyzer = "article_autocomplete_index",
+                            searchAnalyzer = "article_autocomplete_search")
+            }
+    )
     private String content;
 
     @Field(type = FieldType.Keyword)
