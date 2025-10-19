@@ -4,6 +4,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
+import java.util.ArrayList;
+import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -15,9 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ESArticleQueryBuilder {
 
@@ -88,6 +87,7 @@ public class ESArticleQueryBuilder {
         NativeQueryBuilder builder = NativeQuery.builder()
                 .withQuery(combineBoolQuery())
                 .withTrackTotalHits(true)
+                .withTrackScores(true)
                 .withPageable(pageable);
 
         if (sort != null) {
@@ -175,9 +175,10 @@ public class ESArticleQueryBuilder {
     }
 
     private Sort createSort(ArticleSortType sortType) {
-        if (sortType == ArticleSortType.CLICKS) {
-            return Sort.by(Order.desc("clicks"), Order.desc("id"));
-        }
-        return Sort.by(Order.desc("createdAt"), Order.desc("id"));
+        return switch (sortType) {
+            case RELEVANCE -> Sort.by(Order.desc("_score"), Order.asc("id"));
+            case CLICKS -> Sort.by(Order.desc("clicks"), Order.asc("id"));
+            case CREATED_AT -> Sort.by(Order.desc("createdAt"), Order.asc("id"));
+        };
     }
 }

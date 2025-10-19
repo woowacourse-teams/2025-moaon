@@ -2,6 +2,7 @@ package moaon.backend.global.cursor;
 
 import java.util.List;
 import lombok.Getter;
+import moaon.backend.article.domain.ArticleSortType;
 
 @Getter
 public class ESCursor {
@@ -14,14 +15,19 @@ public class ESCursor {
         this.sortValues = List.of(sortValue, lastId);
     }
 
-    public ESCursor(final String rawCursor) {
+    public ESCursor(String rawCursor, ArticleSortType sortType) {
         if (rawCursor == null || rawCursor.isEmpty()) {
             this.sortValues = List.of();
             return;
         }
 
         final var split = rawCursor.split("_");
-        this.sortValues = List.of(Long.parseLong(split[0]), split[1]);
+        switch (sortType) {
+            case CREATED_AT -> this.sortValues = List.of(Long.parseLong(split[0]), split[1]);
+            case CLICKS -> this.sortValues = List.of(Integer.parseInt(split[0]), split[1]);
+            case RELEVANCE -> this.sortValues = List.of(Double.parseDouble(split[0]), split[1]);
+            default -> this.sortValues = List.of(split[0], split[1]);
+        }
     }
 
     public boolean isEmpty() {
