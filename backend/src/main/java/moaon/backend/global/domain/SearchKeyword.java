@@ -31,11 +31,11 @@ public record SearchKeyword(
         return allTokens().getLast();
     }
 
-    public String wholeTextBeforeLastToken() {
+    public List<String> allTokensBeforeLastToken() {
         assumeValueNotNull();
 
-        int i = value.lastIndexOf(lastToken());
-        return value.substring(0, i).trim();
+        int size = allTokens().size();
+        return allTokens().subList(0, size - 1);
     }
 
     private List<String> allTokens() {

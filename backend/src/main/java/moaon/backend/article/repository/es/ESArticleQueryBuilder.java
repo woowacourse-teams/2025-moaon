@@ -119,7 +119,7 @@ public class ESArticleQueryBuilder {
 
         String lastToken = searchKeyword.lastToken();
         BoolQuery.Builder lastTokenBoolQueryBuilder = QueryBuilders.bool()
-                .should(Query.of(q -> q.multiMatch(multiMatchForText(lastToken, 2.0f, 1.5f, 1.0f))),
+                .should(Query.of(q -> q.multiMatch(multiMatch(lastToken, 1.5f, 1.25f, 1.0f))),
                         Query.of(q -> q.disMax(dismaxEdgeNgram(lastToken))))
                 .minimumShouldMatch("1");
 
@@ -133,13 +133,13 @@ public class ESArticleQueryBuilder {
         }
 
         // 검색어가 두 단어 이상으로 이루어진 경우 마지막 이전 단어들은 필수 매칭
-        String textBeforeLast = searchKeyword.wholeTextBeforeLastToken();
-        return lastTokenBoolQueryBuilder
-                .must(Query.of(q -> q.multiMatch(multiMatchForText(textBeforeLast, 3.0f, 2.0f, 1.5f))))
-                .build()._toQuery();
+        List<Query> multiMatches = searchKeyword.allTokensBeforeLastToken().stream()
+                .map(token -> Query.of(q -> q.multiMatch(multiMatch(token, 2.0f, 1.5f, 1.0f))))
+                .toList();
+        return lastTokenBoolQueryBuilder.must(multiMatches).build()._toQuery();
     }
 
-    private MultiMatchQuery multiMatchForText(String token, float titleBoost, float summaryBoost, float contentBoost) {
+    private MultiMatchQuery multiMatch(String token, float titleBoost, float summaryBoost, float contentBoost) {
         String title = String.format("title^%.2f", titleBoost);
         String summary = String.format("summary^%.2f", summaryBoost);
         String content = String.format("content^%.2f", contentBoost);
@@ -150,8 +150,8 @@ public class ESArticleQueryBuilder {
         return DisMaxQuery.of(d -> d
                 .tieBreaker(0.4)
                 .queries(
-                        Query.of(b -> b.match(m -> m.field("title.auto").query(token).boost(1.0f))),
-                        Query.of(b -> b.match(m -> m.field("summary.auto").query(token).boost(0.5f)))
+                        Query.of(b -> b.match(m -> m.field("title.auto").query(token).boost(1.5f))),
+                        Query.of(b -> b.match(m -> m.field("summary.auto").query(token).boost(1.25f)))
                 )
         );
     }
