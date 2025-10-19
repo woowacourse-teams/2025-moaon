@@ -1,6 +1,7 @@
 package moaon.backend.article.repository.es;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery.Builder;
 import co.elastic.clients.elasticsearch._types.query_dsl.DisMaxQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.PrefixQuery;
@@ -122,36 +123,34 @@ public class ESArticleQueryBuilder {
                         Query.of(q -> q.disMax(dismaxPrefix(lastToken))))
                 .minimumShouldMatch("1");
 
-        BoolQuery finalQuery;
-        if (searchKeyword.hasOnlyOneToken()) {
-            // --- 검색어가 한 단어인 경우 마지막 토큰에 대해 OR(match, prefix) ---
-            finalQuery = lastTokenBoolQueryBuilder.build();
-
-        } else {
-            // 검색어가 두 단어 이상으로 이루어진 경우 마지막 이전 단어들은 필수 매칭
-            String textBeforeLast = searchKeyword.wholeTextBeforeLastToken();
-            MultiMatchQuery beforeLastTokenMultiMatch = multiMatchForText(textBeforeLast, 2.0f, 1.0f, 0.5f);
-
-            finalQuery = lastTokenBoolQueryBuilder
-                    .must(Query.of(q -> q.multiMatch(beforeLastTokenMultiMatch)))
-                    .build();
-        }
-
-        return finalQuery._toQuery();
+        return createQueryConsideringNumOfTokens(searchKeyword, lastTokenBoolQueryBuilder);
     }
 
-    private MultiMatchQuery multiMatchForText(String token, float t, float s, float c) {
-        return MultiMatchQuery.of(m -> m
-                .query(token)
-                .fields("title^" + t, "summary^" + s, "content^" + c)
-        );
+    private Query createQueryConsideringNumOfTokens(SearchKeyword searchKeyword, Builder lastTokenBoolQueryBuilder) {
+        // --- 검색어가 한 단어인 경우 마지막 토큰에 대해 OR(match, prefix) ---
+        if (searchKeyword.hasOnlyOneToken()) {
+            return lastTokenBoolQueryBuilder.build()._toQuery();
+        }
+
+        // 검색어가 두 단어 이상으로 이루어진 경우 마지막 이전 단어들은 필수 매칭
+        String textBeforeLast = searchKeyword.wholeTextBeforeLastToken();
+        return lastTokenBoolQueryBuilder
+                .must(Query.of(q -> q.multiMatch(multiMatchForText(textBeforeLast, 2.0f, 1.0f, 0.5f))))
+                .build()._toQuery();
+    }
+
+    private MultiMatchQuery multiMatchForText(String token, float titleBoost, float summaryBoost, float contentBoost) {
+        String title = String.format("title^%.2f", titleBoost);
+        String summary = String.format("summary^%.2f", summaryBoost);
+        String content = String.format("content^%.2f", contentBoost);
+        return MultiMatchQuery.of(m -> m.query(token).fields(title, summary, content));
     }
 
     private DisMaxQuery dismaxPrefix(String token) {
         return DisMaxQuery.of(d -> d
                 .tieBreaker(0.3)
                 .queries(
-                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("title").value(token).boost(1.5f)))),
+                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("title").value(token).boost(1.8f)))),
                         Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("summary").value(token).boost(1.0f)))),
                         Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("content").value(token).boost(0.5f))))
                 )
