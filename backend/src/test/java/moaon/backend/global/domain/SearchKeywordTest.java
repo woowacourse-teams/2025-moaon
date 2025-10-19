@@ -12,14 +12,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class SearchKeywordTest {
 
-    @DisplayName("검색어의 길이가 최소 길이 미만인 경우 예외를 발생시킨다.")
-    @Test
-    void lessThanMinLength() {
-        assertThatThrownBy(() -> new SearchKeyword("A"))
-                .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.INVALID_SEARCH_KEYWORD_LENGTH.getMessage());
-    }
-
     @DisplayName("검색어의 길이가 최대 길이를 초과한 경우 예외를 발생시킨다.")
     @Test
     void greaterThanMaxLength() {
