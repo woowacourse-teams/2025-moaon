@@ -56,14 +56,7 @@ public class ArticleDocument {
     )
     private String summary;
 
-    @MultiField(
-            mainField = @Field(type = FieldType.Text, analyzer = "article_common_analyzer"),
-            otherFields = {
-                    @InnerField(suffix = "auto", type = FieldType.Text,
-                            analyzer = "article_autocomplete_index",
-                            searchAnalyzer = "article_autocomplete_search")
-            }
-    )
+    @Field(type = FieldType.Text, analyzer = "article_common_analyzer")
     private String content;
 
     @Field(type = FieldType.Keyword)
