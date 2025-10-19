@@ -1,5 +1,6 @@
 package moaon.backend.global.domain;
 
+import java.util.List;
 import java.util.regex.Pattern;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -22,14 +23,40 @@ public record SearchKeyword(
         return value != null && !value.isBlank();
     }
 
+    public boolean hasOnlyOneToken() {
+        return hasValue() && value.split(" ").length < 2;
+    }
+
+    public String lastToken() {
+        return allTokens().getLast();
+    }
+
+    public String wholeTextBeforeLastToken() {
+        assumeValueNotNull();
+
+        int i = value.lastIndexOf(lastToken());
+        return value.substring(0, i).trim();
+    }
+
+    private List<String> allTokens() {
+        assumeValueNotNull();
+
+        String[] split = value.trim().split("\\s+");
+        return List.of(split);
+    }
+
     public String replaceSpecialCharacters(String replacement) {
-        if (value == null) {
-            throw new IllegalArgumentException("검색어가 비어있습니다.");
-        }
+        assumeValueNotNull();
         return SPECIAL_CHARACTERS.matcher(value).replaceAll(replacement);
     }
 
     public static int getMaxLength() {
         return MAX_LENGTH;
+    }
+
+    private void assumeValueNotNull() {
+        if (!hasValue()) {
+            throw new IllegalArgumentException("검색어가 비어있습니다.");
+        }
     }
 }

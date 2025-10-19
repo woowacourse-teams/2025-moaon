@@ -1,8 +1,11 @@
 package moaon.backend.article.repository.es;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.DisMaxQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.PrefixQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,20 +105,57 @@ public class ESArticleQueryBuilder {
     }
 
     private Query createTextMatchQuery(SearchKeyword searchKeyword) {
-        float titleBoost = 3.0f;
-        float techStackBoost = 2.5f;
-        float summaryBoost = 2.0f;
-        float contentBoost = 1.0f;
+        if (!searchKeyword.hasValue()) {
+            throw new IllegalArgumentException("검색어가 비어있습니다.");
+        }
 
+        /*
+        1. 토큰의 갯수와 상관없이 마지막 토큰은 OR( Match + Prefix ) 매칭
+        - 마지막 토큰은 입력중인 지, 입력 완료인 지 판단할 수 없습니다. 사용자 의도에 따라 다르기도 합니다.
+
+        2. 토큰의 갯수가 2개 이상이면, 마지막 토큰 이전의 모든 검색어는 "필수" 매칭
+         */
+
+        String lastToken = searchKeyword.lastToken();
+        BoolQuery.Builder lastTokenBoolQueryBuilder = QueryBuilders.bool()
+                .should(Query.of(q -> q.multiMatch(multiMatchForText(lastToken, 2.0f, 1.5f, 1.0f))),
+                        Query.of(q -> q.disMax(dismaxPrefix(lastToken))))
+                .minimumShouldMatch("1");
+
+        BoolQuery finalQuery;
+        if (searchKeyword.hasOnlyOneToken()) {
+            // --- 검색어가 한 단어인 경우 마지막 토큰에 대해 OR(match, prefix) ---
+            finalQuery = lastTokenBoolQueryBuilder.build();
+
+        } else {
+            // 검색어가 두 단어 이상으로 이루어진 경우 마지막 이전 단어들은 필수 매칭
+            String textBeforeLast = searchKeyword.wholeTextBeforeLastToken();
+            MultiMatchQuery beforeLastTokenMultiMatch = multiMatchForText(textBeforeLast, 2.0f, 1.0f, 0.5f);
+
+            finalQuery = lastTokenBoolQueryBuilder
+                    .must(Query.of(q -> q.multiMatch(beforeLastTokenMultiMatch)))
+                    .build();
+        }
+
+        return finalQuery._toQuery();
+    }
+
+    private MultiMatchQuery multiMatchForText(String token, float t, float s, float c) {
         return MultiMatchQuery.of(m -> m
-                .query(searchKeyword.value())
-                .fields(
-                        String.format("title^%f", titleBoost),
-                        String.format("techStacks.text^%f", techStackBoost),
-                        String.format("summary^%f", summaryBoost),
-                        String.format("content^%f", contentBoost)
+                .query(token)
+                .fields("title^" + t, "summary^" + s, "content^" + c)
+        );
+    }
+
+    private DisMaxQuery dismaxPrefix(String token) {
+        return DisMaxQuery.of(d -> d
+                .tieBreaker(0.3)
+                .queries(
+                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("title").value(token).boost(1.5f)))),
+                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("summary").value(token).boost(1.0f)))),
+                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("content").value(token).boost(0.5f))))
                 )
-        )._toQuery();
+        );
     }
 
     private Query createSectorQuery(Sector sector) {
