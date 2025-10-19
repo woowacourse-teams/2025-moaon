@@ -48,7 +48,7 @@ public record ArticleESQuery(
 
     private static ArticleSortType createArticleSortType(String search, String sortType) {
         boolean noSortButHasSearchKeyword =
-                (sortType == null || sortType.isBlank()) && (search != null && !search.isEmpty());
+                (sortType == null || sortType.isEmpty()) && (search != null && !search.isEmpty());
         if (noSortButHasSearchKeyword) {
             return ArticleSortType.RELEVANCE;
         }
