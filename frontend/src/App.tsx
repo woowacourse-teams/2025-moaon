@@ -3,6 +3,7 @@ import { ScrollToTop } from "@shared/components/ScrollToTop/ScrollToTop";
 import { Suspense } from "react";
 import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
+import APage from "./pages/A";
 import ArticlePage from "./pages/article/ArticlePage";
 import EventLandingPage from "./pages/eventLanding/EventLandingPage";
 import LandingPage from "./pages/landing/LandingPage";
@@ -19,7 +20,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <Header />
+      {/* <Header /> */}
       <GlobalLayout>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
@@ -30,6 +31,7 @@ function App() {
             <Route path="/wooteco" element={<WootecoEventPage />} />
             <Route path="/wooteco/:company" element={<CompanyEventPage />} />
             <Route path="/event" element={<EventLandingPage />} />
+            <Route path="/a" element={<APage />} />
             <Route
               path="*"
               element={
