@@ -8,7 +8,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -17,16 +16,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpLoggingFilter implements Filter {
 
-    private static final String REQUEST_ID_KEY = "request_id";
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        String requestId = UUID.randomUUID().toString();
-        MDC.put(REQUEST_ID_KEY, requestId);
+        String requestURI = httpServletRequest.getRequestURI();
+        if (requestURI.startsWith("/actuator")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         doRequestLogging(httpServletRequest);
 
