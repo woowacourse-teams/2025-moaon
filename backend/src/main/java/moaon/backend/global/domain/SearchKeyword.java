@@ -24,7 +24,7 @@ public record SearchKeyword(
     }
 
     public boolean hasOnlyOneToken() {
-        return hasValue() && value.split(" ").length < 2;
+        return hasValue() && allTokens().size() == 1;
     }
 
     public String lastToken() {
