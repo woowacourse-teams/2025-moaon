@@ -135,7 +135,7 @@ public class ESArticleQueryBuilder {
         // 검색어가 두 단어 이상으로 이루어진 경우 마지막 이전 단어들은 필수 매칭
         String textBeforeLast = searchKeyword.wholeTextBeforeLastToken();
         return lastTokenBoolQueryBuilder
-                .must(Query.of(q -> q.multiMatch(multiMatchForText(textBeforeLast, 2.0f, 1.0f, 0.5f))))
+                .must(Query.of(q -> q.multiMatch(multiMatchForText(textBeforeLast, 3.0f, 2.0f, 1.5f))))
                 .build()._toQuery();
     }
 
@@ -148,11 +148,10 @@ public class ESArticleQueryBuilder {
 
     private DisMaxQuery dismaxPrefix(String token) {
         return DisMaxQuery.of(d -> d
-                .tieBreaker(0.3)
+                .tieBreaker(0.4)
                 .queries(
-                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("title").value(token).boost(1.8f)))),
-                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("summary").value(token).boost(1.0f)))),
-                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("content").value(token).boost(0.5f))))
+                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("title").value(token).boost(1.0f)))),
+                        Query.of(b -> b.prefix(PrefixQuery.of(p -> p.field("summary").value(token).boost(0.5f))))
                 )
         );
     }
