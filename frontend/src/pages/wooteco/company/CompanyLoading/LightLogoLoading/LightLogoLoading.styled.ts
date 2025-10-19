@@ -11,59 +11,6 @@ export const Background = styled.div<{ bgColor: string }>`
   background-color: ${({ bgColor }) => bgColor};
 `;
 
-export const LogoBox = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: inline-block;
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-    }
-  }
-`;
-
-export const LogoGlow = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.1);
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, #fff, transparent);
-  filter: blur(40px);
-  opacity: 0.6;
-  z-index: -1;
-  animation: pulse 2s ease-in-out backwards;
-
-  @keyframes pulse {
-    0% {
-      transform: translate(-50%, -50%) scale(1);
-    }
-    60% {
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-  }
-
-  ${BP_480} {
-    width: 250px;
-    height: 250px;
-  }
-`;
-
-export const LogoImage = styled.img`
-  width: 250px;
-  aspect-ratio: 1/1;
-
-  ${BP_480} {
-    width: 200px;
-  }
-`;
-
 export const ShineBox = styled.div`
   position: absolute;
   top: 50%;
@@ -102,16 +49,22 @@ export const ShineImage = styled.img`
   -webkit-mask-size: 250% 100%;
   -webkit-mask-position: -100% 0;
   -webkit-mask-repeat: no-repeat;
-  animation: shine 2.5s linear;
+  animation: shine 3s linear forwards;
 
   @keyframes shine {
     0% {
       -webkit-mask-position: 120% 0;
       mask-position: 120% 0;
     }
-    100% {
+    50% {
       -webkit-mask-position: -100% 0;
       mask-position: -100% 0;
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+      -webkit-mask-image: none;
+      mask-image: none;
     }
   }
 `;
