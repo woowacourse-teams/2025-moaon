@@ -88,6 +88,7 @@ jobs:
           PROD_MYSQL_EXPORTER_PASSWORD=${{ secrets.PROD_MYSQL_EXPORTER_PASSWORD }}
           MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
           MYSQLD_EXPORTER_READER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_READER_ADDRESS }}
+          OTEL_SERVICE_NAME=moaon-app-prod-1
           EOF
 
       - name: Log in to Docker Hub
@@ -130,6 +131,7 @@ jobs:
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           S3_BUCKET=${{ secrets.S3_BUCKET }}
           S3_REGION=${{ secrets.S3_REGION }}
+          OTEL_SERVICE_NAME=moaon-app-prod-2
           EOF
 
       - name: Log in to Docker Hub
