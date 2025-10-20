@@ -106,6 +106,7 @@ jobs:
           MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
           MYSQLD_EXPORTER_READER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_READER_ADDRESS }}
           OTEL_SERVICE_NAME=moaon-app-prod-1
+          SERVER_PORT=8080
           EOF
 
       - name: Log in to Docker Hub
