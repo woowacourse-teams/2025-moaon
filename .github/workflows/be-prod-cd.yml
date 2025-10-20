@@ -191,7 +191,23 @@ jobs:
           # .env 파일은 rollback.sh가 source 하므로 최소한으로 생성
           cat <<EOF > .env
           DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
-          IMAGE_TAG=${{ github.sha }} 
+          SPRING_DATASOURCE_URL_PROD=${{ secrets.SPRING_DATASOURCE_URL_PROD }}
+          SPRING_DATASOURCE_USERNAME_PROD=${{ secrets.SPRING_DATASOURCE_USERNAME_PROD }}
+          SPRING_DATASOURCE_PASSWORD_PROD=${{ secrets.SPRING_DATASOURCE_PASSWORD_PROD }}
+          IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
+          PROD_MYSQL_EXPORTER_USER=${{ secrets.PROD_MYSQL_EXPORTER_USER }}
+          PROD_MYSQL_EXPORTER_PASSWORD=${{ secrets.PROD_MYSQL_EXPORTER_PASSWORD }}
+          MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
+          MYSQLD_EXPORTER_READER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_READER_ADDRESS }}
+          OTEL_SERVICE_NAME=moaon-app-prod-1
           EOF
 
       - name: Grant execute permission to rollback script
