@@ -9,6 +9,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
 import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -120,9 +122,9 @@ public class ESArticleQueryBuilder {
     }
 
     private Query createTextMatchQuery(SearchKeyword searchKeyword) {
-        float titleBoost = 3.0f;
-        float techStackBoost = 2.5f;
-        float summaryBoost = 2.0f;
+        float titleBoost = 2f;
+        float techStackBoost = 1.5f;
+        float summaryBoost = 1.5f;
         float contentBoost = 1.0f;
 
         return MultiMatchQuery.of(m -> m
