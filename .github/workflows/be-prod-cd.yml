@@ -153,7 +153,6 @@ jobs:
           S3_BUCKET=${{ secrets.S3_BUCKET }}
           S3_REGION=${{ secrets.S3_REGION }}
           OTEL_SERVICE_NAME=moaon-app-prod-2
-#           ✨ [테스트] 헬스 체크 실패를 유도하기 위해 고의로 포트 변경
           SERVER_PORT=9999
           EOF
 
