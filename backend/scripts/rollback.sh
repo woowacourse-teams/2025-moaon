@@ -39,4 +39,20 @@ sudo docker pull "${IMAGE_NAME}:${TARGET_TAG}"
 export IMAGE_TAG=${TARGET_TAG}
 sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
 
-echo "✅ 롤백 완료: ${IMAGE_NAME}:${TARGET_TAG}"
+# 7. 롤백 헬스 체크 (Polling)
+echo "롤백 헬스 체크를 시작합니다..."
+for i in {1..10}; do
+  HEALTH_STATUS=$(curl -s http://localhost:80/actuator/health | jq -r .status)
+
+  if [ "${HEALTH_STATUS}" == "UP" ]; then
+    echo "✅ 롤백 헬스 체크 성공! 롤백을 완료합니다."
+    exit 0 # 성공적으로 종료
+  fi
+  echo "롤백 헬스 체크 응답: ${HEALTH_STATUS} (${i}/10). 10초 후 재시도합니다."
+  sleep 10
+done
+
+# 8. 헬스 체크 실패 시
+echo "❌ 롤백 헬스 체크 실패! 롤백된 애플리케이션이 정상적으로 시작되지 않았습니다."
+echo "수동 확인이 필요합니다."
+exit 1

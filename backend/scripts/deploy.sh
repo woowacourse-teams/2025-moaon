@@ -28,7 +28,23 @@ function rollback() {
 
     export IMAGE_TAG=${PREVIOUS_IMAGE_TAG} # compose가 읽도록 export
     sudo docker compose -f ${COMPOSE_FILE_PATH} up -d
-    echo "롤백 완료."
+
+    echo "롤백 헬스 체크를 시작합니다..."
+    for i in {1..10}; do
+      HEALTH_STATUS=$(curl -s http://localhost:80/actuator/health | jq -r .status)
+
+      if [ "${HEALTH_STATUS}" == "UP" ]; then
+        echo "✅ 롤백 헬스 체크 성공!"
+        return 0
+      fi
+      echo "롤백 헬스 체크 응답: ${HEALTH_STATUS} (${i}/10). 10초 후 재시도합니다."
+      sleep 10
+    done
+
+    echo "❌ 롤백 헬스 체크 실패! 롤백된 애플리케이션이 정상적으로 시작되지 않았습니다."
+    # 롤백 함수가 0이 아닌 값을 반환하면, set -e에 의해 스크립트가 중단됨
+    return 1
+
   else
     echo "롤백할 이전 버전이 없거나(none), 이전 버전과 현재 버전이 동일합니다. 현재 컨테이너를 중지합니다."
     sudo docker compose -f ${COMPOSE_FILE_PATH} down
