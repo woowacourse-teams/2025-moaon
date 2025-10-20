@@ -7,7 +7,7 @@ import type {
 const postProjectRegister = async (
   projectFormData: ProjectFormData
 ): Promise<PostProjectRegisterResponse> => {
-  const response = await httpClient.post(`/projects/temp`, projectFormData);
+  const response = await httpClient.post(`/projects`, projectFormData);
 
   const result: PostProjectRegisterResponse = await response.json();
   return result;
