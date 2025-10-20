@@ -9,7 +9,9 @@ const getArticles = async (cursor: string): Promise<ArticleListResponse> => {
   if (cursor) {
     searchParams.set("cursor", cursor);
   }
-  const articles = await httpClient.get(`/articles?${searchParams.toString()}`);
+  const articles = await httpClient.get(
+    `/es/search?${searchParams.toString()}`
+  );
   if (!articles.ok) {
     throw new Error("Failed to fetch articles");
   }
