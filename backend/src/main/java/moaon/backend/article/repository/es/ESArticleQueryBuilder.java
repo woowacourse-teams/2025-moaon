@@ -1,5 +1,6 @@
 package moaon.backend.article.repository.es;
 
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery.Builder;
 import co.elastic.clients.elasticsearch._types.query_dsl.DisMaxQuery;
@@ -7,6 +8,12 @@ import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
+import jakarta.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import moaon.backend.article.domain.ArticleSortType;
@@ -29,6 +36,13 @@ public class ESArticleQueryBuilder {
     private Sort sort;
     private boolean trackScores = false;
     private List<Object> searchAfter;
+
+    public ESArticleQueryBuilder withIds(List<Long> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            filters.add(createIdsQuery(ids));
+        }
+        return this;
+    }
 
     public ESArticleQueryBuilder withTextSearch(SearchKeyword searchKeyword) {
         if (searchKeyword != null && searchKeyword.hasValue()) {
@@ -72,8 +86,9 @@ public class ESArticleQueryBuilder {
         return this;
     }
 
-    public ESArticleQueryBuilder withPagination(int limit, ESCursor cursor) {
-        if (cursor.isEmpty()) {
+    public ESArticleQueryBuilder withPagination(int limit, @Nullable ESCursor cursor) {
+        if (cursor == null || cursor.isEmpty()) {
+            limit = Math.max(limit, 1);
             this.pageable = PageRequest.of(0, limit);
             return this;
         }
@@ -105,7 +120,19 @@ public class ESArticleQueryBuilder {
         return builder.build();
     }
 
+    private Query createIdsQuery(List<Long> ids) {
+        List<FieldValue> values = ids.stream().map(FieldValue::of).toList();
+        return TermsQuery.of(t -> t
+                .field("id")
+                .terms(f -> f.value(values))
+        )._toQuery();
+    }
+
     private Query createTextMatchQuery(SearchKeyword searchKeyword) {
+        float titleBoost = 2f;
+        float techStackBoost = 1.5f;
+        float summaryBoost = 1.5f;
+        float contentBoost = 1.0f;
         if (!searchKeyword.hasValue()) {
             throw new IllegalArgumentException("검색어가 비어있습니다.");
         }
@@ -155,7 +182,6 @@ public class ESArticleQueryBuilder {
                 )
         );
     }
-
 
     private Query createSectorQuery(Sector sector) {
         return TermQuery.of(t -> t

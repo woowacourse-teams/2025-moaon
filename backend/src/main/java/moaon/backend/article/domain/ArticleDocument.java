@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.techStack.domain.TechStack;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Alias;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -23,7 +24,7 @@ import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.util.CollectionUtils;
 
-@Document(indexName = "articles")
+@Document(indexName = "articles_idx", aliases = {@Alias(value = "articles", isWriteIndex = true)})
 @Setting(settingPath = "/elasticsearch/article-settings.json")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

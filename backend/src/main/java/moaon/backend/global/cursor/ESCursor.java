@@ -9,7 +9,7 @@ public class ESCursor {
 
     private final List<Object> sortValues;
 
-    public ESCursor(final List<Object> sortValues) {
+    public ESCursor(List<Object> sortValues) {
         final var sortValue = sortValues.get(0);
         final var lastId = sortValues.get(1);
         this.sortValues = List.of(sortValue, lastId);
