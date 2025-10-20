@@ -37,14 +37,28 @@ export const SearchInput = styled.input<{
   @media screen and (max-width: 1024px) {
     font-size: ${({ variant }) =>
       variant === "small" ? "1.2rem" : "1.275rem"};
+
+    &::placeholder {
+      font-size: ${({ variant }) =>
+        variant === "small" ? "1.2rem" : "1.275rem"};
+    }
   }
   @media screen and (max-width: 768px) {
-    font-size: ${({ variant }) => (variant === "small" ? "1.1rem" : "1.2rem")};
+    font-size: ${({ variant }) => (variant === "small" ? "1rem" : "1.1rem")};
     height: 1.75rem;
+
+    &::placeholder {
+      font-size: ${({ variant }) => (variant === "small" ? "1rem" : "1.1rem")};
+    }
   }
   @media screen and (max-width: 480px) {
-    font-size: ${({ variant }) => (variant === "small" ? "1rem" : "1.1rem")};
+    font-size: ${({ variant }) => (variant === "small" ? "0.8rem" : "0.9rem")};
     height: 1.625rem;
+
+    &::placeholder {
+      font-size: ${({ variant }) =>
+        variant === "small" ? "0.8rem" : "0.9rem"};
+    }
   }
 `;
 
