@@ -44,7 +44,9 @@ function ArticleForm({
           placeholder="https://moaon.co.kr"
           type="url"
           value={formData.address}
-          onChange={(e) => updateFormFieldData("address", e.target.value)}
+          onChange={(e) =>
+            updateFormFieldData("address", e.target.value.trim())
+          }
           buttonEvent={handleMetaDataFetchButtonClick}
         />
         <InputFormField
