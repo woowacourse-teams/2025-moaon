@@ -104,6 +104,7 @@ export const Box = styled.div`
     padding: 0 1.25rem 1.5rem;
   }
   @media screen and (max-width: 480px) {
+    width: 100%;
     padding: 0 1rem 1rem;
     flex-direction: column;
     align-items: flex-start;
