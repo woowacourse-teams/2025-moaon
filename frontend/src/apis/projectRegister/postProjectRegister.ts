@@ -9,6 +9,11 @@ const postProjectRegister = async (
 ): Promise<PostProjectRegisterResponse> => {
   const response = await httpClient.post(`/projects`, projectFormData);
 
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.message || "프로젝트 등록에 실패했습니다.");
+  }
+
   const result: PostProjectRegisterResponse = await response.json();
   return result;
 };
