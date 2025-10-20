@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { BP_480, BP_768, BP_1024 } from "@/styles/global.styled";
+import { BP_480, BP_768, BP_1024, BP_1280 } from "@/styles/global.styled";
 
 export const CarouselContainer = styled.div`
   width: 100%;
@@ -59,19 +59,7 @@ export const Image = styled(CarouselImage)<{
         transform: translateX(${isSingleImage ? "0" : "-15rem"});
         z-index: 1;
 
-        ${BP_1024} {
-          width: 35rem;
-          height: 19rem;
-          transform: translateX(${isSingleImage ? "0" : "-12rem"});
-        }
-
-        ${BP_768} {
-          width: 28rem;
-          height: 15rem;
-          transform: translateX(${isSingleImage ? "0" : "-9rem"});
-        }
-
-        ${BP_480} {
+        ${BP_1280} {
           width: 90vw;
           height: 100%;
           transform: translateX(0);
@@ -85,19 +73,7 @@ export const Image = styled(CarouselImage)<{
         transform: translateX(23rem);
         z-index: 1;
 
-        ${BP_1024} {
-          width: 22rem;
-          height: 12.5rem;
-          transform: translateX(18rem);
-        }
-
-        ${BP_768} {
-          width: 18rem;
-          height: 10rem;
-          transform: translateX(14rem);
-        }
-
-        ${BP_480} {
+        ${BP_1280} {
           display: none;
         }
       `;
@@ -109,19 +85,7 @@ export const Image = styled(CarouselImage)<{
         transform: translateX(-12.5rem);
         z-index: 0;
 
-        ${BP_1024} {
-          width: 22rem;
-          height: 12.5rem;
-          transform: translateX(-10rem);
-        }
-
-        ${BP_768} {
-          width: 18rem;
-          height: 10rem;
-          transform: translateX(-8rem);
-        }
-
-        ${BP_480} {
+        ${BP_1280} {
           display: none;
         }
       `;
@@ -133,19 +97,7 @@ export const Image = styled(CarouselImage)<{
         transform: translateX(43.75rem);
         z-index: -1;
 
-        ${BP_1024} {
-          width: 22rem;
-          height: 12.5rem;
-          transform: translateX(35rem);
-        }
-
-        ${BP_768} {
-          width: 18rem;
-          height: 10rem;
-          transform: translateX(28rem);
-        }
-
-        ${BP_480} {
+        ${BP_1280} {
           display: none;
         }
       `;
@@ -242,7 +194,7 @@ export const Indicators = styled.div`
   gap: 0.5rem;
   z-index: 10;
 
-  ${BP_480} {
+  ${BP_1280} {
     bottom: -1rem;
     gap: 0.25rem;
   }
@@ -259,7 +211,6 @@ export const Indicator = styled.button<{ $active: boolean }>`
   padding: 0;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.8);
     transform: scale(1.2);
   }
 `;

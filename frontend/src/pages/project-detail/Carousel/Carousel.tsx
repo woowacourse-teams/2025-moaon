@@ -7,7 +7,7 @@ import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
 
-const MOBILE_BREAKPOINT = 480;
+const MOBILE_BREAKPOINT = 1280;
 
 function Carousel({ imageUrls }: { imageUrls: string[] }) {
   const { currentImageIndex, handleSlidePrev, handleSlideNext, goToIndex } =
