@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router";
 import * as S from "./RegisterProjectButton.styled";
 
-function RegisterProjectButton() {
+interface RegisterProjectButtonProps {
+  onclick?: () => void;
+}
+
+function RegisterProjectButton({ onclick }: RegisterProjectButtonProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -9,7 +13,7 @@ function RegisterProjectButton() {
   };
 
   return (
-    <S.RegisterProjectButton type="button" onClick={handleClick}>
+    <S.RegisterProjectButton type="button" onClick={onclick ?? handleClick}>
       프로젝트 등록
     </S.RegisterProjectButton>
   );

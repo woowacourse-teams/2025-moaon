@@ -10,8 +10,7 @@ export const Header = styled.header`
 `;
 
 export const TopBar = styled.div`
-  height: 56px;
-  padding: 0 16px;
+  padding: 1rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,16 +19,11 @@ export const TopBar = styled.div`
 export const LogoLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  img {
-    height: 28px;
-    width: auto;
-    display: block;
-  }
 `;
 
 export const HamburgerButton = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  aspect-ratio: 1/1;
   border: 0;
   background: transparent;
   display: flex;
@@ -37,18 +31,17 @@ export const HamburgerButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+`;
 
-  span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: #111;
-    border-radius: 1px;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-  span + span {
-    margin-top: 5px;
-  }
+export const HamburgerButtonLine = styled.hr`
+  display: block;
+  width: 1.375rem;
+  height: 0.125rem;
+  background: #111;
+  border: none;
+  border-radius: 1px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  margin: 0.1875rem 0;
 `;
 
 export const Overlay = styled.div<{ $open: boolean }>`
@@ -80,8 +73,8 @@ export const Drawer = styled.aside<{ $open: boolean }>`
 `;
 
 export const DrawerHeader = styled.div`
-  height: 56px;
-  padding: 0 16px;
+  height: 4.5rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -89,33 +82,28 @@ export const DrawerHeader = styled.div`
 `;
 
 export const DrawerTitle = styled.h2`
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   margin: 0;
 `;
 
-export const CloseButton = styled.button`
-  width: 32px;
-  height: 32px;
-  border: 0;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-`;
-
 export const DrawerContent = styled.nav`
-  padding: 12px 16px;
   flex: 1 1 auto;
 
   ul,
   li {
     display: block;
   }
+
+  & ul > li > button {
+    padding: 1.25rem 0.5rem 1.25rem 1rem;
+    width: 100%;
+    text-align: left;
+  }
 `;
 
 export const DrawerFooter = styled.div`
-  padding: 16px;
+  padding: 1rem;
   border-top: 1px solid #f0f0f0;
 
   button,
