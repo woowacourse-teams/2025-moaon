@@ -1,11 +1,13 @@
 package moaon.backend.article.repository.es;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.dto.ArticleESQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +31,22 @@ public class ArticleDocumentRepository {
 
     public ArticleDocument save(final ArticleDocument articleDocument) {
         return ops.withRefreshPolicy(RefreshPolicy.IMMEDIATE).save(articleDocument);
+    }
+
+    public List<ArticleDocument> searchInIds(List<Long> articleIds, ArticleESQuery condition) {
+        NativeQuery esArticleQuery = new ESArticleQueryBuilder()
+                .withIds(articleIds)
+                .withTextSearch(condition.search())
+                .withSector(condition.sector())
+                .withTechStacksAndMatch(condition.techStackNames())
+                .withTopicsAndMatch(condition.topics())
+                .withSort(condition.sortBy())
+                .withPagination(condition.limit(), condition.cursor())
+                .build();
+
+        SearchHits<ArticleDocument> searchHits = ops.search(esArticleQuery, ArticleDocument.class);
+        return searchHits.getSearchHits().stream()
+                .map(SearchHit::getContent)
+                .toList();
     }
 }
