@@ -49,7 +49,7 @@ public class ArticleDocumentRepository {
                 .withPagination(condition.limit(), condition.cursor())
                 .build();
 
-        SearchHits<ArticleDocument> searchHits = ops.search(esArticleQuery, ArticleDocument.class);
+        SearchHits<ArticleDocument> searchHits = ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
         return searchHits.getSearchHits().stream()
                 .map(SearchHit::getContent)
                 .toList();
