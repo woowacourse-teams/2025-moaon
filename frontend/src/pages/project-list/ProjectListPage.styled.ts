@@ -88,20 +88,11 @@ export const MainDescription = styled.p`
 export const Box = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 80rem;
   margin: 0 auto;
   padding-bottom: 2rem;
-  @media screen and (max-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-    padding-bottom: 1.5rem;
-  }
-  @media screen and (max-width: 480px) {
-    gap: 0.375rem;
-    padding-bottom: 1rem;
-  }
+
   @media screen and (max-width: 1280px) {
     width: 64rem;
   }
@@ -110,12 +101,13 @@ export const Box = styled.div`
   }
   @media screen and (max-width: 768px) {
     width: 100%;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding: 0 1.25rem 1.5rem;
   }
   @media screen and (max-width: 480px) {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 0 1rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.125rem;
   }
 `;
 

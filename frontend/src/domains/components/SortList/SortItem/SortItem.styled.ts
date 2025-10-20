@@ -9,9 +9,9 @@ export const Button = styled.button<{ isSelected: boolean }>`
     font-size: 1rem;
   }
   @media screen and (max-width: 768px) {
-    font-size: 0.9375rem;
+    font-size: 0.85rem;
   }
   @media screen and (max-width: 480px) {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
   }
 `;
