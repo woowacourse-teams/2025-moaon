@@ -30,10 +30,8 @@ function ArticleSearchBar() {
   useEffect(() => {
     const currentParam = paramsRef.current.get()[0] ?? "";
 
-    // 디바운스된 값이 현재 파라미터와 같으면 요청하지 않음
     if (currentParam === debouncedValue) return;
 
-    // 빈 문자열인 경우 파라미터 삭제만 하고 refetch는 하지 않음
     if (debouncedValue.trim() === "") {
       if (currentParam !== "") {
         paramsRef.current.deleteAll({ replace: true });
@@ -42,7 +40,6 @@ function ArticleSearchBar() {
       return;
     }
 
-    // 검색어가 있을 때만 파라미터 업데이트 및 refetch
     paramsRef.current.update(debouncedValue, { replace: true });
     refetchRef.current();
   }, [debouncedValue]);
