@@ -5,7 +5,7 @@ import * as S from "./Header.styled";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
 
-const MOBILE_BREAKPOINT = 1024;
+const MOBILE_BREAKPOINT = 1280;
 
 function Header() {
   const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
