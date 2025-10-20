@@ -39,6 +39,8 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         name="description"
         value={formData.description}
         onChange={(value) => updateFormField("description", value)}
+        minLength={100}
+        maxLength={8000}
       />
 
       <TechStackFormField
