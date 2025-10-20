@@ -1,15 +1,16 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import Modal from "@shared/components/Modal/Modal";
+import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
 import { useOverlay } from "@shared/hooks/useOverlay";
 import { useSwipe } from "@shared/hooks/useSwipe";
-import { useEffect, useState } from "react";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
+import { useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
 
-const MOBILE_BREAKPOINT = 1280;
-
 function Carousel({ imageUrls }: { imageUrls: string[] }) {
+  const responseSize = useWindowSize();
   const { currentImageIndex, handleSlidePrev, handleSlideNext, goToIndex } =
     useSlide({
       imageUrls,
@@ -48,19 +49,6 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
     return "hidden";
   };
 
-  const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
-    typeof window === "undefined"
-      ? false
-      : window.innerWidth <= MOBILE_BREAKPOINT,
-  );
-
-  useEffect(() => {
-    const onResize = () =>
-      setIsMobileLike(window.innerWidth <= MOBILE_BREAKPOINT);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
   return (
     <S.CarouselContainer {...swipeHandlers}>
       {imageUrls.map((image, index) => {
@@ -88,7 +76,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
           </S.NextButton>
         </>
       )}
-      {imageUrls.length > 1 && isMobileLike && (
+      {imageUrls.length > 1 && responseSize.width < DESKTOP_BREAKPOINT && (
         <S.Indicators>
           {imageUrls.map((url, index) => (
             <S.Indicator

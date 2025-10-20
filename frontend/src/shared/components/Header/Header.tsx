@@ -1,27 +1,15 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
-import { useEffect, useState } from "react";
+import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
 import MobileHeader from "../MobileHeader/MobileHeader";
 import * as S from "./Header.styled";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
 
-const MOBILE_BREAKPOINT = 1280;
-
 function Header() {
-  const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
-    typeof window === "undefined"
-      ? false
-      : window.innerWidth <= MOBILE_BREAKPOINT,
-  );
+  const responseSize = useWindowSize();
 
-  useEffect(() => {
-    const onResize = () =>
-      setIsMobileLike(window.innerWidth <= MOBILE_BREAKPOINT);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  if (isMobileLike) {
+  if (responseSize.width < DESKTOP_BREAKPOINT) {
     return <MobileHeader />;
   }
   return (

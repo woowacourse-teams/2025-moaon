@@ -6,8 +6,9 @@ import Dropdown from "@shared/components/Dropdown/Dropdown";
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
 import { toast } from "@shared/components/Toast/toast";
+import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
 import type { QueryObserverResult } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import type {
   ProjectArticle,
   ProjectArticleCount,
@@ -31,13 +32,12 @@ interface ArticleSectionProps {
   isLoading: boolean;
 }
 
-const MOBILE_BREAKPOINT = 1280;
-
 function ArticleSection({
   articles,
   sectorCounts,
   refetch,
 }: ArticleSectionProps) {
+  const responseSize = useWindowSize();
   const { selectedSector, updateSector } = useArticleSector(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
@@ -65,23 +65,10 @@ function ArticleSection({
   const hasArticles = articles.length > 0;
   const shouldShowSearchBar = hasArticles || searchValue !== undefined;
 
-  const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
-    typeof window === "undefined"
-      ? false
-      : window.innerWidth <= MOBILE_BREAKPOINT,
-  );
-
-  useEffect(() => {
-    const onResize = () =>
-      setIsMobileLike(window.innerWidth <= MOBILE_BREAKPOINT);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
   return (
     <S.ArticleSectionContainer>
       <SectionTitle title="프로젝트 아티클" />
-      {isMobileLike ? (
+      {responseSize.width < DESKTOP_BREAKPOINT ? (
         <Dropdown
           items={articleSectors}
           onSelect={handleTabSelect}
