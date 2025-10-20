@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_480, BP_768, BP_1024 } from "@/styles/global.styled";
 
 export const TechStackList = styled.ul`
   display: flex;
@@ -8,10 +9,11 @@ export const TechStackList = styled.ul`
   gap: 0.375rem;
   height: 1.25rem;
   overflow: hidden;
-  @media screen and (max-width: 768px) {
+
+  ${BP_768} {
     gap: 0.3125rem;
   }
-  @media screen and (max-width: 480px) {
+  ${BP_480} {
     gap: 0.25rem;
   }
 `;
@@ -20,13 +22,14 @@ export const TechStack = styled.li`
   color: #7f7f7f;
   font-size: 0.8125rem;
   font-weight: 500;
-  @media screen and (max-width: 1024px) {
+
+  ${BP_1024} {
     font-size: 0.78125rem;
   }
-  @media screen and (max-width: 768px) {
+  ${BP_768} {
     font-size: 0.75rem;
   }
-  @media screen and (max-width: 480px) {
+  ${BP_480} {
     font-size: 0.71875rem;
   }
 `;
@@ -37,7 +40,8 @@ export const Separator = styled.div`
   height: 0.125rem;
   border-radius: 50%;
   display: flex;
-  @media screen and (max-width: 768px) {
+
+  ${BP_768} {
     width: 0.09375rem;
     height: 0.09375rem;
   }
