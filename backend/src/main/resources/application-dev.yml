@@ -5,4 +5,4 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME_DEV}
     password: ${SPRING_DATASOURCE_PASSWORD_DEV}
   elasticsearch:
-    uris: http://localhost:9200
+    uris: http://elastic:9200
