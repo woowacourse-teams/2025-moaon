@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - "main"
+  pull_request:
+    branches:
+      - "develop"
 
 jobs:
   build-and-push-image:
@@ -54,13 +57,29 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  get-previous-version:
+    name: Get Previous Version Tag
+    needs: build-and-push-image
+    runs-on: prod-1
+    outputs:
+      old_tag: ${{ steps.inspect.outputs.tag }}
+    steps:
+      - name: Inspect current running image
+        id: inspect
+        run: |
+          TAG=$(sudo docker inspect --format='{{.Config.Image}}' moaon-app 2>/dev/null | cut -d: -f2) || TAG="none"
+          echo "Previous tag found: $TAG"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT  
+
   deploy-prod-1:
     name: Deploy to Production Server 1
-    needs: build-and-push-image
+    needs: get-previous-version
     runs-on: prod-1
     defaults:
       run:
         working-directory: ./backend
+    env:
+      PREVIOUS_IMAGE_TAG: ${{ needs.get-previous-version.outputs.old_tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -96,18 +115,22 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Grant execute permission to deploy script
-        run: chmod +x ./scripts/deploy.sh
+        run: chmod +x ./scripts/deploy.sh ./scripts/rollback.sh
 
       - name: Deploy to Server 1
         run: ./scripts/deploy.sh
 
   deploy-prod-2:
     name: Deploy to Production Server 2
-    needs: deploy-prod-1
+    needs:
+      - get-previous-version
+      - deploy-prod-1
     runs-on: prod-2
     defaults:
       run:
         working-directory: ./backend
+    env:
+      PREVIOUS_IMAGE_TAG: ${{ needs.get-previous-version.outputs.old_tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -139,7 +162,38 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Grant execute permission to deploy script
-        run: chmod +x ./scripts/deploy.sh
+        run: chmod +x ./scripts/deploy.sh ./scripts/rollback.sh
 
       - name: Deploy to Server 2
         run: ./scripts/deploy.sh
+
+  rollback-prod-1:
+    name: Rollback Production Server 1
+    needs:
+      - get-previous-version
+      - deploy-prod-1
+      - deploy-prod-2
+    if: failure() && needs.deploy-prod-1.result == 'success'
+    runs-on: prod-1
+    defaults:
+      run:
+        working-directory: ./backend
+    env:
+      ROLLBACK_TAG: ${{ needs.get-previous-version.outputs.old_tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file (for dockerhub username)
+        run: |
+          # .env 파일은 rollback.sh가 source 하므로 최소한으로 생성
+          cat <<EOF > .env
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          IMAGE_TAG=${{ github.sha }} 
+          EOF
+
+      - name: Grant execute permission to rollback script
+        run: chmod +x ./scripts/rollback.sh
+
+      - name: Execute Rollback on Server 1
+        run: ./scripts/rollback.sh
