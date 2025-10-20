@@ -78,8 +78,17 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
           />
         );
       })}
-
-      {imageUrls.length > 1 && isMobileLike ? (
+      {imageUrls.length > 1 && (
+        <>
+          <S.PrevButton onClick={handleSlidePrev}>
+            <ArrowIcon direction="left" />
+          </S.PrevButton>
+          <S.NextButton onClick={handleSlideNext}>
+            <ArrowIcon direction="right" />
+          </S.NextButton>
+        </>
+      )}
+      {imageUrls.length > 1 && isMobileLike && (
         <S.Indicators>
           {imageUrls.map((url, index) => (
             <S.Indicator
@@ -90,15 +99,6 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             />
           ))}
         </S.Indicators>
-      ) : (
-        <>
-          <S.PrevButton onClick={handleSlidePrev}>
-            <ArrowIcon direction="left" />
-          </S.PrevButton>
-          <S.NextButton onClick={handleSlideNext}>
-            <ArrowIcon direction="right" />
-          </S.NextButton>
-        </>
       )}
 
       <Modal isOpen={imageModal.isOpen} onClose={handleCloseModal}>

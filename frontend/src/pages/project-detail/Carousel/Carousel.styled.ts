@@ -73,7 +73,7 @@ export const Image = styled(CarouselImage)<{
 
         ${BP_480} {
           width: 90vw;
-          height: 50vw;
+          height: 100%;
           transform: translateX(0);
         }
       `;
@@ -236,31 +236,24 @@ export const ModalImage = styled.img`
 
 export const Indicators = styled.div`
   position: absolute;
-  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 0.5rem;
   z-index: 10;
 
-  ${BP_768} {
-    bottom: 0.75rem;
-    gap: 0.375rem;
-  }
-
   ${BP_480} {
-    bottom: 0.5rem;
+    bottom: -1rem;
     gap: 0.25rem;
   }
 `;
 
 export const Indicator = styled.button<{ $active: boolean }>`
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.75rem;
+  aspect-ratio: 1/1;
   border-radius: 50%;
-  border: none;
-  background: ${({ $active }) =>
-    $active ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.5)"};
+  border: 1px solid #007bff;
+  background: ${({ $active }) => ($active ? "#007bff" : "#fff")};
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
@@ -268,10 +261,5 @@ export const Indicator = styled.button<{ $active: boolean }>`
   &:hover {
     background: rgba(255, 255, 255, 0.8);
     transform: scale(1.2);
-  }
-
-  ${BP_480} {
-    width: 0.375rem;
-    height: 0.375rem;
   }
 `;
