@@ -41,3 +41,37 @@ export const FormBox = styled.div`
     width: 100%;
   }
 `;
+
+export const ArticleAddButton = styled.button`
+  width: 30rem;
+  padding: 0.6rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+
+  &:hover {
+    background-color: #0472e8ff;
+  }
+`;
+
+export const ProjectNavigateButton = styled.button`
+  width: 30rem;
+  padding: 0.6rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  color: black;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
