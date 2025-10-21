@@ -20,16 +20,14 @@ public class MemberController {
             @CookieValue(value = "token", required = false) String token
     ) {
         if (token != null && oAuthService.isValidToken(token)) {
-            LoginStatusResponse response = responseWithMember(token);
-            return ResponseEntity.ok(response);
+            Member member = oAuthService.getUserByToken(token);
+            return ResponseEntity.ok(responseWithMember(member));
         }
 
-        LoginStatusResponse response = new LoginStatusResponse(false, null, null, null);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new LoginStatusResponse(false, null, null, null));
     }
 
-    private LoginStatusResponse responseWithMember(String token) {
-        Member member = oAuthService.getUserByToken(token);
+    private LoginStatusResponse responseWithMember(Member member) {
         return new LoginStatusResponse(
                 true,
                 member.getId(),
