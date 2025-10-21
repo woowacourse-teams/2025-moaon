@@ -1,54 +1,7 @@
 services:
-  db:
-    image: mysql:8.4
-    container_name: moaon-db
-    restart: always
-    ports:
-      - "13306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      TZ: Asia/Seoul
-      LANG: C.UTF-8
-    volumes:
-      - db-data:/var/lib/mysql
-      - ./db/mysql/init:/docker-entrypoint-initdb.d
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  elastic:
-    build:
-      context: .
-      dockerfile: elastic.Dockerfile
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - xpack.security.http.ssl.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    volumes:
-      - es-data:/usr/share/elasticsearch/data
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   app:
     image: ${DOCKERHUB_USERNAME}/moaon-backend:${IMAGE_TAG}
     container_name: moaon-app
-    depends_on:
-      db:
-        condition: service_healthy
-      elastic:
-        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
@@ -79,19 +32,6 @@ services:
     volumes:
       - '/:/host:ro,rslave'
 
-  mysqld-exporter:
-    image: prom/mysqld-exporter:latest
-    container_name: mysqld-exporter
-    restart: unless-stopped
-    ports:
-      - "9104:9104"
-    command:
-      - "--mysqld.username=${MYSQL_EXPORTER_USER}:${MYSQL_EXPORTER_PASSWORD}"
-      - "--mysqld.address=db:3306"
-    depends_on:
-      db:
-        condition: service_healthy
-
   promtail:
     image: grafana/promtail:2.9.0
     container_name: moaon-promtail
@@ -111,7 +51,3 @@ services:
       - "7900:7900"
     shm_size: "2g"
     restart: unless-stopped
-
-volumes:
-  db-data:
-  es-data:
