@@ -1,6 +1,7 @@
 package moaon.backend.api.member;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -35,7 +36,7 @@ public class MemberApiTest extends BaseApiTest {
     void loginCheck() {
         // given
         Member member = Fixture.anyMember();
-        helper.save(member);
+        Member savedMember = helper.save(member);
 
         String token = jwtTokenProvider.createToken(member.getId());
 
@@ -48,7 +49,12 @@ public class MemberApiTest extends BaseApiTest {
                 .statusCode(200)
                 .extract().as(LoginStatusResponse.class);
 
-        assertThat(statusResponse.isLoggedIn()).isTrue();
+        assertAll(
+                () -> assertThat(statusResponse.isLoggedIn()).isTrue(),
+                () -> assertThat(statusResponse.id()).isEqualTo(savedMember.getId()),
+                () -> assertThat(statusResponse.name()).isEqualTo(savedMember.getName()),
+                () -> assertThat(statusResponse.email()).isEqualTo(savedMember.getEmail())
+        );
     }
 
     private static RequestCookiesSnippet loginCheckRequestCookies() {
@@ -59,7 +65,10 @@ public class MemberApiTest extends BaseApiTest {
 
     private static ResponseFieldsSnippet loginCheckResponseFields() {
         return responseFields(
-                fieldWithPath("isLoggedIn").description("로그인 상태 여부")
+                fieldWithPath("isLoggedIn").description("로그인 상태 여부"),
+                fieldWithPath("id").description("멤버 ID"),
+                fieldWithPath("name").description("이름"),
+                fieldWithPath("email").description("이메일")
         );
     }
 }
