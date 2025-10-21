@@ -21,19 +21,10 @@ public class MemberController {
     ) {
         if (token != null && oAuthService.isValidToken(token)) {
             Member member = oAuthService.getUserByToken(token);
-            return ResponseEntity.ok(responseWithMember(member));
+            return ResponseEntity.ok(LoginStatusResponse.withMember(member));
         }
 
-        return ResponseEntity.ok(new LoginStatusResponse(false, null, null, null));
-    }
-
-    private LoginStatusResponse responseWithMember(Member member) {
-        return new LoginStatusResponse(
-                true,
-                member.getId(),
-                member.getName(),
-                member.getEmail()
-        );
+        return ResponseEntity.ok(LoginStatusResponse.notLoggedIn());
     }
 }
 
