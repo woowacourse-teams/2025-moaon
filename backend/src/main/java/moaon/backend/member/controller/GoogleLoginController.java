@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.dto.JwtToken;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/login/oauth2/code/google")
 @RequiredArgsConstructor
@@ -37,9 +39,14 @@ public class GoogleLoginController {
             cookie.setAttribute("SameSite", "None");
             response.addCookie(cookie);
 
-            response.sendRedirect("/oauth/callback");
-        } catch (IOException e) {
-            throw new CustomException(ErrorCode.UNKNOWN, e);
+            response.sendRedirect("/oauth/callback/success");
+        } catch (Exception e) {
+            try {
+                response.sendRedirect("/oauth/callback/failed");
+                log.error("구글 로그인에 실패했습니다.", e);
+            } catch (IOException ex) {
+                throw new CustomException(ErrorCode.UNKNOWN, e);
+            }
         }
     }
 }
