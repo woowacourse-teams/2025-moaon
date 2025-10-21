@@ -19,23 +19,23 @@ public class MemberController {
     public ResponseEntity<LoginStatusResponse> loginCheck(
             @CookieValue(value = "token", required = false) String token
     ) {
-        boolean isTokenValid = oAuthService.isValidToken(token);
-        LoginStatusResponse response = getResponse(token, isTokenValid);
+        if (token != null && oAuthService.isValidToken(token)) {
+            LoginStatusResponse response = responseWithMember(token);
+            return ResponseEntity.ok(response);
+        }
+
+        LoginStatusResponse response = new LoginStatusResponse(false, null, null, null);
         return ResponseEntity.ok(response);
     }
 
-    private LoginStatusResponse getResponse(String token, boolean isTokenValid) {
-        if (isTokenValid) {
-            Member member = oAuthService.getUserByToken(token);
-            return new LoginStatusResponse(
-                    isTokenValid,
-                    member.getId(),
-                    member.getName(),
-                    member.getEmail()
-            );
-        }
-
-        return new LoginStatusResponse(isTokenValid, null, null, null);
+    private LoginStatusResponse responseWithMember(String token) {
+        Member member = oAuthService.getUserByToken(token);
+        return new LoginStatusResponse(
+                true,
+                member.getId(),
+                member.getName(),
+                member.getEmail()
+        );
     }
 }
 
