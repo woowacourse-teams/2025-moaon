@@ -31,16 +31,19 @@ export const FormFieldButton = styled.button`
   }
 `;
 
-export const FormFieldInput = styled.input`
+export const FormFieldInput = styled.input<{ hasError?: boolean }>`
   flex: 1;
   padding: 0.75rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#d1d5db")};
   border-radius: 0.5rem;
 
   &:focus-visible {
     outline: none;
-    border-color: #005eff;
-    box-shadow: 0 0 0 4px rgba(0, 94, 255, 0.12);
+    border-color: ${({ hasError }) => (hasError ? "#dc2626" : "#005eff")};
+    box-shadow: ${({ hasError }) =>
+      hasError
+        ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
+        : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
   }
 `;
 
@@ -70,6 +73,8 @@ export const FormFieldLabel = styled.label`
 export const FormFieldLabelInner = styled.div`
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  background-color: #f1f1f1;
   padding: 0.5rem 1rem;
 `;
 
@@ -103,9 +108,12 @@ export const FormFieldSelectionInput = styled.input`
 
 export const FormFieldErrorBox = styled.div`
   min-height: 1rem;
+  margin-top: 0.25rem;
 `;
 
 export const FormFieldErrorText = styled.p`
+  margin: 0;
   color: #ef4444;
   font-size: 0.8125rem;
+  line-height: 1.2;
 `;

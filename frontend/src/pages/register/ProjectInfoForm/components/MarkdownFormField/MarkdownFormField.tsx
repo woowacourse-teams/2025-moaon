@@ -27,6 +27,7 @@ function MarkdownFormField({
   const hasInput = currentLength > 0;
   const isUnderMin = hasInput && currentLength < minLength;
   const isOverMax = currentLength > maxLength;
+  const hasError = !!errorMessage;
 
   return (
     <FormField>
@@ -35,7 +36,11 @@ function MarkdownFormField({
           <FormField.Title>{title}</FormField.Title>
           {required && <FormField.RequiredMark />}
         </FormField.Header>
-        <ProjectOverviewEditor value={value} onChange={onChange} />
+        <ProjectOverviewEditor
+          value={value}
+          onChange={onChange}
+          hasError={hasError}
+        />
         <S.CharacterCount isError={isUnderMin || isOverMax}>
           <FormField.ErrorBox>
             {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}

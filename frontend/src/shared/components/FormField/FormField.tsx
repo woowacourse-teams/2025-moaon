@@ -58,18 +58,20 @@ function FormFieldInput({
   disabled = false,
   readOnly = false,
   required,
-}: ComponentProps<"input">) {
+  hasError,
+}: ComponentProps<"input"> & { hasError?: boolean }) {
   return (
     <S.FormFieldInput
-      type={type}
-      value={value}
-      name={name}
       id={id}
+      name={name}
+      value={value}
       onChange={onChange}
+      type={type}
       placeholder={placeholder}
-      required={required}
       disabled={disabled}
       readOnly={readOnly}
+      required={required}
+      hasError={hasError}
     />
   );
 }
@@ -86,14 +88,14 @@ function FormFieldTextarea({
 }: ComponentProps<"textarea">) {
   return (
     <S.FormFieldTextarea
-      value={value}
-      name={name}
       id={id}
+      name={name}
+      value={value}
       onChange={onChange}
       placeholder={placeholder}
-      required={required}
       disabled={disabled}
       readOnly={readOnly}
+      required={required}
     />
   );
 }

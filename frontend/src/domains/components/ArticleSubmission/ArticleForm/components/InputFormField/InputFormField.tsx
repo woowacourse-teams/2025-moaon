@@ -17,6 +17,8 @@ function InputFormField({
   placeholder,
   errorMessage,
 }: InputFormFieldProps) {
+  const hasError = !!errorMessage;
+
   return (
     <FormField>
       <FormField.Wrapper>
@@ -32,6 +34,7 @@ function InputFormField({
           type={type}
           placeholder={placeholder}
           required={required}
+          hasError={hasError}
         />
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
