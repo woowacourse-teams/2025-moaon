@@ -1,25 +1,15 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { authQueries } from "@/apis/login/auth.queries";
+import GoogleLoginButton from "../Header/GoogleLoginButton/GoogleLoginButton";
 import NavBar from "../Header/NavBar/NavBar";
 import RegisterProjectButton from "../Header/RegisterProjectButton/RegisterProjectButton";
 import * as S from "./MobileHeader.styled";
-import { useQuery } from "@tanstack/react-query";
-import { authQueries } from "@/apis/auth/auth.queries";
-import GoogleLoginButton from "../Header/GoogleLoginButton/GoogleLoginButton";
 
 function MobileHeader() {
   const [open, setOpen] = useState(false);
-  const token =
-    document.cookie
-      .split("; ")
-      .find((c) => c.startsWith("token="))
-      ?.split("=")
-      .slice(1)
-      .join("=") ?? "";
-
-  const { data: auth } = useQuery({
-    ...authQueries.fetchAuth(token),
-  });
+  const { data: auth } = useQuery(authQueries.fetchAuth());
 
   useEffect(() => {
     if (!open) {
@@ -73,7 +63,10 @@ function MobileHeader() {
         </S.DrawerContent>
 
         <S.DrawerFooter>
-          <RegisterProjectButton />
+          <RegisterProjectButton
+            isLoggedIn={auth?.isLoggedIn ?? false}
+            close={close}
+          />
           {auth?.isLoggedIn ? (
             <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
           ) : (
