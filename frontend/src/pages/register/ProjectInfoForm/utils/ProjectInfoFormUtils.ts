@@ -13,7 +13,6 @@ export type ProjectInfoFormErrors = Partial<{
 }>;
 
 const SPECIAL_CHAR_REGEX = /[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]/;
-const TITLE_MIN = 1;
 const TITLE_MAX = 30;
 const SUMMARY_MIN = 10;
 const SUMMARY_MAX = 50;
@@ -24,6 +23,8 @@ const TECHSTACK_MAX = 40;
 const CATEGORY_MIN = 1;
 const CATEGORY_MAX = 5;
 const URL_MAX = 255;
+const URL_REGEX =
+  /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
 
 export const validateField = (
   field: keyof ProjectFormData,
@@ -74,14 +75,22 @@ export const validateField = (
     }
     case "githubUrl": {
       const v = String(value ?? "");
-      if (v && v.length > URL_MAX)
-        return `GitHub 주소는 ${URL_MAX}자 이하로 입력해주세요.`;
+      if (v && v.length > URL_MAX) {
+        return "GitHub 주소는 255자 이하로 입력해주세요.";
+      }
+      if (v && !URL_REGEX.test(v)) {
+        return "유효한 GitHub URL 형식이 아닙니다.";
+      }
       return "";
     }
     case "productionUrl": {
       const v = String(value ?? "");
-      if (v && v.length > URL_MAX)
-        return `서비스 주소는 ${URL_MAX}자 이하로 입력해주세요.`;
+      if (v && v.length > URL_MAX) {
+        return "서비스 주소는 255자 이하로 입력해주세요.";
+      }
+      if (v && !URL_REGEX.test(v)) {
+        return "유효한 서비스 URL 형식이 아닙니다.";
+      }
       return "";
     }
     default:
