@@ -2,6 +2,8 @@
   "analysis": {
     "analyzer": {
       "article_common_analyzer": {
+        "type": "custom",
+        "tokenizer": "nori_tokenizer_with_dict",
         "char_filter": [
           "html_strip"
         ],
@@ -10,17 +12,26 @@
           "nori_readingform",
           "lowercase",
           "article_common_synonym"
-        ],
+        ]
+      },
+      "article_autocomplete_index": {
+        "type": "custom",
+        "tokenizer": "edge_ngram_tokenizer",
+        "filter": [
+          "lowercase"
+        ]
+      },
+      "article_autocomplete_search": {
+        "type": "custom",
         "tokenizer": "nori_tokenizer_with_dict",
-        "type": "custom"
+        "filter": [
+          "lowercase"
+        ]
       }
     },
     "filter": {
-      "article_common_synonym": {
-        "synonyms_path": "synonyms.txt",
-        "type": "synonym_graph"
-      },
       "nori_pos_with_stoptags": {
+        "type": "nori_part_of_speech",
         "stoptags": [
           "EC",
           "EF",
@@ -56,8 +67,11 @@
           "VCP",
           "SY",
           "SF"
-        ],
-        "type": "nori_part_of_speech"
+        ]
+      },
+      "article_common_synonym": {
+        "synonyms_path": "synonyms.txt",
+        "type": "synonym_graph"
       }
     },
     "tokenizer": {
@@ -66,6 +80,15 @@
         "discard_punctuation": "false",
         "type": "nori_tokenizer",
         "user_dictionary": "dictionary.txt"
+      },
+      "edge_ngram_tokenizer": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 30,
+        "token_chars": [
+          "letter",
+          "digit"
+        ]
       }
     }
   }
