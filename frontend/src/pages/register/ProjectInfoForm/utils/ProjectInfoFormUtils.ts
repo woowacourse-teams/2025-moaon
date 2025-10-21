@@ -76,7 +76,7 @@ export const validateField = (
     case "githubUrl": {
       const v = String(value ?? "");
       if (v && v.length > URL_MAX) {
-        return "GitHub 주소는 255자 이하로 입력해주세요.";
+        return `GitHub 주소는 ${URL_MAX}자 이하로 입력해주세요.`;
       }
       if (v && !URL_REGEX.test(v)) {
         return "유효한 GitHub URL 형식이 아닙니다.";
@@ -86,7 +86,7 @@ export const validateField = (
     case "productionUrl": {
       const v = String(value ?? "");
       if (v && v.length > URL_MAX) {
-        return "서비스 주소는 255자 이하로 입력해주세요.";
+        return `서비스 주소는 ${URL_MAX}자 이하로 입력해주세요.`;
       }
       if (v && !URL_REGEX.test(v)) {
         return "유효한 서비스 URL 형식이 아닙니다.";
