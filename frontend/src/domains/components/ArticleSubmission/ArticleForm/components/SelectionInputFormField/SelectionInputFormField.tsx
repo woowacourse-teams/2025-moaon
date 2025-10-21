@@ -12,6 +12,7 @@ interface SelectionInputFormFieldProps<K> extends ExcludedInputProps {
   type: "radio" | "checkbox";
   value: K | K[];
   onChange: (next: K | K[]) => void;
+  errorMessage?: string;
 }
 
 function SelectionInputFormField<K extends string>({
@@ -22,20 +23,22 @@ function SelectionInputFormField<K extends string>({
   type,
   onChange,
   required = true,
+  errorMessage,
 }: SelectionInputFormFieldProps<K>) {
   const isCheckbox = type === "checkbox";
-  const handleChange = (key: K) => (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (key: K) => () => {
     if (isCheckbox) {
-      const checked = e.currentTarget.checked;
-      const current = Array.isArray(value) ? (value as K[]) : [];
-      const next = checked
-        ? [...current, key]
-        : current.filter((v) => v !== key);
-      onChange(next as K[]);
+      const currentValues = Array.isArray(value) ? value : [];
+      const nextValues = currentValues.includes(key)
+        ? currentValues.filter((v) => v !== key)
+        : [...currentValues, key];
+      onChange(nextValues as K[]);
     } else {
       onChange(key);
     }
   };
+
   return (
     <FormField>
       <FormField.Wrapper>
@@ -67,6 +70,9 @@ function SelectionInputFormField<K extends string>({
             );
           })}
         </S.SelectionInputFormFieldGroup>
+        <FormField.ErrorBox>
+          {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+        </FormField.ErrorBox>
       </FormField.Wrapper>
     </FormField>
   );

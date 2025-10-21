@@ -6,6 +6,7 @@ interface InputFormFieldWithButtonProps extends ComponentProps<"input"> {
   title: string;
   name: string;
   buttonEvent: () => void;
+  errorMessage?: string;
 }
 
 function InputFormFieldWithButton({
@@ -17,7 +18,10 @@ function InputFormFieldWithButton({
   required = true,
   placeholder,
   buttonEvent,
+  errorMessage,
 }: InputFormFieldWithButtonProps) {
+  const hasError = !!errorMessage;
+
   return (
     <FormField>
       <FormField.Wrapper>
@@ -34,11 +38,15 @@ function InputFormFieldWithButton({
             type={type}
             placeholder={placeholder}
             required={required}
+            hasError={hasError}
           />
           <FormField.Button buttonEvent={buttonEvent}>
             가져오기
           </FormField.Button>
         </S.InputFormFieldWithButtonWrapper>
+        <FormField.ErrorBox>
+          {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+        </FormField.ErrorBox>
       </FormField.Wrapper>
     </FormField>
   );

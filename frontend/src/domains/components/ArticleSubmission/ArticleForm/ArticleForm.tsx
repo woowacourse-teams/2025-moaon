@@ -22,6 +22,8 @@ function ArticleForm({
 }: ArticleFormProps) {
   const {
     formData,
+    errors,
+    isFormValid,
     updateFormFieldData,
     updateNestedField,
     handleMetaDataFetchButtonClick,
@@ -46,6 +48,7 @@ function ArticleForm({
           value={formData.address}
           onChange={(e) => updateFormFieldData("address", e.target.value)}
           buttonEvent={handleMetaDataFetchButtonClick}
+          errorMessage={errors.address}
         />
         <InputFormField
           title="아티클 제목"
@@ -53,19 +56,26 @@ function ArticleForm({
           placeholder="아티클 제목을 입력해주세요."
           value={formData.title}
           onChange={(e) => updateFormFieldData("title", e.target.value)}
+          errorMessage={errors.title}
         />
         <TextareaFormField
           title="아티클 내용"
           name="description"
-          placeholder="아티클 내용 요약.."
+          placeholder="아티클 내용을 요약해주세요."
           value={formData.description}
           onChange={(e) => updateFormFieldData("description", e.target.value)}
+          errorMessage={errors.description}
         />
         <SectorFormField
           sector={formData.sector}
           onChange={(subField, subValue) =>
             updateNestedField("sector", subField, subValue)
           }
+          errors={{
+            sectorValue: errors.sectorValue,
+            techStacks: errors.techStacks,
+            topics: errors.topics,
+          }}
         />
       </S.FormFieldList>
       <S.ArticleButtonGroup>
@@ -75,6 +85,7 @@ function ArticleForm({
             e.preventDefault();
             handleSubmit();
           }}
+          disabled={!isFormValid}
         >
           {editingData ? "아티클 수정" : "+ 아티클 추가"}
         </S.ArticleAddButton>
