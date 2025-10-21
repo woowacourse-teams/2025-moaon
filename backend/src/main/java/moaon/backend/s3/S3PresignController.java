@@ -17,7 +17,9 @@ public class S3PresignController {
     private final S3Service s3Service;
 
     @GetMapping(value = "/posturl")
-    public ResponseEntity<List<S3UrlResponse>> getPostS3Url(@RequestParam("fileNames") List<String> fileNames) {
+    public ResponseEntity<List<S3UrlResponse>> getPostS3Url(
+            @RequestParam(value = "fileNames") List<String> fileNames
+    ) {
         List<S3UrlResponse> presignedUrls = s3Service.getPutS3Url(fileNames);
         return new ResponseEntity<>(presignedUrls, HttpStatusCode.valueOf(200));
     }
