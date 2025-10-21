@@ -82,7 +82,6 @@ public class GptService {
 
             HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
             String body = response.body();
-            System.out.println("body = " + body);
 
             JsonNode root = objectMapper.readTree(body);
             JsonNode contentNode = root.path("choices").get(0).path("message").path("content");
