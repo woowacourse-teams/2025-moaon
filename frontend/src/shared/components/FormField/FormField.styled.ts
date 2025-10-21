@@ -73,8 +73,6 @@ export const FormFieldLabel = styled.label`
 export const FormFieldLabelInner = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background-color: #f1f1f1;
   padding: 0.5rem 1rem;
 `;
 
