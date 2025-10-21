@@ -117,10 +117,20 @@ export const DrawerContent = styled.nav`
 export const DrawerFooter = styled.div`
   padding: 16px;
   border-top: 1px solid #f0f0f0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 
   button,
   a {
     width: 100%;
     justify-content: center;
   }
+`;
+
+export const UserName = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
 `;
