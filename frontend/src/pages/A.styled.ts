@@ -16,6 +16,22 @@ export const BR768 = styled.br`
   }
 `;
 
+export const BR768_550 = styled.br`
+  display: none;
+
+  @media (max-width: 768px) and (min-width: 551px) {
+    display: block;
+  }
+`;
+
+export const BR550 = styled.br`
+  display: none;
+
+  @media (max-width: 550px) {
+    display: block;
+  }
+`;
+
 export const BR480 = styled.br`
   display: none;
 
@@ -67,6 +83,8 @@ export const NavBox = styled.div`
 `;
 
 export const LogoText = styled.p`
+  font-weight: 600;
+
   ${BP_480} {
     display: none;
   }
@@ -103,7 +121,7 @@ export const Link = styled(ReactRouterLink)`
   }
 `;
 
-export const Button = styled.button`
+export const RegisterLink = styled(ReactRouterLink)`
   color: #fbfbfb;
   font-size: 1rem;
 
@@ -122,7 +140,7 @@ export const Container = styled.div`
   background-size: cover;
   display: flex;
   flex-direction: column;
-  gap: 10rem;
+  gap: 7.5rem;
 `;
 
 export const Section1 = styled.section`
@@ -132,6 +150,7 @@ export const Section1 = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 
   ${BP_1280} {
     width: 960px;
@@ -139,14 +158,14 @@ export const Section1 = styled.section`
 
   ${BP_1024} {
     width: 100%;
-    padding: 0 2rem;
-  }
-
-  ${BP_768} {
+    padding: 3rem 2rem 0;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 3rem;
+  }
+
+  ${BP_768} {
+    gap: 1.5rem;
   }
 
   ${BP_480} {
@@ -156,8 +175,9 @@ export const Section1 = styled.section`
 
 export const Title1 = styled.h1`
   font-size: 6rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.3;
+  color: #fff;
 
   ${BP_1024} {
     font-size: 4.5rem;
@@ -173,18 +193,65 @@ export const Title1 = styled.h1`
   }
 `;
 
+export const PointText = styled.span`
+  position: relative;
+  background: linear-gradient(
+    20deg,
+    rgba(75, 236, 139, 1) 0%,
+    rgba(255, 255, 255, 1) 85%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+`;
+
+export const TextEffect = styled.img`
+  position: absolute;
+  bottom: -80px;
+  left: -30px;
+  width: 300px;
+  transform: rotate(-5deg);
+
+  ${BP_1024} {
+    bottom: -65px;
+    width: 240px;
+  }
+
+  ${BP_768} {
+    bottom: -60px;
+    width: 220px;
+  }
+
+  ${BP_480} {
+    bottom: -50px;
+    width: 180px;
+  }
+`;
+
 export const LinkIconBox = styled.div`
-  transform: translateX(50px);
+  ${BP_1024} {
+    width: 100px;
+    height: 500px;
+  }
 
   ${BP_768} {
     align-self: flex-end;
   }
+
+  ${BP_480} {
+    height: 300px;
+  }
 `;
 
 export const LinkIcon = styled.img`
-  width: 400px;
-  height: 400px;
+  width: 650px;
+  height: 650px;
   animation: float 4s ease-in-out infinite;
+  position: absolute;
+  top: 175px;
+  right: -150px;
 
   @keyframes float {
     0% {
@@ -199,13 +266,22 @@ export const LinkIcon = styled.img`
   }
 
   ${BP_1024} {
-    width: 350px;
-    height: 350px;
+    width: 650px;
+    height: 650px;
+    top: 350px;
+    right: 0;
+  }
+
+  ${BP_768} {
+    width: 500px;
+    height: 500px;
+    top: 400px;
   }
 
   ${BP_480} {
-    width: 300px;
-    height: 300px;
+    width: 375px;
+    height: 375px;
+    top: 425px;
   }
 `;
 
@@ -238,10 +314,33 @@ export const Badge = styled.div<{ bgColor: string; color: string }>`
   font-weight: 600;
   display: inline-block;
   font-size: 1.125rem;
-  width: 95px;
+  width: 98px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${BP_480} {
+    font-size: 1rem;
+    width: 90px;
+  }
+`;
+
+export const EventBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25rem;
+
+  ${BP_1024} {
+    gap: 20rem;
+  }
+
+  ${BP_768} {
+    gap: 15rem;
+  }
+
+  ${BP_480} {
+    gap: 10rem;
+  }
 `;
 
 export const Section2 = styled.section`
@@ -250,6 +349,7 @@ export const Section2 = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
 
   ${BP_1280} {
     width: 960px;
@@ -268,18 +368,59 @@ export const Section2 = styled.section`
   }
 `;
 
-export const Title2 = styled.h2`
-  color: #48ec8b;
-  font-size: 3rem;
-  font-weight: 600;
+export const EffectImage1 = styled.img`
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: -125px;
+  right: 0;
+
+  ${BP_1024} {
+    width: 390px;
+    height: 390px;
+    top: 0px;
+  }
+
+  ${BP_768} {
+    width: 300px;
+    height: 300px;
+    top: 50px;
+  }
+
+  @media (max-width: 550px) {
+    width: 280px;
+    height: 280px;
+    top: 75px;
+  }
+
+  ${BP_480} {
+    width: 200px;
+    height: 200px;
+    right: 0;
+    top: 70px;
+  }
 `;
 
-export const Description2 = styled.p`
+export const Title2 = styled.h2<{ color: string }>`
+  color: ${({ color }) => color};
+  font-size: 3rem;
+  font-weight: 600;
+
+  ${BP_480} {
+    font-size: 2.25rem;
+  }
+`;
+
+export const Description2 = styled.p<{ color: string }>`
   font-size: 1.25rem;
-  color: #4bec8bb3;
+  color: ${({ color }) => color};
   font-weight: 400;
   word-break: keep-all;
   line-height: 1.5;
+
+  ${BP_480} {
+    font-size: 1rem;
+  }
 `;
 
 export const CardContainer = styled.div`
@@ -294,6 +435,7 @@ export const CardContainer = styled.div`
 
   ${BP_768} {
     grid-template-columns: repeat(1, 1fr);
+    margin-top: 0rem;
   }
 `;
 
@@ -314,7 +456,7 @@ export const CardBox = styled.div`
     inset: 0;
     background: linear-gradient(
       rgba(255, 255, 255, 0.04) 0%,
-      rgba(255, 255, 255, 0.02) 100%
+      rgba(255, 255, 255, 0.02) 70%
     );
     transition: opacity 0.3s ease-in-out;
     opacity: 1;
@@ -327,7 +469,7 @@ export const CardBox = styled.div`
     inset: 0;
     background: linear-gradient(
       rgba(255, 255, 255, 0.13) 0%,
-      rgba(255, 255, 255, 0.08) 100%
+      rgba(255, 255, 255, 0.08) 70%
     );
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -369,10 +511,58 @@ export const CardImage = styled.img`
   height: 150px;
 `;
 
+export const EffectImage2 = styled.img`
+  width: 550px;
+  height: 550px;
+  position: absolute;
+  top: -300px;
+  right: 20px;
+
+  ${BP_1280} {
+    right: -20px;
+  }
+
+  ${BP_1024} {
+    width: 450px;
+    height: 450px;
+    top: -130px;
+    right: -35px;
+  }
+
+  ${BP_768} {
+    width: 350px;
+    height: 350px;
+    top: -25px;
+    right: 0;
+  }
+
+  @media (max-width: 550px) {
+    width: 275px;
+    height: 275px;
+    right: -15px;
+    top: 30px;
+  }
+
+  ${BP_480} {
+    width: 170px;
+    height: 170px;
+    top: 85px;
+    right: 0;
+  }
+`;
+
 export const BigTechButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 3rem;
+
+  ${BP_768} {
+    margin-top: 2rem;
+  }
+
+  ${BP_480} {
+    margin-top: 1rem;
+  }
 `;
 
 export const BigTechButtonBox = styled(CardBox)`
@@ -387,4 +577,202 @@ export const BigTechButton = styled(ReactRouterLink)`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const CoachBox = styled(CardBox)`
+  width: 50%;
+  height: auto;
+  padding: 0;
+
+  ${BP_1024} {
+    width: 50%;
+  }
+`;
+
+export const CoachLink = styled(ReactRouterLink)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1.25rem 1.25rem 1.25rem 1.75rem;
+
+  ${BP_480} {
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+  }
+`;
+
+export const CoachName = styled.p<{ color: string }>`
+  color: ${({ color }) => color};
+  font-weight: 500;
+  font-size: 1.125rem;
+
+  @media (max-width: 550px) {
+    font-size: 1rem;
+  }
+
+  ${BP_480} {
+    font-size: 0.875rem;
+  }
+`;
+
+export const CoachImage = styled.img`
+  width: 250px;
+  height: 250px;
+
+  ${BP_768} {
+    width: 180px;
+    height: 180px;
+  }
+
+  @media (max-width: 550px) {
+    width: 125px;
+    height: 125px;
+  }
+
+  ${BP_480} {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+export const CoachTextBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+export const CoachContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  margin-top: 1rem;
+
+  ${BP_768} {
+    margin-top: 0;
+    gap: 1rem;
+  }
+`;
+
+export const EffectImage3 = styled.img`
+  width: 450px;
+  height: 450px;
+  position: absolute;
+  top: -40px;
+  right: 0;
+  z-index: 0;
+
+  ${BP_1280} {
+    width: 400px;
+    height: 400px;
+    top: -70px;
+  }
+
+  ${BP_1024} {
+    width: 350px;
+    height: 350px;
+    top: 40px;
+    right: 20px;
+  }
+
+  @media (max-width: 820px) {
+    width: 300px;
+    height: 300px;
+    top: 80px;
+  }
+
+  ${BP_768} {
+    width: 225px;
+    height: 225px;
+    top: 70px;
+    right: 0;
+  }
+
+  ${BP_480} {
+    width: 150px;
+    height: 150px;
+    top: 110px;
+    right: 0;
+  }
+`;
+
+export const FeedbackBox = styled.div`
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+
+  ${BP_768} {
+    width: 100%;
+  }
+`;
+
+export const FeedbackLinkBox = styled.div`
+  backdrop-filter: blur(20px);
+  position: relative;
+  width: 100%;
+  height: 60px;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  padding: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.02) 70%
+    );
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+    z-index: -1;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.08) 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: -1;
+  }
+
+  &:hover::before {
+    opacity: 0;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #555;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #ddf34fb3;
+    color: #000;
+  }
+`;
+
+export const FeedbackLink = styled.a`
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 1rem;
+  transition: background-color 0.3s ease-in-out;
+
+  ${BP_480} {
+    font-size: 1rem;
+  }
 `;
