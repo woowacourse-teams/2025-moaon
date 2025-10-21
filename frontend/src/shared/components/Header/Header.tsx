@@ -1,28 +1,23 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { authQueries } from "@/apis/login/auth.queries";
 import MobileHeader from "../MobileHeader/MobileHeader";
 import GoogleLoginButton from "./GoogleLoginButton/GoogleLoginButton";
 import * as S from "./Header.styled";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
-import { useQuery } from "@tanstack/react-query";
-import { authQueries } from "@/apis/auth/auth.queries";
 
 const MOBILE_BREAKPOINT = 1024;
 
 function Header() {
-  const token =
-    document.cookie
-      .split("; ")
-      .find((c) => c.startsWith("token="))
-      ?.split("=")
-      .slice(1)
-      .join("=") ?? "";
   const [isMobileLike, setIsMobileLike] = useState<boolean>(() =>
     typeof window === "undefined"
       ? false
-      : window.innerWidth <= MOBILE_BREAKPOINT
+      : window.innerWidth <= MOBILE_BREAKPOINT,
   );
+
+  const { data: auth } = useQuery(authQueries.fetchAuth());
 
   useEffect(() => {
     const onResize = () =>
@@ -30,10 +25,6 @@ function Header() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
-
-  const { data: auth } = useQuery({
-    ...authQueries.fetchAuth(token),
-  });
 
   if (isMobileLike) {
     return <MobileHeader />;
@@ -49,9 +40,9 @@ function Header() {
           <NavBar />
         </S.Wrap>
         <S.Wrap>
-          <RegisterProjectButton />
+          <RegisterProjectButton isLoggedIn={auth?.isLoggedIn ?? false} />
           {auth?.isLoggedIn ? (
-            <div>{auth.name}님 환영합니다.</div>
+            <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
           ) : (
             <GoogleLoginButton />
           )}
