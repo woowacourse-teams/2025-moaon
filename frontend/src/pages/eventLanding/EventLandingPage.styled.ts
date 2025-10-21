@@ -140,7 +140,15 @@ export const Container = styled.div`
   background-size: cover;
   display: flex;
   flex-direction: column;
-  gap: 7.5rem;
+  gap: 10rem;
+
+  ${BP_768} {
+    gap: 7rem;
+  }
+
+  ${BP_480} {
+    gap: 5rem;
+  }
 `;
 
 export const Section1 = styled.section`
