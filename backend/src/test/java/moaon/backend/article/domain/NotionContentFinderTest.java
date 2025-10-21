@@ -10,11 +10,9 @@ import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.util.EnvLoader;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 class NotionContentFinderTest {
 
     private static final NotionContentFinder NOTION_CONTENT_FINDER = new NotionContentFinder(

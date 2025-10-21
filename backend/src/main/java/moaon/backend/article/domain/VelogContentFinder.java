@@ -10,7 +10,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 
@@ -21,15 +21,13 @@ public class VelogContentFinder extends ContentFinder {
     이 외 사용자 지정 도메인은 BodyFinder 가 수행한다.
      */
     @Override
-    public ArticleCrawlResult crawl(URL url) {
+    public FinderCrawlResult crawl(URL url) {
         JsonNode post = getPost(url);
         String title = post.path("title").asText();
 
         String content = post.path("body").asText();
-        int lastIndex = Math.min(content.length(), 255);
-        String summary = content.substring(0, lastIndex);
 
-        return new ArticleCrawlResult(title, summary, content);
+        return new FinderCrawlResult(title, content);
     }
 
     private JsonNode getPost(URL url) {

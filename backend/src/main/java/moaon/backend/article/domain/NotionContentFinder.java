@@ -13,23 +13,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.service.GptService;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
-import moaon.backend.global.parser.URLParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RequiredArgsConstructor
@@ -42,11 +36,11 @@ public class NotionContentFinder extends ContentFinder {
     private static final List<String> NOTION_DOMAIN = List.of(
             "notion.site", "notion.com", "notion.so"
     );
-    private static final String SELENIUM_URL = "http://selenium:4444/wd/hub";
+    private static final String SELENIUM_URL = "http://localhost:4444/wd/hub";
 
     private final String notionUserId;
     private final String tokenV2;
-
+    private final GptService gptService = new GptService();
 
     @Override
     public boolean canHandle(URL url) {
@@ -55,34 +49,28 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     @Override
-    public ArticleCrawlResult crawl(URL link) {
+    public FinderCrawlResult crawl(URL link) {
         String responseBody = getResponseBody(link);
         validateLink(responseBody);
 
         String title = getTitle(responseBody);
+        String content = getText(responseBody);
 
-        String content = getText(link);
-        int lastIndex = Math.min(content.length(), 255);
-        String summary = content.substring(0, lastIndex);
-
-        return new ArticleCrawlResult(title, summary, content);
+        return new FinderCrawlResult(title, content);
     }
 
-    private String getText(URL link) {
-        URL url = URLParser.parse(SELENIUM_URL);
-        WebDriver driver = new RemoteWebDriver(url, new ChromeOptions());
-        try {
-            driver.get(link.toString());
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            By by = By.className("notion-page-content");
+    private String getText(String responseBody) {
+        Pattern pattern = Pattern.compile("\"title\"\\s*:\\s*\\[\\s*\\[\\s*\"(.*?)\"\\s*]\\s*]");
+        Matcher matcher = pattern.matcher(responseBody);
 
-            return getTextWithRetry(wait, by);
-        } catch (TimeoutException | NoSuchElementException | InterruptedException e) {
-            throw new CustomException(ErrorCode.UNKNOWN, e);
+        StringBuilder stringBuilder = new StringBuilder();
 
-        } finally {
-            driver.quit();
+        while (matcher.find()) {
+            System.out.println("matcher.group(1) = " + matcher.group(1));
+            stringBuilder.append(matcher.group(1));
         }
+
+        return stringBuilder.toString();
     }
 
     private String getTextWithRetry(WebDriverWait wait, By by) throws InterruptedException {
@@ -99,8 +87,9 @@ public class NotionContentFinder extends ContentFinder {
     }
 
     private String getTitle(String responseBody) {
-        Pattern pattern = Pattern.compile("\"title\"\\s*:\\s*\\[\\s*\\[\\s*\"(.*?)\"\\s*\\]\\s*\\]");
+        Pattern pattern = Pattern.compile("\"title\"\\s*:\\s*\\[\\s*\\[\\s*\"(.*?)\"\\s*]\\s*]");
         Matcher matcher = pattern.matcher(responseBody);
+
         if (matcher.find()) {
             return matcher.group(1);
         }

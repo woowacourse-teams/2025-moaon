@@ -2,13 +2,13 @@ package moaon.backend.article.domain;
 
 import java.io.IOException;
 import java.net.URL;
-import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.service.GptService;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 public class TistoryContentFinder extends ContentFinder {
     /*
@@ -16,8 +16,10 @@ public class TistoryContentFinder extends ContentFinder {
     이 외 사용자 지정 도메인 주소는 BodyFinder 가 수행한다.
      */
 
+    private final GptService gptService = new GptService();
+
     @Override
-    public ArticleCrawlResult crawl(URL link) {
+    public FinderCrawlResult crawl(URL link) {
         try {
             Response response = Jsoup.connect(link.toString())
                     .ignoreHttpErrors(true)
@@ -26,15 +28,9 @@ public class TistoryContentFinder extends ContentFinder {
 
             Document doc = response.parse();
             String title = doc.title();
-
-            Element metaDesc = doc.selectFirst("meta[name=description]");
-            String description = metaDesc != null ? metaDesc.attr("content") : "";
-            int lastIndex = Math.min(description.length(), 255);
-            String summary = description.substring(0, lastIndex);
-
             String content = doc.body().text();
 
-            return new ArticleCrawlResult(title, summary, content);
+            return new FinderCrawlResult(title, content);
         } catch (IOException e) {
             throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e);
         }

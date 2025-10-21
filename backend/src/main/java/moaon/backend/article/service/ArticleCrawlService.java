@@ -8,6 +8,7 @@ import moaon.backend.article.domain.ContentFinder;
 import moaon.backend.article.domain.ContentFinders;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.global.parser.URLParser;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,14 @@ public class ArticleCrawlService {
     private static final ContentFinders FINDER = new ContentFinders();
 
     private final ArticleContentRepository repository;
+    private final GptService gptService = new GptService();
 
     public ArticleCrawlResult crawl(String url) {
         URL parsedUrl = URLParser.parse(url);
         ContentFinder finder = FINDER.getFinder(parsedUrl);
-        return finder.crawl(parsedUrl);
+        FinderCrawlResult crawlResult = finder.crawl(parsedUrl);
+
+        return gptService.summarizeByGpt(crawlResult);
     }
 
     @Transactional
