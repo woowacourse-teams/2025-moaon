@@ -22,7 +22,7 @@ export const NextButton = styled.button`
   }
 
   &:disabled {
-    background-color: #bfc2c7ff;
+    background-color: #9ea3aaff;
     cursor: not-allowed;
     opacity: 0.6;
   }
