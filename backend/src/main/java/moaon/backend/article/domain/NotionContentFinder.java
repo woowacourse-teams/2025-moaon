@@ -65,8 +65,13 @@ public class NotionContentFinder extends ContentFinder {
 
         StringBuilder stringBuilder = new StringBuilder();
 
+        boolean isFirst = true;
+
         while (matcher.find()) {
-            System.out.println("matcher.group(1) = " + matcher.group(1));
+            if (isFirst) {
+                isFirst = false;
+                continue;
+            }
             stringBuilder.append(matcher.group(1));
         }
 

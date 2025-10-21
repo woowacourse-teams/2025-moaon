@@ -3,12 +3,12 @@ package moaon.backend.article.domain;
 import java.io.IOException;
 import java.net.URL;
 import moaon.backend.article.dto.FinderCrawlResult;
-import moaon.backend.article.service.GptService;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public class TistoryContentFinder extends ContentFinder {
     /*
@@ -16,7 +16,7 @@ public class TistoryContentFinder extends ContentFinder {
     이 외 사용자 지정 도메인 주소는 BodyFinder 가 수행한다.
      */
 
-    private final GptService gptService = new GptService();
+    public static final String DIV_CONTENT_STYLE = "div.content_style, div.contents_style";
 
     @Override
     public FinderCrawlResult crawl(URL link) {
@@ -29,6 +29,11 @@ public class TistoryContentFinder extends ContentFinder {
             Document doc = response.parse();
             String title = doc.title();
             String content = doc.body().text();
+
+            Element element = doc.selectFirst(DIV_CONTENT_STYLE);
+            if (element != null) {
+                content = element.text();
+            }
 
             return new FinderCrawlResult(title, content);
         } catch (IOException e) {
