@@ -77,9 +77,6 @@ dependencies {
     // dataFaker
     testImplementation 'net.datafaker:datafaker:2.1.0'
 
-    // selenium
-    implementation 'org.seleniumhq.selenium:selenium-java:4.8.0'
-
     // jsoup
     implementation 'org.jsoup:jsoup:1.21.2'
 
@@ -93,9 +90,6 @@ dependencies {
 
     // aws s3
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.792'
-
-    // gpt
-    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 }
 
 clean {

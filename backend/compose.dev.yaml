@@ -43,12 +43,3 @@ services:
     volumes:
       - ./promtail-config.yml:/etc/promtail/config.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  selenium:
-    image: selenium/standalone-chromium:latest
-    container_name: selenium
-    ports:
-      - "4444:4444"
-      - "7900:7900"
-    shm_size: "2g"
-    restart: unless-stopped

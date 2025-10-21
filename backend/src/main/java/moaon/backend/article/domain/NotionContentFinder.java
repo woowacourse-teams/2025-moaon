@@ -1,7 +1,5 @@
 package moaon.backend.article.domain;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,13 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.FinderCrawlResult;
-import moaon.backend.article.service.GptService;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RequiredArgsConstructor
 public class NotionContentFinder extends ContentFinder {
@@ -36,11 +29,9 @@ public class NotionContentFinder extends ContentFinder {
     private static final List<String> NOTION_DOMAIN = List.of(
             "notion.site", "notion.com", "notion.so"
     );
-    private static final String SELENIUM_URL = "http://localhost:4444/wd/hub";
 
     private final String notionUserId;
     private final String tokenV2;
-    private final GptService gptService = new GptService();
 
     @Override
     public boolean canHandle(URL url) {
@@ -76,19 +67,6 @@ public class NotionContentFinder extends ContentFinder {
         }
 
         return stringBuilder.toString();
-    }
-
-    private String getTextWithRetry(WebDriverWait wait, By by) throws InterruptedException {
-        for (int attempts = 0; attempts < 3; attempts++) {
-            try {
-                WebElement webElement = wait.until(presenceOfElementLocated(by));
-                return webElement.getText().trim();
-
-            } catch (StaleElementReferenceException e) {
-                Thread.sleep(50);
-            }
-        }
-        throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
     }
 
     private String getTitle(String responseBody) {
