@@ -100,3 +100,12 @@ export const FormFieldSelectionInput = styled.input`
     background-color: #007bff;
   }
 `;
+
+export const FormFieldErrorBox = styled.div`
+  min-height: 1rem;
+`;
+
+export const FormFieldErrorText = styled.p`
+  color: #ef4444;
+  font-size: 0.8125rem;
+`;

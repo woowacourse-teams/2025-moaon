@@ -136,6 +136,14 @@ function FormFieldSelectionInput({
   );
 }
 
+function FormFieldError({ children }: PropsWithChildren) {
+  return <S.FormFieldErrorText role="alert">{children}</S.FormFieldErrorText>;
+}
+
+function FormFieldErrorBox({ children }: PropsWithChildren) {
+  return <S.FormFieldErrorBox>{children}</S.FormFieldErrorBox>;
+}
+
 const FormField = Object.assign(FormFieldMain, {
   Wrapper: FormFieldWrapper,
   Header: FormFieldHeader,
@@ -145,6 +153,8 @@ const FormField = Object.assign(FormFieldMain, {
   Input: FormFieldInput,
   Textarea: FormFieldTextarea,
   SelectionInput: FormFieldSelectionInput,
+  Error: FormFieldError,
+  ErrorBox: FormFieldErrorBox,
 });
 
 export default FormField;

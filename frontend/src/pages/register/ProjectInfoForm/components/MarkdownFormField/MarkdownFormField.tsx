@@ -10,6 +10,7 @@ interface MarkdownFormFieldProps {
   required?: boolean;
   minLength?: number;
   maxLength?: number;
+  errorMessage?: string;
 }
 
 function MarkdownFormField({
@@ -20,6 +21,7 @@ function MarkdownFormField({
   required = true,
   minLength = 100,
   maxLength = 8000,
+  errorMessage,
 }: MarkdownFormFieldProps) {
   const currentLength = value.length;
   const hasInput = currentLength > 0;
@@ -35,11 +37,9 @@ function MarkdownFormField({
         </FormField.Header>
         <ProjectOverviewEditor value={value} onChange={onChange} />
         <S.CharacterCount isError={isUnderMin || isOverMax}>
-          {isUnderMin && (
-            <S.MinLengthWarning>
-              최소 {minLength}자 이상 입력해주세요.
-            </S.MinLengthWarning>
-          )}
+          <FormField.ErrorBox>
+            {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+          </FormField.ErrorBox>
           <S.CountText>
             {currentLength} / {maxLength}자
           </S.CountText>

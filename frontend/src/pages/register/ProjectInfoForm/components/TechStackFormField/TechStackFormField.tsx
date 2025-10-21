@@ -13,6 +13,7 @@ interface TechStackFormFieldProps {
   selectedTechStacks: TechStackKey[];
   onTechStackChange: (techStack: TechStackKey) => void;
   required?: boolean;
+  errorMessage?: string;
 }
 
 function TechStackFormField({
@@ -21,6 +22,7 @@ function TechStackFormField({
   selectedTechStacks,
   onTechStackChange,
   required = true,
+  errorMessage,
 }: TechStackFormFieldProps) {
   return (
     <FormField>
@@ -52,6 +54,9 @@ function TechStackFormField({
             ))}
           </S.SelectedTechStacks>
         )}
+        <FormField.ErrorBox>
+          {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+        </FormField.ErrorBox>
       </FormField.Wrapper>
     </FormField>
   );

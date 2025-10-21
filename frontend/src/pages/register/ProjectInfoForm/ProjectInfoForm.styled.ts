@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const ProjectInfoForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const NextButton = styled.button`

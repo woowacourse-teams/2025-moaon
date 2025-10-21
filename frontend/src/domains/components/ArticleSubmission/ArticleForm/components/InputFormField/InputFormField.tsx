@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 interface InputFormFieldProps extends ComponentProps<"input"> {
   title: string;
   name: string;
+  errorMessage?: string;
 }
 
 function InputFormField({
@@ -14,6 +15,7 @@ function InputFormField({
   type = "text",
   required = true,
   placeholder,
+  errorMessage,
 }: InputFormFieldProps) {
   return (
     <FormField>
@@ -31,6 +33,9 @@ function InputFormField({
           placeholder={placeholder}
           required={required}
         />
+        <FormField.ErrorBox>
+          {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+        </FormField.ErrorBox>
       </FormField.Wrapper>
     </FormField>
   );
