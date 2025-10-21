@@ -49,9 +49,6 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
       onSuccess: (projectFormData) => {
         onNext(projectFormData.id);
       },
-      onError: (err) => {
-        toast.error(err.message || "프로젝트 등록에 실패했습니다.");
-      },
     });
   };
 
