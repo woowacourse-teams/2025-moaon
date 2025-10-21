@@ -4,7 +4,7 @@ import { Link } from "react-router";
 export const Header = styled.header`
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 999;
   background: #fff;
   border-bottom: 1px solid #eee;
 `;
