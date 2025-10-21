@@ -1,5 +1,4 @@
 import CloseButtonIcon from "@shared/components/CloseButtonIcon/CloseButtonIcon";
-import { toast } from "@shared/components/Toast/toast";
 import { useEffect, useState } from "react";
 import { useFileDrop } from "./hooks/useFileDrop";
 import * as S from "./ImageFormField.styled";
@@ -20,14 +19,13 @@ function ImageFormField({ onFilesChange }: ImageFormFiledProps) {
     ref,
     isOver,
     files,
-    error,
     disabled,
     getDropZoneProps,
     getFileInputProps,
     removeFile,
   } = useFileDrop({
     extensions: ["png", "jpg", "jpeg", "svg", "gif", "webp"],
-    maxFiles: 2,
+    maxFiles: 10,
   });
 
   useEffect(() => {
@@ -52,13 +50,9 @@ function ImageFormField({ onFilesChange }: ImageFormFiledProps) {
       URL.revokeObjectURL(previewToRemove.previewUrl);
     }
 
-    setPreviews(previews.filter((p) => p.file !== fileToRemove));
+    setPreviews(previews.filter((prev) => prev.file !== fileToRemove));
     removeFile(fileToRemove);
   };
-
-  if (error?.message) {
-    toast.error(error.message);
-  }
 
   return (
     <S.ImageFormFieldWrapper>
@@ -68,7 +62,7 @@ function ImageFormField({ onFilesChange }: ImageFormFiledProps) {
         isOver={isOver}
         disabled={disabled}
       >
-        {previews.length >= 2
+        {previews.length >= 10
           ? "최대 업로드 가능한 파일 수에 도달했습니다."
           : isOver
             ? "여기에 파일을 놓으세요!"
@@ -79,11 +73,11 @@ function ImageFormField({ onFilesChange }: ImageFormFiledProps) {
       <S.PreviewList>
         {previews.map(({ file, previewUrl }, idx) => {
           const isThumbnail = idx === 0;
-          const { name, size, lastModified } = file;
+          const { name, size } = file;
 
           return (
             <S.PreviewItem
-              key={`${name}-${lastModified}`}
+              key={`${name}-${crypto.randomUUID()}`}
               isThumbnail={isThumbnail}
             >
               {isThumbnail && <S.PreviewBadge>대표</S.PreviewBadge>}

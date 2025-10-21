@@ -1,3 +1,4 @@
+import { toast } from "@shared/components/Toast/toast";
 import {
   type ChangeEvent,
   type DragEvent,
@@ -219,6 +220,11 @@ export const useFileDrop = ({
     setFiles((current) => current.filter((file) => file !== fileToRemove));
   }, []);
 
+  if (error?.message) {
+    toast.error(error.message);
+    setError(null);
+  }
+
   return {
     ref,
     isOver,
@@ -227,6 +233,5 @@ export const useFileDrop = ({
     getDropZoneProps,
     getFileInputProps,
     removeFile,
-    error,
   };
 };
