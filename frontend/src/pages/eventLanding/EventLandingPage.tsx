@@ -32,6 +32,30 @@ function EventLandingPage() {
     }
   };
 
+  const attachedRef = (node: HTMLElement | null) => {
+    if (!node) {
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          node.style.animation = "fadeIn 0.75s forwards ease-in-out";
+          return;
+        }
+
+        node.style.animation = "";
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      node.style.animation = "";
+    };
+  };
+
   return (
     <>
       <S.Header>
@@ -73,7 +97,7 @@ function EventLandingPage() {
         </S.Section1>
 
         <S.EventBox>
-          <S.Section2 id="event1">
+          <S.Section2 id="event1" ref={attachedRef}>
             <S.EffectImage1
               src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect6.svg"
               alt=""
@@ -113,7 +137,7 @@ function EventLandingPage() {
             </S.BigTechButtonContainer>
           </S.Section2>
 
-          <S.Section2>
+          <S.Section2 ref={attachedRef}>
             <S.EffectImage2
               src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect12.svg"
               alt=""
@@ -155,7 +179,7 @@ function EventLandingPage() {
             </S.CoachContainer>
           </S.Section2>
 
-          <S.Section2>
+          <S.Section2 ref={attachedRef}>
             <S.EffectImage3
               src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect9.svg"
               alt=""

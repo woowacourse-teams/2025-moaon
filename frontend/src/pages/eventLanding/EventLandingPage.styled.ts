@@ -350,6 +350,7 @@ export const Section2 = styled.section`
   flex-direction: column;
   gap: 1rem;
   position: relative;
+  opacity: 0;
 
   ${BP_1280} {
     width: 960px;
@@ -365,6 +366,17 @@ export const Section2 = styled.section`
 
   ${BP_480} {
     padding: 5rem 1rem 0;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
