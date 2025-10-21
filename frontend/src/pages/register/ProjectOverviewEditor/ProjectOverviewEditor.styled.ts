@@ -51,8 +51,11 @@ export const TextArea = styled.textarea`
 export const PreviewBox = styled.div`
   padding: 0.875rem;
   color: #374151;
-  line-height: 1.6;
-  word-break: break-all;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.1;
+  white-space: pre-wrap;
+  word-break: keep-all;
   overflow-wrap: break-word;
   max-height: 15.625rem;
   overflow-y: auto;
