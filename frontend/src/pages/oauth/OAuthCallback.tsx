@@ -1,27 +1,24 @@
 import { toast } from "@shared/components/Toast/toast";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 function OAuthCallback() {
   const navigate = useNavigate();
+  const { result } = useParams();
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const loginSuccess = url.searchParams.get("success");
-    const message = url.searchParams.get("message");
-
     const returnTo = sessionStorage.getItem("oauthReturnTo") || "/";
     sessionStorage.removeItem("oauthReturnTo");
 
-    if (loginSuccess === "true") {
+    if (result === "success") {
       toast.success("로그인에 성공했어요.");
       navigate(returnTo, { replace: true });
       return;
     }
 
-    toast.error(message || "로그인에 실패했어요. 다시 시도해주세요.");
+    toast.error("로그인에 실패했어요. 다시 시도해주세요.");
     navigate(returnTo, { replace: true });
-  }, [navigate]);
+  }, [navigate, result]);
 
   return null;
 }

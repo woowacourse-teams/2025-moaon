@@ -4,7 +4,8 @@ import * as S from "./GoogleLoginButton.styled";
 function GoogleLoginButton() {
   const handleClick = () => {
     const googleAuthUrl = process.env.GOOGLE_AUTH_URL;
-    const redirectPath = process.env.GOOGLE_REDIRECT_PATH || "/oauth/callback";
+    const googleClientId = process.env.GOOGLE_CLIENT_ID;
+    const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI;
 
     if (!googleAuthUrl) {
       toast.error(
@@ -13,14 +14,39 @@ function GoogleLoginButton() {
       return;
     }
 
+    if (!googleClientId) {
+      toast.error(
+        "구글 클라이언트 ID가 설정되지 않았습니다. 환경변수 GOOGLE_CLIENT_ID를 확인하세요.",
+      );
+      return;
+    }
+
+    if (!googleRedirectUri) {
+      toast.error(
+        "구글 리디렉트 URI가 설정되지 않았습니다. 환경변수 GOOGLE_REDIRECT_URI를 확인하세요.",
+      );
+      return;
+    }
+
     const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     sessionStorage.setItem("oauthReturnTo", currentUrl);
 
-    const redirectUri = `${window.location.origin}${redirectPath}`;
-    const url = new URL(googleAuthUrl, window.location.origin);
-    if (!url.searchParams.has("redirect_uri")) {
-      url.searchParams.set("redirect_uri", redirectUri);
-    }
+    const state = encodeURIComponent(
+      JSON.stringify({
+        redirectBase: window.location.origin,
+      }),
+    );
+
+    const url = new URL(googleAuthUrl);
+    url.searchParams.set("client_id", googleClientId);
+    url.searchParams.set("redirect_uri", googleRedirectUri);
+    url.searchParams.set("response_type", "code");
+    url.searchParams.set("scope", "openid email profile");
+    url.searchParams.set("state", state);
+
+    // 필요 시 아래 옵션 추가
+    // url.searchParams.set("access_type", "offline");
+    // url.searchParams.set("prompt", "consent");
 
     window.location.href = url.toString();
   };

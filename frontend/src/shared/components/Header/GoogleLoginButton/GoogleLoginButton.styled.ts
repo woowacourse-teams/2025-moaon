@@ -9,11 +9,11 @@ export const GoogleLoginButton = styled.button`
   position: relative;
   border-radius: 8px;
   padding: 10px 14px 10px 16px;
-  background-color: #007bff;
+  background-color: black;
   color: #fff;
 
   &:hover {
-    background-color: #0472e8ff;
+    background-color: gray;
     transition: background-color 0.3s ease;
   }
 `;
