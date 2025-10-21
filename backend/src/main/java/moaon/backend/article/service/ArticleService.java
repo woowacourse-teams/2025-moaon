@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
 import moaon.backend.article.domain.ArticleDocument;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
@@ -73,6 +74,7 @@ public class ArticleService {
         ArticleESQuery esQuery = ArticleESQuery.builder()
                 .search(condition.search())
                 .sector(condition.sector())
+                .sortBy(ArticleSortType.CREATED_AT)
                 .limit(999)
                 .build();
 
