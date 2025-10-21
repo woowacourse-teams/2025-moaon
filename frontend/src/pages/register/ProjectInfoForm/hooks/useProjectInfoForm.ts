@@ -1,8 +1,7 @@
 import type { ProjectCategoryKey } from "@domains/filter/projectCategory";
 import type { TechStackKey } from "@domains/filter/techStack";
-import { toast } from "@shared/components/Toast/toast";
 import { useMutation } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { projectRegisterQueries } from "@/apis/projectRegister/projectRegister.queries";
 import type { ProjectFormData } from "../../../../apis/projectRegister/postProjectRegister.type";
 import {
@@ -41,9 +40,19 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     projectRegisterQueries.postProject()
   );
 
+  const isFormValid = useMemo(() => {
+    const validationErrors = validateProjectInfoFormData(formData);
+    return Object.values(validationErrors).every((error) => !error);
+  }, [formData]);
+
   const handleNextClick = () => {
     const nextErrors = validateProjectInfoFormData(formData);
     setErrors(nextErrors);
+
+    const hasError = Object.values(nextErrors).some((m) => m && m.length > 0);
+    if (hasError) {
+      return;
+    }
 
     mutate(formData, {
       onSuccess: (projectFormData) => {
@@ -113,6 +122,7 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
   return {
     formData,
     errors,
+    isFormValid,
     updateFormField,
     handleTechStackChange,
     toggleCategory,

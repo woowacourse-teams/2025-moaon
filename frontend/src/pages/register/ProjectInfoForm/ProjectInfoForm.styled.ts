@@ -17,7 +17,13 @@ export const NextButton = styled.button`
   border-radius: 0.5rem;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #0472e8ff;
+  }
+
+  &:disabled {
+    background-color: #bfc2c7ff;
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `;

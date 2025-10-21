@@ -12,11 +12,13 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
   const {
     formData,
     errors,
+    isFormValid,
     updateFormField,
     handleTechStackChange,
     toggleCategory,
     handleNextClick,
   } = useProjectInfoForm({ onNext });
+
   return (
     <S.ProjectInfoForm>
       <InputFormField
@@ -83,7 +85,11 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         errorMessage={errors.productionUrl}
       />
 
-      <S.NextButton type="button" onClick={handleNextClick}>
+      <S.NextButton
+        type="button"
+        onClick={handleNextClick}
+        disabled={!isFormValid}
+      >
         다음
       </S.NextButton>
     </S.ProjectInfoForm>
