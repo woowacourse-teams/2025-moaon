@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.service.ArticleCrawlService;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.service.OAuthService;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class ArticleCrawlingController {
             @CookieValue(value = "token", required = false) String token,
             @RequestParam(value = "url") String url
     ) {
+        if (token == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
+        }
         oAuthService.validateToken(token);
         Member member = oAuthService.getUserByToken(token);
         ArticleCrawlResult result = articleCrawlService.crawl(url, member);
