@@ -10,6 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,9 +33,20 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
+    // ! MySQL 이벤트 스케줄러로 매일 자정에 0으로 초기화합니다. !
+    @Column(nullable = false)
+    private int crawlCount = 0;
+
     public Member(String socialId, String email, String name) {
         this.socialId = socialId;
         this.email = email;
         this.name = name;
+    }
+
+    public void addCrawlCount() {
+        if (crawlCount > 20) {
+            throw new CustomException(ErrorCode.ARTICLE_CRAWL_TIMES_OVER);
+        }
+        crawlCount++;
     }
 }
