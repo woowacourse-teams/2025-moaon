@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,13 +24,14 @@ public class S3Service {
     private String bucket;
 
     @Transactional(readOnly = true)
-    public S3UrlResponse getPutS3Url(String filename) {
-        String key = "moaon/projects/" + UUID.randomUUID() + "-" + filename;
-
-        GeneratePresignedUrlRequest request = getPutGeneratePresignedUrlRequest(key, getExpiration());
-        URL url = s3Client.generatePresignedUrl(request);
-
-        return new S3UrlResponse(url.toExternalForm(), key);
+    public List<S3UrlResponse> getPutS3Url(List<String> fileNames) {
+        return fileNames.stream()
+                .map(fileName -> {
+                    String key = "moaon/projects/" + UUID.randomUUID() + "-" + fileName;
+                    GeneratePresignedUrlRequest request = getPutGeneratePresignedUrlRequest(key, getExpiration());
+                    URL url = s3Client.generatePresignedUrl(request);
+                    return new S3UrlResponse(url.toExternalForm(), fileName, key);
+                }).toList();
     }
 
     private GeneratePresignedUrlRequest getPutGeneratePresignedUrlRequest(String fileName, Date expiration) {
