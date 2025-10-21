@@ -95,6 +95,7 @@ jobs:
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           S3_BUCKET=${{ secrets.S3_BUCKET }}
           S3_REGION=${{ secrets.S3_REGION }}
+          GPT_API_KEY=${{ secrets.GPT_DEV_API_KEY }}
           EOF
 
       - name: Log in to Docker Hub

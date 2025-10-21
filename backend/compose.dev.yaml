@@ -65,6 +65,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: http://10.0.3.18:4318
       S3_BUCKET: ${S3_BUCKET}
       S3_REGION: ${S3_REGION}
+      GPT_API_KEY: ${GPT_API_KEY}
 
   node-exporter:
     image: prom/node-exporter:latest
