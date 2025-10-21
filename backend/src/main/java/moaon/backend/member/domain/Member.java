@@ -43,8 +43,12 @@ public class Member {
         this.name = name;
     }
 
+    public boolean isCrawlCountOvered() {
+        return crawlCount >= 20;
+    }
+
     public void addCrawlCount() {
-        if (crawlCount > 20) {
+        if (isCrawlCountOvered()) {
             throw new CustomException(ErrorCode.ARTICLE_CRAWL_TIMES_OVER);
         }
         crawlCount++;

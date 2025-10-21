@@ -10,7 +10,10 @@ import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.article.repository.ArticleContentRepository;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.parser.URLParser;
+import moaon.backend.member.domain.Member;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +26,12 @@ public class ArticleCrawlService {
     private final ArticleContentRepository repository;
     private final GptService gptService = new GptService();
 
-    public ArticleCrawlResult crawl(String url) {
+    public ArticleCrawlResult crawl(String url, Member member) {
+        if (member.isCrawlCountOvered()) {
+            throw new CustomException(ErrorCode.ARTICLE_CRAWL_TIMES_OVER);
+        }
+        member.addCrawlCount();
+
         URL parsedUrl = URLParser.parse(url);
         ContentFinder finder = FINDER.getFinder(parsedUrl);
         FinderCrawlResult crawlResult = finder.crawl(parsedUrl);
