@@ -1,9 +1,13 @@
 import InputFormField from "@domains/components/ArticleSubmission/ArticleForm/components/InputFormField/InputFormField";
+import { toast } from "@shared/components/Toast/toast";
+import { useState } from "react";
+import ImageFormField from "./components/ImageFormField/ImageFormField";
 import MarkdownFormField from "./components/MarkdownFormField/MarkdownFormField";
 import ProjectCategoryFormField from "./components/ProjectCategoryFormField/ProjectCategoryFormField";
 import TechStackFormField from "./components/TechStackFormField/TechStackFormField";
 import { useProjectInfoForm } from "./hooks/useProjectInfoForm";
 import * as S from "./ProjectInfoForm.styled";
+import { validateProjectInfoFormData } from "./utils/ProjectInfoFormUtils";
 
 interface ProjectInfoFormProps {
   onNext: (projectId: number) => void;
@@ -15,7 +19,28 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
     handleTechStackChange,
     toggleCategory,
     handleNextClick,
+    handleImageRegisterClick,
   } = useProjectInfoForm({ onNext });
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+
+  const onNextClick = async () => {
+    const errorMessage = validateProjectInfoFormData(formData);
+    if (errorMessage) {
+      toast.warning(errorMessage);
+      return;
+    }
+
+    try {
+      if (imageFiles.length > 0) {
+        const newFormData = await handleImageRegisterClick(imageFiles);
+        handleNextClick(newFormData!);
+        return;
+      }
+
+      handleNextClick(formData);
+    } catch {}
+  };
+
   return (
     <S.ProjectInfoForm>
       <InputFormField
@@ -72,8 +97,8 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         onChange={(e) => updateFormField("productionUrl", e.target.value)}
         required={false}
       />
-
-      <S.NextButton type="button" onClick={handleNextClick}>
+      <ImageFormField onFilesChange={setImageFiles} />
+      <S.NextButton type="button" onClick={onNextClick}>
         다음
       </S.NextButton>
     </S.ProjectInfoForm>
