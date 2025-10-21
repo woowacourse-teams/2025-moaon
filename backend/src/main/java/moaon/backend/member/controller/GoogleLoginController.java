@@ -34,8 +34,8 @@ public class GoogleLoginController {
 
     @GetMapping
     public void login(
-            @RequestParam(value = "code", required = false) String code,
-            @RequestParam(value = "state") String state,
+            @RequestParam(value = "code", required = true) String code,
+            @RequestParam(value = "state", required = true) String state,
             HttpServletResponse response
     ) {
         String redirectBase = parseRedirectBase(state);
