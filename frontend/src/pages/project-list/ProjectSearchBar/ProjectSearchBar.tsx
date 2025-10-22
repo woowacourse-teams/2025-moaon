@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import useProjectList from "../hooks/useProjectList";
 
 const MAX_SEARCH_LENGTH = 50;
-const DEBOUNCE_DELAY = 400;
 
 function ProjectSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
@@ -16,7 +15,6 @@ function ProjectSearchBar() {
 
   const debouncedValue = useDebounce({
     value: inputValue,
-    delay: DEBOUNCE_DELAY,
   });
 
   const paramsRef = useRef(params);
