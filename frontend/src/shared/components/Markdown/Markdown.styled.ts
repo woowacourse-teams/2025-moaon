@@ -20,6 +20,7 @@ export const MarkdownWrapper = styled(Polymorphic)`
     gap: 1rem !important;
     height: auto !important;
     margin-top: 0.75rem !important;
+    padding-left: 1.25rem !important;
   }
 
   ol {
@@ -28,6 +29,7 @@ export const MarkdownWrapper = styled(Polymorphic)`
     gap: 1rem !important;
     height: auto !important;
     margin-top: 0.75rem !important;
+    padding-left: 1.25rem !important;
   }
 
   ol > li {
@@ -45,7 +47,7 @@ export const MarkdownWrapper = styled(Polymorphic)`
   }
 
   ol > li > p {
-    transform: translateY(-14.3px);
+    transform: translateY(-16px);
   }
 
   hr {
