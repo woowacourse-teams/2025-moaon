@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { BP_768 } from "@/styles/global.styled";
+import { BP_480, BP_768 } from "@/styles/global.styled";
 
 export const RegisterPageContainer = styled.div`
   padding: 0 1rem 1rem 1rem;
@@ -43,7 +43,7 @@ export const FormBox = styled.div`
 `;
 
 export const ArticleAddButton = styled.button`
-  width: 30rem;
+  width: 25rem;
   padding: 0.6rem 2rem;
   border-radius: 8px;
   font-size: 1rem;
@@ -53,10 +53,14 @@ export const ArticleAddButton = styled.button`
   &:hover {
     background-color: #0472e8ff;
   }
+
+  ${BP_480} {
+    width: 16rem;
+  }
 `;
 
 export const ProjectNavigateButton = styled.button`
-  width: 30rem;
+  width: 25rem;
   padding: 0.6rem 2rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -64,12 +68,17 @@ export const ProjectNavigateButton = styled.button`
   background-color: white;
   color: black;
 
+  ${BP_480} {
+    width: 16rem;
+  }
+
   &:hover {
     background-color: #f5f5f5;
   }
 `;
 
 export const ButtonContainer = styled.div`
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;

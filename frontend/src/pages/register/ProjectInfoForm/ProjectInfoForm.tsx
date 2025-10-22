@@ -74,7 +74,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
       />
 
       <S.NextButton type="button" onClick={handleNextClick}>
-        다음
+        프로젝트 등록하기
       </S.NextButton>
     </S.ProjectInfoForm>
   );

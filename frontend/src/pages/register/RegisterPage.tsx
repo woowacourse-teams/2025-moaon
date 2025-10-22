@@ -3,6 +3,7 @@ import Modal from "@shared/components/Modal/Modal";
 import { useOverlay } from "@shared/hooks/useOverlay";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import AnimationPlayer from "./AnimationPlayer/AnimationPlayer";
 import ProjectInfoForm from "./ProjectInfoForm/ProjectInfoForm";
 import * as S from "./RegisterPage.styled";
 
@@ -45,8 +46,8 @@ function RegisterPage() {
           isOpen={isModalOpen}
           title="프로젝트 등록 완료"
           onClose={closeModal}
-          showCloseButton={true}
         >
+          <AnimationPlayer />
           <S.ButtonContainer>
             <S.ArticleAddButton
               onClick={() => {
