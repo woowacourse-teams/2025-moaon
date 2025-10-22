@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_480, BP_1024, BP_1280 } from "@/styles/global.styled";
 
 export const ArticleBoxContainer = styled.div`
   display: flex;
@@ -6,14 +7,15 @@ export const ArticleBoxContainer = styled.div`
   gap: 1.25rem;
   width: 100%;
 
-  @media screen and (max-width: 1280px) {
+  ${BP_1280} {
     padding: 0 1.5rem;
   }
 
-  @media screen and (max-width: 1024px) {
+  ${BP_1024} {
     padding: 0 1rem;
   }
-  @media screen and (max-width: 480px) {
+
+  ${BP_480} {
     padding: 0 0.5rem;
   }
 `;
