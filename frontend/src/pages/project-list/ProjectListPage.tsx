@@ -52,17 +52,17 @@ function ProjectListPage() {
           <FilterContainer
             filterList={[
               {
-                label: "주제",
-                param: "categories",
-                render: (onSelect: () => void) => (
-                  <CategoryFilterBox onSelect={onSelect} />
-                ),
-              },
-              {
                 label: "기술 스택",
                 param: "techStacks",
                 render: (onSelect: () => void) => (
                   <TechStackFilterBox onSelect={onSelect} />
+                ),
+              },
+              {
+                label: "주제",
+                param: "categories",
+                render: (onSelect: () => void) => (
+                  <CategoryFilterBox onSelect={onSelect} />
                 ),
               },
             ]}
