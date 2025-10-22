@@ -1,10 +1,12 @@
 import { mutationOptions } from "@tanstack/react-query";
-import postProjectImageRegister from "./getImageRegister";
+import getImagePresignedUrl from "./getImagePresignedUrl";
+import postProjectImage from "./postProjectImage";
 import postProjectRegister from "./postProjectRegister";
 import type {
-  PostProjectImageRegisterResponse,
+  getImagePresignedUrlResponse,
   PostProjectRegisterResponse,
   ProjectFormData,
+  uploadProjectImageResponse,
 } from "./postProjectRegister.type";
 
 export const projectRegisterQueries = {
@@ -13,8 +15,13 @@ export const projectRegisterQueries = {
     mutationOptions<PostProjectRegisterResponse, Error, ProjectFormData>({
       mutationFn: (projectFormData) => postProjectRegister(projectFormData),
     }),
-  postProjectImage: () =>
-    mutationOptions<PostProjectImageRegisterResponse[], Error, string[]>({
-      mutationFn: (fileNames) => postProjectImageRegister(fileNames),
+  getPresignedUrl: () =>
+    mutationOptions<getImagePresignedUrlResponse[], Error, string[]>({
+      mutationFn: (fileNames) => getImagePresignedUrl(fileNames),
+    }),
+  uploadProjectImage: () =>
+    mutationOptions<string[], Error, uploadProjectImageResponse>({
+      mutationFn: ({ response, files }) =>
+        postProjectImage({ response, files }),
     }),
 };

@@ -31,7 +31,12 @@ export interface PostProjectRegisterResponse {
   id: number;
 }
 
-export interface PostProjectImageRegisterResponse {
+export interface getImagePresignedUrlResponse {
   preSignedUrl: string;
   key: string;
+}
+
+export interface uploadProjectImageResponse {
+  response: getImagePresignedUrlResponse[];
+  files: File[];
 }
