@@ -43,17 +43,19 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     }
 
     @Override
-    public Project findProjectById(Long id){
-        Project project = projectDao.findProjectById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        List<ProjectCategory> projectCategories = projectDao.findProjectCategoriesByProjectId(id);
-        List<ProjectTechStack> projectTechStacks = projectDao.findProjectTechStacksByProjectId(id);
+    public List<ProjectCategory> findProjectCategoriesByProjectId(Long id) {
+        return projectDao.findProjectCategoriesByProjectId(id);
+    }
 
-        return new Project(
-                project,
-                projectTechStacks,
-                projectCategories
-        );
+    @Override
+    public List<ProjectTechStack> findProjectTechStacksByProjectId(Long id) {
+        return projectDao.findProjectTechStacksByProjectId(id);
+    }
+
+    @Override
+    public Project findProjectById(Long id){
+        return  projectDao.findProjectById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
     }
 
     private FilteringIds applyTechStacks(FilteringIds filteringIds, List<String> techStack) {
