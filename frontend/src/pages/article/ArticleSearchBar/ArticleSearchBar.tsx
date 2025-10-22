@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import useArticleList from "../hooks/useArticleList";
 
 const MAX_SEARCH_LENGTH = 50;
-const DEBOUNCE_DELAY = 400;
 
 function ArticleSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
@@ -16,7 +15,6 @@ function ArticleSearchBar() {
 
   const debouncedValue = useDebounce({
     value: inputValue,
-    delay: DEBOUNCE_DELAY,
   });
 
   const paramsRef = useRef(params);
