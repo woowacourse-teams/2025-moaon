@@ -10,43 +10,29 @@ function LightLogoLoading({
   company,
   onLoadingComplete,
 }: LightLogoLoadingProps) {
-  const [isFirstAnimating, setIsFirstAnimating] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
 
-  if (isFirstAnimating) {
-    return (
-      <S.Background bgColor="#111">
-        <S.ShineBox>
-          <S.ShineImage
-            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
-            alt=""
-            onAnimationEnd={() => setIsFirstAnimating(false)}
-          />
-        </S.ShineBox>
-      </S.Background>
-    );
-  }
-
-  const refCallback = (element: HTMLElement | null) => {
-    if (!element || isFirstAnimating) {
-      return;
-    }
-
-    const animations = element.getAnimations({ subtree: true });
-
-    Promise.all(animations.map((animation) => animation.finished))
-      .then(() => onLoadingComplete())
-      .catch(() => onLoadingComplete());
+  const firstLoadingEnd = () => {
+    setFirstLoading(false);
   };
 
   return (
-    <S.Background bgColor="#121212">
-      <S.LogoBox ref={refCallback}>
-        <S.LogoGlow />
-        <S.LogoImage
-          src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-3d.svg`}
-          alt=""
-        />
-      </S.LogoBox>
+    <S.Background bgColor="#111">
+      <S.ShineBox>
+        {firstLoading ? (
+          <S.ShineImage
+            onAnimationEnd={firstLoadingEnd}
+            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
+            alt=""
+          />
+        ) : (
+          <S.SecondImage
+            onAnimationEnd={onLoadingComplete}
+            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
+            alt=""
+          />
+        )}
+      </S.ShineBox>
     </S.Background>
   );
 }

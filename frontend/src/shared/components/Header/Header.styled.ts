@@ -16,6 +16,7 @@ export const HeaderBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 0.75rem;
 `;
 
 export const LogoLink = styled(Link)`
@@ -27,4 +28,11 @@ export const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 2.5rem;
+`;
+
+export const UserName = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
 `;

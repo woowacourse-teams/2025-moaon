@@ -2,6 +2,8 @@
   "analysis": {
     "analyzer": {
       "article_common_analyzer": {
+        "type": "custom",
+        "tokenizer": "nori_tokenizer_with_dict",
         "char_filter": [
           "html_strip"
         ],
@@ -10,19 +12,26 @@
           "nori_readingform",
           "lowercase",
           "article_common_synonym"
-        ],
+        ]
+      },
+      "article_autocomplete_index": {
+        "type": "custom",
+        "tokenizer": "edge_ngram_tokenizer",
+        "filter": [
+          "lowercase"
+        ]
+      },
+      "article_autocomplete_search": {
+        "type": "custom",
         "tokenizer": "nori_tokenizer_with_dict",
-        "type": "custom"
+        "filter": [
+          "lowercase"
+        ]
       }
     },
     "filter": {
-      "article_common_synonym": {
-        "type": "synonym",
-        "synonyms": [
-          "java, 자바"
-        ]
-      },
       "nori_pos_with_stoptags": {
+        "type": "nori_part_of_speech",
         "stoptags": [
           "EC",
           "EF",
@@ -54,9 +63,17 @@
           "UNA",
           "NA",
           "VSV",
-          "VX"
-        ],
-        "type": "nori_part_of_speech"
+          "VX",
+          "VCP",
+          "SY",
+          "SF"
+        ]
+      },
+      "article_common_synonym": {
+        "type": "synonym",
+        "synonyms": [
+          "java, 자바"
+        ]
       }
     },
     "tokenizer": {
@@ -67,6 +84,15 @@
         "user_dictionary_rules": [
           "데이터베이스",
           "프레임워크"
+        ]
+      },
+      "edge_ngram_tokenizer": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 30,
+        "token_chars": [
+          "letter",
+          "digit"
         ]
       }
     }

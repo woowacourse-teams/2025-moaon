@@ -58,18 +58,20 @@ function FormFieldInput({
   disabled = false,
   readOnly = false,
   required,
-}: ComponentProps<"input">) {
+  hasError,
+}: ComponentProps<"input"> & { hasError?: boolean }) {
   return (
     <S.FormFieldInput
-      type={type}
-      value={value}
-      name={name}
       id={id}
+      name={name}
+      value={value}
       onChange={onChange}
+      type={type}
       placeholder={placeholder}
-      required={required}
       disabled={disabled}
       readOnly={readOnly}
+      required={required}
+      hasError={hasError}
     />
   );
 }
@@ -86,14 +88,14 @@ function FormFieldTextarea({
 }: ComponentProps<"textarea">) {
   return (
     <S.FormFieldTextarea
-      value={value}
-      name={name}
       id={id}
+      name={name}
+      value={value}
       onChange={onChange}
       placeholder={placeholder}
-      required={required}
       disabled={disabled}
       readOnly={readOnly}
+      required={required}
     />
   );
 }
@@ -136,6 +138,14 @@ function FormFieldSelectionInput({
   );
 }
 
+function FormFieldError({ children }: PropsWithChildren) {
+  return <S.FormFieldErrorText role="alert">{children}</S.FormFieldErrorText>;
+}
+
+function FormFieldErrorBox({ children }: PropsWithChildren) {
+  return <S.FormFieldErrorBox>{children}</S.FormFieldErrorBox>;
+}
+
 const FormField = Object.assign(FormFieldMain, {
   Wrapper: FormFieldWrapper,
   Header: FormFieldHeader,
@@ -145,6 +155,8 @@ const FormField = Object.assign(FormFieldMain, {
   Input: FormFieldInput,
   Textarea: FormFieldTextarea,
   SelectionInput: FormFieldSelectionInput,
+  Error: FormFieldError,
+  ErrorBox: FormFieldErrorBox,
 });
 
 export default FormField;

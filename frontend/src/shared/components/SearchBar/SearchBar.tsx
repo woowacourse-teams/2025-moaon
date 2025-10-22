@@ -1,70 +1,43 @@
 import searchIcon from "@assets/icons/search.svg";
-import {
-  type ChangeEvent,
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { ChangeEvent } from "react";
 import CloseIcon from "../CloseIcon/CloseIcon";
 import * as S from "./SearchBar.styled";
 export type Test = "small" | "medium";
 
 interface SearchBarProps {
   placeholder: string;
-  onSubmit: (value: string) => void;
-  defaultValue?: string;
+  value: string;
+  onChange: (value: string) => void;
   maxLength: number;
   size?: Test;
 }
 
 function SearchBar({
   placeholder,
-  onSubmit,
-  defaultValue = "",
+  value,
+  onChange,
   maxLength,
   size = "medium",
 }: SearchBarProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [hasSearchValue, setHasSearchValue] = useState(
-    defaultValue.trim() !== "",
-  );
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = defaultValue;
-      setHasSearchValue(defaultValue.trim() !== "");
-    }
-  }, [defaultValue]);
-
-  const handleSearchFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const value = inputRef.current?.value || "";
-    onSubmit(value);
-  };
+  const hasSearchValue = value.trim() !== "";
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setHasSearchValue(e.target.value.trim() !== "");
+    onChange(e.target.value);
   };
 
   const handleClearSearch = () => {
-    if (inputRef.current) {
-      inputRef.current.value = "";
-      setHasSearchValue(false);
-      onSubmit("");
-    }
+    onChange("");
   };
 
   return (
-    <S.SearchForm onSubmit={handleSearchFormSubmit}>
+    <S.SearchWrapper>
       <S.SearchLabel htmlFor="search-input">
         <S.SearchIcon variant={size} src={searchIcon} alt="검색" />
         <S.SearchInput
           variant={size}
           type="text"
           placeholder={placeholder}
-          ref={inputRef}
-          defaultValue={defaultValue}
+          value={value}
           id="search-input"
           onChange={handleInputChange}
           maxLength={maxLength}
@@ -75,7 +48,8 @@ function SearchBar({
           </S.CloseButton>
         )}
       </S.SearchLabel>
-    </S.SearchForm>
+    </S.SearchWrapper>
   );
 }
+
 export default SearchBar;

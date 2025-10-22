@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_480, BP_768 } from "@/styles/global.styled";
 
 export const Container = styled.div<{ isOpen: boolean }>`
   position: absolute;
@@ -39,12 +40,13 @@ export const Container = styled.div<{ isOpen: boolean }>`
       transform: translateY(-30px);
     }
   }
-  @media screen and (max-width: 768px) {
+
+  ${BP_768} {
     min-width: 22rem;
     padding: 1.25rem;
     gap: 1.25rem;
   }
-  @media screen and (max-width: 480px) {
+  ${BP_480} {
     left: 50%;
     transform: translateX(-50%);
     min-width: calc(100vw - 2rem);

@@ -49,9 +49,11 @@ public enum ErrorCode {
 
     INVALID_SEARCH_KEYWORD_LENGTH(
             "SEARCH-001",
-            String.format("검색어는 %d자 이상 %d자 이하여야 합니다.", SearchKeyword.getMinLength(), SearchKeyword.getMaxLength()),
+            String.format("검색어는 %d자 이하여야 합니다.", SearchKeyword.getMaxLength()),
             HttpStatus.BAD_REQUEST
-    );
+    ),
+
+    LOGIN_REDIRECT_FAILED("LOGIN-001", "RedirectBase를 파싱하는 과정에서 실패했습니다.", HttpStatus.BAD_REQUEST);
 
     private final String id;
     private final String message;
