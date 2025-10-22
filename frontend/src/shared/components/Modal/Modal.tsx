@@ -14,6 +14,7 @@ interface ModalProps {
   description?: string;
   showCloseButton?: boolean;
   variant?: "default" | "image";
+  disableCloseOnOverlayClick?: boolean;
 }
 
 function Modal({
@@ -24,14 +25,26 @@ function Modal({
   description,
   showCloseButton = false,
   variant = "default",
+  disableCloseOnOverlayClick = false,
 }: PropsWithChildren<ModalProps>) {
-  useKeyDown({ Escape: onClose });
+  useKeyDown({
+    Escape: () => {
+      if (!disableCloseOnOverlayClick) {
+        onClose();
+      }
+    },
+  });
+
   usePreventScroll(isOpen);
 
   const contentRef = useRef<HTMLDivElement>(null);
   useFocusTrap({ ref: contentRef, active: isOpen });
 
-  const setOutsideClickRef = useOutsideClick(onClose);
+  const setOutsideClickRef = useOutsideClick(() => {
+    if (!disableCloseOnOverlayClick) {
+      onClose();
+    }
+  });
 
   const titleId = useId();
   const descriptionId = useId();

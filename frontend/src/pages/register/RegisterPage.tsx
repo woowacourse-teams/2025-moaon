@@ -46,6 +46,7 @@ function RegisterPage() {
           isOpen={isModalOpen}
           title="프로젝트 등록 완료"
           onClose={closeModal}
+          disableCloseOnOverlayClick={true}
         >
           <AnimationPlayer />
           <S.ButtonContainer>
