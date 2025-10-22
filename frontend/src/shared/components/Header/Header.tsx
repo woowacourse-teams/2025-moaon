@@ -9,11 +9,11 @@ import * as S from "./Header.styled";
 import MobileHeader from "./MobileHeader/MobileHeader";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
+import UserMenu from "./UserMenu/UserMenu";
 
 function Header() {
   const responseSize = useWindowSize();
   const token = getCookieValue("token");
-
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
 
   if (responseSize.width < DESKTOP_BREAKPOINT) {
@@ -32,7 +32,12 @@ function Header() {
         <S.Wrap>
           <RegisterProjectButton />
           {auth?.isLoggedIn ? (
-            <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
+            <UserMenu
+              name={auth.name ?? "Anonymous"}
+              onSelect={() => {
+                window.location.href = "/";
+              }}
+            />
           ) : (
             <GoogleLoginButton />
           )}

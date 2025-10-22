@@ -7,6 +7,7 @@ import CloseButtonIcon from "../../CloseButtonIcon/CloseButtonIcon";
 import GoogleLoginButton from "../GoogleLoginButton/GoogleLoginButton";
 import NavBar from "../NavBar/NavBar";
 import RegisterProjectButton from "../RegisterProjectButton/RegisterProjectButton";
+import UserMenu from "../UserMenu/UserMenu";
 import * as S from "./MobileHeader.styled";
 
 function MobileHeader() {
@@ -64,7 +65,13 @@ function MobileHeader() {
         <S.DrawerFooter>
           <RegisterProjectButton close={close} />
           {auth?.isLoggedIn ? (
-            <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
+            <UserMenu
+              name={auth.name ?? "Anonymous"}
+              direction="up"
+              onSelect={() => {
+                window.location.href = "/";
+              }}
+            />
           ) : (
             <GoogleLoginButton />
           )}

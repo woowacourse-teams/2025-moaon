@@ -8,19 +8,14 @@ interface UserMenuItem {
   count?: number;
 }
 
+const USER_MENU_ITEMS: UserMenuItem[] = [{ key: "logout", label: "로그아웃" }];
 interface UserMenuProps<K> {
-  items: UserMenuItem[];
   name: string;
   direction?: "up" | "down";
   onSelect: (key: K) => void;
 }
 
-function UserMenu<K>({
-  items,
-  name,
-  direction = "down",
-  onSelect,
-}: UserMenuProps<K>) {
+function UserMenu<K>({ name, direction = "down", onSelect }: UserMenuProps<K>) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
@@ -42,7 +37,7 @@ function UserMenu<K>({
 
       {isOpen && (
         <S.UserMenuList style={{ top }}>
-          {items.map((item) => (
+          {USER_MENU_ITEMS.map((item) => (
             <S.UserMenuItem key={item.key} onClick={() => handleSelect(item)}>
               {item.label} {item.count !== undefined && `(${item.count})`}
             </S.UserMenuItem>
