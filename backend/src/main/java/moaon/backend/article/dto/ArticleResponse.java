@@ -2,7 +2,7 @@ package moaon.backend.article.dto;
 
 import java.util.List;
 import moaon.backend.article.domain.Article;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.article.domain.ArticleCursor;
 
 public record ArticleResponse(
         List<ArticleData> contents,
@@ -15,7 +15,7 @@ public record ArticleResponse(
             List<Article> articles,
             Long totalCount,
             boolean hasNext,
-            Cursor<?> nextCursor
+            ArticleCursor nextCursor
     ) {
         return new ArticleResponse(
                 ArticleData.from(articles),
@@ -52,10 +52,10 @@ public record ArticleResponse(
         );
     }
 
-    private static String extractNextCursor(Cursor<?> nextCursor) {
+    private static String extractNextCursor(ArticleCursor nextCursor) {
         if (nextCursor == null) {
             return null;
         }
-        return nextCursor.getNextCursor();
+        return nextCursor.asString();
     }
 }

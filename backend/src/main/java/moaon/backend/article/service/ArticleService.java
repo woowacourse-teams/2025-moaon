@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Articles;
@@ -19,7 +20,6 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -47,7 +47,7 @@ public class ArticleService {
         List<Article> articlesToReturn = articles.getArticlesToReturn();
         long totalCount = articles.getTotalCount();
         boolean hasNext = articles.hasNext();
-        Cursor<?> nextCursor = articles.getNextCursor();
+        ArticleCursor nextCursor = articles.getNextCursor();
 
         return ArticleResponse.from(articlesToReturn, totalCount, hasNext, nextCursor);
     }

@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import moaon.backend.global.cursor.Cursor;
 
 @RequiredArgsConstructor
 @Getter
@@ -28,11 +27,11 @@ public class Articles {
         return articles;
     }
 
-    public Cursor<?> getNextCursor() {
+    public ArticleCursor getNextCursor() {
         if (hasNext()) {
             List<Article> articlesToReturn = getArticlesToReturn();
             Article lastArticle = articlesToReturn.getLast();
-            return sortType.toCursor(lastArticle);
+            return new ArticleCursor(lastArticle, sortType);
         }
 
         return null;

@@ -18,11 +18,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.repository.ArticleFullTextSearchHQLFunction;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
@@ -40,7 +40,7 @@ public class ArticleDao {
 
     public List<Article> findAllBy(
             Set<Long> ids,
-            Cursor<?> cursor,
+            ArticleCursor cursor,
             int limit,
             ArticleSortType sortType
     ) {
@@ -165,7 +165,7 @@ public class ArticleDao {
         return article.sector.eq(sector);
     }
 
-    private BooleanExpression cursorWhereClause(Cursor<?> cursor, ArticleSortType sortType) {
+    private BooleanExpression cursorWhereClause(ArticleCursor cursor, ArticleSortType sortType) {
         if (cursor == null) {
             return null;
         }

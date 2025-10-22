@@ -2,10 +2,10 @@ package moaon.backend.article.dto;
 
 import java.util.List;
 import java.util.Objects;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.util.CollectionUtils;
 
@@ -16,7 +16,7 @@ public record ArticleQueryCondition(
         List<String> techStackNames,
         ArticleSortType sortType,
         int limit,
-        Cursor<?> cursor
+        ArticleCursor cursor
 ) {
 
     public static ArticleQueryCondition from(
@@ -43,7 +43,7 @@ public record ArticleQueryCondition(
                         : techStackNames,
                 sortBy,
                 limit,
-                sortBy.toCursor(cursor)
+                null
         );
     }
 

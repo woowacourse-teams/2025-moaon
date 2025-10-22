@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Articles;
 import moaon.backend.article.dto.ArticleData;
@@ -18,7 +19,6 @@ import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -75,7 +75,7 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(new Articles(articles, totalCount, limit, sortType));
 
-        Cursor<?> articleCursor = articleQueryCondition.sortType().toCursor(article2);
+        ArticleCursor articleCursor = new ArticleCursor(article2, articleQueryCondition.sortType());
 
         ArticleData articleData1 = ArticleData.from(article1);
         ArticleData articleData2 = ArticleData.from(article2);
@@ -88,7 +88,7 @@ class ArticleServiceTest {
                 () -> assertThat(actual.contents()).containsExactly(articleData1, articleData2),
                 () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
-                () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.getNextCursor())
+                () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.asString())
         );
     }
 
