@@ -1,9 +1,9 @@
 import { httpClient } from "../HttpClient";
-import type { PostProjectImageRegisterResponse } from "./postProjectRegister.type";
+import type { getImagePresignedUrlResponse } from "./postProjectRegister.type";
 
-const postProjectImageRegister = async (
+const getImagePresignedUrl = async (
   fileNames: string[]
-): Promise<PostProjectImageRegisterResponse[]> => {
+): Promise<getImagePresignedUrlResponse[]> => {
   const queryString = new URLSearchParams(window.location.search);
   queryString.set("fileNames", fileNames.join(","));
 
@@ -11,9 +11,9 @@ const postProjectImageRegister = async (
     `/s3/posturl?${queryString.toString()}`
   );
 
-  const result: PostProjectImageRegisterResponse[] = await response.json();
+  const result: getImagePresignedUrlResponse[] = await response.json();
 
   return result;
 };
 
-export default postProjectImageRegister;
+export default getImagePresignedUrl;
