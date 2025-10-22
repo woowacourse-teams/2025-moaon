@@ -30,7 +30,7 @@ function Header() {
           <NavBar />
         </S.Wrap>
         <S.Wrap>
-          <RegisterProjectButton isLoggedIn={auth?.isLoggedIn ?? false} />
+          <RegisterProjectButton />
           {auth?.isLoggedIn ? (
             <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
           ) : (

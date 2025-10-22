@@ -62,10 +62,7 @@ function MobileHeader() {
           <NavBar />
         </S.DrawerContent>
         <S.DrawerFooter>
-          <RegisterProjectButton
-            isLoggedIn={auth?.isLoggedIn ?? false}
-            close={close}
-          />
+          <RegisterProjectButton close={close} />
           {auth?.isLoggedIn ? (
             <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
           ) : (
