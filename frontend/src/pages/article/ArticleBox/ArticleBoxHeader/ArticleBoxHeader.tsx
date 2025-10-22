@@ -34,7 +34,16 @@ function ArticleBoxHeader({
       <S.SectorDropdownContainer>
         <SectorDropdown onSelect={updateSectorParams} />
       </S.SectorDropdownContainer>
-      <FilterContainer filterList={filterList} onSelect={onSelectSort} />
+      <S.FilterAndSortContainer>
+        <FilterContainer filterList={filterList} onSelect={onSelectSort} />
+        {shouldShowSort && (
+          <SortList
+            sortMap={ARTICLE_SORT_MAP}
+            onSelect={onSelectSort}
+            initialValue={initialSort}
+          />
+        )}
+      </S.FilterAndSortContainer>
       <S.ArticleHeaderBox>
         <S.ArticleIntro>
           {totalCount > 0 && (
@@ -46,13 +55,6 @@ function ArticleBoxHeader({
             </>
           )}
         </S.ArticleIntro>
-        {shouldShowSort && (
-          <SortList
-            sortMap={ARTICLE_SORT_MAP}
-            onSelect={onSelectSort}
-            initialValue={initialSort}
-          />
-        )}
       </S.ArticleHeaderBox>
     </S.ArticleHeader>
   );
