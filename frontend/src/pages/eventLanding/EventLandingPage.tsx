@@ -1,8 +1,21 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
+import LoginModal from "@shared/components/LoginModal/LoginModal";
+import { toast } from "@shared/components/Toast/toast";
+import { useOverlay } from "@shared/hooks/useOverlay";
+import { getCookieValue } from "@shared/utils/getCookieValue";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import { authQueries } from "@/apis/login/auth.queries";
 import { COMPANY_LIST, COMPANY_NAME } from "../wooteco/constants/company";
 import * as S from "./EventLandingPage.styled";
 
 function EventLandingPage() {
+  const navigate = useNavigate();
+  const token = getCookieValue("token");
+
+  const { data: auth } = useQuery(authQueries.fetchAuth(token));
+  const { open, close, isOpen } = useOverlay();
+
   const arrowRef = (node: HTMLElement | null) => {
     if (!node) {
       return;
@@ -56,6 +69,15 @@ function EventLandingPage() {
     };
   };
 
+  const handleRegisterClick = () => {
+    if (auth?.isLoggedIn) {
+      navigate(`/register`);
+      return;
+    }
+    toast.info("프로젝트 등록은 로그인 후에 가능합니다.");
+    open();
+  };
+
   return (
     <>
       <S.Header>
@@ -71,7 +93,9 @@ function EventLandingPage() {
               </S.LinkBox>
             </S.LinkContainer>
           </S.NavBox>
-          <S.RegisterLink to="/register">등록하기</S.RegisterLink>
+          <S.RegisterLink onClick={handleRegisterClick}>
+            등록하기
+          </S.RegisterLink>
         </S.Nav>
       </S.Header>
 
@@ -239,6 +263,7 @@ function EventLandingPage() {
           </S.Section2> */}
         </S.EventBox>
       </S.Container>
+      <LoginModal isOpen={isOpen} close={close} />
     </>
   );
 }

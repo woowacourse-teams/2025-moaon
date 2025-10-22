@@ -121,7 +121,7 @@ export const Link = styled(ReactRouterLink)`
   }
 `;
 
-export const RegisterLink = styled(ReactRouterLink)`
+export const RegisterLink = styled.button`
   color: #fbfbfb;
   font-size: 1rem;
 

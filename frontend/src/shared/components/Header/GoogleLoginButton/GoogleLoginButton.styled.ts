@@ -1,24 +1,20 @@
 import styled from "@emotion/styled";
 
 export const GoogleLoginButton = styled.button`
-  font-size: 14px;
+  font-size: 1rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  gap: 1rem;
   position: relative;
   border-radius: 8px;
   padding: 10px 14px 10px 16px;
-  background-color: black;
-  color: #fff;
-
-  &:hover {
-    background-color: gray;
-    transition: background-color 0.3s ease;
-  }
+  border: 1px solid #d2d2d2;
+  color: #000;
+  width: 300px;
 `;
 
 export const Icon = styled.img`
-  width: 14px;
+  width: 1.125rem;
   aspect-ratio: 1/1;
 `;

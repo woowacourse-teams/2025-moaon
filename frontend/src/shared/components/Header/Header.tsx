@@ -1,10 +1,14 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
 import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
+import { useOverlay } from "@shared/hooks/useOverlay";
 import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { getCookieValue } from "@shared/utils/getCookieValue";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { authQueries } from "@/apis/login/auth.queries";
-import GoogleLoginButton from "./GoogleLoginButton/GoogleLoginButton";
+import LoginModal from "../LoginModal/LoginModal";
+import { toast } from "../Toast/toast";
 import * as S from "./Header.styled";
 import MobileHeader from "./MobileHeader/MobileHeader";
 import NavBar from "./NavBar/NavBar";
@@ -12,13 +16,25 @@ import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton
 import UserMenu from "./UserMenu/UserMenu";
 
 function Header() {
+  const navigate = useNavigate();
   const responseSize = useWindowSize();
   const token = getCookieValue("token");
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
+  const { open, close, isOpen } = useOverlay();
+
   const { mutate: logout } = useMutation(authQueries.logout());
   if (responseSize.width < DESKTOP_BREAKPOINT) {
     return <MobileHeader />;
   }
+
+  const handleRegisterClick = () => {
+    if (auth?.isLoggedIn) {
+      navigate(`/register`);
+      return;
+    }
+    toast.info("프로젝트 등록은 로그인 후에 가능합니다.");
+    open();
+  };
 
   return (
     <S.Header>
@@ -30,8 +46,8 @@ function Header() {
           <NavBar />
         </S.Wrap>
         <S.Wrap>
-          <RegisterProjectButton />
-          {auth?.isLoggedIn ? (
+          <RegisterProjectButton onClick={handleRegisterClick} />
+          {auth?.isLoggedIn && (
             <UserMenu
               name={auth.name ?? "Anonymous"}
               onSelect={() => {
@@ -39,11 +55,10 @@ function Header() {
                 window.location.href = "/";
               }}
             />
-          ) : (
-            <GoogleLoginButton />
           )}
         </S.Wrap>
       </S.HeaderBox>
+      <LoginModal isOpen={isOpen} close={close} />
     </S.Header>
   );
 }

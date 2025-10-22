@@ -2,19 +2,18 @@ import { useNavigate } from "react-router";
 import * as S from "./RegisterProjectButton.styled";
 
 interface RegisterProjectButtonProps {
-  close?: () => void;
+  onClick?: () => void;
 }
 
-function RegisterProjectButton({ close }: RegisterProjectButtonProps) {
+function RegisterProjectButton({ onClick }: RegisterProjectButtonProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/register`);
-    close?.();
   };
 
   return (
-    <S.RegisterProjectButton type="button" onClick={handleClick}>
+    <S.RegisterProjectButton type="button" onClick={onClick ?? handleClick}>
       프로젝트 등록
     </S.RegisterProjectButton>
   );
