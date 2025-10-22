@@ -48,7 +48,7 @@ public class ArticleDao {
                 .selectFrom(article)
                 .where(
                         idIn(ids),
-                        applyCursor(cursor)
+                        cursorWhereClause(cursor, sortType)
                 )
                 .orderBy(toOrderBy(sortType))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
@@ -165,11 +165,12 @@ public class ArticleDao {
         return article.sector.eq(sector);
     }
 
-    private BooleanExpression applyCursor(Cursor<?> cursor) {
+    private BooleanExpression cursorWhereClause(Cursor<?> cursor, ArticleSortType sortType) {
         if (cursor == null) {
             return null;
         }
-        return cursor.getCursorExpression();
+
+        return CursorExpressionMapper.toWhereClause(cursor, sortType);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
