@@ -42,6 +42,6 @@ export const SearchBarBox = styled.div`
   width: 25.25rem;
   ${BP_768} {
     margin-right: auto;
-    width: auto;
+    width: 100%;
   }
 `;
