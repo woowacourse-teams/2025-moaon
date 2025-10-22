@@ -8,15 +8,6 @@ const getAuth = async (token?: string): Promise<Auth> => {
 
   const response = await httpClient.get(`/auth/me`);
 
-  if (response.status === 401) {
-    return {
-      id: null,
-      isLoggedIn: false,
-      name: null,
-      email: null,
-    };
-  }
-
   if (!response.ok) {
     throw new Error("Failed to fetch auth");
   }

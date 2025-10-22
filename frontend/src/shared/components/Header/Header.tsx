@@ -1,10 +1,11 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
+import { getCookieValue } from "@shared/utils/getCookieValue";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { authQueries } from "@/apis/login/auth.queries";
-import MobileHeader from "../MobileHeader/MobileHeader";
 import GoogleLoginButton from "./GoogleLoginButton/GoogleLoginButton";
 import * as S from "./Header.styled";
+import MobileHeader from "./MobileHeader/MobileHeader";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
 
@@ -16,8 +17,9 @@ function Header() {
       ? false
       : window.innerWidth <= MOBILE_BREAKPOINT,
   );
+  const token = getCookieValue("token");
 
-  const { data: auth } = useQuery(authQueries.fetchAuth());
+  const { data: auth } = useQuery(authQueries.fetchAuth(token));
 
   useEffect(() => {
     const onResize = () =>
