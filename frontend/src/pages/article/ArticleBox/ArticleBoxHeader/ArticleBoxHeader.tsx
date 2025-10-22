@@ -18,11 +18,10 @@ interface ArticleBoxHeaderProps {
 
 function ArticleBoxHeader({
   totalCount,
-  isLoading,
   onSelectSort,
   initialSort,
 }: ArticleBoxHeaderProps) {
-  const shouldShowSort = isLoading || totalCount > 0;
+  const shouldShowSort = totalCount > 0;
   const updateSectorParams = useUpdateSectorParams();
   const sector = useGetSectorLocation();
   const filterList = getArticleFilterList(sector);

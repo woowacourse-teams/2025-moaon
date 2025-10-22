@@ -20,7 +20,7 @@ const PROJECT_LIST_PAGE_DESCRIPTION =
 
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
-  const { refetch, totalCount, isLoading } = useProjectList();
+  const { refetch, totalCount } = useProjectList();
 
   const { hasSearch, excludeKeys } = useSearchSort<
     keyof typeof PROJECT_SORT_MAP
@@ -43,7 +43,7 @@ function ProjectListPage() {
   };
 
   const isSelected = techStacks.length > 0 || categories.length > 0;
-  const shouldShowSort = isLoading || totalCount > 0;
+  const shouldShowSort = totalCount > 0;
 
   return (
     <S.Main>
