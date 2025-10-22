@@ -19,7 +19,7 @@ const postProjectImage = async ({
         throw new Error(`파일 업로드에 실패했습니다`);
       }
 
-      return `https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/${key}`;
+      return key;
     })
   );
 
