@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -40,13 +40,12 @@ class VelogContentFinderTest {
         VelogContentFinder velogContentFinder = new VelogContentFinder();
 
         // when
-        ArticleCrawlResult result = velogContentFinder.crawl(normalLink);
+        FinderCrawlResult result = velogContentFinder.crawl(normalLink);
 
         // then
         assertAll(
                 () -> assertThat(result.title()).isEqualTo("공개 글입니다."),
-                () -> assertThat(result.summary()).startsWith("안녕하세요"),
-                () -> assertThat(result.summary().length()).isLessThanOrEqualTo(255)
+                () -> assertThat(result.content()).startsWith("안녕하세요")
         );
     }
 

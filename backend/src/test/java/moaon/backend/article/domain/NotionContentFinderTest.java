@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import moaon.backend.article.dto.ArticleCrawlResult;
+import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.util.EnvLoader;
@@ -44,13 +44,12 @@ class NotionContentFinderTest {
                 "https://tattered-drive-af3.notion.site/2744b522306480b89b42cc6dccb59b99?source=copy_link");
 
         // when
-        ArticleCrawlResult result = NOTION_CONTENT_FINDER.crawl(normalLink);
+        FinderCrawlResult result = NOTION_CONTENT_FINDER.crawl(normalLink);
 
         // then
         assertAll(
                 () -> assertThat(result.title()).isEqualTo("쿼리튜닝"),
-                () -> assertThat(result.summary()).startsWith("## localhost:8080/articles?limit=20"),
-                () -> assertThat(result.summary().length()).isEqualTo(255)
+                () -> assertThat(result.content()).startsWith("## localhost:8080/articles?limit=20")
         );
     }
 

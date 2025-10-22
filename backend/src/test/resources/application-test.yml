@@ -40,3 +40,6 @@ jwt:
 s3:
   bucket: testbucket
   region: testregion
+
+gpt:
+  api-key: testKey
