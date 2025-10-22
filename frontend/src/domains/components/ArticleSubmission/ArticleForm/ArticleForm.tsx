@@ -61,7 +61,7 @@ function ArticleForm({
           errorMessage={errors.title}
         />
         <TextareaFormField
-          title="아티클 내용"
+          title="아티클 한 줄 요약"
           name="description"
           placeholder="아티클 내용을 요약해주세요."
           value={formData.description}
