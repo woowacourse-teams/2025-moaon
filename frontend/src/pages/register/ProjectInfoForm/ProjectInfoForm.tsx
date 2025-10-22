@@ -88,7 +88,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
 
       <ImageFormField onSubmit={onNextClick} />
       <S.NextButton disabled={!isFormValid} type="submit">
-        다음
+        프로젝트 등록하기
       </S.NextButton>
     </S.ProjectInfoForm>
   );

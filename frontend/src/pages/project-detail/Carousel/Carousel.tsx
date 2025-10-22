@@ -89,7 +89,11 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
         </S.Indicators>
       )}
 
-      <Modal isOpen={imageModal.isOpen} onClose={handleCloseModal}>
+      <Modal
+        isOpen={imageModal.isOpen}
+        onClose={handleCloseModal}
+        variant="image"
+      >
         {selectedImageIndex !== null && (
           <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
         )}

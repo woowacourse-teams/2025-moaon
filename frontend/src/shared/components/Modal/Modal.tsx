@@ -1,3 +1,4 @@
+import CloseButtonIcon from "@shared/components/CloseButtonIcon/CloseButtonIcon";
 import { useFocusTrap } from "@shared/hooks/useFocusTrap";
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
@@ -11,6 +12,9 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   description?: string;
+  showCloseButton?: boolean;
+  variant?: "default" | "image";
+  disableCloseOnOverlayClick?: boolean;
 }
 
 function Modal({
@@ -19,14 +23,28 @@ function Modal({
   children,
   title,
   description,
+  showCloseButton = false,
+  variant = "default",
+  disableCloseOnOverlayClick = false,
 }: PropsWithChildren<ModalProps>) {
-  useKeyDown({ Escape: onClose });
+  useKeyDown({
+    Escape: () => {
+      if (!disableCloseOnOverlayClick) {
+        onClose();
+      }
+    },
+  });
+
   usePreventScroll(isOpen);
 
   const contentRef = useRef<HTMLDivElement>(null);
   useFocusTrap({ ref: contentRef, active: isOpen });
 
-  const setOutsideClickRef = useOutsideClick(onClose);
+  const setOutsideClickRef = useOutsideClick(() => {
+    if (!disableCloseOnOverlayClick) {
+      onClose();
+    }
+  });
 
   const titleId = useId();
   const descriptionId = useId();
@@ -44,7 +62,13 @@ function Modal({
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descriptionId : undefined}
+        variant={variant}
       >
+        {showCloseButton && (
+          <S.CloseButtonWrapper>
+            <CloseButtonIcon onClick={onClose} iconSize={16} />
+          </S.CloseButtonWrapper>
+        )}
         {title && <S.Title id={titleId}>{title}</S.Title>}
         {description && (
           <S.Description id={descriptionId}>{description}</S.Description>

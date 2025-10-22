@@ -12,10 +12,8 @@ export const NextButton = styled.button`
   background-color: #007bff;
   color: #fff;
   font-size: 1rem;
-  font-weight: 600;
-  border: none;
+  font-weight: 500;
   border-radius: 0.5rem;
-  cursor: pointer;
 
   &:hover:not(:disabled) {
     background-color: #0472e8ff;
