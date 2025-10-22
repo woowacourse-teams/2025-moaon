@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.article.exception.AiNoCostException;
+import moaon.backend.article.exception.AiSummaryFailedException;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,22 +85,32 @@ public class AiSummaryClient {
 
             HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
             String body = response.body();
-            System.out.println("body = " + body);
+            JsonNode root = objectMapper.readTree(body);
 
-            if (response.statusCode() == 403) {
+            int statusCode = response.statusCode();
+
+            if (statusCode == 429) {
                 throw new AiNoCostException();
             }
 
-            JsonNode root = objectMapper.readTree(body);
+            if (statusCode < 200 || statusCode >= 300) {
+                JsonNode errorNode = root.path("error");
+                JsonNode codeNode = errorNode.path("code");
+                JsonNode messageNode = errorNode.path("message");
+                String message = messageNode.asText();
+                throw new AiSummaryFailedException(codeNode.asInt(), message);
+            }
+
             JsonNode contentNode = root.path("choices").get(0).path("message").path("content");
 
             JsonNode parsed = objectMapper.readTree(contentNode.asText());
             String summary = parsed.get("summary").asText("");
-            
-            summary = enforceLength(summary, 0, 255);
 
+            summary = enforceLength(summary, 0, 255);
             return new ArticleCrawlResult(title, summary, content);
+
         } catch (IOException | InterruptedException e) {
+            log.error("AI 요약 API 연결에서 실패했습니다.", e);
             throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e);
         }
     }
