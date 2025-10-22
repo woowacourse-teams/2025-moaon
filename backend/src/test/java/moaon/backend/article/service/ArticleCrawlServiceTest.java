@@ -15,7 +15,10 @@ class ArticleCrawlServiceTest {
 
     @Mock
     private ArticleContentRepository repository;
-    private ArticleCrawlService crawlService = new ArticleCrawlService(repository);
+    @Mock
+    private AiSummaryClient aiSummaryClient;
+
+    private ArticleCrawlService crawlService = new ArticleCrawlService(repository, aiSummaryClient);
 
     @DisplayName("하루 20번 초과 크롤링시 실패한다.")
     @Test

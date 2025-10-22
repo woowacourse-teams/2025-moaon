@@ -28,13 +28,20 @@ public class ArticleCrawlingController {
             @CookieValue(value = "token", required = false) String token,
             @RequestParam(value = "url") String url
     ) {
+        Member member = validateAndGetMember(token);
+
+        ArticleCrawlResult result = articleCrawlService.crawl(url, member);
+        articleCrawlService.saveTemporary(url, result);
+
+        return ResponseEntity.ok(ArticleCrawlResponse.from(result, member));
+    }
+
+    private Member validateAndGetMember(String token) {
         if (token == null) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
         }
+
         oAuthService.validateToken(token);
-        Member member = oAuthService.getUserByToken(token);
-        ArticleCrawlResult result = articleCrawlService.crawl(url, member);
-        ArticleCrawlResponse saved = articleCrawlService.save(url, result);
-        return ResponseEntity.ok(saved);
+        return oAuthService.getUserByToken(token);
     }
 }

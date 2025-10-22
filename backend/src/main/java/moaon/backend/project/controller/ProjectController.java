@@ -69,16 +69,6 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/temp")
-    public ResponseEntity<ProjectCreateResponse> saveProjectTemp(
-            @RequestBody @Valid ProjectCreateRequest projectCreateRequest
-    ) {
-        Long savedId = projectService.save(projectCreateRequest);
-        ProjectCreateResponse response = ProjectCreateResponse.from(savedId);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDetailResponse> getProjectById(
             @PathVariable("id") long id,

@@ -43,6 +43,10 @@ public class Member {
         this.name = name;
     }
 
+    public int getTodayRemainingTokens() {
+        return 20 - crawlCount;
+    }
+
     public boolean isCrawlCountOvered() {
         return crawlCount >= 20;
     }
