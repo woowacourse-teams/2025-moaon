@@ -50,7 +50,6 @@ function ArticleSection({
 
   const debouncedValue = useDebounce({
     value: inputValue,
-    delay: 400,
   });
 
   const paramsRef = useRef(params);

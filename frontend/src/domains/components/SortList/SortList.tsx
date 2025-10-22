@@ -8,12 +8,14 @@ interface SortListProps<T extends Record<string, string>> {
   sortMap: T;
   onSelect: () => void;
   initialValue: keyof T;
+  excludeKeys?: (keyof T)[];
 }
 
 function SortList<T extends Record<string, string>>({
   sortMap,
   onSelect,
   initialValue,
+  excludeKeys = [],
 }: SortListProps<T>) {
   const params = useSearchParams({
     key: "sort",
@@ -27,10 +29,14 @@ function SortList<T extends Record<string, string>>({
     onSelect();
   };
 
+  const filteredSortEntries = typeSafeObjectEntries(sortMap).filter(
+    ([sortKey]) => !excludeKeys.includes(sortKey),
+  );
+
   return (
     <S.List>
       <Separated by={<S.Separator />}>
-        {typeSafeObjectEntries(sortMap).map(([sortKey, sortValue]) => (
+        {filteredSortEntries.map(([sortKey, sortValue]) => (
           <SortItem
             key={sortValue}
             isSelected={sortParams === sortKey}
