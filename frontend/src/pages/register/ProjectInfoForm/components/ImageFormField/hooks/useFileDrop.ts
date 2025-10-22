@@ -216,10 +216,6 @@ export const useFileDrop = ({
     [acceptString, onFileInputChange, multiple, disabled]
   );
 
-  const removeFile = useCallback((fileToRemove: File) => {
-    setFiles((current) => current.filter((file) => file !== fileToRemove));
-  }, []);
-
   if (error?.message) {
     toast.error(error.message);
     setError(null);
@@ -232,6 +228,5 @@ export const useFileDrop = ({
     disabled,
     getDropZoneProps,
     getFileInputProps,
-    removeFile,
   };
 };

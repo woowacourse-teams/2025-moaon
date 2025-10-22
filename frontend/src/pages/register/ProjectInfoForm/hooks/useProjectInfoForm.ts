@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { projectRegisterQueries } from "@/apis/projectRegister/projectRegister.queries";
 import type { ProjectFormData } from "../../../../apis/projectRegister/postProjectRegister.type";
+import { validateProjectInfoFormData } from "../utils/ProjectInfoFormUtils";
 
 interface UseProjectInfoFormProps {
   onNext: (projectId: number) => void;
@@ -23,56 +24,31 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
   });
 
   const { mutateAsync: requestImages } = useMutation(
-    projectRegisterQueries.postProjectImage()
+    projectRegisterQueries.getPresignedUrl()
   );
-
-  const handleImageRegisterClick = async (files: File[]) => {
-    try {
-      const fileNames = files.map((file) => file.name);
-      const response = await requestImages(fileNames);
-
-      const keys = await Promise.all(
-        response.map(async ({ preSignedUrl, key }, index) => {
-          const file = files[index];
-          const res = await fetch(preSignedUrl, {
-            method: "PUT",
-            headers: {
-              "Content-Type": file.type || "application/octet-stream",
-            },
-            body: file,
-          });
-
-          if (!res.ok) {
-            const body = await res.text();
-            throw new Error(
-              `파일 업로드에 실패했습니다: ${file.name} - ${body}`
-            );
-          }
-
-          return `https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/${key}`;
-        })
-      );
-
-      const newFormData = {
-        ...formData,
-        imageKeys: [...(formData.imageKeys ?? []), ...keys],
-      };
-
-      setFormData(newFormData);
-
-      return newFormData;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      }
-
-      toast.error("이미지 등록에 실패했습니다.");
-    }
-  };
 
   const { mutateAsync: submitProject } = useMutation(
     projectRegisterQueries.postProject()
   );
+
+  const { mutateAsync: uploadProjectImage } = useMutation(
+    projectRegisterQueries.uploadProjectImage()
+  );
+
+  const handleImageRegister = async (files: File[]) => {
+    const fileNames = files.map((file) => file.name);
+    const response = await requestImages(fileNames);
+    const keys = await uploadProjectImage({ response, files });
+    console.log("keys", keys);
+    const newFormData = {
+      ...formData,
+      imageKeys: [...(formData.imageKeys ?? []), ...keys],
+    };
+
+    setFormData(newFormData);
+
+    return newFormData;
+  };
 
   const handleNextClick = (formData: ProjectFormData) => {
     submitProject(formData, {
@@ -116,13 +92,38 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     []
   );
 
+  const onNextClick = async (files: File[]) => {
+    const errorMessage = validateProjectInfoFormData(formData);
+    if (errorMessage) {
+      toast.warning(errorMessage);
+      return;
+    }
+
+    try {
+      if (files.length > 0) {
+        const newFormData = await handleImageRegister(files);
+        if (newFormData) {
+          handleNextClick(newFormData);
+        }
+        return;
+      }
+
+      handleNextClick(formData);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+
+      toast.error("프로젝트 등록에 실패했습니다.");
+    }
+  };
+
   return {
     formData,
     setFormData,
     updateFormField,
     handleTechStackChange,
-    handleImageRegisterClick,
     toggleCategory,
-    handleNextClick,
+    onNextClick,
   };
 };
