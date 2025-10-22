@@ -1,3 +1,4 @@
+import GoogleIcon from "@assets/icons/google.svg";
 import { toast } from "@shared/components/Toast/toast";
 import * as S from "./GoogleLoginButton.styled";
 
@@ -53,6 +54,7 @@ function GoogleLoginButton() {
 
   return (
     <S.GoogleLoginButton type="button" onClick={handleClick}>
+      <S.Icon src={GoogleIcon} alt="" />
       구글 로그인
     </S.GoogleLoginButton>
   );
