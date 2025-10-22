@@ -22,14 +22,14 @@ function FileDropZone({
 }: FileDropZoneProps) {
   const getMessage = () => {
     if (currentCount >= maxFiles) {
-      return "최대 업로드 가능한 파일 수에 도달했습니다.";
+      return "최대 업로드 가능한 파일 수에 도달했어요.";
     }
 
     if (isOver) {
-      return "여기에 파일을 놓으세요!";
+      return "여기에 파일을 놓으세요.";
     }
 
-    return "파일을 드래그 앤 드롭하거나 클릭하여 선택하세요";
+    return "프로젝트 카드와 상세 페이지에 보여질 이미지를 드래그하거나 클릭해 올려보세요.";
   };
 
   return (
