@@ -258,7 +258,7 @@ export const LinkIcon = styled.img`
   height: 650px;
   animation: float 4s ease-in-out infinite;
   position: absolute;
-  top: 175px;
+  top: 220px;
   right: -150px;
 
   @keyframes float {
