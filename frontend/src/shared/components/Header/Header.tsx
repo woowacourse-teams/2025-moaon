@@ -2,7 +2,7 @@ import HeaderLogoImage from "@assets/images/header-logo.webp";
 import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
 import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { getCookieValue } from "@shared/utils/getCookieValue";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { authQueries } from "@/apis/login/auth.queries";
 import GoogleLoginButton from "./GoogleLoginButton/GoogleLoginButton";
 import * as S from "./Header.styled";
@@ -15,7 +15,7 @@ function Header() {
   const responseSize = useWindowSize();
   const token = getCookieValue("token");
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
-
+  const { mutate: logout } = useMutation(authQueries.logout());
   if (responseSize.width < DESKTOP_BREAKPOINT) {
     return <MobileHeader />;
   }
@@ -35,6 +35,7 @@ function Header() {
             <UserMenu
               name={auth.name ?? "Anonymous"}
               onSelect={() => {
+                logout();
                 window.location.href = "/";
               }}
             />

@@ -5,7 +5,6 @@ import * as S from "./UserMenu.styled";
 interface UserMenuItem {
   key: string;
   label: string;
-  count?: number;
 }
 
 const USER_MENU_ITEMS: UserMenuItem[] = [{ key: "logout", label: "로그아웃" }];
@@ -39,7 +38,7 @@ function UserMenu<K>({ name, direction = "down", onSelect }: UserMenuProps<K>) {
         <S.UserMenuList style={{ top }}>
           {USER_MENU_ITEMS.map((item) => (
             <S.UserMenuItem key={item.key} onClick={() => handleSelect(item)}>
-              {item.label} {item.count !== undefined && `(${item.count})`}
+              {item.label}
             </S.UserMenuItem>
           ))}
         </S.UserMenuList>

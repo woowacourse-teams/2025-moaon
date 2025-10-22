@@ -1,6 +1,6 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
 import { getCookieValue } from "@shared/utils/getCookieValue";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { authQueries } from "@/apis/login/auth.queries";
 import CloseButtonIcon from "../../CloseButtonIcon/CloseButtonIcon";
@@ -14,6 +14,7 @@ function MobileHeader() {
   const [open, setOpen] = useState(false);
   const token = getCookieValue("token");
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
+  const { mutate: logout } = useMutation(authQueries.logout());
 
   useEffect(() => {
     if (!open) {
@@ -69,6 +70,7 @@ function MobileHeader() {
               name={auth.name ?? "Anonymous"}
               direction="up"
               onSelect={() => {
+                logout();
                 window.location.href = "/";
               }}
             />
