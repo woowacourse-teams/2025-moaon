@@ -258,7 +258,7 @@ export const LinkIcon = styled.img`
   height: 650px;
   animation: float 4s ease-in-out infinite;
   position: absolute;
-  top: 175px;
+  top: 220px;
   right: -150px;
 
   @keyframes float {
@@ -274,8 +274,8 @@ export const LinkIcon = styled.img`
   }
 
   ${BP_1024} {
-    width: 650px;
-    height: 650px;
+    width: 550px;
+    height: 550px;
     top: 350px;
     right: 0;
   }
@@ -336,18 +336,18 @@ export const Badge = styled.div<{ bgColor: string; color: string }>`
 export const EventBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 25rem;
+  gap: 22rem;
 
   ${BP_1024} {
-    gap: 20rem;
+    gap: 17rem;
   }
 
   ${BP_768} {
-    gap: 15rem;
+    gap: 12rem;
   }
 
   ${BP_480} {
-    gap: 10rem;
+    gap: 7rem;
   }
 `;
 
@@ -359,6 +359,8 @@ export const Section2 = styled.section`
   gap: 1rem;
   position: relative;
   opacity: 0;
+  padding: 1rem 0;
+  min-height: 450px;
 
   ${BP_1280} {
     width: 960px;
@@ -735,7 +737,6 @@ export const FeedbackLinkBox = styled.div`
   border-radius: 24px;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
-  padding: 1rem;
   cursor: pointer;
   margin-top: 1rem;
 
@@ -789,8 +790,10 @@ export const FeedbackLink = styled.a`
   color: #fff;
   font-size: 1.125rem;
   font-weight: 500;
-  padding: 1rem;
+  padding: 2rem;
   transition: background-color 0.3s ease-in-out;
+  width: 100%;
+  text-align: center;
 
   ${BP_480} {
     font-size: 1rem;

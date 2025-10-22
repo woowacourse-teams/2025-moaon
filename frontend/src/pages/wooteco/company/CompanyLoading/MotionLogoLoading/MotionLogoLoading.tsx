@@ -14,7 +14,7 @@ function MotionLogoLoading({
       return;
     }
 
-    node.playbackRate = company === "toss" ? 1.75 : 1.5;
+    node.playbackRate = 2;
   };
 
   return (
