@@ -10,6 +10,7 @@ import moaon.backend.article.domain.ContentFinders;
 import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.article.exception.AiNoCostException;
+import moaon.backend.article.exception.AiSummaryFailedException;
 import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -53,9 +54,28 @@ public class ArticleCrawlService {
                     log.info("무료 AI 토큰 사용량을 초과해 GPT-3.5 turbo로 아티클을 요약했습니다. memberId: {}", member.getId());
                     return result;
                 } catch (AiNoCostException e1) {
-                    log.warn("gpt-3.5-turbo의 토큰 비용이 한계입니다.");
-                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
+                    log.warn("GPT AI 토큰 사용량이 한계에 달해 요약에 실패했습니다.");
+                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                } catch (AiSummaryFailedException e1) {
+                    log.error("GPT AI 요약에 실패했습니다. status code: {}, message: {}", e1.getResponseStatusCode(),
+                            e1.getResponseMessage());
+                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
                 }
+
+            } catch (AiSummaryFailedException e) {
+                try {
+                    ArticleCrawlResult result = aiSummaryService.summarize(crawlResult, "gpt-3.5-turbo");
+                    log.info("무료 AI 모델 실패로 인해 Meta GPT-3.5 turbo로 아티클을 요약했습니다. memberId: {}", member.getId());
+                    return result;
+                } catch (AiNoCostException e1) {
+                    log.warn("GPT AI 토큰 사용량이 한계에 달해 요약에 실패했습니다.");
+                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                } catch (AiSummaryFailedException e1) {
+                    log.error("GPT AI 요약에 실패했습니다. status code: {}, message: {}", e1.getResponseStatusCode(),
+                            e1.getResponseMessage());
+                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                }
+
             }
 
         } catch (Exception e) {
