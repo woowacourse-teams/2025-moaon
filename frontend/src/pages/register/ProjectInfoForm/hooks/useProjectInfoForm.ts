@@ -23,19 +23,34 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     techStacks: [],
   });
 
-  const { mutate, isPending } = useMutation(
+  const { mutateAsync: requestImages } = useMutation(
+    projectRegisterQueries.getPresignedUrl()
+  );
+
+  const { mutateAsync: submitProject } = useMutation(
     projectRegisterQueries.postProject()
   );
 
-  const handleNextClick = () => {
-    const errorMessage = validateProjectInfoFormData(formData);
+  const { mutateAsync: uploadProjectImage } = useMutation(
+    projectRegisterQueries.uploadProjectImage()
+  );
 
-    if (errorMessage) {
-      toast.warning(errorMessage);
-      return;
-    }
+  const handleImageRegister = async (files: File[]) => {
+    const fileNames = files.map((file) => file.name);
+    const response = await requestImages(fileNames);
+    const keys = await uploadProjectImage({ response, files });
+    const newFormData = {
+      ...formData,
+      imageKeys: [...(formData.imageKeys ?? []), ...keys],
+    };
 
-    mutate(formData, {
+    setFormData(newFormData);
+
+    return newFormData;
+  };
+
+  const handleNextClick = (formData: ProjectFormData) => {
+    submitProject(formData, {
       onSuccess: (projectFormData) => {
         onNext(projectFormData.id);
       },
@@ -76,12 +91,38 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     []
   );
 
+  const onNextClick = async (files: File[]) => {
+    const errorMessage = validateProjectInfoFormData(formData);
+    if (errorMessage) {
+      toast.warning(errorMessage);
+      return;
+    }
+
+    try {
+      if (files.length > 0) {
+        const newFormData = await handleImageRegister(files);
+        if (newFormData) {
+          handleNextClick(newFormData);
+        }
+        return;
+      }
+
+      handleNextClick(formData);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+
+      toast.error("프로젝트 등록에 실패했습니다.");
+    }
+  };
+
   return {
     formData,
+    setFormData,
     updateFormField,
     handleTechStackChange,
     toggleCategory,
-    handleNextClick,
-    isPending,
+    onNextClick,
   };
 };
