@@ -11,6 +11,7 @@ interface ProjectCategoryFormFieldProps {
   selectedCategories: ProjectCategoryKey[];
   onCategoryChange: (key: ProjectCategoryKey) => void;
   required?: boolean;
+  errorMessage?: string;
 }
 
 function ProjectCategoryFormField({
@@ -19,6 +20,7 @@ function ProjectCategoryFormField({
   selectedCategories,
   onCategoryChange,
   required = true,
+  errorMessage,
 }: ProjectCategoryFormFieldProps) {
   return (
     <FormField>
@@ -32,6 +34,9 @@ function ProjectCategoryFormField({
           onSelect={onCategoryChange}
           isActive={(key) => selectedCategories.includes(key)}
         />
+        <FormField.ErrorBox>
+          {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+        </FormField.ErrorBox>
       </FormField.Wrapper>
     </FormField>
   );

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const ProjectInfoForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const NextButton = styled.button`
@@ -17,7 +17,13 @@ export const NextButton = styled.button`
   border-radius: 0.5rem;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #0472e8ff;
+  }
+
+  &:disabled {
+    background-color: #9ea3aaff;
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `;

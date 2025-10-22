@@ -1,11 +1,19 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.div`
-  border: 1px solid #e5e7eb;
+export const Container = styled.div<{ hasError?: boolean }>`
+  border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#e5e7eb")};
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  &:focus-within {
+    border-color: ${({ hasError }) => (hasError ? "#dc2626" : "#005eff")};
+    box-shadow: ${({ hasError }) =>
+      hasError
+        ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
+        : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
+  }
 `;
 
 export const TabHeader = styled.div`

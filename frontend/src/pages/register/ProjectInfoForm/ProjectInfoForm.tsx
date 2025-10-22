@@ -12,6 +12,8 @@ interface ProjectInfoFormProps {
 function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
   const {
     formData,
+    errors,
+    isFormValid,
     updateFormField,
     handleTechStackChange,
     toggleCategory,
@@ -26,6 +28,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         placeholder="프로젝트 이름을 입력하세요"
         value={formData.title}
         onChange={(e) => updateFormField("title", e.target.value)}
+        errorMessage={errors.title}
       />
 
       <InputFormField
@@ -34,6 +37,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         placeholder="프로젝트를 한 문장으로 소개해주세요"
         value={formData.summary}
         onChange={(e) => updateFormField("summary", e.target.value)}
+        errorMessage={errors.summary}
       />
 
       <MarkdownFormField
@@ -41,6 +45,9 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         name="description"
         value={formData.description}
         onChange={(value) => updateFormField("description", value)}
+        minLength={100}
+        maxLength={8000}
+        errorMessage={errors.description}
       />
 
       <TechStackFormField
@@ -48,6 +55,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         name="techStacks"
         selectedTechStacks={formData.techStacks}
         onTechStackChange={handleTechStackChange}
+        errorMessage={errors.techStacks}
       />
 
       <ProjectCategoryFormField
@@ -55,6 +63,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         name="categories"
         selectedCategories={formData.categories}
         onCategoryChange={toggleCategory}
+        errorMessage={errors.categories}
       />
 
       <InputFormField
@@ -64,6 +73,7 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         value={formData.githubUrl}
         onChange={(e) => updateFormField("githubUrl", e.target.value)}
         required={false}
+        errorMessage={errors.githubUrl}
       />
 
       <InputFormField
@@ -73,9 +83,13 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         value={formData.productionUrl}
         onChange={(e) => updateFormField("productionUrl", e.target.value)}
         required={false}
+        errorMessage={errors.productionUrl}
       />
+
       <ImageFormField onSubmit={onNextClick} />
-      <S.NextButton type="submit">다음</S.NextButton>
+      <S.NextButton disabled={!isFormValid} type="submit">
+        다음
+      </S.NextButton>
     </S.ProjectInfoForm>
   );
 }

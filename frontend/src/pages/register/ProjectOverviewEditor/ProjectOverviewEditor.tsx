@@ -5,16 +5,18 @@ import * as S from "./ProjectOverviewEditor.styled";
 interface ProjectOverviewEditorProps {
   value: string;
   onChange: (value: string) => void;
+  hasError?: boolean;
 }
 
 function ProjectOverviewEditor({
   value,
   onChange,
+  hasError = false,
 }: ProjectOverviewEditorProps) {
   const [mode, setMode] = useState<"edit" | "preview">("edit");
 
   return (
-    <S.Container>
+    <S.Container hasError={hasError}>
       <S.TabHeader>
         <S.TabButton
           type="button"
