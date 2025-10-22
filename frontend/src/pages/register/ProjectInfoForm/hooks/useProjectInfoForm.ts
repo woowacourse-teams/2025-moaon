@@ -39,7 +39,6 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     const fileNames = files.map((file) => file.name);
     const response = await requestImages(fileNames);
     const keys = await uploadProjectImage({ response, files });
-    console.log("keys", keys);
     const newFormData = {
       ...formData,
       imageKeys: [...(formData.imageKeys ?? []), ...keys],
