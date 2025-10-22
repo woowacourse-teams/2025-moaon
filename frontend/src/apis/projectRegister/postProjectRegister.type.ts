@@ -15,3 +15,28 @@ export interface ProjectFormData {
 export interface PostProjectRegisterResponse {
   id: number;
 }
+
+export interface ProjectFormData {
+  title: string;
+  summary: string;
+  githubUrl?: string;
+  productionUrl?: string;
+  imageKeys?: string[];
+  description: string;
+  categories: ProjectCategoryKey[];
+  techStacks: TechStackKey[];
+}
+
+export interface PostProjectRegisterResponse {
+  id: number;
+}
+
+export interface getImagePresignedUrlResponse {
+  preSignedUrl: string;
+  key: string;
+}
+
+export interface uploadProjectImageResponse {
+  response: getImagePresignedUrlResponse[];
+  files: File[];
+}

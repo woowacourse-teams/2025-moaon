@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+import * as S from "./CloseButtonIcon.styled";
 
 interface CloseButtonIconProps extends ComponentProps<"button"> {
   iconSize?: number;
@@ -6,7 +7,7 @@ interface CloseButtonIconProps extends ComponentProps<"button"> {
 
 function CloseButtonIcon({ iconSize = 11, ...props }: CloseButtonIconProps) {
   return (
-    <button type="button" {...props}>
+    <S.CloseButton type="button" {...props}>
       <svg
         width={iconSize}
         height={iconSize}
@@ -21,7 +22,7 @@ function CloseButtonIcon({ iconSize = 11, ...props }: CloseButtonIconProps) {
           fill="currentColor"
         />
       </svg>
-    </button>
+    </S.CloseButton>
   );
 }
 
