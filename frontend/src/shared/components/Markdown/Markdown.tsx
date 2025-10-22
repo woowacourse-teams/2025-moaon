@@ -1,6 +1,5 @@
+import MarkdownPreview from "@uiw/react-markdown-preview";
 import type { ElementType } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import * as S from "./Markdown.styled";
 
 interface MarkdownProps {
@@ -11,8 +10,20 @@ interface MarkdownProps {
 function Markdown({ text, containerAs }: MarkdownProps) {
   return (
     <S.MarkdownWrapper as={containerAs}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+      <MarkdownPreview
+        source={text}
+        wrapperElement={{
+          "data-color-mode": "light",
+        }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          gap: "20px",
+        }}
+      />
     </S.MarkdownWrapper>
   );
 }
+
 export default Markdown;
