@@ -274,8 +274,8 @@ export const LinkIcon = styled.img`
   }
 
   ${BP_1024} {
-    width: 650px;
-    height: 650px;
+    width: 550px;
+    height: 550px;
     top: 350px;
     right: 0;
   }
