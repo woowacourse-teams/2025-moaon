@@ -1,4 +1,5 @@
 import SortList from "@domains/components/SortList/SortList";
+import { useSearchSort } from "@domains/hooks/useSearchSort";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
 import FilterContainer from "@shared/components/FilterContainer/FilterContainer";
 import { useGetSectorLocation } from "../../../../domains/hooks/useGetSectorLocation";
@@ -26,6 +27,12 @@ function ArticleBoxHeader({
   const sector = useGetSectorLocation();
   const filterList = getArticleFilterList(sector);
 
+  const { hasSearch, excludeKeys } = useSearchSort<
+    keyof typeof ARTICLE_SORT_MAP
+  >({
+    excludeKeysWhenNoSearch: ["relevance"],
+  });
+
   return (
     <S.ArticleHeader>
       <S.SectorTabContainer>
@@ -40,7 +47,8 @@ function ArticleBoxHeader({
           <SortList
             sortMap={ARTICLE_SORT_MAP}
             onSelect={onSelectSort}
-            initialValue={initialSort}
+            initialValue={hasSearch ? "relevance" : initialSort}
+            excludeKeys={excludeKeys}
           />
         )}
       </S.FilterAndSortContainer>

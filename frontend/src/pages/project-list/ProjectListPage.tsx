@@ -1,6 +1,7 @@
 import resetIcon from "@assets/icons/reset.svg";
 import TechStackFilterBox from "@domains/components/TechStackFilterBox/TechStackFilterBox";
 import { META_TITLE_PREFIX } from "@domains/constants/meta";
+import { useSearchSort } from "@domains/hooks/useSearchSort";
 import { PROJECT_SORT_MAP } from "@domains/sort/project";
 import FilterContainer from "@shared/components/FilterContainer/FilterContainer";
 import { useMeta } from "@shared/hooks/useMeta";
@@ -20,6 +21,12 @@ const PROJECT_LIST_PAGE_DESCRIPTION =
 function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount, isLoading } = useProjectList();
+
+  const { hasSearch, excludeKeys } = useSearchSort<
+    keyof typeof PROJECT_SORT_MAP
+  >({
+    excludeKeysWhenNoSearch: ["relevance"],
+  });
 
   useMeta({
     title: `${META_TITLE_PREFIX}프로젝트 탐색`,
@@ -78,7 +85,8 @@ function ProjectListPage() {
           <SortList
             sortMap={PROJECT_SORT_MAP}
             onSelect={handleSelect}
-            initialValue={DEFAULT_SORT_TYPE}
+            initialValue={hasSearch ? "relevance" : DEFAULT_SORT_TYPE}
+            excludeKeys={excludeKeys}
           />
         )}
       </S.Box>
