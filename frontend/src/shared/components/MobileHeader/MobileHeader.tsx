@@ -1,10 +1,13 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import CloseButtonIcon from "../CloseButtonIcon/CloseButtonIcon";
 import NavBar from "../Header/NavBar/NavBar";
 import RegisterProjectButton from "../Header/RegisterProjectButton/RegisterProjectButton";
 import * as S from "./MobileHeader.styled";
 
 function MobileHeader() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -22,6 +25,10 @@ function MobileHeader() {
 
   const close = () => setOpen(false);
   const toggle = () => setOpen((prev) => !prev);
+  const handleRegisterClick = () => {
+    navigate(`/register`);
+    close();
+  };
 
   return (
     <S.Header>
@@ -35,9 +42,9 @@ function MobileHeader() {
           aria-controls="mobile-drawer"
           onClick={toggle}
         >
-          <span />
-          <span />
-          <span />
+          <S.HamburgerButtonLine />
+          <S.HamburgerButtonLine />
+          <S.HamburgerButtonLine />
         </S.HamburgerButton>
       </S.TopBar>
       <S.Overlay
@@ -48,18 +55,14 @@ function MobileHeader() {
       />
       <S.Drawer id="mobile-drawer" role="dialog" aria-modal="true" $open={open}>
         <S.DrawerHeader>
-          <S.DrawerTitle>메뉴</S.DrawerTitle>
-          <S.CloseButton aria-label="메뉴 닫기" onClick={close}>
-            ×
-          </S.CloseButton>
+          <S.DrawerTitle>메뉴 살펴보기</S.DrawerTitle>
+          <CloseButtonIcon onClick={close} />
         </S.DrawerHeader>
-
         <S.DrawerContent onClick={close}>
           <NavBar />
         </S.DrawerContent>
-
         <S.DrawerFooter>
-          <RegisterProjectButton />
+          <RegisterProjectButton onclick={handleRegisterClick} />
         </S.DrawerFooter>
       </S.Drawer>
     </S.Header>

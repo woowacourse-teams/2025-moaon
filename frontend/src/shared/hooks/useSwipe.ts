@@ -13,7 +13,7 @@ interface SwipeResult {
   onTouchEnd: () => void;
 }
 
-const MIN_SWIPE_DISTANCE = 50; // 최소 스와이프 거리 (px)
+const MIN_SWIPE_DISTANCE = 50;
 
 export const useSwipe = (handlers: SwipeHandlers): SwipeResult => {
   const touchStart = useRef<{ x: number; y: number } | null>(null);
