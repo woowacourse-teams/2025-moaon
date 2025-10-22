@@ -2,14 +2,20 @@ import ArticleSubmission from "@domains/components/ArticleSubmission/ArticleSubm
 import Modal from "@shared/components/Modal/Modal";
 import { useOverlay } from "@shared/hooks/useOverlay";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import AnimationPlayer from "./AnimationPlayer/AnimationPlayer";
 import ProjectInfoForm from "./ProjectInfoForm/ProjectInfoForm";
 import * as S from "./RegisterPage.styled";
 
 function RegisterPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [projectId, setProjectId] = useState<number | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const step = Number(searchParams.get("step")) || 1;
+  const projectIdFromUrl = searchParams.get("projectId");
+
+  const [projectId, setProjectId] = useState<number | null>(
+    projectIdFromUrl ? Number(projectIdFromUrl) : null,
+  );
+
   const {
     isOpen: isModalOpen,
     open: openModal,
@@ -23,20 +29,25 @@ function RegisterPage() {
     openModal();
   };
 
+  const goToArticleStep = () => {
+    closeModal();
+    setSearchParams({ step: "2", projectId: String(projectId) });
+  };
+
   return (
     <S.RegisterPageContainer>
       <S.TitleSection>
-        <S.Title>{currentStep === 1 ? "프로젝트" : "아티클"} 등록</S.Title>
+        <S.Title>{step === 1 ? "프로젝트" : "아티클"} 등록</S.Title>
         <S.Description>
-          {currentStep === 1
+          {step === 1
             ? "프로젝트 등록에 필요한 정보를 입력해주세요"
             : "프로젝트와 관련된 아티클을 등록해주세요"}
         </S.Description>
       </S.TitleSection>
 
       <S.FormBox>
-        {currentStep === 1 && <ProjectInfoForm onNext={handleNextStepClick} />}
-        {currentStep === 2 && projectId !== null && (
+        {step === 1 && <ProjectInfoForm onNext={handleNextStepClick} />}
+        {step === 2 && projectId !== null && (
           <ArticleSubmission projectId={projectId} />
         )}
       </S.FormBox>
@@ -50,12 +61,7 @@ function RegisterPage() {
         >
           <AnimationPlayer />
           <S.ButtonContainer>
-            <S.ArticleAddButton
-              onClick={() => {
-                closeModal();
-                setCurrentStep((prev) => prev + 1);
-              }}
-            >
+            <S.ArticleAddButton onClick={goToArticleStep}>
               프로젝트 아티클 등록하기
             </S.ArticleAddButton>
             <S.ProjectNavigateButton
