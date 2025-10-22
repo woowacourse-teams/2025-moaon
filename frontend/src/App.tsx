@@ -5,6 +5,7 @@ import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
 import ArticlePage from "./pages/article/ArticlePage";
 import EventLandingPage from "./pages/eventLanding/EventLandingPage";
+import OAuthCallback from "./pages/oauth/OAuthCallback";
 import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
 import RegisterPage from "./pages/register/RegisterPage";
@@ -27,6 +28,7 @@ function App() {
             <Route path="/wooteco" element={<WootecoEventPage />} />
             <Route path="/wooteco/:company" element={<CompanyEventPage />} />
             <Route path="/" element={<EventLandingPage />} />
+            <Route path="/oauth/callback/:result" element={<OAuthCallback />} />
             <Route
               path="*"
               element={

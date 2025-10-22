@@ -29,3 +29,10 @@ export const Wrap = styled.div`
   align-items: center;
   gap: 2.5rem;
 `;
+
+export const UserName = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+`;

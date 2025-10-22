@@ -1,14 +1,18 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
+import { getCookieValue } from "@shared/utils/getCookieValue";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import CloseButtonIcon from "../CloseButtonIcon/CloseButtonIcon";
-import NavBar from "../Header/NavBar/NavBar";
-import RegisterProjectButton from "../Header/RegisterProjectButton/RegisterProjectButton";
+import { authQueries } from "@/apis/login/auth.queries";
+import CloseButtonIcon from "../../CloseButtonIcon/CloseButtonIcon";
+import GoogleLoginButton from "../GoogleLoginButton/GoogleLoginButton";
+import NavBar from "../NavBar/NavBar";
+import RegisterProjectButton from "../RegisterProjectButton/RegisterProjectButton";
 import * as S from "./MobileHeader.styled";
 
 function MobileHeader() {
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const token = getCookieValue("token");
+  const { data: auth } = useQuery(authQueries.fetchAuth(token));
 
   useEffect(() => {
     if (!open) {
@@ -25,10 +29,6 @@ function MobileHeader() {
 
   const close = () => setOpen(false);
   const toggle = () => setOpen((prev) => !prev);
-  const handleRegisterClick = () => {
-    navigate(`/register`);
-    close();
-  };
 
   return (
     <S.Header>
@@ -62,7 +62,12 @@ function MobileHeader() {
           <NavBar />
         </S.DrawerContent>
         <S.DrawerFooter>
-          <RegisterProjectButton onclick={handleRegisterClick} />
+          <RegisterProjectButton close={close} />
+          {auth?.isLoggedIn ? (
+            <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
+          ) : (
+            <GoogleLoginButton />
+          )}
         </S.DrawerFooter>
       </S.Drawer>
     </S.Header>
