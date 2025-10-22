@@ -8,7 +8,6 @@ import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
-import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.member.service.OAuthService;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
@@ -36,7 +35,6 @@ public class ProjectService {
     private final OAuthService oAuthService;
     private final TechStackRepository techStackRepository;
     private final CategoryRepository categoryRepository;
-    private final MemberRepository memberRepository;
 
     @Value("${s3.region}")
     private String region;
@@ -44,7 +42,7 @@ public class ProjectService {
     private String bucket;
 
     public ProjectDetailResponse getById(Long id) {
-        Project project = projectRepository.findProjectById(id);
+        Project project = projectRepository.findProjectWithMemberJoin(id);
         List<ProjectTechStack> stacks = projectRepository.findProjectTechStacksByProjectId(id);
         List<ProjectCategory> categories = projectRepository.findProjectCategoriesByProjectId(id);
 
@@ -64,7 +62,7 @@ public class ProjectService {
 
     @Transactional
     public ProjectDetailResponse increaseViewsCount(long id) {
-        Project project = projectRepository.findProjectById(id);
+        Project project = projectRepository.findProjectWithMemberJoin(id);
         project.addViewCount();
 
         return ProjectDetailResponse.from(project);

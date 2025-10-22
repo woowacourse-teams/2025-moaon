@@ -1,7 +1,6 @@
 package moaon.backend.project.repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.domain.SearchKeyword;
@@ -53,8 +52,8 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
     }
 
     @Override
-    public Project findProjectById(Long id){
-        return  projectDao.findProjectById(id)
+    public Project findProjectWithMemberJoin(Long id) {
+        return projectDao.findProjectById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
     }
 

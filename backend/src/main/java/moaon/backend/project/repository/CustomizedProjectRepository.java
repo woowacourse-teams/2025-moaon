@@ -11,7 +11,7 @@ public interface CustomizedProjectRepository {
 
     Projects findWithSearchConditions(ProjectQueryCondition projectQueryCondition);
 
-    Project findProjectById(Long id);
+    Project findProjectWithMemberJoin(Long id);
 
     List<ProjectCategory> findProjectCategoriesByProjectId(Long id);
 
