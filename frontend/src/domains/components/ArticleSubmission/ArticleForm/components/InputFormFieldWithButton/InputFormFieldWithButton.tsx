@@ -41,7 +41,7 @@ function InputFormFieldWithButton({
             hasError={hasError}
           />
           <FormField.Button buttonEvent={buttonEvent}>
-            가져오기
+            검증하기
           </FormField.Button>
         </S.InputFormFieldWithButtonWrapper>
         <FormField.ErrorBox>

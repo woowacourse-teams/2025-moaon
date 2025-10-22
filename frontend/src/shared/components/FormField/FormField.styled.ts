@@ -64,13 +64,13 @@ export const FormFieldTextarea = styled.textarea`
   }
 `;
 
-export const FormFieldLabel = styled.label`
+export const FormFieldLabel = styled.label<{ readOnly: boolean }>`
   position: relative;
   display: flex;
   border: 1px solid #ccc;
   border-radius: 16px;
   overflow: hidden;
-  cursor: pointer;
+  cursor: ${({ readOnly }) => (readOnly ? "not-allowed" : "pointer")};
 `;
 
 export const FormFieldLabelInner = styled.div`
@@ -89,7 +89,7 @@ export const FormFieldLabelText = styled.span`
   font-size: 0.875rem;
 `;
 
-export const FormFieldSelectionInput = styled.input`
+export const FormFieldSelectionInput = styled.input<{ readOnly: boolean }>`
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -97,7 +97,7 @@ export const FormFieldSelectionInput = styled.input`
   position: absolute;
   inset: 0;
   opacity: 0;
-  cursor: pointer;
+  cursor: ${({ readOnly }) => (readOnly ? "not-allowed" : "pointer")};
 
   &:checked + ${FormFieldLabelInner} > ${FormFieldLabelText} {
     color: #fff;

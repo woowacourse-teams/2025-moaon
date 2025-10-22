@@ -16,9 +16,9 @@ function InputFormField({
   required = true,
   placeholder,
   errorMessage,
+  disabled,
 }: InputFormFieldProps) {
   const hasError = !!errorMessage;
-
   return (
     <FormField>
       <FormField.Wrapper>
@@ -35,6 +35,7 @@ function InputFormField({
           placeholder={placeholder}
           required={required}
           hasError={hasError}
+          disabled={disabled}
         />
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}

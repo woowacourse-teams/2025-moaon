@@ -28,6 +28,7 @@ export const useArticleForm = ({
   onUpdate,
   onCancel,
 }: UseArticleFormProps) => {
+  const [isButtonClicked, setIsButtonClicked] = useState(true);
   const [formData, setFormData] = useState<ArticleFormDataType>(() =>
     createEmptyFormData()
   );
@@ -46,15 +47,18 @@ export const useArticleForm = ({
     }
 
     setFormData(editingData);
+    setIsButtonClicked(false);
   }, [editingData]);
 
-  const handleMetaDataFetchButtonClick = useCallback(() => {
+  const handleMetaDataFetchButtonClick = useCallback(async () => {
     if (!formData.address) {
       toast.warning("아티클 주소를 입력해주세요.");
       return;
     }
 
-    fetchMetaMutation.mutate(formData.address);
+    fetchMetaMutation.mutate(formData.address, () => {
+      setIsButtonClicked(false);
+    });
   }, [formData.address, fetchMetaMutation]);
 
   const updateFormFieldData = useCallback(
@@ -157,22 +161,27 @@ export const useArticleForm = ({
 
     if (onUpdate && editingData) {
       onUpdate(formData);
+      setFormData(createEmptyFormData());
+      setIsButtonClicked(true);
       return;
     }
 
     onSubmit(formData);
     setFormData(createEmptyFormData());
+    setIsButtonClicked(true);
     setErrors({});
   }, [formData, onSubmit, onUpdate, editingData]);
 
   const handleCancel = useCallback(() => {
     onCancel();
     setFormData(createEmptyFormData());
+    setIsButtonClicked(true);
     setErrors({});
   }, [onCancel]);
 
   return {
     formData,
+    isButtonClicked,
     errors,
     isFormValid,
     updateFormFieldData,

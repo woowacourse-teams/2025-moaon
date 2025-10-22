@@ -22,9 +22,15 @@ interface SectorFormFieldProps {
     techStacks?: string;
     topics?: string;
   };
+  readOnly?: boolean;
 }
 
-function SectorFormField({ sector, onChange, errors }: SectorFormFieldProps) {
+function SectorFormField({
+  sector,
+  onChange,
+  errors,
+  readOnly,
+}: SectorFormFieldProps) {
   const sectorEntriesWithoutAll = ARTICLE_SECTOR_ENTRY.filter(
     ([key]) => key !== "all",
   );
@@ -51,6 +57,7 @@ function SectorFormField({ sector, onChange, errors }: SectorFormFieldProps) {
         value={sector.value}
         onChange={(next) => handleSectorValueChange(next as ArticleSectorKey)}
         errorMessage={errors?.sectorValue}
+        readOnly={readOnly}
       />
       {!(isSectorAll || isNonTech) && (
         <SelectionInputFormField

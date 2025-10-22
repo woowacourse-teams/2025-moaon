@@ -24,6 +24,7 @@ function SelectionInputFormField<K extends string>({
   onChange,
   required = true,
   errorMessage,
+  readOnly,
 }: SelectionInputFormFieldProps<K>) {
   const isCheckbox = type === "checkbox";
 
@@ -63,9 +64,10 @@ function SelectionInputFormField<K extends string>({
                 value={key}
                 imgUrl={imgUrl}
                 checked={checked}
-                onChange={handleChange(key)}
+                onChange={!readOnly ? handleChange(key) : () => {}}
                 required={required}
                 label={label}
+                readOnly={readOnly}
               />
             );
           })}

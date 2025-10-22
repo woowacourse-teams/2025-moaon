@@ -15,6 +15,7 @@ function TextareaFormField({
   required = true,
   placeholder,
   errorMessage,
+  disabled,
 }: TextareaFormFieldProps) {
   return (
     <FormField>
@@ -30,6 +31,7 @@ function TextareaFormField({
           onChange={onChange}
           placeholder={placeholder}
           required={required}
+          disabled={disabled}
         />
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}

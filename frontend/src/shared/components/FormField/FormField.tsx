@@ -112,13 +112,14 @@ function FormFieldSelectionInput({
   checked,
   disabled = false,
   required,
+  readOnly = false,
 }: {
   label: string;
   type: "radio" | "checkbox";
   imgUrl?: string;
 } & ComponentProps<"input">) {
   return (
-    <S.FormFieldLabel htmlFor={id}>
+    <S.FormFieldLabel htmlFor={id} readOnly={readOnly}>
       <S.FormFieldSelectionInput
         type={type}
         value={value}
@@ -129,6 +130,7 @@ function FormFieldSelectionInput({
         required={required}
         disabled={disabled}
         checked={checked}
+        readOnly={readOnly}
       />
       <S.FormFieldLabelInner>
         {imgUrl && <S.FormFieldLabelImage src={imgUrl} alt="" />}
