@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { BP_480, BP_768, BP_1024 } from "@/styles/global.styled";
 import type { Test } from "./SearchBar";
 
-export const SearchForm = styled.form``;
+export const SearchWrapper = styled.div``;
 
 export const SearchLabel = styled.label`
   width: 100%;
