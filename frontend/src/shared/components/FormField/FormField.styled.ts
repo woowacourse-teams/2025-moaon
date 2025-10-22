@@ -20,15 +20,12 @@ export const FormFieldRequiredMark = styled.span`
   color: #f00;
 `;
 
-export const FormFieldButton = styled.button`
+export const FormFieldButton = styled.button<{ disabled: boolean }>`
   padding: 0.75rem 1rem;
-  background-color: #007bff;
+  background-color: ${({ disabled }) => (disabled ? "#e5e7eb" : "#007bff")};
   color: #fff;
   border-radius: 8px;
-
-  &:hover {
-    background-color: #0569d4ff;
-  }
+  ${({ disabled }) => disabled && "cursor:not-allowed"};
 `;
 
 export const FormFieldInput = styled.input<{ hasError?: boolean }>`

@@ -9,6 +9,7 @@ interface FormFieldHeaderProps {
 interface FormFieldButtonProps {
   buttonEvent: () => void;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 function FormFieldMain({ children }: PropsWithChildren) {
@@ -40,9 +41,10 @@ function FormFieldButton({
   children,
   buttonEvent,
   type = "button",
+  disabled = false,
 }: PropsWithChildren<FormFieldButtonProps>) {
   return (
-    <S.FormFieldButton type={type} onClick={buttonEvent}>
+    <S.FormFieldButton type={type} onClick={buttonEvent} disabled={disabled}>
       {children}
     </S.FormFieldButton>
   );

@@ -19,6 +19,7 @@ function InputFormFieldWithButton({
   placeholder,
   buttonEvent,
   errorMessage,
+  disabled,
 }: InputFormFieldWithButtonProps) {
   const hasError = !!errorMessage;
 
@@ -39,8 +40,9 @@ function InputFormFieldWithButton({
             placeholder={placeholder}
             required={required}
             hasError={hasError}
+            disabled={disabled}
           />
-          <FormField.Button buttonEvent={buttonEvent}>
+          <FormField.Button buttonEvent={buttonEvent} disabled={disabled}>
             검증하기
           </FormField.Button>
         </S.InputFormFieldWithButtonWrapper>

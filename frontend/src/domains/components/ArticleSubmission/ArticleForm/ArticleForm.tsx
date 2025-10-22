@@ -52,6 +52,7 @@ function ArticleForm({
           }
           buttonEvent={handleMetaDataFetchButtonClick}
           errorMessage={errors.address}
+          disabled={editingData !== undefined}
         />
         <InputFormField
           title="아티클 제목"
