@@ -1,5 +1,6 @@
 import type { ProjectCategoryKey } from "@domains/filter/projectCategory";
 import type { TechStackKey } from "@domains/filter/techStack";
+import { toast } from "@shared/components/Toast/toast";
 import { useMutation } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import { projectRegisterQueries } from "@/apis/projectRegister/projectRegister.queries";
@@ -36,7 +37,11 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
   });
   const [errors, setErrors] = useState<ProjectInfoFormErrors>({});
 
-  const { mutate, isPending } = useMutation(
+  const { mutateAsync: requestImages } = useMutation(
+    projectRegisterQueries.getPresignedUrl()
+  );
+
+  const { mutateAsync: submitProject } = useMutation(
     projectRegisterQueries.postProject()
   );
 
@@ -44,17 +49,26 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     const validationErrors = validateProjectInfoFormData(formData);
     return Object.values(validationErrors).every((error) => !error);
   }, [formData]);
+  const { mutateAsync: uploadProjectImage } = useMutation(
+    projectRegisterQueries.uploadProjectImage()
+  );
 
-  const handleNextClick = () => {
-    const nextErrors = validateProjectInfoFormData(formData);
-    setErrors(nextErrors);
+  const handleImageRegister = async (files: File[]) => {
+    const fileNames = files.map((file) => file.name);
+    const response = await requestImages(fileNames);
+    const keys = await uploadProjectImage({ response, files });
+    const newFormData = {
+      ...formData,
+      imageKeys: [...(formData.imageKeys ?? []), ...keys],
+    };
 
-    const hasError = Object.values(nextErrors).some((m) => m && m.length > 0);
-    if (hasError) {
-      return;
-    }
+    setFormData(newFormData);
 
-    mutate(formData, {
+    return newFormData;
+  };
+
+  const handleNextClick = (formData: ProjectFormData) => {
+    submitProject(formData, {
       onSuccess: (projectFormData) => {
         onNext(projectFormData.id);
       },
@@ -119,14 +133,42 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     });
   }, []);
 
+  const onNextClick = async (files: File[]) => {
+    const nextErrors = validateProjectInfoFormData(formData);
+    setErrors(nextErrors);
+
+    const hasError = Object.values(nextErrors).some((m) => m && m.length > 0);
+    if (hasError) {
+      return;
+    }
+
+    try {
+      if (files.length > 0) {
+        const newFormData = await handleImageRegister(files);
+        if (newFormData) {
+          handleNextClick(newFormData);
+        }
+        return;
+      }
+
+      handleNextClick(formData);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+
+      toast.error("프로젝트 등록에 실패했습니다.");
+    }
+  };
+
   return {
     formData,
     errors,
     isFormValid,
+    setFormData,
     updateFormField,
     handleTechStackChange,
     toggleCategory,
-    handleNextClick,
-    isPending,
+    onNextClick,
   };
 };

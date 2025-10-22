@@ -42,8 +42,8 @@ export const hoverUnderline = (bgColor: string = "#000") => css`
     position: absolute;
     width: 100%;
     transform: scaleX(0);
-    height: 0.0938rem;
-    bottom: -0.1875rem;
+    height: 0.0625rem;
+    bottom: -0.3125rem;
     left: 0;
     background-color: ${bgColor};
     transform-origin: bottom left;

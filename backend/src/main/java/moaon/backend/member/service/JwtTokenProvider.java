@@ -39,7 +39,10 @@ public class JwtTokenProvider {
     }
 
     public Long extractMemberId(String token) {
-        validToken(token);
+        if (!isValidToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
+        }
+
         String id = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -50,15 +53,12 @@ public class JwtTokenProvider {
         return Long.parseLong(id);
     }
 
-    public void validToken(String token) {
+    public boolean isValidToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
-            boolean isExpired = claims.getPayload().getExpiration().before(new Date());
-            if (isExpired) {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
-            }
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER, e);
+            return claims.getPayload().getExpiration().after(new Date());
+        } catch (JwtException e) {
+            return false;
         }
     }
 }

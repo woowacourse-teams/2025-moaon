@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface useSlideProps {
   imageUrls: string[];
@@ -23,9 +23,7 @@ export const useSlide = ({ imageUrls }: useSlideProps) => {
         return;
       }
 
-      const normalized =
-        ((index % imageUrls.length) + imageUrls.length) % imageUrls.length;
-      setCurrentImageIndex(normalized);
+      setCurrentImageIndex(index);
     },
     [imageUrls.length]
   );

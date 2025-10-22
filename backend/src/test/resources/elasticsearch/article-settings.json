@@ -2,23 +2,97 @@
   "analysis": {
     "analyzer": {
       "article_common_analyzer": {
+        "type": "custom",
+        "tokenizer": "nori_tokenizer_with_dict",
         "char_filter": [
           "html_strip"
         ],
-        "tokenizer": "nori_tokenizer",
         "filter": [
-          "nori_part_of_speech",
+          "nori_pos_with_stoptags",
           "nori_readingform",
           "lowercase",
           "article_common_synonym"
         ]
+      },
+      "article_autocomplete_index": {
+        "type": "custom",
+        "tokenizer": "edge_ngram_tokenizer",
+        "filter": [
+          "lowercase"
+        ]
+      },
+      "article_autocomplete_search": {
+        "type": "custom",
+        "tokenizer": "nori_tokenizer_with_dict",
+        "filter": [
+          "lowercase"
+        ]
       }
     },
     "filter": {
+      "nori_pos_with_stoptags": {
+        "type": "nori_part_of_speech",
+        "stoptags": [
+          "EC",
+          "EF",
+          "EP",
+          "ETM",
+          "ETN",
+          "IC",
+          "JC",
+          "JKB",
+          "JKC",
+          "JKG",
+          "JKO",
+          "JKQ",
+          "JKS",
+          "JKV",
+          "JX",
+          "MAG",
+          "MAJ",
+          "MM",
+          "SP",
+          "SSC",
+          "SSO",
+          "SC",
+          "SE",
+          "XPN",
+          "XSA",
+          "XSN",
+          "XSV",
+          "UNA",
+          "NA",
+          "VSV",
+          "VX",
+          "VCP",
+          "SY",
+          "SF"
+        ]
+      },
       "article_common_synonym": {
         "type": "synonym",
         "synonyms": [
           "java, 자바"
+        ]
+      }
+    },
+    "tokenizer": {
+      "nori_tokenizer_with_dict": {
+        "decompound_mode": "mixed",
+        "discard_punctuation": "false",
+        "type": "nori_tokenizer",
+        "user_dictionary_rules": [
+          "데이터베이스",
+          "프레임워크"
+        ]
+      },
+      "edge_ngram_tokenizer": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 30,
+        "token_chars": [
+          "letter",
+          "digit"
         ]
       }
     }

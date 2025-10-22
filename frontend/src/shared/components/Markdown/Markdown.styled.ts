@@ -36,4 +36,34 @@ export const MarkdownWrapper = styled(Polymorphic)`
   hr {
     border: 1px solid #ebebebff;
   }
+
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    border: 1px solid #ddd !important;
+  }
+
+  thead {
+    background-color: #f5f5f5 !important;
+  }
+
+  th {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    text-align: left !important;
+    font-weight: bold !important;
+  }
+
+  td {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+  }
+
+  tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+  }
+
+  strong {
+    font-weight: 600;
+  }
 `;

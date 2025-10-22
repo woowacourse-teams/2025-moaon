@@ -2,12 +2,14 @@ package moaon.backend.article.dto;
 
 import java.util.List;
 import java.util.Objects;
+import lombok.Builder;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.global.cursor.ESCursor;
 import moaon.backend.global.domain.SearchKeyword;
 
+@Builder
 public record ArticleESQuery(
         SearchKeyword search,
         Sector sector,
@@ -27,7 +29,7 @@ public record ArticleESQuery(
             int limit,
             String cursor
     ) {
-        ArticleSortType sortBy = ArticleSortType.from(sortType);
+        ArticleSortType sortBy = createArticleSortType(search, sortType);
         return new ArticleESQuery(
                 new SearchKeyword(search),
                 Sector.of(sector),
@@ -42,7 +44,16 @@ public record ArticleESQuery(
                         : techStackNames,
                 sortBy,
                 limit,
-                new ESCursor(cursor)
+                new ESCursor(cursor, sortBy)
         );
+    }
+
+    private static ArticleSortType createArticleSortType(String search, String sortType) {
+        boolean noSortButHasSearchKeyword =
+                (sortType == null || sortType.isBlank()) && (search != null && !search.isBlank());
+        if (noSortButHasSearchKeyword) {
+            return ArticleSortType.RELEVANCE;
+        }
+        return ArticleSortType.from(sortType);
     }
 }
