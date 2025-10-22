@@ -735,7 +735,6 @@ export const FeedbackLinkBox = styled.div`
   border-radius: 24px;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
-  padding: 1rem;
   cursor: pointer;
   margin-top: 1rem;
 
@@ -789,8 +788,10 @@ export const FeedbackLink = styled.a`
   color: #fff;
   font-size: 1.125rem;
   font-weight: 500;
-  padding: 1rem;
+  padding: 2rem;
   transition: background-color 0.3s ease-in-out;
+  width: 100%;
+  text-align: center;
 
   ${BP_480} {
     font-size: 1rem;
