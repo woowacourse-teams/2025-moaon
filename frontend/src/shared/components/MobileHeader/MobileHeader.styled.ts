@@ -10,7 +10,7 @@ export const Header = styled.header`
 `;
 
 export const TopBar = styled.div`
-  padding: 1rem 1rem;
+  padding: 1.125rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,7 +73,7 @@ export const Drawer = styled.aside<{ $open: boolean }>`
 `;
 
 export const DrawerHeader = styled.div`
-  height: 4.5rem;
+  height: 4.75rem;
   padding: 0 1rem;
   display: flex;
   align-items: center;

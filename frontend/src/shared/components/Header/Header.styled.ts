@@ -16,6 +16,7 @@ export const HeaderBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 0.75rem;
 `;
 
 export const LogoLink = styled(Link)`
