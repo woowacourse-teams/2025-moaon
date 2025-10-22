@@ -30,9 +30,10 @@ export const Wrap = styled.div`
   gap: 2.5rem;
 `;
 
-export const UserName = styled.div`
+export const UserName = styled.button`
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
   text-align: center;
+  text-decoration: underline;
 `;
