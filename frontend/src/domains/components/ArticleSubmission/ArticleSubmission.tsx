@@ -1,3 +1,5 @@
+import { toast } from "@shared/components/Toast/toast";
+import { useNavigate } from "react-router";
 import ArticleDraftItem from "./ArticleDraftList/ArticleDraftItem/ArticleDraftItem";
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm from "./ArticleForm/ArticleForm";
@@ -14,6 +16,7 @@ function ArticleSubmission({
   projectId,
   initialArticles,
 }: ArticleSubmissionProps) {
+  const navigate = useNavigate();
   const {
     articles,
     editingArticle,
@@ -28,6 +31,11 @@ function ArticleSubmission({
     projectId,
   });
 
+  const postArticleAndNavigate = () => {
+    postArticlesClick();
+    toast.success("아티클이 성공적으로 등록되었어요!");
+    navigate(`/project/${projectId}`);
+  };
   return (
     <S.ArticleSubmissionContainer>
       <ArticleForm
@@ -48,7 +56,10 @@ function ArticleSubmission({
               />
             ))}
           </ArticleDraftList>
-          <S.ArticleSubmissionButton type="button" onClick={postArticlesClick}>
+          <S.ArticleSubmissionButton
+            type="button"
+            onClick={postArticleAndNavigate}
+          >
             아티클 등록
           </S.ArticleSubmissionButton>
         </>
