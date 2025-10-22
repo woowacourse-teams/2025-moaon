@@ -42,8 +42,7 @@ public class ProjectService {
     private String bucket;
 
     public ProjectDetailResponse getById(Long id) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        Project project = projectRepository.findProjectById(id);
 
         return ProjectDetailResponse.from(project);
     }

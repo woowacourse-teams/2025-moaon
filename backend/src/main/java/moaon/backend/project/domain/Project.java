@@ -87,6 +87,25 @@ public class Project extends BaseTimeEntity {
     private List<Article> articles;
 
     public Project(
+            Project project,
+            List<ProjectTechStack> techStacks,
+            List<ProjectCategory> categories
+    ) {
+        this.id = project.getId();
+        this.author = project.getAuthor();
+        this.title = project.getTitle();
+        this.summary = project.getSummary();
+        this.description = project.getDescription();
+        this.techStacks = techStacks;
+        this.categories = categories;
+        this.images = project.getImages();
+        this.githubUrl = project.getGithubUrl();
+        this.productionUrl = project.getProductionUrl();
+        this.createdAt = project.getCreatedAt();
+        this.lovedMembers = project.getLovedMembers();
+    }
+
+    public Project(
             String title,
             String summary,
             String description,
@@ -133,6 +152,7 @@ public class Project extends BaseTimeEntity {
         categories.forEach(this::addCategory);
         this.createdAt = createdAt;
     }
+
 
     public void addViewCount() {
         views++;
