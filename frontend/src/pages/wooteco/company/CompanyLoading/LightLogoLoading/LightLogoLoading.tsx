@@ -11,17 +11,6 @@ function LightLogoLoading({
   onLoadingComplete,
 }: LightLogoLoadingProps) {
   const [firstLoading, setFirstLoading] = useState(true);
-  const refCallback = (element: HTMLElement | null) => {
-    if (!element) {
-      return;
-    }
-
-    const animations = element.getAnimations({ subtree: true });
-    console.log(animations);
-    Promise.all(animations.map((animation) => animation.finished))
-      .then(() => onLoadingComplete())
-      .catch(() => onLoadingComplete());
-  };
 
   const firstLoadingEnd = () => {
     setFirstLoading(false);

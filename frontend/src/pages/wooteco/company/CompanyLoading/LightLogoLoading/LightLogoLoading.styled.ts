@@ -49,7 +49,7 @@ export const ShineImage = styled.img`
   -webkit-mask-size: 250% 100%;
   -webkit-mask-position: -100% 0;
   -webkit-mask-repeat: no-repeat;
-  animation: shine 1.5s linear forwards;
+  animation: shine 1.25s linear forwards;
 
   @keyframes shine {
     0% {
@@ -69,11 +69,14 @@ export const SecondImage = styled.img`
   object-fit: contain;
   display: block;
 
-  animation: fadeIn 0.75s ease-in-out forwards;
+  animation: fadeIn 0.85s ease-in forwards;
 
   @keyframes fadeIn {
     0% {
       opacity: 0;
+    }
+    40% {
+      opacity: 1;
     }
     100% {
       opacity: 1;
