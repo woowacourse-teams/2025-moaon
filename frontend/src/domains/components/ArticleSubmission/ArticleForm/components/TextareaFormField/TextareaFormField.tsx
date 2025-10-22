@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 interface TextareaFormFieldProps extends ComponentProps<"textarea"> {
   title: string;
   name: string;
+  errorMessage?: string;
 }
 
 function TextareaFormField({
@@ -13,6 +14,7 @@ function TextareaFormField({
   onChange,
   required = true,
   placeholder,
+  errorMessage,
 }: TextareaFormFieldProps) {
   return (
     <FormField>
@@ -29,6 +31,9 @@ function TextareaFormField({
           placeholder={placeholder}
           required={required}
         />
+        <FormField.ErrorBox>
+          {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
+        </FormField.ErrorBox>
       </FormField.Wrapper>
     </FormField>
   );

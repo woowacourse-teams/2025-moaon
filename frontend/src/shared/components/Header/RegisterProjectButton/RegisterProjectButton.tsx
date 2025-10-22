@@ -1,11 +1,16 @@
 import { useNavigate } from "react-router";
 import * as S from "./RegisterProjectButton.styled";
 
-function RegisterProjectButton() {
+interface RegisterProjectButtonProps {
+  close?: () => void;
+}
+
+function RegisterProjectButton({ close }: RegisterProjectButtonProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/register`);
+    close?.();
   };
 
   return (

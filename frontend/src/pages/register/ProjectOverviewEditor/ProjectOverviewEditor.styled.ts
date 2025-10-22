@@ -1,11 +1,19 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.div`
-  border: 1px solid #e5e7eb;
+export const Container = styled.div<{ hasError?: boolean }>`
+  border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#e5e7eb")};
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  &:focus-within {
+    border-color: ${({ hasError }) => (hasError ? "#dc2626" : "#005eff")};
+    box-shadow: ${({ hasError }) =>
+      hasError
+        ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
+        : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
+  }
 `;
 
 export const TabHeader = styled.div`
@@ -51,8 +59,11 @@ export const TextArea = styled.textarea`
 export const PreviewBox = styled.div`
   padding: 0.875rem;
   color: #374151;
-  line-height: 1.6;
-  word-break: break-all;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.1;
+  white-space: pre-wrap;
+  word-break: keep-all;
   overflow-wrap: break-word;
   max-height: 15.625rem;
   overflow-y: auto;

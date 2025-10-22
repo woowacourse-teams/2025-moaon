@@ -4,5 +4,20 @@ spring:
     url: ${SPRING_DATASOURCE_URL_DEV}
     username: ${SPRING_DATASOURCE_USERNAME_DEV}
     password: ${SPRING_DATASOURCE_PASSWORD_DEV}
+    hikari:
+      maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:10}
+      minimum-idle: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:10}
+      connection-timeout: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:30000}
+      max-lifetime: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME:1800000}
   elasticsearch:
     uris: http://10.0.0.37:9200
+
+
+server:
+  tomcat:
+    threads:
+      max: ${SERVER_TOMCAT_THREADS_MAX:200}
+      max-connections: ${SERVER_TOMCAT_THREADS_MAX_CONNECTIONS:8192}
+      accept-count: ${SERVER_TOMCAT_THREADS_ACCEPT_COUNT:100}
+      min-spare: ${SERVER_TOMCAT_THREADS_MIN_SPARE:10}
+    connection-timeout: ${SERVER_TOMCAT_CONNECTION_TIMEOUT:20000ms}

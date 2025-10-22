@@ -7,7 +7,7 @@ export const FormBox = styled.form`
 export const FormFieldList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const ArticleAddressBox = styled.div`
@@ -38,7 +38,13 @@ export const ArticleAddButton = styled.button`
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #e5e7eb;
+  background-color: #007bff;
+  color: #fff;
   border-radius: 8px;
+
+  &:hover {
+    background-color: #0472e8ff;
+  }
 `;
 
 export const ArticleCancelButton = styled.button`
