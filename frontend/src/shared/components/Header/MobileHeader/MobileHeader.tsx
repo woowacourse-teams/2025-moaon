@@ -1,7 +1,9 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
+import { toast } from "@shared/components/Toast/toast";
 import { getCookieValue } from "@shared/utils/getCookieValue";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { authQueries } from "@/apis/login/auth.queries";
 import CloseButtonIcon from "../../CloseButtonIcon/CloseButtonIcon";
 import GoogleLoginButton from "../GoogleLoginButton/GoogleLoginButton";
@@ -10,6 +12,7 @@ import RegisterProjectButton from "../RegisterProjectButton/RegisterProjectButto
 import * as S from "./MobileHeader.styled";
 
 function MobileHeader() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const token = getCookieValue("token");
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
@@ -30,6 +33,15 @@ function MobileHeader() {
   const close = () => setOpen(false);
   const toggle = () => setOpen((prev) => !prev);
 
+  const handleRegisterClick = () => {
+    if (auth?.isLoggedIn) {
+      navigate(`/register`);
+      close();
+      return;
+    }
+
+    toast.info("프로젝트 등록은 로그인 후에 가능합니다.");
+  };
   return (
     <S.Header>
       <S.TopBar>
@@ -62,7 +74,7 @@ function MobileHeader() {
           <NavBar />
         </S.DrawerContent>
         <S.DrawerFooter>
-          <RegisterProjectButton close={close} />
+          <RegisterProjectButton onClick={handleRegisterClick} />
           {auth?.isLoggedIn ? (
             <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
           ) : (
