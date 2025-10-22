@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.global.domain.SearchKeyword;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.dao.ProjectDao;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.ProjectQueryCondition;
+import moaon.backend.techStack.domain.ProjectTechStack;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -35,6 +39,22 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
 
         List<Project> projects = projectDao.findProjects(condition, filteringIds.getIds());
         return new Projects(projects, calculateTotalCount(filteringIds), limit);
+    }
+
+    @Override
+    public List<ProjectCategory> findProjectCategoriesByProjectId(Long id) {
+        return projectDao.findProjectCategoriesByProjectId(id);
+    }
+
+    @Override
+    public List<ProjectTechStack> findProjectTechStacksByProjectId(Long id) {
+        return projectDao.findProjectTechStacksByProjectId(id);
+    }
+
+    @Override
+    public Project findProjectWithMemberJoin(Long id) {
+        return projectDao.findProjectById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
     }
 
     private FilteringIds applyTechStacks(FilteringIds filteringIds, List<String> techStack) {

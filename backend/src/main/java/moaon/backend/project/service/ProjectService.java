@@ -8,10 +8,10 @@ import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
-import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.member.service.OAuthService;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.Projects;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectCreateRequest;
@@ -19,6 +19,7 @@ import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.repository.CategoryRepository;
 import moaon.backend.project.repository.ProjectRepository;
+import moaon.backend.techStack.domain.ProjectTechStack;
 import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,6 @@ public class ProjectService {
     private final OAuthService oAuthService;
     private final TechStackRepository techStackRepository;
     private final CategoryRepository categoryRepository;
-    private final MemberRepository memberRepository;
 
     @Value("${s3.region}")
     private String region;
@@ -42,10 +42,11 @@ public class ProjectService {
     private String bucket;
 
     public ProjectDetailResponse getById(Long id) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        Project project = projectRepository.findProjectWithMemberJoin(id);
+        List<ProjectTechStack> stacks = projectRepository.findProjectTechStacksByProjectId(id);
+        List<ProjectCategory> categories = projectRepository.findProjectCategoriesByProjectId(id);
 
-        return ProjectDetailResponse.from(project);
+        return ProjectDetailResponse.from(project, stacks, categories);
     }
 
     public PagedProjectResponse getPagedProjects(ProjectQueryCondition projectQueryCondition) {
@@ -61,11 +62,12 @@ public class ProjectService {
 
     @Transactional
     public ProjectDetailResponse increaseViewsCount(long id) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        Project project = projectRepository.findProjectWithMemberJoin(id);
         project.addViewCount();
+        List<ProjectTechStack> stacks = projectRepository.findProjectTechStacksByProjectId(id);
+        List<ProjectCategory> categories = projectRepository.findProjectCategoriesByProjectId(id);
 
-        return ProjectDetailResponse.from(project);
+        return ProjectDetailResponse.from(project, stacks, categories);
     }
 
     @Transactional
