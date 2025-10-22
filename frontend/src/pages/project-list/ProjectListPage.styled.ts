@@ -169,3 +169,17 @@ export const ResetIcon = styled.img`
     width: 0.875rem;
   }
 `;
+
+export const SortListContainer = styled.div`
+  ${BP_768} {
+    display: none;
+  }
+`;
+
+export const SortDropdownContainer = styled.div`
+  display: none;
+
+  ${BP_768} {
+    display: block;
+  }
+`;
