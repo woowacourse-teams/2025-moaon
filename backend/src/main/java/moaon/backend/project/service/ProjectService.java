@@ -64,8 +64,7 @@ public class ProjectService {
 
     @Transactional
     public ProjectDetailResponse increaseViewsCount(long id) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        Project project = projectRepository.findProjectById(id);
         project.addViewCount();
 
         return ProjectDetailResponse.from(project);
