@@ -41,17 +41,18 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     projectRegisterQueries.getPresignedUrl()
   );
 
-  const { mutateAsync: submitProject } = useMutation(
+  const { mutate: submitProject } = useMutation(
     projectRegisterQueries.postProject()
+  );
+
+  const { mutateAsync: uploadProjectImage } = useMutation(
+    projectRegisterQueries.uploadProjectImage()
   );
 
   const isFormValid = useMemo(() => {
     const validationErrors = validateProjectInfoFormData(formData);
     return Object.values(validationErrors).every((error) => !error);
   }, [formData]);
-  const { mutateAsync: uploadProjectImage } = useMutation(
-    projectRegisterQueries.uploadProjectImage()
-  );
 
   const handleImageRegister = async (files: File[]) => {
     const fileNames = files.map((file) => file.name);
@@ -71,6 +72,9 @@ export const useProjectInfoForm = ({ onNext }: UseProjectInfoFormProps) => {
     submitProject(formData, {
       onSuccess: (projectFormData) => {
         onNext(projectFormData.id);
+      },
+      onError: (err) => {
+        toast.error(err.message || "프로젝트 등록에 실패했습니다.");
       },
     });
   };
