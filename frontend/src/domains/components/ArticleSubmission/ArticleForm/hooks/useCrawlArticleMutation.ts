@@ -11,7 +11,6 @@ export const useCrawlArticleMutation = (
   const handleFetch = (url: string) => {
     mutate(url, {
       onSuccess: ({ title, summary }) => {
-        console.log("title:", title, "summary:", summary);
         setFormData((prev) => ({
           ...prev,
           ...(title ? { title } : {}),

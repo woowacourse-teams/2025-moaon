@@ -49,22 +49,37 @@ export const ShineImage = styled.img`
   -webkit-mask-size: 250% 100%;
   -webkit-mask-position: -100% 0;
   -webkit-mask-repeat: no-repeat;
-  animation: shine 3s linear forwards;
+  animation: shine 1.25s linear forwards;
 
   @keyframes shine {
     0% {
       -webkit-mask-position: 120% 0;
       mask-position: 120% 0;
     }
-    50% {
-      -webkit-mask-position: -100% 0;
-      mask-position: -100% 0;
+    100% {
+      -webkit-mask-position: -40% 0;
+      mask-position: -40% 0;
+    }
+  }
+`;
+
+export const SecondImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+
+  animation: fadeIn 0.85s ease-in forwards;
+
+  @keyframes fadeIn {
+    0% {
       opacity: 0;
+    }
+    40% {
+      opacity: 1;
     }
     100% {
       opacity: 1;
-      -webkit-mask-image: none;
-      mask-image: none;
     }
   }
 `;

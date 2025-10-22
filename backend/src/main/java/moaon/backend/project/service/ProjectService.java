@@ -69,39 +69,6 @@ public class ProjectService {
     }
 
     @Transactional
-    public Long save(ProjectCreateRequest request) {
-        Member member = memberRepository.findById(1L).orElseThrow(
-                () -> new CustomException(ErrorCode.UNAUTHORIZED_MEMBER)
-        );
-
-        Project project = new Project(
-                request.title(),
-                request.summary(),
-                request.description(),
-                request.githubUrl(),
-                request.productionUrl(),
-                new Images(request.imageKeys()),
-                member,
-                request.techStacks().stream()
-                        .map(
-                                techStack -> techStackRepository.findByName(techStack)
-                                        .orElseThrow(() -> new CustomException(ErrorCode.TECHSTACK_NOT_FOUND))
-                        )
-                        .toList(),
-                request.categories().stream()
-                        .map(
-                                category -> categoryRepository.findByName(category)
-                                        .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND))
-                        )
-                        .toList(),
-                LocalDateTime.now()
-        );
-
-        Project saved = projectRepository.save(project);
-        return saved.getId();
-    }
-
-    @Transactional
     public Long save(String token, ProjectCreateRequest request) {
         Member member = oAuthService.getUserByToken(token);
         Project project = new Project(

@@ -58,7 +58,7 @@ function EventLandingPage() {
 
         node.style.animation = "";
       },
-      { threshold: 0.1 },
+      { threshold: 0.05 },
     );
 
     observer.observe(node);

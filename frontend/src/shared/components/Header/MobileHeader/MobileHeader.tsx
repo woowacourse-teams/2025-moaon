@@ -1,7 +1,7 @@
 import HeaderLogoImage from "@assets/images/header-logo.webp";
 import { toast } from "@shared/components/Toast/toast";
 import { getCookieValue } from "@shared/utils/getCookieValue";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { authQueries } from "@/apis/login/auth.queries";
@@ -9,6 +9,7 @@ import CloseButtonIcon from "../../CloseButtonIcon/CloseButtonIcon";
 import GoogleLoginButton from "../GoogleLoginButton/GoogleLoginButton";
 import NavBar from "../NavBar/NavBar";
 import RegisterProjectButton from "../RegisterProjectButton/RegisterProjectButton";
+import UserMenu from "../UserMenu/UserMenu";
 import * as S from "./MobileHeader.styled";
 
 function MobileHeader() {
@@ -16,6 +17,7 @@ function MobileHeader() {
   const [open, setOpen] = useState(false);
   const token = getCookieValue("token");
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
+  const { mutate: logout } = useMutation(authQueries.logout());
 
   useEffect(() => {
     if (!open) {
@@ -76,7 +78,14 @@ function MobileHeader() {
         <S.DrawerFooter>
           <RegisterProjectButton onClick={handleRegisterClick} />
           {auth?.isLoggedIn ? (
-            <S.UserName>{`${auth.name}님 환영합니다.`}</S.UserName>
+            <UserMenu
+              name={auth.name ?? "Anonymous"}
+              direction="up"
+              onSelect={() => {
+                logout();
+                window.location.href = "/";
+              }}
+            />
           ) : (
             <GoogleLoginButton />
           )}

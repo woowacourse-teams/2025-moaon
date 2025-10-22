@@ -50,3 +50,6 @@ jwt:
 s3:
   bucket: ${S3_BUCKET}
   region: ${S3_REGION}
+
+gpt:
+  api-key: ${GPT_API_KEY}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import * as S from "./LightLogoLoading.styled";
 
 interface LightLogoLoadingProps {
@@ -9,24 +10,28 @@ function LightLogoLoading({
   company,
   onLoadingComplete,
 }: LightLogoLoadingProps) {
-  const refCallback = (element: HTMLElement | null) => {
-    if (!element) {
-      return;
-    }
+  const [firstLoading, setFirstLoading] = useState(true);
 
-    const animations = element.getAnimations({ subtree: true });
-    Promise.all(animations.map((animation) => animation.finished))
-      .then(() => onLoadingComplete())
-      .catch(() => onLoadingComplete());
+  const firstLoadingEnd = () => {
+    setFirstLoading(false);
   };
 
   return (
     <S.Background bgColor="#111">
-      <S.ShineBox ref={refCallback}>
-        <S.ShineImage
-          src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
-          alt=""
-        />
+      <S.ShineBox>
+        {firstLoading ? (
+          <S.ShineImage
+            onAnimationEnd={firstLoadingEnd}
+            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
+            alt=""
+          />
+        ) : (
+          <S.SecondImage
+            onAnimationEnd={onLoadingComplete}
+            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
+            alt=""
+          />
+        )}
       </S.ShineBox>
     </S.Background>
   );

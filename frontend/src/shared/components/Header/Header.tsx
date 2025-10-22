@@ -5,6 +5,7 @@ import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { getCookieValue } from "@shared/utils/getCookieValue";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { authQueries } from "@/apis/login/auth.queries";
 import LoginModal from "../LoginModal/LoginModal";
 import { toast } from "../Toast/toast";
@@ -12,15 +13,16 @@ import * as S from "./Header.styled";
 import MobileHeader from "./MobileHeader/MobileHeader";
 import NavBar from "./NavBar/NavBar";
 import RegisterProjectButton from "./RegisterProjectButton/RegisterProjectButton";
+import UserMenu from "./UserMenu/UserMenu";
 
 function Header() {
   const navigate = useNavigate();
   const responseSize = useWindowSize();
   const token = getCookieValue("token");
-
   const { data: auth } = useQuery(authQueries.fetchAuth(token));
   const { open, close, isOpen } = useOverlay();
 
+  const { mutate: logout } = useMutation(authQueries.logout());
   if (responseSize.width < DESKTOP_BREAKPOINT) {
     return <MobileHeader />;
   }
@@ -45,6 +47,15 @@ function Header() {
         </S.Wrap>
         <S.Wrap>
           <RegisterProjectButton onClick={handleRegisterClick} />
+          {auth?.isLoggedIn && (
+            <UserMenu
+              name={auth.name ?? "Anonymous"}
+              onSelect={() => {
+                logout();
+                window.location.href = "/";
+              }}
+            />
+          )}
         </S.Wrap>
       </S.HeaderBox>
       <LoginModal isOpen={isOpen} close={close} />

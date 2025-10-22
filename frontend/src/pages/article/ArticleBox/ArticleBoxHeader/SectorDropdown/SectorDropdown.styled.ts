@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 
 export const DropdownContainer = styled.div`
-  position: relative;
   width: 100%;
   margin-bottom: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
 `;
 
 export const DropdownHeader = styled.button`
@@ -21,19 +21,29 @@ export const DropdownHeader = styled.button`
 `;
 
 export const DropdownList = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid #afafaf;
   border-radius: 6px;
   background-color: white;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.09);
   z-index: 10;
+  margin-top: 0.5rem;
 `;
 
 export const DropdownItem = styled.li`
-  padding: 1rem;
+  padding: 1.21rem 1rem;
+  border-bottom: 1px solid #ddddddff;
   cursor: pointer;
 
   &:hover {
     background-color: #f6faffff;
     color: #007bff;
+  }
+
+  &:last-of-type {
+    border-bottom: none;
   }
 `;
