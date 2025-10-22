@@ -336,18 +336,18 @@ export const Badge = styled.div<{ bgColor: string; color: string }>`
 export const EventBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 25rem;
+  gap: 22rem;
 
   ${BP_1024} {
-    gap: 20rem;
+    gap: 17rem;
   }
 
   ${BP_768} {
-    gap: 15rem;
+    gap: 12rem;
   }
 
   ${BP_480} {
-    gap: 10rem;
+    gap: 7rem;
   }
 `;
 
@@ -359,6 +359,8 @@ export const Section2 = styled.section`
   gap: 1rem;
   position: relative;
   opacity: 0;
+  padding: 1rem 0;
+  min-height: 450px;
 
   ${BP_1280} {
     width: 960px;
