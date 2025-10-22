@@ -21,6 +21,12 @@ public class OAuthService {
     }
 
     public void validateToken(String token) {
-        jwtTokenProvider.validToken(token);
+        if (!jwtTokenProvider.isValidToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
+        }
+    }
+
+    public boolean isValidToken(String token) {
+        return jwtTokenProvider.isValidToken(token);
     }
 }

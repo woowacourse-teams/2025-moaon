@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: moaon-app
   profiles:
     default: local
 
@@ -7,9 +9,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     baseline-version: "1"
-
-  application:
-    name: backend
 
   jpa:
     show-sql: false
@@ -28,6 +27,17 @@ management:
   endpoint:
     health:
       show-details: never
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+    enable:
+      tomcat: true
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
 
 google:
   clientId: ${GOOGLE_CLIENT_ID}

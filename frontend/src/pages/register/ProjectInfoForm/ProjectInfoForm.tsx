@@ -1,4 +1,5 @@
 import InputFormField from "@domains/components/ArticleSubmission/ArticleForm/components/InputFormField/InputFormField";
+import ImageFormField from "./components/ImageFormField/ImageFormField";
 import MarkdownFormField from "./components/MarkdownFormField/MarkdownFormField";
 import ProjectCategoryFormField from "./components/ProjectCategoryFormField/ProjectCategoryFormField";
 import TechStackFormField from "./components/TechStackFormField/TechStackFormField";
@@ -14,8 +15,9 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
     updateFormField,
     handleTechStackChange,
     toggleCategory,
-    handleNextClick,
+    onNextClick,
   } = useProjectInfoForm({ onNext });
+
   return (
     <S.ProjectInfoForm>
       <InputFormField
@@ -72,10 +74,8 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         onChange={(e) => updateFormField("productionUrl", e.target.value)}
         required={false}
       />
-
-      <S.NextButton type="button" onClick={handleNextClick}>
-        다음
-      </S.NextButton>
+      <ImageFormField onSubmit={onNextClick} />
+      <S.NextButton type="submit">다음</S.NextButton>
     </S.ProjectInfoForm>
   );
 }

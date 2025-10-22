@@ -1,7 +1,6 @@
 package moaon.backend.article.service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -9,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
 import moaon.backend.article.domain.ArticleDocument;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
+import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleContentRepository;
@@ -52,19 +53,36 @@ public class ArticleService {
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
-        projectRepository.findById(id)
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
-        List<Article> articles = articleRepository.findAllByProjectIdAndCondition(id, condition);
-        Map<Sector, Long> articleCountBySector = Arrays.stream(Sector.values())
-                .collect(
-                        Collectors.toMap(
-                                sector -> sector,
-                                sector -> articleRepository.countByProjectIdAndSector(id, sector)
-                        )
-                );
+        List<Article> allArticlesInProject = project.getArticles();
+        List<Long> retrievedIds = retrieveInGivenArticles(allArticlesInProject, condition);
+        List<Article> filteredArticles = allArticlesInProject.stream().filter(a -> retrievedIds.contains(a.getId()))
+                .toList();
 
-        return ProjectArticleResponse.of(articles, articleCountBySector);
+        Map<Sector, Long> articleCountBySector = allArticlesInProject.stream()
+                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
+        for (Sector sector : Sector.values()) {
+            articleCountBySector.computeIfAbsent(sector, k -> 0L);
+        }
+        return ProjectArticleResponse.of(filteredArticles, articleCountBySector);
+    }
+
+    private List<Long> retrieveInGivenArticles(List<Article> allArticlesInProject,
+                                               ProjectArticleQueryCondition condition) {
+        ArticleESQuery esQuery = ArticleESQuery.builder()
+                .search(condition.search())
+                .sector(condition.sector())
+                .sortBy(ArticleSortType.CREATED_AT)
+                .limit(999)
+                .build();
+
+        List<Long> allArticleIds = allArticlesInProject.stream().map(Article::getId).toList();
+        return articleDocumentRepository.searchInIds(allArticleIds, esQuery)
+                .stream()
+                .map(ArticleDocument::getId)
+                .toList();
     }
 
     @Transactional

@@ -15,9 +15,12 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
+import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleSectorCount;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -57,6 +60,9 @@ public class ProjectApiTest extends BaseApiTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @MockitoBean
+    private ArticleDocumentRepository articleDocumentRepository;
 
     @MockitoBean
     private OAuthService oAuthService;
@@ -290,6 +296,12 @@ public class ProjectApiTest extends BaseApiTest {
                         .title(unfilteredSearch)
                         .build()
         );
+
+        Mockito.doReturn(List.of(
+                new ArticleDocument(targetProjectArticle1),
+                new ArticleDocument(targetProjectArticle2),
+                new ArticleDocument(targetProjectArticle3))
+        ).when(articleDocumentRepository).searchInIds(Mockito.anyList(), Mockito.any(ArticleESQuery.class));
 
         // when
         ProjectArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()

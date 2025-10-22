@@ -22,6 +22,14 @@ public enum ArticleSortType {
             "clicks",
             cursor -> CursorParser.toCursor(cursor, new IntegerParser(), ClickArticleCursor::new),
             article -> new ClickArticleCursor(article.getClicks(), article.getId())
+    ),
+    RELEVANCE("relevance",
+            string -> {
+                throw new UnsupportedOperationException("아직 ES에서만 사용중입니다.");
+            },
+            article -> {
+                throw new UnsupportedOperationException("아직 ES에서만 사용중입니다.");
+            }
     );
 
     private final String sortType;
