@@ -8,7 +8,7 @@ export const useCrawlArticleMutation = (
 ) => {
   const { mutate, isPending } = crawlArticleQueries.fetchCrawl();
 
-  const handleFetch = (url: string, onSuccess: () => void) => {
+  const handleFetch = (url: string, disabledCondition: () => void) => {
     mutate(url, {
       onSuccess: ({ title, summary }) => {
         setFormData((prev) => ({
@@ -17,7 +17,7 @@ export const useCrawlArticleMutation = (
           ...(summary ? { description: summary } : {}),
         }));
 
-        onSuccess();
+        disabledCondition();
       },
       onError: (error) => {
         if (error instanceof Error) {
