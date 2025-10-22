@@ -1,4 +1,5 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
+import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import { useState } from "react";
 import * as S from "./UserMenu.styled";
 
@@ -16,7 +17,7 @@ interface UserMenuProps<K> {
 
 function UserMenu<K>({ name, direction = "down", onSelect }: UserMenuProps<K>) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const addToSafeZone = useOutsideClick(() => setIsOpen(false));
   const toggleDropdown = () => setIsOpen((prev) => !prev);
   const handleSelect = (item: UserMenuItem) => {
     onSelect(item.key as K);
@@ -26,7 +27,7 @@ function UserMenu<K>({ name, direction = "down", onSelect }: UserMenuProps<K>) {
   const top = direction === "up" ? "-200%" : "150%";
 
   return (
-    <S.UserMenuContainer>
+    <S.UserMenuContainer ref={addToSafeZone}>
       <S.UserMenuButton onClick={toggleDropdown}>
         {name}님
         <ArrowIcon

@@ -26,7 +26,6 @@ export const UserMenuList = styled.ul`
   z-index: 10;
   overflow: hidden;
   position: absolute;
-  top: 150%;
   right: 0;
 `;
 

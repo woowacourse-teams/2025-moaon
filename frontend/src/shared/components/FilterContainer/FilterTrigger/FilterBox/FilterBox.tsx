@@ -23,8 +23,8 @@ function FilterBox({
 
   const disabledReset = params.get().length === 0;
   return (
-    <S.Container isOpen={isOpen}>
-      <S.Wrap>{children}</S.Wrap>
+    <S.Container isOpen={isOpen} param={param}>
+      {children}
       <S.FilterResetButton
         type="button"
         onClick={handelFilterResetButtonClick}
