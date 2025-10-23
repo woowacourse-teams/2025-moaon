@@ -22,7 +22,7 @@ function ArticlePage() {
     description: ARTICLE_PAGE_DESCRIPTION,
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     refetch();
   }, [sector]);
@@ -30,9 +30,11 @@ function ArticlePage() {
   return (
     <S.Main>
       <S.MainBox>
-        <S.TitleBox>
-          <S.MainTitle>아티클 탐색</S.MainTitle>
-          <S.MainDescription>{ARTICLE_PAGE_DESCRIPTION}</S.MainDescription>
+        <S.TitleBox id="article-page-title">
+          <S.MainTitle tabIndex={0}>아티클 탐색</S.MainTitle>
+          <S.MainDescription tabIndex={0}>
+            {ARTICLE_PAGE_DESCRIPTION}
+          </S.MainDescription>
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>

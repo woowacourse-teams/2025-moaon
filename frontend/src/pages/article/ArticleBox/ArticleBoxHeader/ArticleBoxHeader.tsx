@@ -65,7 +65,7 @@ function ArticleBoxHeader({
         )}
       </S.FilterAndSortContainer>
       <S.ArticleHeaderBox>
-        <S.ArticleIntro>
+        <S.ArticleIntro tabIndex={0} aria-hidden="true">
           {totalCount > 0 && (
             <>
               <S.ArticleIntroText>

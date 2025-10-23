@@ -28,6 +28,7 @@ function SectorTab({
     <S.SectorTabList>
       {ARTICLE_SECTOR_ENTRY.map(([key, { label }], idx) => (
         <S.SectorTabItem
+          tabIndex={0}
           key={key}
           selected={key === rawSelectedParams}
           onKeyDown={(e) => {
