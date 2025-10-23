@@ -37,13 +37,14 @@ function MobileHeader() {
 
   const handleRegisterClick = () => {
     if (auth?.isLoggedIn) {
-      navigate(`/register`);
+      navigate("/register", { state: { reset: true }, replace: true });
       close();
       return;
     }
 
     toast.info("프로젝트 등록은 로그인 후에 가능합니다.");
   };
+
   return (
     <S.Header>
       <S.TopBar>

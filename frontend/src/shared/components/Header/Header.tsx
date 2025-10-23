@@ -22,13 +22,14 @@ function Header() {
   const { open, close, isOpen } = useOverlay();
 
   const { mutate: logout } = useMutation(authQueries.logout());
+
   if (responseSize.width < DESKTOP_BREAKPOINT) {
     return <MobileHeader />;
   }
 
   const handleRegisterClick = () => {
     if (auth?.isLoggedIn) {
-      navigate(`/register`);
+      navigate("/register", { state: { reset: true }, replace: true });
       return;
     }
     toast.info("프로젝트 등록은 로그인 후에 가능합니다.");
@@ -49,8 +50,8 @@ function Header() {
           {auth?.isLoggedIn && (
             <UserMenu
               name={auth.name ?? "Anonymous"}
-              onSelect={async () => {
-                await logout();
+              onSelect={() => {
+                logout();
                 getCookieValue("token")
                   ? toast.error("로그아웃에 실패했어요. 다시 시도해주세요.")
                   : toast.success("로그아웃에 성공했어요.");
