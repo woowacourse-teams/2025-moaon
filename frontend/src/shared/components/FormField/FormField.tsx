@@ -87,7 +87,8 @@ function FormFieldTextarea({
   disabled = false,
   readOnly = false,
   required,
-}: ComponentProps<"textarea">) {
+  hasError,
+}: ComponentProps<"textarea"> & { hasError?: boolean }) {
   return (
     <S.FormFieldTextarea
       id={id}
@@ -98,6 +99,7 @@ function FormFieldTextarea({
       disabled={disabled}
       readOnly={readOnly}
       required={required}
+      hasError={hasError}
     />
   );
 }

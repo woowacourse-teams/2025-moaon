@@ -17,6 +17,7 @@ function TextareaFormField({
   errorMessage,
   disabled,
 }: TextareaFormFieldProps) {
+  const hasError = !!errorMessage;
   return (
     <FormField>
       <FormField.Wrapper>
@@ -32,6 +33,7 @@ function TextareaFormField({
           placeholder={placeholder}
           required={required}
           disabled={disabled}
+          hasError={hasError}
         />
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
