@@ -2,42 +2,27 @@ import { toast } from "@shared/components/Toast/toast";
 import type { Dispatch, SetStateAction } from "react";
 import { crawlArticleQueries } from "@/apis/crawl/crawlArticle.queries";
 import type { ArticleFormDataType } from "../../types";
+import { createEmptyFormData } from "../utils/formUtils";
 
 export const useCrawlArticleMutation = (
   setFormData: Dispatch<SetStateAction<ArticleFormDataType>>
 ) => {
-  const { mutate, mutateAsync, isPending } = crawlArticleQueries.fetchCrawl();
+  const { mutateAsync, isPending } = crawlArticleQueries.fetchCrawl();
 
-  const handleFetch = (
+  const handleFetchAsync = async (
     url: string,
-    disabledCondition?: (remainingCount: number) => void
+    disabledCondition: (condition: boolean) => void
   ) => {
-    mutate(url, {
-      onSuccess: (data) => {
-        const { title, summary, remainingCount } = data;
-
-        setFormData((prev) => ({
-          ...prev,
-          ...(title ? { title } : {}),
-          ...(summary ? { description: summary } : {}),
-        }));
-
-        if (typeof remainingCount === "number") {
-          disabledCondition?.(remainingCount);
-        }
-      },
-      onError: (error) => {
-        if (error instanceof Error) {
-          toast.error(error.message);
-          return;
-        }
-      },
-    });
-  };
-
-  const handleFetchAsync = async (url: string) => {
     try {
-      const data = await mutateAsync(url);
+      const data = await mutateAsync(url, {
+        onSuccess: () => {
+          disabledCondition(false);
+        },
+        onError: () => {
+          disabledCondition(true);
+          setFormData(createEmptyFormData());
+        },
+      });
 
       const { title, summary, remainingCount } = data;
 
@@ -55,5 +40,5 @@ export const useCrawlArticleMutation = (
     }
   };
 
-  return { mutate: handleFetch, mutateAsync: handleFetchAsync, isPending };
+  return { mutateAsync: handleFetchAsync, isPending };
 };

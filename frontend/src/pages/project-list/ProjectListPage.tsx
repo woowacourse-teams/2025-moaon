@@ -23,11 +23,11 @@ function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount } = useProjectList();
 
-  const { hasSearch, excludeKeys } = useSearchSort<
-    keyof typeof PROJECT_SORT_MAP
-  >({
-    excludeKeysWhenNoSearch: ["relevance"],
-  });
+  // const {  excludeKeys } = useSearchSort<
+  //   keyof typeof PROJECT_SORT_MAP
+  // >({
+  //   excludeKeysWhenNoSearch: [""],
+  // });
 
   useMeta({
     title: `${META_TITLE_PREFIX}프로젝트 탐색`,
@@ -88,16 +88,16 @@ function ProjectListPage() {
               <SortList
                 sortMap={PROJECT_SORT_MAP}
                 onSelect={handleSelect}
-                initialValue={hasSearch ? "relevance" : DEFAULT_SORT_TYPE}
-                excludeKeys={excludeKeys}
+                initialValue={DEFAULT_SORT_TYPE}
+                // excludeKeys={excludeKeys}
               />
             </S.SortListContainer>
             <S.SortDropdownContainer>
               <SortDropdown
                 sortMap={PROJECT_SORT_MAP}
                 onSelect={handleSelect}
-                initialValue={hasSearch ? "relevance" : DEFAULT_SORT_TYPE}
-                excludeKeys={excludeKeys}
+                initialValue={DEFAULT_SORT_TYPE}
+                // excludeKeys={excludeKeys}
               />
             </S.SortDropdownContainer>
           </>

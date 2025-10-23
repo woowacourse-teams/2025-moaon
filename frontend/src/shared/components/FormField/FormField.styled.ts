@@ -37,6 +37,7 @@ export const FormFieldInput = styled.input<{
   padding: 0.75rem 0.75rem;
   border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#d1d5db")};
   border-radius: 0.5rem;
+  ${({ disabled }) => disabled && "color:#d2cfcfff;"};
 
   &:focus-visible {
     outline: none;

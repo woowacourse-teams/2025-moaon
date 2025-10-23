@@ -69,17 +69,19 @@ export const useArticleForm = ({
 
     const previous = descriptionToken;
     setDescriptionToken((prev) => Math.max(0, prev - 1));
-    setIsButtonClicked(true);
 
     try {
-      const result = await fetchMetaMutation.mutateAsync(formData.address);
-      setIsButtonClicked(false);
+      const result = await fetchMetaMutation.mutateAsync(
+        formData.address,
+        (condition: boolean) => {
+          setIsButtonClicked(condition);
+        }
+      );
       if (result && typeof result.remainingCount === "number") {
         setDescriptionToken(result.remainingCount);
       }
     } catch {
       setDescriptionToken(previous);
-      setIsButtonClicked(false);
     }
   }, [formData.address, fetchMetaMutation, descriptionToken]);
 
