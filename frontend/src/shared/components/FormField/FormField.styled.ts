@@ -11,13 +11,14 @@ export const FormFieldHeader = styled.label`
   gap: 0.5rem;
 `;
 
-export const FormFieldTitle = styled.h3`
+export const FormFieldTitle = styled.h3<{ disabled?: boolean }>`
   font-size: 1rem;
+  color: ${({ disabled }) => (disabled ? "#d2cfcfff" : "#000")};
 `;
 
-export const FormFieldRequiredMark = styled.span`
+export const FormFieldRequiredMark = styled.span<{ disabled?: boolean }>`
   font-size: 0.875rem;
-  color: #f00;
+  color: ${({ disabled }) => (disabled ? "#d2cfcfff" : "#f00")};
 `;
 
 export const FormFieldButton = styled.button<{ disabled: boolean }>`
@@ -28,7 +29,10 @@ export const FormFieldButton = styled.button<{ disabled: boolean }>`
   ${({ disabled }) => disabled && "cursor:not-allowed"};
 `;
 
-export const FormFieldInput = styled.input<{ hasError?: boolean }>`
+export const FormFieldInput = styled.input<{
+  hasError?: boolean;
+  disabled: boolean;
+}>`
   flex: 1;
   padding: 0.75rem 0.75rem;
   border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#d1d5db")};
@@ -42,9 +46,16 @@ export const FormFieldInput = styled.input<{ hasError?: boolean }>`
         ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
         : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
   }
+
+  &::placeholder {
+    color: ${({ disabled }) => disabled && "#d2cfcfff"};
+  }
 `;
 
-export const FormFieldTextarea = styled.textarea<{ hasError?: boolean }>`
+export const FormFieldTextarea = styled.textarea<{
+  hasError?: boolean;
+  disabled: boolean;
+}>`
   resize: none;
   border: none;
   outline: none;
@@ -61,6 +72,10 @@ export const FormFieldTextarea = styled.textarea<{ hasError?: boolean }>`
       hasError
         ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
         : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
+  }
+
+  &::placeholder {
+    color: ${({ disabled }) => disabled && "#d2cfcfff"};
   }
 `;
 
@@ -85,8 +100,9 @@ export const FormFieldLabelImage = styled.img`
   margin-right: 0.5rem;
 `;
 
-export const FormFieldLabelText = styled.span`
+export const FormFieldLabelText = styled.span<{ readOnly: boolean }>`
   font-size: 0.875rem;
+  color: ${({ readOnly }) => (readOnly ? "#d2cfcfff" : "#000")};
 `;
 
 export const FormFieldSelectionInput = styled.input<{ readOnly: boolean }>`

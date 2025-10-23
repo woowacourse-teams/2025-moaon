@@ -27,8 +27,8 @@ function InputFormFieldWithButton({
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={name}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={disabled}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={disabled} />}
         </FormField.Header>
         <S.InputFormFieldWithButtonWrapper>
           <FormField.Input

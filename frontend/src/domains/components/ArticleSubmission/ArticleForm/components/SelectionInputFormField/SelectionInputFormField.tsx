@@ -44,8 +44,8 @@ function SelectionInputFormField<K extends string>({
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={`${name}-0`}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={readOnly}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={readOnly} />}
         </FormField.Header>
         <S.SelectionInputFormFieldGroup
           role={type === "radio" ? "radiogroup" : "group"}

@@ -29,12 +29,17 @@ function FormFieldHeader({
   return <S.FormFieldHeader htmlFor={inputId}>{children}</S.FormFieldHeader>;
 }
 
-function FormFieldTitle({ children }: PropsWithChildren) {
-  return <S.FormFieldTitle>{children}</S.FormFieldTitle>;
+function FormFieldTitle({
+  children,
+  disabled,
+}: PropsWithChildren & { disabled?: boolean }) {
+  return <S.FormFieldTitle disabled={disabled}>{children}</S.FormFieldTitle>;
 }
 
-function FormFieldRequiredMark() {
-  return <S.FormFieldRequiredMark>*</S.FormFieldRequiredMark>;
+function FormFieldRequiredMark({ disabled }: { disabled?: boolean }) {
+  return (
+    <S.FormFieldRequiredMark disabled={disabled}>*</S.FormFieldRequiredMark>
+  );
 }
 
 function FormFieldButton({
@@ -138,7 +143,7 @@ function FormFieldSelectionInput({
       />
       <S.FormFieldLabelInner>
         {imgUrl && <S.FormFieldLabelImage src={imgUrl} alt="" />}
-        <S.FormFieldLabelText>{label}</S.FormFieldLabelText>
+        <S.FormFieldLabelText readOnly={readOnly}>{label}</S.FormFieldLabelText>
       </S.FormFieldLabelInner>
     </S.FormFieldLabel>
   );
