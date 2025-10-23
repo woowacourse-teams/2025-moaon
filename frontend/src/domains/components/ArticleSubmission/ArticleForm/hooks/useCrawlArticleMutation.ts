@@ -6,18 +6,25 @@ import type { ArticleFormDataType } from "../../types";
 export const useCrawlArticleMutation = (
   setFormData: Dispatch<SetStateAction<ArticleFormDataType>>
 ) => {
-  const { mutate, isPending } = crawlArticleQueries.fetchCrawl();
+  const { mutate, mutateAsync, isPending } = crawlArticleQueries.fetchCrawl();
 
-  const handleFetch = (url: string, disabledCondition: () => void) => {
+  const handleFetch = (
+    url: string,
+    disabledCondition?: (remainingCount: number) => void
+  ) => {
     mutate(url, {
-      onSuccess: ({ title, summary }) => {
+      onSuccess: (data) => {
+        const { title, summary, remainingCount } = data;
+
         setFormData((prev) => ({
           ...prev,
           ...(title ? { title } : {}),
           ...(summary ? { description: summary } : {}),
         }));
 
-        disabledCondition();
+        if (typeof remainingCount === "number") {
+          disabledCondition?.(remainingCount);
+        }
       },
       onError: (error) => {
         if (error instanceof Error) {
@@ -32,5 +39,29 @@ export const useCrawlArticleMutation = (
     });
   };
 
-  return { mutate: handleFetch, isPending };
+  const handleFetchAsync = async (url: string) => {
+    try {
+      const data = await mutateAsync(url);
+
+      const { title, summary, remainingCount } = data;
+
+      setFormData((prev) => ({
+        ...prev,
+        ...(title ? { title } : {}),
+        ...(summary ? { description: summary } : {}),
+      }));
+
+      return { remainingCount };
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+
+      toast.error(
+        "메타데이터를 가져오는데 실패했어요. 아티클 제목과 줄거리를 직접 작성해주세요."
+      );
+    }
+  };
+
+  return { mutate: handleFetch, mutateAsync: handleFetchAsync, isPending };
 };

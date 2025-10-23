@@ -25,6 +25,7 @@ function ArticleForm({
     isButtonClicked,
     errors,
     isFormValid,
+    descriptionToken,
     updateFormFieldData,
     updateNestedField,
     handleMetaDataFetchButtonClick,
@@ -53,6 +54,7 @@ function ArticleForm({
           buttonEvent={handleMetaDataFetchButtonClick}
           errorMessage={errors.address}
           disabled={editingData !== undefined}
+          descriptionToken={descriptionToken}
         />
         <InputFormField
           title="아티클 제목"

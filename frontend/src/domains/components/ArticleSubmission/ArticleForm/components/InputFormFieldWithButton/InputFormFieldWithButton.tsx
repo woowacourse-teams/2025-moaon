@@ -7,6 +7,7 @@ interface InputFormFieldWithButtonProps extends ComponentProps<"input"> {
   name: string;
   buttonEvent: () => void;
   errorMessage?: string;
+  descriptionToken: number;
 }
 
 function InputFormFieldWithButton({
@@ -20,9 +21,9 @@ function InputFormFieldWithButton({
   buttonEvent,
   errorMessage,
   disabled,
+  descriptionToken,
 }: InputFormFieldWithButtonProps) {
   const hasError = !!errorMessage;
-
   return (
     <FormField>
       <FormField.Wrapper>
@@ -45,6 +46,13 @@ function InputFormFieldWithButton({
           <FormField.Button buttonEvent={buttonEvent} disabled={disabled}>
             검증하기
           </FormField.Button>
+          {descriptionToken !== null && (
+            <S.InputFormFieldText isTokenZero={descriptionToken === 0}>
+              {descriptionToken === 0
+                ? "1일 요약 한도가 초과되었습니다. 내일 다시 시도해주세요🥹"
+                : `남은 요약 기능 (${descriptionToken}번)`}
+            </S.InputFormFieldText>
+          )}
         </S.InputFormFieldWithButtonWrapper>
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}

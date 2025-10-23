@@ -1,5 +1,7 @@
 import { toast } from "@shared/components/Toast/toast";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { articlesQueries } from "@/apis/articles/articles.queries";
 import type { ArticleFormDataType, SectorType } from "../../types";
 import {
   type ArticleFormErrors,
@@ -28,6 +30,10 @@ export const useArticleForm = ({
   onUpdate,
   onCancel,
 }: UseArticleFormProps) => {
+  const { data: token } = useQuery(articlesQueries.getToken());
+  const [descriptionToken, setDescriptionToken] = useState<number>(
+    () => token?.remainingCount ?? null
+  );
   const [isButtonClicked, setIsButtonClicked] = useState(true);
   const [formData, setFormData] = useState<ArticleFormDataType>(() =>
     createEmptyFormData()
@@ -35,11 +41,16 @@ export const useArticleForm = ({
   const [errors, setErrors] = useState<ArticleFormErrors>({});
 
   const fetchMetaMutation = useCrawlArticleMutation(setFormData);
-
   const isFormValid = useMemo(() => {
     const validationErrors = validateFormData(formData);
     return Object.values(validationErrors).every((error) => !error);
   }, [formData]);
+
+  useEffect(() => {
+    if (token?.remainingCount !== undefined) {
+      setDescriptionToken(token.remainingCount);
+    }
+  }, [token?.remainingCount]);
 
   useEffect(() => {
     if (!editingData) {
@@ -56,10 +67,21 @@ export const useArticleForm = ({
       return;
     }
 
-    fetchMetaMutation.mutate(formData.address, () => {
+    const previous = descriptionToken;
+    setDescriptionToken((prev) => Math.max(0, prev - 1));
+    setIsButtonClicked(true);
+
+    try {
+      const result = await fetchMetaMutation.mutateAsync(formData.address);
       setIsButtonClicked(false);
-    });
-  }, [formData.address, fetchMetaMutation]);
+      if (result && typeof result.remainingCount === "number") {
+        setDescriptionToken(result.remainingCount);
+      }
+    } catch {
+      setDescriptionToken(previous);
+      setIsButtonClicked(false);
+    }
+  }, [formData.address, fetchMetaMutation, descriptionToken]);
 
   const updateFormFieldData = useCallback(
     <K extends keyof ArticleFormDataType>(
@@ -184,6 +206,7 @@ export const useArticleForm = ({
     isButtonClicked,
     errors,
     isFormValid,
+    descriptionToken,
     updateFormFieldData,
     updateNestedField,
     handleMetaDataFetchButtonClick,
