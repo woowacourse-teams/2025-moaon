@@ -54,7 +54,6 @@ function ArticleForm({
           buttonEvent={handleMetaDataFetchButtonClick}
           errorMessage={errors.address}
           disabled={editingData !== undefined}
-          descriptionToken={descriptionToken}
         />
         <InputFormField
           title="아티클 제목"
@@ -73,6 +72,7 @@ function ArticleForm({
           onChange={(e) => updateFormFieldData("description", e.target.value)}
           errorMessage={errors.description}
           disabled={isButtonClicked}
+          descriptionToken={descriptionToken}
         />
         <SectorFormField
           sector={formData.sector}
