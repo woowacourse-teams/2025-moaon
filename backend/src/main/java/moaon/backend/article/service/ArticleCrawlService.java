@@ -32,14 +32,14 @@ public class ArticleCrawlService {
     private final MemberRepository memberRepository;
 
     public ArticleCrawlResult crawl(String url, Member member) {
-        if (member.isCrawlCountOvered()) {
-            log.info("사용자 하루 토큰 횟수 한계입니다. memberId: {}", member.getId());
-            throw new CustomException(ErrorCode.ARTICLE_CRAWL_TIMES_OVER);
-        }
-
         URL parsedUrl = URLParser.parse(url);
         ContentFinder finder = FINDER.getFinder(parsedUrl);
         FinderCrawlResult crawlResult = finder.crawl(parsedUrl);
+
+        if (member.isCrawlCountOvered()) {
+            log.info("사용자 하루 토큰 횟수 한계입니다. memberId: {}", member.getId());
+            return ArticleCrawlResult.withoutSummary(crawlResult);
+        }
 
         try {
 
