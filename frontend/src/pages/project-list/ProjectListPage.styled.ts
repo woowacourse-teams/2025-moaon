@@ -112,8 +112,6 @@ export const Box = styled.div`
   ${BP_480} {
     width: 100%;
     padding: 0 1rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 1.125rem;
   }
 `;
