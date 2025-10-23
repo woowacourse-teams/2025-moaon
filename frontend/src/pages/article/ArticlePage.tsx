@@ -30,7 +30,7 @@ function ArticlePage() {
   return (
     <S.Main>
       <S.MainBox>
-        <S.TitleBox id="article-page-title">
+        <S.TitleBox>
           <S.MainTitle tabIndex={0}>아티클 탐색</S.MainTitle>
           <S.MainDescription tabIndex={0}>
             {ARTICLE_PAGE_DESCRIPTION}

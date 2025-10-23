@@ -8,7 +8,7 @@ interface OverviewSectionProps {
 function OverviewSection({ overview = "" }: OverviewSectionProps) {
   return (
     <S.OverviewSectionContainer>
-      <S.OverviewContent>
+      <S.OverviewContent tabIndex={0}>
         <Markdown text={overview} />
       </S.OverviewContent>
     </S.OverviewSectionContainer>

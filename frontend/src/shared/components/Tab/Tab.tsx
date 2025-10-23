@@ -29,7 +29,7 @@ function Tab<K extends string>({
 
   return (
     <S.TabContainer width={width}>
-      <S.TabItemList>
+      <S.TabItemList id="project-detail-all-tab-list">
         <S.SlidingBG
           translateX={selectedStyle.translateX}
           width={selectedStyle.width}
@@ -49,6 +49,8 @@ function Tab<K extends string>({
 
           return (
             <S.TabItem
+              tabIndex={0}
+              aria-label={`${count}개의 ${label} 아티클`}
               ref={(el) => setTabElementsRef(el, idx)}
               key={key}
               isSelected={isSelected}

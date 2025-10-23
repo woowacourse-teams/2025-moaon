@@ -50,7 +50,7 @@ function ArticleCard({ article }: CardProps) {
   return (
     <S.ArticleLink
       aria-hidden="true"
-      aria-label={`${projectTitle}의 ${title} 아티클. 요약: ${summary}. 주제: ${topics.join(", ")}. 사용된 기술스택: ${techStacks.join(", ")}. 엔터 키를 눌러 페이지로 이동합니다.`}
+      aria-label={`${projectTitle ?? ""} - ${title} 아티클. 요약: ${summary}. 주제: ${topics.join(", ")}. 사용된 기술스택: ${techStacks.join(", ")}. 엔터 키를 눌러 페이지로 이동합니다.`}
       href={url}
       target="_blank"
       rel="noopener noreferrer"

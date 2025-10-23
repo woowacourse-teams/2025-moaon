@@ -31,6 +31,7 @@ function CardList({
       skipButtonRef.current?.focus();
     }
   };
+
   if (totalCount === 0 && !isLoading) {
     return (
       <S.EmptyContainer>
@@ -48,7 +49,7 @@ function CardList({
       {showSkeleton && <ArticleSkeletonList />}
       <S.SkipToTitleButton
         ref={skipButtonRef}
-        href="#article-page-title"
+        href="#article-page-all-tab-list"
         aria-label="상단 제목으로 이동"
       >
         상단으로 이동
