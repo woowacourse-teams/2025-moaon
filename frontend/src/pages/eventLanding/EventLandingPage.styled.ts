@@ -358,7 +358,7 @@ export const Section2 = styled.section`
   flex-direction: column;
   gap: 1rem;
   position: relative;
-  opacity: 0;
+  opacity: 0.2;
   padding: 1rem 0;
   min-height: 450px;
 
@@ -380,7 +380,7 @@ export const Section2 = styled.section`
 
   @keyframes fadeIn {
     from {
-      opacity: 0;
+      opacity: 0.2;
       transform: translateY(40px);
     }
     to {
