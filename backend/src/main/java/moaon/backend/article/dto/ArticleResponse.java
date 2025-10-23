@@ -3,6 +3,7 @@ package moaon.backend.article.dto;
 import java.util.List;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCursor;
+import moaon.backend.article.domain.Articles;
 
 public record ArticleResponse(
         List<ArticleData> contents,
@@ -11,17 +12,12 @@ public record ArticleResponse(
         String nextCursor
 ) {
 
-    public static ArticleResponse from(
-            List<Article> articles,
-            Long totalCount,
-            boolean hasNext,
-            ArticleCursor nextCursor
-    ) {
+    public static ArticleResponse from(Articles articles) {
         return new ArticleResponse(
-                ArticleData.from(articles),
-                totalCount.intValue(),
-                hasNext,
-                extractNextCursor(nextCursor)
+                ArticleData.from(articles.getArticlesToReturn()),
+                (int) articles.getTotalCount(),
+                articles.hasNext(),
+                extractNextCursor(articles.getNextCursor())
         );
     }
 

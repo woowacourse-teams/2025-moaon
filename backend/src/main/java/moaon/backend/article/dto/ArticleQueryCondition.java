@@ -7,7 +7,7 @@ import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.global.domain.SearchKeyword;
-import org.springframework.util.CollectionUtils;
+import moaon.backend.project.dto.ProjectArticleQueryCondition;
 
 public record ArticleQueryCondition(
         SearchKeyword search,
@@ -28,7 +28,7 @@ public record ArticleQueryCondition(
             int limit,
             String cursor
     ) {
-        ArticleSortType sortBy = ArticleSortType.from(sortType);
+        ArticleSortType sortBy = createArticleSortType(search, sortType);
         return new ArticleQueryCondition(
                 new SearchKeyword(search),
                 Sector.of(sector),
@@ -43,14 +43,30 @@ public record ArticleQueryCondition(
                         : techStackNames,
                 sortBy,
                 limit,
+                cursor == null ? null : new ArticleCursor(cursor)
+        );
+    }
+
+    public static ArticleQueryCondition fromProjectDetail(
+            ProjectArticleQueryCondition pac
+    ) {
+        return new ArticleQueryCondition(
+                pac.search(),
+                pac.sector(),
+                List.of(),
+                List.of(),
+                ArticleSortType.CREATED_AT, // 프로젝트 상세 페이지 정렬옵션 정책 없으므로 기본값
+                999, // 프로젝트 상세 페이지 무제한 페이징
                 null
         );
     }
 
-    public boolean hasFilter() {
-        return (search != null && search.hasValue())
-                || sector != null
-                || !CollectionUtils.isEmpty(topics)
-                || !CollectionUtils.isEmpty(techStackNames);
+    private static ArticleSortType createArticleSortType(String search, String sortType) {
+        boolean noSortButHasSearchKeyword =
+                (sortType == null || sortType.isBlank()) && (search != null && !search.isBlank());
+        if (noSortButHasSearchKeyword) {
+            return ArticleSortType.RELEVANCE;
+        }
+        return ArticleSortType.from(sortType);
     }
 }

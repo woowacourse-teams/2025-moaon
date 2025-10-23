@@ -154,17 +154,16 @@ public class ArticleESApiTest {
                         .clicks(4)
                         .build()
         ));
-        ArticleDocument articleClickRankThird = articleDocumentRepository.save(new ArticleDocument(
-                new ArticleFixtureBuilder()
-                        .id(7L)
-                        .content(filteredSearch)
-                        .sector(filteredSector)
-                        .techStacks(List.of(filteredTechStack))
-                        .project(project)
-                        .clicks(1)
-                        .topics(filteredTopic)
-                        .build()
-        ));
+        Article article7 = new ArticleFixtureBuilder()
+                .id(7L)
+                .content(filteredSearch)
+                .sector(filteredSector)
+                .techStacks(List.of(filteredTechStack))
+                .project(project)
+                .clicks(1)
+                .topics(filteredTopic)
+                .build();
+        ArticleDocument articleClickRankThird = articleDocumentRepository.save(new ArticleDocument(article7));
         Article article8 = new ArticleFixtureBuilder()
                 .id(8L)
                 .title(filteredSearch)
@@ -198,7 +197,7 @@ public class ArticleESApiTest {
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
-                .when().get("/es/search")
+                .when().get("/articles")
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ArticleResponse.class);

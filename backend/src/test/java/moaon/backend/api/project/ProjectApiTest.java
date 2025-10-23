@@ -18,7 +18,7 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
-import moaon.backend.article.dto.ArticleESQuery;
+import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleSectorCount;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
@@ -301,7 +301,7 @@ public class ProjectApiTest extends BaseApiTest {
                 new ArticleDocument(targetProjectArticle1),
                 new ArticleDocument(targetProjectArticle2),
                 new ArticleDocument(targetProjectArticle3))
-        ).when(articleDocumentRepository).searchInIds(Mockito.anyList(), Mockito.any(ArticleESQuery.class));
+        ).when(articleDocumentRepository).searchInIds(Mockito.anyList(), Mockito.any(ArticleQueryCondition.class));
 
         // when
         ProjectArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()

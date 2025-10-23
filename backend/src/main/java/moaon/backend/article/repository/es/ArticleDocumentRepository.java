@@ -3,7 +3,7 @@ package moaon.backend.article.repository.es;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.dto.ArticleESQuery;
+import moaon.backend.article.dto.ArticleQueryCondition;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
@@ -20,14 +20,14 @@ public class ArticleDocumentRepository {
 
     private final ElasticsearchOperations ops;
 
-    public SearchHits<ArticleDocument> search(ArticleESQuery condition) {
+    public SearchHits<ArticleDocument> search(ArticleQueryCondition condition) {
         NativeQuery esArticleQuery = new ESArticleQueryBuilder()
                 .withTextSearch(condition.search())
                 .withSector(condition.sector())
                 .withTechStacksAndMatch(condition.techStackNames())
                 .withTopicsAndMatch(condition.topics())
-                .withSort(condition.sortBy())
-                .withPagination(condition.limit(), condition.cursor())
+                .withSort(condition.sortType())
+                .withPagination(condition.limit(), condition.cursor(), condition.sortType())
                 .build();
         return ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
     }
@@ -38,15 +38,15 @@ public class ArticleDocumentRepository {
                 .save(articleDocument, ARTICLE_ALIAS);
     }
 
-    public List<ArticleDocument> searchInIds(List<Long> articleIds, ArticleESQuery condition) {
+    public List<ArticleDocument> searchInIds(List<Long> articleIds, ArticleQueryCondition condition) {
         NativeQuery esArticleQuery = new ESArticleQueryBuilder()
                 .withIds(articleIds)
                 .withTextSearch(condition.search())
                 .withSector(condition.sector())
                 .withTechStacksAndMatch(condition.techStackNames())
                 .withTopicsAndMatch(condition.topics())
-                .withSort(condition.sortBy())
-                .withPagination(condition.limit(), condition.cursor())
+                .withSort(condition.sortType())
+                .withPagination(condition.limit(), condition.cursor(), condition.sortType())
                 .build();
 
         SearchHits<ArticleDocument> searchHits = ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);

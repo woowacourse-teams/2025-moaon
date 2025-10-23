@@ -5,16 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
-import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
-import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleContentRepository;
@@ -30,11 +28,13 @@ import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private final ElasticSearchService elasticSearchService;
     private final ArticleDocumentRepository articleDocumentRepository;
     private final ArticleRepository articleRepository;
     private final ArticleContentRepository articleContentRepository;
@@ -42,14 +42,15 @@ public class ArticleService {
     private final TechStackRepository techStackRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
-        Articles articles = articleRepository.findWithSearchConditions(queryCondition);
+        Articles articles;
+        try {
+            articles = elasticSearchService.search(queryCondition);
+        } catch (Exception e) {
+            log.warn("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
+            articles = articleRepository.findWithSearchConditions(queryCondition);
+        }
 
-        List<Article> articlesToReturn = articles.getArticlesToReturn();
-        long totalCount = articles.getTotalCount();
-        boolean hasNext = articles.hasNext();
-        ArticleCursor nextCursor = articles.getNextCursor();
-
-        return ArticleResponse.from(articlesToReturn, totalCount, hasNext, nextCursor);
+        return ArticleResponse.from(articles);
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
@@ -71,15 +72,10 @@ public class ArticleService {
 
     private List<Long> retrieveInGivenArticles(List<Article> allArticlesInProject,
                                                ProjectArticleQueryCondition condition) {
-        ArticleESQuery esQuery = ArticleESQuery.builder()
-                .search(condition.search())
-                .sector(condition.sector())
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(999)
-                .build();
+        ArticleQueryCondition articleCondition = ArticleQueryCondition.fromProjectDetail(condition);
 
         List<Long> allArticleIds = allArticlesInProject.stream().map(Article::getId).toList();
-        return articleDocumentRepository.searchInIds(allArticleIds, esQuery)
+        return articleDocumentRepository.searchInIds(allArticleIds, articleCondition)
                 .stream()
                 .map(ArticleDocument::getId)
                 .toList();
