@@ -36,7 +36,7 @@ public enum ErrorCode {
     // 크롤 실패,
     ARTICLE_CRAWL_FAILED("URL-004", "아티클 크롤링 실패입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
-    UNAUTHORIZED_MEMBER("MEMBER-001", "등록된 회원이 아닙니다. 로그인 후 이용 가능합니다.", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED_MEMBER("MEMBER-001", "사용자 인증에 실패했습니다.", HttpStatus.UNAUTHORIZED),
 
     CONTENT_FINDER_NOT_FOUND("CONTENT-001", "등록할 수 없는 URL 입니다.", HttpStatus.BAD_REQUEST),
 
