@@ -2,13 +2,27 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import type { ElementType } from "react";
 import * as S from "./Markdown.styled";
 
+const replaceAsteriskWithHyphen = (text: string) => {
+  return text.replaceAll("\n* ", "- ");
+};
+
+const removeTrailingSpaces = (text: string) => {
+  return text.replace(/[ \t]+$/gm, "");
+};
+
 const parseBoldWithQuotes = (text: string) => {
   const pattern =
-    /\*\*([\u0027\u0060\u0022\u2018\u201C])(.+?)([\u0027\u0060\u0022\u2019\u201D])\*\*/g;
+    /\*\*(?:([\u0027\u0060\u0022\u2018\u201C])(.+?)([\u0027\u0060\u0022\u2019\u201D])|(.+?))\*\*/g;
 
-  return text.replace(pattern, (_, openQuote, content, closeQuote) => {
-    return `<strong>${openQuote}${content}${closeQuote}</strong>`;
-  });
+  return text.replace(
+    pattern,
+    (_, openQuote, contentWithQuotes, closeQuote, contentNoQuotes) => {
+      if (contentNoQuotes !== undefined) {
+        return `<strong>${contentNoQuotes}</strong>`;
+      }
+      return `<strong>${openQuote}${contentWithQuotes}${closeQuote}</strong>`;
+    },
+  );
 };
 
 interface MarkdownProps {
@@ -17,10 +31,15 @@ interface MarkdownProps {
 }
 
 function Markdown({ text, containerAs }: MarkdownProps) {
+  console.log(
+    parseBoldWithQuotes(removeTrailingSpaces(replaceAsteriskWithHyphen(text))),
+  );
   return (
     <S.MarkdownWrapper as={containerAs}>
       <MarkdownPreview
-        source={parseBoldWithQuotes(text)}
+        source={parseBoldWithQuotes(
+          removeTrailingSpaces(replaceAsteriskWithHyphen(text)),
+        )}
         wrapperElement={{
           "data-color-mode": "light",
         }}
