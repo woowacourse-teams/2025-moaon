@@ -46,7 +46,6 @@ function Header() {
           <NavBar />
         </S.Wrap>
         <S.Wrap>
-          <RegisterProjectButton onClick={handleRegisterClick} />
           {auth?.isLoggedIn && (
             <UserMenu
               name={auth.name ?? "Anonymous"}
@@ -59,6 +58,7 @@ function Header() {
               }}
             />
           )}
+          <RegisterProjectButton onClick={handleRegisterClick} />
         </S.Wrap>
       </S.HeaderBox>
       <LoginModal isOpen={isOpen} close={close} />
