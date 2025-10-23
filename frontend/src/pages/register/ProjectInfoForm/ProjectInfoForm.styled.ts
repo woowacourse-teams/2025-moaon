@@ -8,7 +8,7 @@ export const ProjectInfoForm = styled.form`
 
 export const NextButton = styled.button`
   align-self: flex-end;
-  padding: 0.6rem 2rem;
+  padding: 0.8rem 2rem;
   background-color: #007bff;
   color: #fff;
   font-size: 1rem;
