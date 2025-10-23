@@ -86,7 +86,11 @@ function ProjectInfoForm({ onNext }: ProjectInfoFormProps) {
         errorMessage={errors.productionUrl}
       />
 
-      <ImageFormField onSubmit={onNextClick} />
+      <ImageFormField
+        title="이미지 업로드"
+        name="image"
+        onSubmit={onNextClick}
+      />
       <S.NextButton disabled={!isFormValid} type="submit">
         프로젝트 등록하기
       </S.NextButton>
