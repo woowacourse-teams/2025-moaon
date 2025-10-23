@@ -34,16 +34,24 @@ export const MarkdownWrapper = styled(Polymorphic)`
 
   ol > li {
     list-style: decimal !important;
-    line-height: 1 !important;
+    line-height: 1.1 !important;
   }
 
   ul > li {
     list-style: disc !important;
-    line-height: 1 !important;
+    line-height: 1.1 !important;
   }
 
   li > p {
     margin: 0 !important;
+  }
+
+  p {
+    line-height: 1.7 !important;
+  }
+
+  ul > li > p {
+    transform: translateY(-16px);
   }
 
   ol > li > p {
@@ -98,5 +106,9 @@ export const MarkdownWrapper = styled(Polymorphic)`
     border-left: 4px solid #007bff;
     background-color: #f7f7f7ff;
     display: flex;
+  }
+
+  .wmde-markdown::before {
+    content: unset !important;
   }
 `;
