@@ -107,13 +107,27 @@ export const DrawerFooter = styled.div`
   border-top: 1px solid #f0f0f0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  align-items: center;
+  gap: 0.75rem;
+  align-items: stretch;
+`;
 
-  button,
-  a {
+export const RegisterButtonWrapper = styled.div`
+  width: 100%;
+
+  button {
     width: 100%;
     justify-content: center;
+  }
+`;
+
+export const UserInfoWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+  & > div,
+  & > button {
+    width: auto;
   }
 `;
 
