@@ -59,10 +59,9 @@ export const TitleBox = styled.div`
   align-items: center;
   gap: 0.5rem;
 
-  ${BP_768} {
+  ${BP_1024} {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.25rem;
   }
 `;
 
