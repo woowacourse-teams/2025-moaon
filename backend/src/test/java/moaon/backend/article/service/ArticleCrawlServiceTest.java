@@ -1,11 +1,10 @@
 package moaon.backend.article.service;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.fixture.Fixture;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +22,7 @@ class ArticleCrawlServiceTest {
 
     private ArticleCrawlService crawlService = new ArticleCrawlService(repository, aiSummaryClient, memberRepository);
 
-    @DisplayName("하루 20번 초과 크롤링시 실패한다.")
+    @DisplayName("하루 20번 초과 크롤링시 AI요약 없이 빈 summary를 반환한다.")
     @Test
     void crawlFail() {
         // given
@@ -34,8 +33,8 @@ class ArticleCrawlServiceTest {
         }
 
         //when - then
-        assertThatThrownBy(() -> crawlService.crawl(url, member))
-                .isInstanceOf(CustomException.class)
-                .hasMessage(ErrorCode.ARTICLE_CRAWL_TIMES_OVER.getMessage());
+        ArticleCrawlResult crawlResult = crawlService.crawl(url, member);
+
+        assertThat(crawlResult.summary()).isEmpty();
     }
 }
