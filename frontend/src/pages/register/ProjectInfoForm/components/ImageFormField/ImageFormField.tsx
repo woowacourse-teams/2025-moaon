@@ -1,3 +1,4 @@
+import FormField from "@shared/components/FormField/FormField";
 import { useEffect } from "react";
 import FileDropZone from "./components/FileDropZone/FileDropZone";
 import ImagePreviewItem from "./components/ImagePreviewList/ImagePreviewItem/ImagePreviewItem";
@@ -8,9 +9,11 @@ import * as S from "./ImageFormField.styled";
 
 interface ImageFormFiledProps {
   onSubmit?: (files: File[]) => void | Promise<void>;
+  name: string;
+  title: string;
 }
 
-function ImageFormField({ onSubmit }: ImageFormFiledProps) {
+function ImageFormField({ onSubmit, name, title }: ImageFormFiledProps) {
   const { ref, isOver, files, disabled, getDropZoneProps, getFileInputProps } =
     useFileDrop({
       extensions: ["png", "jpg", "jpeg", "svg", "gif", "webp"],
@@ -36,33 +39,41 @@ function ImageFormField({ onSubmit }: ImageFormFiledProps) {
   }, [files, onSubmit, ref]);
 
   return (
-    <S.ImageFormFieldWrapper>
-      <FileDropZone
-        isOver={isOver}
-        disabled={disabled}
-        currentCount={files.length}
-        dropZoneRef={ref}
-        dropZoneProps={getDropZoneProps()}
-        inputProps={getFileInputProps()}
-      />
+    <FormField>
+      <FormField.Wrapper>
+        <FormField.Header inputId={name}>
+          <FormField.Title>{title}</FormField.Title>
+        </FormField.Header>
 
-      <ImagePreviewList>
-        {previews.map(({ file, previewUrl }, idx) => {
-          const isThumbnail = idx === 0;
-          const stableKey = `${file.name}-${file.size}-${file.lastModified}`;
+        <S.ImageFormFieldWrapper>
+          <FileDropZone
+            isOver={isOver}
+            disabled={disabled}
+            currentCount={files.length}
+            dropZoneRef={ref}
+            dropZoneProps={getDropZoneProps()}
+            inputProps={getFileInputProps()}
+          />
 
-          return (
-            <ImagePreviewItem
-              key={stableKey}
-              file={file}
-              previewUrl={previewUrl}
-              isThumbnail={isThumbnail}
-              onRemove={removeFile}
-            />
-          );
-        })}
-      </ImagePreviewList>
-    </S.ImageFormFieldWrapper>
+          <ImagePreviewList>
+            {previews.map(({ file, previewUrl }, idx) => {
+              const isThumbnail = idx === 0;
+              const stableKey = `${file.name}-${file.size}-${file.lastModified}`;
+
+              return (
+                <ImagePreviewItem
+                  key={stableKey}
+                  file={file}
+                  previewUrl={previewUrl}
+                  isThumbnail={isThumbnail}
+                  onRemove={removeFile}
+                />
+              );
+            })}
+          </ImagePreviewList>
+        </S.ImageFormFieldWrapper>
+      </FormField.Wrapper>
+    </FormField>
   );
 }
 

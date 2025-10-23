@@ -20,12 +20,18 @@ const getFilteredListWithoutSelected = (
   sector: ArticleSectorKey,
 ) => {
   const techStacks = getTechStackBySector(sector);
-  const filteredList = techStacks.filter(([_, { label }]) =>
-    label.toLowerCase().startsWith(keyword.toLowerCase()),
-  );
+
+  const filteredList =
+    keyword === ""
+      ? techStacks
+      : techStacks.filter(([_, { label }]) =>
+          label.toLowerCase().startsWith(keyword.toLowerCase()),
+        );
+
   const selectedTechStackLabels = selectedTechStacks.map(
     (techStack) => TECH_STACK_ICON_MAP[techStack].label,
   );
+
   return filteredList.filter(
     ([_, { label }]) => !selectedTechStackLabels.includes(label),
   );
@@ -71,7 +77,10 @@ function TechStackSearchBar({
     }
 
     setValue("");
-    setIsOpen(false);
+    setFilterList(
+      getFilteredListWithoutSelected("", selectedTechStacks, sector),
+    );
+    setIsOpen(true);
     onSelect?.();
   };
 
@@ -111,18 +120,22 @@ function TechStackSearchBar({
     const keyword = event.target.value;
     setValue(keyword);
 
-    if (keyword === "") {
-      setFilterList([]);
-      setIsOpen(false);
-      return;
-    }
-
     const filteredListWithoutSelected = getFilteredListWithoutSelected(
       keyword,
       selectedTechStacks,
       sector,
     );
     setFilterList(filteredListWithoutSelected);
+    setIsOpen(true);
+  };
+
+  const handleInputFocus = () => {
+    const allList = getFilteredListWithoutSelected(
+      value,
+      selectedTechStacks,
+      sector,
+    );
+    setFilterList(allList);
     setIsOpen(true);
   };
 
@@ -138,6 +151,7 @@ function TechStackSearchBar({
           value={value}
           ref={inputRef}
           onChange={handleFilterInputChange}
+          onFocus={handleInputFocus}
           onKeyDown={onKeyDown}
         />
       </S.SearchLabel>
