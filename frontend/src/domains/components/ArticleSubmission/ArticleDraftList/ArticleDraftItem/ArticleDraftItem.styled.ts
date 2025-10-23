@@ -40,13 +40,15 @@ export const ArticleDraftBadge = styled.span<{ bgColor: string }>`
 `;
 
 export const ArticleDraftTitle = styled.h3`
-  font-size: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.4;
   min-height: 2.5rem;
   ${textOverflowEllipsis(2)}
 `;
 
 export const ArticleDraftDescription = styled.p`
   font-size: 0.75rem;
+  line-height: 1.2;
   min-height: 2.25rem;
   ${textOverflowEllipsis(3)}
 `;
@@ -55,4 +57,6 @@ export const CloseButtonBox = styled.div`
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: flex;
+  gap: 0.75rem;
 `;

@@ -1,5 +1,6 @@
 import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
-import CloseButtonIcon from "@shared/components/CloseButtonIcon/CloseButtonIcon";
+import DeleteButtonIcon from "@shared/components/DeleteButtonIcon/DeleteButtonIcon";
+import EditButtonIcon from "@shared/components/EditButtonIcon/EditButtonIcon";
 import type { ArticleFormDataType } from "../../types";
 import * as S from "./ArticleDraftItem.styled";
 
@@ -30,19 +31,14 @@ function ArticleDraftItem({
 
   return (
     <S.ArticleDraftItem>
-      <S.ArticleDraftItemDetailButton
-        type="button"
-        onClick={() => handleEditDraft(article)}
-      >
-        수정하기
-      </S.ArticleDraftItemDetailButton>
       <S.ArticleDraftHeader>
         <S.ArticleDraftBadge bgColor={color}>{label}</S.ArticleDraftBadge>
         <S.ArticleDraftTitle>{title}</S.ArticleDraftTitle>
       </S.ArticleDraftHeader>
       <S.ArticleDraftDescription>{description}</S.ArticleDraftDescription>
       <S.CloseButtonBox>
-        <CloseButtonIcon onClick={() => handleDeleteDraft(id)} />
+        <EditButtonIcon onClick={() => handleEditDraft(article)} />
+        <DeleteButtonIcon onClick={() => handleDeleteDraft(id)} />
       </S.CloseButtonBox>
     </S.ArticleDraftItem>
   );

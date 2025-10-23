@@ -31,11 +31,16 @@ function ArticleSubmission({
     projectId,
   });
 
-  const postArticleAndNavigate = () => {
-    postArticlesClick();
-    toast.success("아티클이 성공적으로 등록되었어요!");
-    navigate(`/project/${projectId}`);
+  const postArticleAndNavigate = async () => {
+    try {
+      await postArticlesClick();
+      toast.success("아티클이 성공적으로 등록되었어요!");
+      navigate(`/project/${projectId}`);
+    } catch {
+      toast.error("아티클 등록에 실패했습니다.");
+    }
   };
+
   return (
     <S.ArticleSubmissionContainer>
       <ArticleForm
@@ -59,6 +64,7 @@ function ArticleSubmission({
           <S.ArticleSubmissionButton
             type="button"
             onClick={postArticleAndNavigate}
+            disabled={editingArticle !== undefined}
           >
             아티클 등록
           </S.ArticleSubmissionButton>

@@ -24,6 +24,7 @@ function SelectionInputFormField<K extends string>({
   onChange,
   required = true,
   errorMessage,
+  readOnly,
 }: SelectionInputFormFieldProps<K>) {
   const isCheckbox = type === "checkbox";
 
@@ -43,8 +44,8 @@ function SelectionInputFormField<K extends string>({
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={`${name}-0`}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={readOnly}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={readOnly} />}
         </FormField.Header>
         <S.SelectionInputFormFieldGroup
           role={type === "radio" ? "radiogroup" : "group"}
@@ -63,9 +64,10 @@ function SelectionInputFormField<K extends string>({
                 value={key}
                 imgUrl={imgUrl}
                 checked={checked}
-                onChange={handleChange(key)}
+                onChange={!readOnly ? handleChange(key) : () => {}}
                 required={required}
                 label={label}
+                readOnly={readOnly}
               />
             );
           })}

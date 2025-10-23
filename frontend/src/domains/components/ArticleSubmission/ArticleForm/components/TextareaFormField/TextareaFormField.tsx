@@ -15,13 +15,15 @@ function TextareaFormField({
   required = true,
   placeholder,
   errorMessage,
+  disabled,
 }: TextareaFormFieldProps) {
+  const hasError = !!errorMessage;
   return (
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={name}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={disabled}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={disabled} />}
         </FormField.Header>
         <FormField.Textarea
           id={name}
@@ -30,6 +32,8 @@ function TextareaFormField({
           onChange={onChange}
           placeholder={placeholder}
           required={required}
+          disabled={disabled}
+          hasError={hasError}
         />
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}
