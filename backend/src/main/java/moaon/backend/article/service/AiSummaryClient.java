@@ -89,7 +89,7 @@ public class AiSummaryClient {
 
             int statusCode = response.statusCode();
 
-            if (statusCode == 429) {
+            if (statusCode == 429 || statusCode == 402) {
                 throw new AiNoCostException();
             }
 
