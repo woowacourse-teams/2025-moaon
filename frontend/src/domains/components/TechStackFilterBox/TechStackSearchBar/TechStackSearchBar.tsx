@@ -42,6 +42,7 @@ interface TechStackSearchBarProps {
   mode?: "query" | "controlled";
   selectedTechStacks?: TechStackKey[];
   onTechStackChange?: (techStack: TechStackKey) => void;
+  closeOnSelect?: boolean;
 }
 
 function TechStackSearchBar({
@@ -49,6 +50,7 @@ function TechStackSearchBar({
   mode = "query",
   selectedTechStacks: controlledSelectedTechStacks,
   onTechStackChange,
+  closeOnSelect = false,
 }: TechStackSearchBarProps) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -77,10 +79,26 @@ function TechStackSearchBar({
     }
 
     setValue("");
-    setFilterList(
-      getFilteredListWithoutSelected("", selectedTechStacks, sector),
+
+    const updatedSelectedTechStacks =
+      mode === "controlled"
+        ? [...selectedTechStacks, techStack]
+        : [...queryTechStacks, techStack];
+
+    const newFilterList = getFilteredListWithoutSelected(
+      "",
+      updatedSelectedTechStacks,
+      sector,
     );
-    setIsOpen(true);
+
+    setFilterList(newFilterList);
+
+    if (closeOnSelect) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+
     onSelect?.();
   };
 
