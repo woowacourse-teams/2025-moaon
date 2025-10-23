@@ -61,7 +61,7 @@ function TextareaFormField({
             alignItems: "center",
           }}
         >
-          <p>자동 요약은 하루 최대 20번까지 사용 가능합니다.</p>
+          <p>자동 요약은 하루 최대 20번 사용 가능합니다.</p>
           <p>{descriptionToken}번 남았습니다.</p>
         </div>
       </Tooltip>
