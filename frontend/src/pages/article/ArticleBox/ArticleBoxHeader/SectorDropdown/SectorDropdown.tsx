@@ -2,6 +2,7 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
+import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { useState } from "react";
 import ArrowIcon from "@/shared/components/ArrowIcon/ArrowIcon";
@@ -19,12 +20,15 @@ function SectorDropdown({
     ([key]) => key === rawSelectedParams,
   )?.[1].label;
 
+  const addToSafeZone = useOutsideClick(() => setIsOpen(false));
+
   const handleSelect = (key: ArticleSectorKey) => {
     onSelect(key);
     setIsOpen(false);
   };
+
   return (
-    <S.DropdownContainer>
+    <S.DropdownContainer ref={addToSafeZone}>
       <S.DropdownHeader
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="listbox"
