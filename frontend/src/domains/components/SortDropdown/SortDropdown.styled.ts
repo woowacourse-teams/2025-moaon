@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_480 } from "@/styles/global.styled";
 
 export const DropdownContainer = styled.div`
   position: relative;
@@ -17,6 +18,10 @@ export const DropdownHeader = styled.button`
   align-items: center;
   background-color: white;
   gap: 0.5rem;
+  ${BP_480} {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.875rem;
+  }
 `;
 
 export const DropdownList = styled.ul`
@@ -45,11 +50,5 @@ export const DropdownItem = styled.li`
 
   &:last-of-type {
     border-bottom: none;
-  }
-
-  &[aria-selected="true"] {
-    background-color: #e3f2fd;
-    color: #007bff;
-    font-weight: 600;
   }
 `;

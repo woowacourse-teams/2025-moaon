@@ -49,11 +49,12 @@ public record ArticleESQuery(
     }
 
     private static ArticleSortType createArticleSortType(String search, String sortType) {
-        boolean noSortButHasSearchKeyword =
-                (sortType == null || sortType.isBlank()) && (search != null && !search.isBlank());
-        if (noSortButHasSearchKeyword) {
-            return ArticleSortType.RELEVANCE;
+        ArticleSortType selectedSortType = ArticleSortType.from(sortType);
+        boolean relevanceButNoSearchKeyword = (ArticleSortType.RELEVANCE == selectedSortType)
+                && (search == null || search.isBlank());
+        if (relevanceButNoSearchKeyword) {
+            return ArticleSortType.CREATED_AT;
         }
-        return ArticleSortType.from(sortType);
+        return selectedSortType;
     }
 }

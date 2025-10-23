@@ -5,4 +5,8 @@ public record ArticleCrawlResult(
         String summary,
         String content
 ) {
+
+    public static ArticleCrawlResult withoutSummary(FinderCrawlResult result) {
+        return new ArticleCrawlResult(result.title(), "", result.content());
+    }
 }

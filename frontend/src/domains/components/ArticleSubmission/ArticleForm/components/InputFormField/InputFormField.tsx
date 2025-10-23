@@ -16,15 +16,15 @@ function InputFormField({
   required = true,
   placeholder,
   errorMessage,
+  disabled,
 }: InputFormFieldProps) {
   const hasError = !!errorMessage;
-
   return (
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={name}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={disabled}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={disabled} />}
         </FormField.Header>
         <FormField.Input
           id={name}
@@ -35,6 +35,7 @@ function InputFormField({
           placeholder={placeholder}
           required={required}
           hasError={hasError}
+          disabled={disabled}
         />
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}

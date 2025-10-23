@@ -9,6 +9,7 @@ interface FormFieldHeaderProps {
 interface FormFieldButtonProps {
   buttonEvent: () => void;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 function FormFieldMain({ children }: PropsWithChildren) {
@@ -28,21 +29,27 @@ function FormFieldHeader({
   return <S.FormFieldHeader htmlFor={inputId}>{children}</S.FormFieldHeader>;
 }
 
-function FormFieldTitle({ children }: PropsWithChildren) {
-  return <S.FormFieldTitle>{children}</S.FormFieldTitle>;
+function FormFieldTitle({
+  children,
+  disabled,
+}: PropsWithChildren & { disabled?: boolean }) {
+  return <S.FormFieldTitle disabled={disabled}>{children}</S.FormFieldTitle>;
 }
 
-function FormFieldRequiredMark() {
-  return <S.FormFieldRequiredMark>*</S.FormFieldRequiredMark>;
+function FormFieldRequiredMark({ disabled }: { disabled?: boolean }) {
+  return (
+    <S.FormFieldRequiredMark disabled={disabled}>*</S.FormFieldRequiredMark>
+  );
 }
 
 function FormFieldButton({
   children,
   buttonEvent,
   type = "button",
+  disabled = false,
 }: PropsWithChildren<FormFieldButtonProps>) {
   return (
-    <S.FormFieldButton type={type} onClick={buttonEvent}>
+    <S.FormFieldButton type={type} onClick={buttonEvent} disabled={disabled}>
       {children}
     </S.FormFieldButton>
   );
@@ -85,7 +92,8 @@ function FormFieldTextarea({
   disabled = false,
   readOnly = false,
   required,
-}: ComponentProps<"textarea">) {
+  hasError,
+}: ComponentProps<"textarea"> & { hasError?: boolean }) {
   return (
     <S.FormFieldTextarea
       id={id}
@@ -96,6 +104,7 @@ function FormFieldTextarea({
       disabled={disabled}
       readOnly={readOnly}
       required={required}
+      hasError={hasError}
     />
   );
 }
@@ -112,13 +121,14 @@ function FormFieldSelectionInput({
   checked,
   disabled = false,
   required,
+  readOnly = false,
 }: {
   label: string;
   type: "radio" | "checkbox";
   imgUrl?: string;
 } & ComponentProps<"input">) {
   return (
-    <S.FormFieldLabel htmlFor={id}>
+    <S.FormFieldLabel htmlFor={id} readOnly={readOnly}>
       <S.FormFieldSelectionInput
         type={type}
         value={value}
@@ -129,10 +139,11 @@ function FormFieldSelectionInput({
         required={required}
         disabled={disabled}
         checked={checked}
+        readOnly={readOnly}
       />
       <S.FormFieldLabelInner>
         {imgUrl && <S.FormFieldLabelImage src={imgUrl} alt="" />}
-        <S.FormFieldLabelText>{label}</S.FormFieldLabelText>
+        <S.FormFieldLabelText readOnly={readOnly}>{label}</S.FormFieldLabelText>
       </S.FormFieldLabelInner>
     </S.FormFieldLabel>
   );
