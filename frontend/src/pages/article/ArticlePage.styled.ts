@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import { BP_480, BP_768, BP_1024, BP_1280 } from "@/styles/global.styled";
+import {
+  BP_400,
+  BP_480,
+  BP_768,
+  BP_1024,
+  BP_1280,
+} from "@/styles/global.styled";
 
 export const Main = styled.main`
   padding-bottom: 3rem;
@@ -53,10 +59,9 @@ export const TitleBox = styled.div`
   align-items: center;
   gap: 0.5rem;
 
-  ${BP_768} {
+  ${BP_1024} {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.25rem;
   }
 `;
 
@@ -93,4 +98,10 @@ export const MainDescription = styled.p`
 export const Box = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${BP_400} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 `;

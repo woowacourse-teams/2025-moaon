@@ -1,20 +1,16 @@
 import ArticleSubmission from "@domains/components/ArticleSubmission/ArticleSubmission";
 import Modal from "@shared/components/Modal/Modal";
 import { useOverlay } from "@shared/hooks/useOverlay";
-import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import AnimationPlayer from "./AnimationPlayer/AnimationPlayer";
 import ProjectInfoForm from "./ProjectInfoForm/ProjectInfoForm";
 import * as S from "./RegisterPage.styled";
 
 function RegisterPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const step = Number(searchParams.get("step")) || 1;
-  const projectIdFromUrl = searchParams.get("projectId");
-
-  const [projectId, setProjectId] = useState<number | null>(
-    projectIdFromUrl ? Number(projectIdFromUrl) : null,
-  );
+  const location = useLocation();
+  const [step, setStep] = useState<1 | 2>(1);
+  const [projectId, setProjectId] = useState<number | null>(null);
 
   const {
     isOpen: isModalOpen,
@@ -24,6 +20,14 @@ function RegisterPage() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (location.state?.reset) {
+      setStep(1);
+      setProjectId(null);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
   const handleNextStepClick = (id: number) => {
     setProjectId(id);
     openModal();
@@ -31,7 +35,7 @@ function RegisterPage() {
 
   const goToArticleStep = () => {
     closeModal();
-    setSearchParams({ step: "2", projectId: String(projectId) });
+    setStep(2);
   };
 
   return (
