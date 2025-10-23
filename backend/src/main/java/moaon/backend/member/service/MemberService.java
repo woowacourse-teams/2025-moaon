@@ -18,5 +18,6 @@ public class MemberService {
     public void increaseCrawlCount(long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
         member.addCrawlCount();
+        log.info("사용자의 일일 AI요약 가능 횟수가 증가했습니다. memberId: {}, 오늘 남은 횟수: {}", memberId, member.getTodayRemainingTokens());
     }
 }
