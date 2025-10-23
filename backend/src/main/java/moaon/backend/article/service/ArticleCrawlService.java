@@ -31,11 +31,11 @@ public class ArticleCrawlService {
     private final AiSummaryClient aiSummaryService;
     private final MemberRepository memberRepository;
 
-    public ArticleCrawlResult crawl(String url, Member member) {
+    public ArticleCrawlResult crawl(String url, long memberId) {
         URL parsedUrl = URLParser.parse(url);
         ContentFinder finder = FINDER.getFinder(parsedUrl);
         FinderCrawlResult crawlResult = finder.crawl(parsedUrl);
-        member = memberRepository.findById(member.getId()).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
 
         if (member.isCrawlCountOvered()) {
             log.info("사용자 하루 토큰 횟수 한계입니다. memberId: {}", member.getId());
