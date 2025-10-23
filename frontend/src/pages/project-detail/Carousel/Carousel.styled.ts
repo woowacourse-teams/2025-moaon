@@ -9,7 +9,7 @@ export const CarouselContainer = styled.div`
   align-items: center;
   gap: 1.5rem;
   position: relative;
-  margin: 2rem 0 3rem;
+  margin: 2rem 0;
 
   ${BP_1024} {
     height: 20rem;
