@@ -2,10 +2,15 @@ import {
   ARTICLE_SECTOR_ENTRY,
   type ArticleSectorKey,
 } from "@domains/filter/articleSector";
+import Dropdown from "@shared/components/Dropdown/Dropdown";
 import SearchBar from "@shared/components/SearchBar/SearchBar";
 import Tab from "@shared/components/Tab/Tab";
-import { toast } from "@shared/components/Toast/toast";
+import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
+import useDebounce from "@shared/hooks/useDebounce";
+import useSearchParams from "@shared/hooks/useSearchParams";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
 import type { QueryObserverResult } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import type {
   ProjectArticle,
   ProjectArticleCount,
@@ -16,7 +21,6 @@ import * as S from "./ArticleSection.styled";
 import CardList from "./CardList/CardList";
 import EmptyArticleList from "./EmptyArticleList/EmptyArticleList";
 import { useArticleSector } from "./hooks/useArticleSector";
-import useProjectArticleSearch from "./hooks/useProjectArticleSearch";
 
 const DEFAULT_ARTICLE_CATEGORY_TYPE = "all";
 const SEARCH_INPUT_MAX_LENGTH = 50;
@@ -34,10 +38,43 @@ function ArticleSection({
   sectorCounts,
   refetch,
 }: ArticleSectionProps) {
+  const responseSize = useWindowSize();
   const { selectedSector, updateSector } = useArticleSector(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
-  const { handleSearchSubmit, searchValue } = useProjectArticleSearch();
+  const params = useSearchParams({ key: "search", mode: "single" });
+  const urlSearchValue = params.get()[0];
+  const searchValue = urlSearchValue ?? "";
+  const [inputValue, setInputValue] = useState(searchValue);
+
+  const debouncedValue = useDebounce({
+    value: inputValue,
+  });
+
+  const paramsRef = useRef(params);
+  const refetchRef = useRef(refetch);
+
+  useEffect(() => {
+    paramsRef.current = params;
+    refetchRef.current = refetch;
+  }, [params, refetch]);
+
+  useEffect(() => {
+    const currentParam = paramsRef.current.get()[0] ?? "";
+
+    if (currentParam === debouncedValue) return;
+
+    if (debouncedValue.trim() === "") {
+      if (currentParam !== "") {
+        paramsRef.current.deleteAll({ replace: true });
+        refetchRef.current();
+      }
+      return;
+    }
+
+    paramsRef.current.update(debouncedValue, { replace: true });
+    refetchRef.current();
+  }, [debouncedValue]);
 
   const articleSectors = ARTICLE_SECTOR_ENTRY.map(([sector, { label }]) => ({
     key: sector,
@@ -52,41 +89,44 @@ function ArticleSection({
     }
   };
 
-  const onSearchSubmit = async (value: string) => {
-    handleSearchSubmit(value);
-    const result = await refetch();
-    if (result.isError) toast.warning(result.error.message);
-  };
-
   const hasArticles = articles.length > 0;
-  const shouldShowSearchBar = hasArticles || searchValue !== undefined;
+  const shouldShowSearchBar = hasArticles || urlSearchValue !== undefined;
 
   return (
     <S.ArticleSectionContainer>
       <SectionTitle title="프로젝트 아티클" />
-
-      <Tab
-        items={articleSectors}
-        onSelect={handleTabSelect}
-        selected={selectedSector}
-        width={100}
-      />
+      {responseSize.width < DESKTOP_BREAKPOINT ? (
+        <Dropdown
+          items={articleSectors}
+          onSelect={handleTabSelect}
+          selected={selectedSector}
+        />
+      ) : (
+        <Tab
+          items={articleSectors}
+          onSelect={handleTabSelect}
+          selected={selectedSector}
+          width={100}
+        />
+      )}
 
       {shouldShowSearchBar && (
         <S.SearchHeader hasArticles={hasArticles}>
           {hasArticles && (
-            <S.ArticleDescriptionText>
+            <S.ArticleDescriptionText tabIndex={0}>
               <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
               아티클이 모여있어요.
             </S.ArticleDescriptionText>
           )}
           <S.SearchBarBox>
             <SearchBar
+              id="project-article-search"
+              label="프로젝트 아티클 검색"
               size="small"
               placeholder="아티클 제목, 내용을 검색해보세요"
+              value={inputValue}
+              onChange={setInputValue}
               maxLength={SEARCH_INPUT_MAX_LENGTH}
-              onSubmit={onSearchSubmit}
-              defaultValue={searchValue}
             />
           </S.SearchBarBox>
         </S.SearchHeader>

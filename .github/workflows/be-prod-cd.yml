@@ -54,23 +54,34 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
+  get-previous-version:
+    name: Get Previous Version Tag
     needs: build-and-push-image
-    runs-on: prod-self-hosted
+    runs-on: prod-1
+    outputs:
+      old_tag: ${{ steps.inspect.outputs.tag }}
+    steps:
+      - name: Inspect current running image
+        id: inspect
+        run: |
+          TAG=$(sudo docker inspect --format='{{.Config.Image}}' moaon-app 2>/dev/null | cut -d: -f2) || TAG="none"
+          echo "Previous tag found: $TAG"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT  
 
+  deploy-prod-1:
+    name: Deploy to Production Server 1
+    needs: get-previous-version
+    runs-on: prod-1
     defaults:
       run:
         working-directory: ./backend
-
+    env:
+      PREVIOUS_IMAGE_TAG: ${{ needs.get-previous-version.outputs.old_tag }}
     steps:
-      - name: change permission
-        run: |
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .env file from Secrets
+      - name: Create .env file
         run: |
           echo "Creating .env file from GitHub Secrets"
           cat <<EOF > .env
@@ -79,6 +90,20 @@ jobs:
           SPRING_DATASOURCE_USERNAME_PROD=${{ secrets.SPRING_DATASOURCE_USERNAME_PROD }}
           SPRING_DATASOURCE_PASSWORD_PROD=${{ secrets.SPRING_DATASOURCE_PASSWORD_PROD }}
           IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
+          PROD_MYSQL_EXPORTER_USER=${{ secrets.PROD_MYSQL_EXPORTER_USER }}
+          PROD_MYSQL_EXPORTER_PASSWORD=${{ secrets.PROD_MYSQL_EXPORTER_PASSWORD }}
+          MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
+          MYSQLD_EXPORTER_READER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_READER_ADDRESS }}
+          OTEL_SERVICE_NAME=moaon-app-prod-1
+          GPT_API_KEY=${{ secrets.GPT_PROD_API_KEY }}
           EOF
 
       - name: Log in to Docker Hub
@@ -87,7 +112,121 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Pull latest image and deploy
+      - name: Grant execute permission to deploy script
+        run: chmod +x ./scripts/deploy.sh ./scripts/rollback.sh
+
+      - name: Deploy to Server 1
+        run: ./scripts/deploy.sh
+
+  deploy-prod-2:
+    name: Deploy to Production Server 2
+    needs:
+      - get-previous-version
+      - deploy-prod-1
+    runs-on: prod-2
+    defaults:
+      run:
+        working-directory: ./backend
+    env:
+      PREVIOUS_IMAGE_TAG: ${{ needs.get-previous-version.outputs.old_tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
         run: |
-          sudo docker compose -f compose.prod.yaml up -d
-          sudo docker image prune -af
+          echo "Creating .env file from GitHub Secrets"
+          cat <<EOF > .env
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          SPRING_DATASOURCE_URL_PROD=${{ secrets.SPRING_DATASOURCE_URL_PROD }}
+          SPRING_DATASOURCE_USERNAME_PROD=${{ secrets.SPRING_DATASOURCE_USERNAME_PROD }}
+          SPRING_DATASOURCE_PASSWORD_PROD=${{ secrets.SPRING_DATASOURCE_PASSWORD_PROD }}
+          IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
+          OTEL_SERVICE_NAME=moaon-app-prod-2
+          GPT_API_KEY=${{ secrets.GPT_PROD_API_KEY }}
+          SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${{ secrets.SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE }}
+          SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=${{ secrets.SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE }}
+          SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=${{ secrets.SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT }}
+          SPRING_DATASOURCE_HIKARI_MAX_LIFETIME=${{ secrets.SPRING_DATASOURCE_HIKARI_MAX_LIFETIME }}
+          SERVER_TOMCAT_THREADS_MAX=${{ secrets.SERVER_TOMCAT_THREADS_MAX }}
+          SERVER_TOMCAT_THREADS_MAX_CONNECTIONS=${{ secrets.SERVER_TOMCAT_THREADS_MAX_CONNECTIONS }}
+          SERVER_TOMCAT_THREADS_ACCEPT_COUNT=${{ secrets.SERVER_TOMCAT_THREADS_ACCEPT_COUNT }}
+          SERVER_TOMCAT_THREADS_MIN_SPARE=${{ secrets.SERVER_TOMCAT_THREADS_MIN_SPARE }}
+          SERVER_TOMCAT_CONNECTION_TIMEOUT=${{ secrets.SERVER_TOMCAT_CONNECTION_TIMEOUT }}
+          EOF
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Grant execute permission to deploy script
+        run: chmod +x ./scripts/deploy.sh ./scripts/rollback.sh
+
+      - name: Deploy to Server 2
+        run: ./scripts/deploy.sh
+
+  rollback-prod-1:
+    name: Rollback Production Server 1
+    needs:
+      - get-previous-version
+      - deploy-prod-1
+      - deploy-prod-2
+    if: failure() && needs.deploy-prod-1.result == 'success'
+    runs-on: prod-1
+    defaults:
+      run:
+        working-directory: ./backend
+    env:
+      ROLLBACK_TAG: ${{ needs.get-previous-version.outputs.old_tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file (for dockerhub username)
+        run: |
+          # .env 파일은 rollback.sh가 source 하므로 최소한으로 생성
+          cat <<EOF > .env
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          SPRING_DATASOURCE_URL_PROD=${{ secrets.SPRING_DATASOURCE_URL_PROD }}
+          SPRING_DATASOURCE_USERNAME_PROD=${{ secrets.SPRING_DATASOURCE_USERNAME_PROD }}
+          SPRING_DATASOURCE_PASSWORD_PROD=${{ secrets.SPRING_DATASOURCE_PASSWORD_PROD }}
+          IMAGE_TAG=${{ github.sha }}
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
+          PROD_MYSQL_EXPORTER_USER=${{ secrets.PROD_MYSQL_EXPORTER_USER }}
+          PROD_MYSQL_EXPORTER_PASSWORD=${{ secrets.PROD_MYSQL_EXPORTER_PASSWORD }}
+          MYSQLD_EXPORTER_WRITER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_WRITER_ADDRESS }}
+          MYSQLD_EXPORTER_READER_ADDRESS=${{ secrets.MYSQLD_EXPORTER_READER_ADDRESS }}
+          OTEL_SERVICE_NAME=moaon-app-prod-1
+          SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${{ secrets.SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE }}
+          SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=${{ secrets.SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE }}
+          SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=${{ secrets.SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT }}
+          SPRING_DATASOURCE_HIKARI_MAX_LIFETIME=${{ secrets.SPRING_DATASOURCE_HIKARI_MAX_LIFETIME }}
+          SERVER_TOMCAT_THREADS_MAX=${{ secrets.SERVER_TOMCAT_THREADS_MAX }}
+          SERVER_TOMCAT_THREADS_MAX_CONNECTIONS=${{ secrets.SERVER_TOMCAT_THREADS_MAX_CONNECTIONS }}
+          SERVER_TOMCAT_THREADS_ACCEPT_COUNT=${{ secrets.SERVER_TOMCAT_THREADS_ACCEPT_COUNT }}
+          SERVER_TOMCAT_THREADS_MIN_SPARE=${{ secrets.SERVER_TOMCAT_THREADS_MIN_SPARE }}
+          SERVER_TOMCAT_CONNECTION_TIMEOUT=${{ secrets.SERVER_TOMCAT_CONNECTION_TIMEOUT }}
+          EOF
+
+      - name: Grant execute permission to rollback script
+        run: chmod +x ./scripts/rollback.sh
+
+      - name: Execute Rollback on Server 1
+        run: ./scripts/rollback.sh

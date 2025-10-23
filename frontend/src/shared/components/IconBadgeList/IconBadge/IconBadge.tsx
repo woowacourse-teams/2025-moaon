@@ -14,8 +14,8 @@ function IconBadge({
   iconsSize = 20,
 }: IconBadgeProps) {
   return (
-    <S.IconBadge fontSize={fontSize}>
-      {imgUrl && <S.Icon src={imgUrl} alt={label} iconsSize={iconsSize} />}
+    <S.IconBadge $fontSize={fontSize}>
+      {imgUrl && <S.Icon src={imgUrl} alt="" iconsSize={iconsSize} />}
       {label}
     </S.IconBadge>
   );

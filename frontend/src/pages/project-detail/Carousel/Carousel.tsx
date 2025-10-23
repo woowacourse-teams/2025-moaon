@@ -1,13 +1,42 @@
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
+import Modal from "@shared/components/Modal/Modal";
+import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
+import { useOverlay } from "@shared/hooks/useOverlay";
+import { useSwipe } from "@shared/hooks/useSwipe";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
+import { useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
 
 function Carousel({ imageUrls }: { imageUrls: string[] }) {
-  const { currentImageIndex, handleSlidePrev, handleSlideNext } = useSlide({
-    imageUrls,
-  });
+  const responseSize = useWindowSize();
+  const { currentImageIndex, handleSlidePrev, handleSlideNext, goToIndex } =
+    useSlide({
+      imageUrls,
+    });
   useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
+
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: handleSlideNext,
+    onSwipedRight: handleSlidePrev,
+  });
+
+  const imageModal = useOverlay();
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
+
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    imageModal.open();
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImageIndex(null);
+    imageModal.close();
+  };
 
   const getImagePosition = (index: number) => {
     const nextIndex = (currentImageIndex + 1) % imageUrls.length;
@@ -21,7 +50,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
   };
 
   return (
-    <S.CarouselContainer>
+    <S.CarouselContainer {...swipeHandlers}>
       {imageUrls.map((image, index) => {
         const imagePosition = getImagePosition(index);
 
@@ -33,19 +62,48 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
             position={imagePosition}
             noTransition={imagePosition === "hidden"}
             isSingleImage={imageUrls.length === 1}
+            onClick={() => handleImageClick(index)}
           />
         );
       })}
       {imageUrls.length > 1 && (
         <>
-          <S.PrevButton onClick={handleSlidePrev}>
+          <S.PrevButton
+            onClick={handleSlidePrev}
+            aria-label="이전 슬라이드 이동"
+          >
             <ArrowIcon direction="left" />
           </S.PrevButton>
-          <S.NextButton onClick={handleSlideNext}>
+          <S.NextButton
+            onClick={handleSlideNext}
+            aria-label="다음 슬라이드 이동"
+          >
             <ArrowIcon direction="right" />
           </S.NextButton>
         </>
       )}
+      {imageUrls.length > 1 && responseSize.width < DESKTOP_BREAKPOINT && (
+        <S.Indicators>
+          {imageUrls.map((url, index) => (
+            <S.Indicator
+              key={`indicator-${url}`}
+              $active={index === currentImageIndex}
+              onClick={() => goToIndex(index)}
+              aria-label={`슬라이드 ${index + 1}로 이동`}
+            />
+          ))}
+        </S.Indicators>
+      )}
+
+      <Modal
+        isOpen={imageModal.isOpen}
+        onClose={handleCloseModal}
+        variant="image"
+      >
+        {selectedImageIndex !== null && (
+          <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
+        )}
+      </Modal>
     </S.CarouselContainer>
   );
 }

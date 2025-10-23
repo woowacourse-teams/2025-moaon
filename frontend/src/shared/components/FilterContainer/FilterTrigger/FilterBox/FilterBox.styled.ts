@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { BP_480, BP_768 } from "@/styles/global.styled";
 
-export const Container = styled.div<{ isOpen: boolean }>`
+export const Container = styled.div<{ isOpen: boolean; param: string }>`
   position: absolute;
   top: 3.125rem;
   left: 0;
@@ -39,9 +40,20 @@ export const Container = styled.div<{ isOpen: boolean }>`
       transform: translateY(-30px);
     }
   }
-`;
 
-export const Wrap = styled.div``;
+  ${BP_768} {
+    min-width: ${({ param }) => (param === "techStacks" ? "80dvw" : "60dvw")};
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+  ${BP_480} {
+    transform: translateX(-50%);
+    min-width: ${({ param }) =>
+      param === "techStacks" ? "calc(100dvw - 3rem)" : "50dvw"};
+    padding: 1rem;
+    gap: 1rem;
+  }
+`;
 
 export const FilterResetButton = styled.button`
   font-size: 1rem;

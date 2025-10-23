@@ -5,7 +5,7 @@ interface SectionTitleProps {
 }
 
 function SectionTitle({ title }: SectionTitleProps) {
-  return <S.SectionTitle>{title}</S.SectionTitle>;
+  return <S.SectionTitle tabIndex={0}>{title}</S.SectionTitle>;
 }
 
 export default SectionTitle;

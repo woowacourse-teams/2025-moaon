@@ -82,6 +82,7 @@ export const resetStyle = css`
   mark,
   audio,
   video {
+    font-weight: normal;
     margin: 0;
     padding: 0;
     border: 0;
@@ -167,8 +168,5 @@ export const resetStyle = css`
   body {
     font-family: "Noto Sans", sans-serif;
     overflow-x: hidden;
-  }
-  html {
-    scrollbar-gutter: stable;
   }
 `;

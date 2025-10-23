@@ -29,7 +29,11 @@ function FilterTrigger({
 
   return (
     <S.Container ref={addToSafeZone}>
-      <S.FilterButton type="button" onClick={toggleFilter}>
+      <S.FilterButton
+        type="button"
+        onClick={toggleFilter}
+        aria-label={`${label} 필터 ${isOpen ? "닫기" : "열기"}`}
+      >
         <S.FilterTitle>
           {label}
           <S.FilterSelectedCount>

@@ -49,6 +49,8 @@ function ArticleCard({ article }: CardProps) {
 
   return (
     <S.ArticleLink
+      aria-hidden="true"
+      aria-label={`${projectTitle ?? ""} - ${title} 아티클. 요약: ${summary}. 주제: ${topics.join(", ")}. 사용된 기술스택: ${techStacks.join(", ")}. 엔터 키를 눌러 페이지로 이동합니다.`}
       href={url}
       target="_blank"
       rel="noopener noreferrer"
@@ -56,7 +58,7 @@ function ArticleCard({ article }: CardProps) {
         postArticleClick(id);
       }}
     >
-      <S.CardContainer>
+      <S.CardContainer aria-hidden="true">
         {projectTitle && (
           // biome-ignore lint/a11y/useSemanticElements: using button role instead
           <S.ProjectLinkButton

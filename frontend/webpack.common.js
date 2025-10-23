@@ -27,6 +27,10 @@ export default {
   module: {
     rules: [
       {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: {
@@ -34,7 +38,7 @@ export default {
         },
       },
       {
-        test: /\.(png|jpe?g|gif|svg|webp)$/i,
+        test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
         type: "asset/resource",
         generator: {
           filename: "assets/[name][hash][ext]",

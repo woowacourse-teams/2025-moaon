@@ -25,9 +25,10 @@ function SectorTab({
   });
   const hasActive = selectedIndex > -1;
   return (
-    <S.SectorTabList>
+    <S.SectorTabList id="article-page-all-tab-list">
       {ARTICLE_SECTOR_ENTRY.map(([key, { label }], idx) => (
         <S.SectorTabItem
+          tabIndex={0}
           key={key}
           selected={key === rawSelectedParams}
           onKeyDown={(e) => {

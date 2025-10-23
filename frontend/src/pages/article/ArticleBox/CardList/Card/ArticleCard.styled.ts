@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { textOverflowEllipsis } from "@/styles/global.styled";
+import { BP_768, textOverflowEllipsis } from "@/styles/global.styled";
 
 export const CardContainer = styled.li`
   position: relative;
@@ -11,9 +11,14 @@ export const CardContainer = styled.li`
   align-items: flex-start;
   gap: 0.75rem;
   overflow: hidden;
+
   &:hover {
     transition: 0.25s linear;
     box-shadow: rgba(58, 103, 215, 0.2) 0px 7px 29px 0px;
+  }
+
+  ${BP_768} {
+    padding: 0.75rem 1rem;
   }
 `;
 
@@ -23,6 +28,10 @@ export const CardTitle = styled.h2`
   line-height: 1.25;
   height: 2.8125rem;
   ${textOverflowEllipsis(2)}
+
+  ${BP_768} {
+    font-size: 1rem;
+  }
 `;
 
 export const CardSummary = styled.span`
@@ -54,11 +63,19 @@ export const CardClickBox = styled.div`
 
 export const CardClickIcon = styled.img`
   width: 1.125rem;
+
+  ${BP_768} {
+    width: 1rem;
+  }
 `;
 
 export const CardClickCount = styled.span`
   font-size: 0.8125rem;
   color: #595858;
+
+  ${BP_768} {
+    font-size: 0.75rem;
+  }
 `;
 
 export const ArticleLink = styled.a``;
@@ -85,10 +102,20 @@ export const ProjectLinkButton = styled.div`
   &:hover::after {
     width: 90%;
   }
+
+  ${BP_768} {
+    font-size: 0.9rem;
+  }
 `;
 
 export const BadgeList = styled.ul`
   display: flex;
   gap: 0.5rem;
+  height: 1.8rem;
+  overflow: hidden;
   flex-wrap: wrap;
+
+  ${BP_768} {
+    gap: 0.25rem;
+  }
 `;

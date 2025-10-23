@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 
 export const Container = styled.div`
   padding: 0 0.5rem;
-  min-width: 31.25rem;
 `;
 
 export const Title = styled.h3`

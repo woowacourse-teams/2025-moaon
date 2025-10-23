@@ -4,10 +4,13 @@ import { Suspense } from "react";
 import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
 import ArticlePage from "./pages/article/ArticlePage";
-import LandingPage from "./pages/landing/LandingPage";
+import EventLandingPage from "./pages/eventLanding/EventLandingPage";
+import OAuthCallback from "./pages/oauth/OAuthCallback";
 import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
 import ProjectListPage from "./pages/project-list/ProjectListPage";
-import Header from "./shared/components/Header/Header";
+import RegisterPage from "./pages/register/RegisterPage";
+import CompanyEventPage from "./pages/wooteco/company/CompanyEventPage";
+import WootecoEventPage from "./pages/wooteco/WootecoEventPage";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
 
 function App() {
@@ -15,14 +18,17 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <Header />
       <GlobalLayout>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            {/* <Route path="/" element={<LandingPage />} /> */}
             <Route path="/project" element={<ProjectListPage />} />
             <Route path="/project/:id" element={<ProjectDetailPage />} />
             <Route path="/article" element={<ArticlePage />} />
+            <Route path="/wooteco" element={<WootecoEventPage />} />
+            <Route path="/wooteco/:company" element={<CompanyEventPage />} />
+            <Route path="/" element={<EventLandingPage />} />
+            <Route path="/oauth/callback/:result" element={<OAuthCallback />} />
             <Route
               path="*"
               element={
@@ -35,6 +41,7 @@ function App() {
                 </>
               }
             />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </Suspense>
       </GlobalLayout>

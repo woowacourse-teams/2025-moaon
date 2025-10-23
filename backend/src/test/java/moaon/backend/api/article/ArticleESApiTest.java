@@ -4,14 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 import io.restassured.RestAssured;
+import java.time.Duration;
 import java.util.List;
+import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleContent;
+import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepository;
-import moaon.backend.es.ArticleDocument;
-import moaon.backend.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.project.domain.Project;
@@ -43,6 +45,7 @@ public class ArticleESApiTest {
             .withEnv("xpack.security.transport.ssl.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
             .withEnv("xpack.security.enabled", "false")
+            .withStartupTimeout(Duration.ofMinutes(5))
             .withCommand("sh", "-c", "elasticsearch-plugin install --batch analysis-nori && exec bin/elasticsearch");
 
     @LocalServerPort
@@ -50,6 +53,15 @@ public class ArticleESApiTest {
 
     @Autowired
     private ElasticsearchOperations ops;
+
+    @Autowired
+    private ArticleDocumentRepository articleDocumentRepository;
+
+    @Autowired
+    private TechStackRepository techStackRepository;
+
+    @MockitoBean
+    private ArticleRepository repository;
 
     @BeforeEach
     void setUp() {
@@ -61,13 +73,6 @@ public class ArticleESApiTest {
         indexOps.refresh();
         RestAssured.port = port;
     }
-
-    @Autowired
-    private ArticleDocumentRepository articleDocumentRepository;
-    @Autowired
-    private TechStackRepository techStackRepository;
-    @MockitoBean
-    private ArticleRepository repository;
 
     @DisplayName("GET /articles : 페이징 방식의 아티클 조회 API")
     @Test
@@ -160,7 +165,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        final var article8 = new ArticleFixtureBuilder()
+        Article article8 = new ArticleFixtureBuilder()
                 .id(8L)
                 .title(filteredSearch)
                 .sector(filteredSector)
@@ -171,7 +176,7 @@ public class ArticleESApiTest {
                 .build();
         ArticleDocument articleClickRankSecond = articleDocumentRepository.save(new ArticleDocument(article8));
 
-        final var article9 = new ArticleFixtureBuilder()
+        Article article9 = new ArticleFixtureBuilder()
                 .id(9L)
                 .content(filteredSearch)
                 .sector(filteredSector)
@@ -200,7 +205,7 @@ public class ArticleESApiTest {
 
         // then
         assertThat(actualResponse.contents())
-                .extracting(ArticleContent::id)
+                .extracting(ArticleData::id)
                 .containsExactly(articleClickRankFirst.getId(), articleClickRankSecond.getId());
     }
 }

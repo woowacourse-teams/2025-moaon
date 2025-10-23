@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { BP_768 } from "@/styles/global.styled";
 
 export const ArticleSectionContainer = styled.section`
   border-top: 1px solid #d4d4d4;
@@ -21,6 +22,11 @@ export const SearchHeader = styled.div<{ hasArticles: boolean }>`
   justify-content: ${({ hasArticles }) =>
     hasArticles ? "space-between" : "flex-end"};
   margin: 1rem 0 2rem;
+
+  ${BP_768} {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
 `;
 
 export const ArticleIntroText = styled.span`
@@ -34,4 +40,8 @@ export const ArticleDescriptionText = styled.p`
 
 export const SearchBarBox = styled.div`
   width: 25.25rem;
+  ${BP_768} {
+    margin-right: auto;
+    width: 100%;
+  }
 `;

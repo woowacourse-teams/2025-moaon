@@ -4,10 +4,5 @@ spring:
     url: ${SPRING_DATASOURCE_URL_DEV}
     username: ${SPRING_DATASOURCE_USERNAME_DEV}
     password: ${SPRING_DATASOURCE_PASSWORD_DEV}
-
-logging:
-  pattern:
-    console: "[%X{request_id}] %clr(%-5level) %clr(%logger{36}){cyan} - %msg [%thread]%n"
-  level:
-    org.hibernate.SQL: off
-    org.hibernate.orm.jdbc.bind: off
+  elasticsearch:
+    uris: http://10.0.0.37:9200

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
+import moaon.backend.techStack.domain.ProjectTechStack;
 import moaon.backend.techStack.domain.TechStack;
 
 public record ProjectDetailResponse(
@@ -45,4 +47,30 @@ public record ProjectDetailResponse(
                 project.getProductionUrl()
         );
     }
+    public static ProjectDetailResponse from(
+            Project project,
+            List<ProjectTechStack> projectTechStacks,
+            List<ProjectCategory> projectCategories) {
+        return new ProjectDetailResponse(
+                project.getId(),
+                project.getAuthor().getId(),
+                project.getTitle(),
+                project.getSummary(),
+                project.getDescription(),
+                projectTechStacks.stream()
+                        .map(techStack -> techStack.getTechStack().getName())
+                        .toList(),
+                projectCategories.stream()
+                        .map(category -> category.getCategory().getName())
+                        .toList(),
+                project.getImages().getUrls(),
+                false, // TODO 로그인 추가 시 수정
+                project.getLoveCount(),
+                project.getViews(),
+                project.getCreatedAt(),
+                project.getGithubUrl(),
+                project.getProductionUrl()
+        );
+    }
+
 }

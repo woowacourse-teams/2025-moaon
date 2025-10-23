@@ -1,37 +1,54 @@
 import SearchBar from "@shared/components/SearchBar/SearchBar";
-import { toast } from "@shared/components/Toast/toast";
+import useDebounce from "@shared/hooks/useDebounce";
 import useSearchParams from "@shared/hooks/useSearchParams";
+import { useEffect, useRef, useState } from "react";
 import useArticleList from "../hooks/useArticleList";
 
-const MIN_SEARCH_LENGTH = 2;
 const MAX_SEARCH_LENGTH = 50;
 
 function ArticleSearchBar() {
   const params = useSearchParams({ key: "search", mode: "single" });
   const { refetch } = useArticleList();
 
-  const handleSearchSubmit = (value: string) => {
-    if (value === "") {
-      params.deleteAll({ replace: true });
-      refetch();
+  const searchValue = params.get()[0] ?? "";
+  const [inputValue, setInputValue] = useState(searchValue);
+
+  const debouncedValue = useDebounce({
+    value: inputValue,
+  });
+
+  const paramsRef = useRef(params);
+  const refetchRef = useRef(refetch);
+
+  useEffect(() => {
+    paramsRef.current = params;
+    refetchRef.current = refetch;
+  }, [params, refetch]);
+
+  useEffect(() => {
+    const currentParam = paramsRef.current.get()[0] ?? "";
+
+    if (currentParam === debouncedValue) return;
+
+    if (debouncedValue.trim() === "") {
+      if (currentParam !== "") {
+        paramsRef.current.deleteAll({ replace: true });
+        refetchRef.current();
+      }
       return;
     }
 
-    if (value.length < MIN_SEARCH_LENGTH) {
-      toast.warning(`검색어는 ${MIN_SEARCH_LENGTH}글자 이상 입력해주세요.`);
-      return;
-    }
+    paramsRef.current.update(debouncedValue, { replace: true });
+    refetchRef.current();
+  }, [debouncedValue]);
 
-    params.update(value, { replace: true });
-    refetch();
-  };
-
-  const searchValue = params.get()[0];
   return (
     <SearchBar
+      id="article-search"
+      label="아티클 검색"
       placeholder="아티클 제목, 내용을 검색해 보세요"
-      onSubmit={handleSearchSubmit}
-      defaultValue={searchValue}
+      value={inputValue}
+      onChange={setInputValue}
       maxLength={MAX_SEARCH_LENGTH}
     />
   );
