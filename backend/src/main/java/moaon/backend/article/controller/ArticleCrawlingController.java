@@ -1,5 +1,6 @@
 package moaon.backend.article.controller;
 
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.dto.ArticleCrawlResponse;
 import moaon.backend.article.dto.ArticleCrawlResult;
@@ -31,9 +32,19 @@ public class ArticleCrawlingController {
         Member member = validateAndGetMember(token);
 
         ArticleCrawlResult result = articleCrawlService.crawl(url, member);
-        articleCrawlService.saveTemporary(url, result);
+        Member updatedMember = articleCrawlService.saveTemporary(url, result, member);
 
-        return ResponseEntity.ok(ArticleCrawlResponse.from(result, member));
+        return ResponseEntity.ok(ArticleCrawlResponse.from(result, updatedMember));
+    }
+
+    @GetMapping("/token-count")
+    public ResponseEntity<Map<String, Integer>> getRemainingTokens(
+            @CookieValue(value = "token", required = false) String token
+    ) {
+        Member member = validateAndGetMember(token);
+        return ResponseEntity.ok(
+                Map.of("remainingCount", member.getTodayRemainingTokens())
+        );
     }
 
     private Member validateAndGetMember(String token) {
