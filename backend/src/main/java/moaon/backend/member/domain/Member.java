@@ -10,8 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,7 +51,7 @@ public class Member {
 
     public void addCrawlCount() {
         if (isCrawlCountOvered()) {
-            throw new CustomException(ErrorCode.ARTICLE_CRAWL_TIMES_OVER);
+            return;
         }
         crawlCount++;
     }

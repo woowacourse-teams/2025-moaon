@@ -32,9 +32,9 @@ public class ArticleCrawlingController {
         Member member = validateAndGetMember(token);
 
         ArticleCrawlResult result = articleCrawlService.crawl(url, member);
-        Member updatedMember = articleCrawlService.saveTemporary(url, result, member);
+        articleCrawlService.saveTemporary(url, result);
 
-        return ResponseEntity.ok(ArticleCrawlResponse.from(result, updatedMember));
+        return ResponseEntity.ok(ArticleCrawlResponse.from(result, member));
     }
 
     @GetMapping("/token-count")
