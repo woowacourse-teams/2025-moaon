@@ -1,14 +1,14 @@
-package moaon.backend.article.repository;
+package moaon.backend.article.repository.db;
 
 import java.util.List;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 
 public interface CustomizedArticleRepository {
 
-    Articles findWithSearchConditions(ArticleQueryCondition queryCondition);
+    ArticleSearchResult findWithSearchConditions(ArticleQueryCondition queryCondition);
 
     List<Article> findAllByProjectIdAndCondition(long id, ProjectArticleQueryCondition condition);
 }

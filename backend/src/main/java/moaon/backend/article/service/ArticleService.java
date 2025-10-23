@@ -9,14 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.ArticleContentRepository;
-import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.repository.ArticleSearchResult;
+import moaon.backend.article.repository.db.ArticleContentRepository;
+import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -42,15 +42,15 @@ public class ArticleService {
     private final TechStackRepository techStackRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
-        Articles articles;
+        ArticleSearchResult searchResult;
         try {
-            articles = elasticSearchService.search(queryCondition);
+            searchResult = elasticSearchService.search(queryCondition);
         } catch (Exception e) {
             log.warn("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
-            articles = articleRepository.findWithSearchConditions(queryCondition);
+            searchResult = articleRepository.findWithSearchConditions(queryCondition);
         }
 
-        return ArticleResponse.from(articles);
+        return ArticleResponse.from(searchResult);
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {

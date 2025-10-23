@@ -1,9 +1,8 @@
 package moaon.backend.article.dto;
 
 import java.util.List;
-import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCursor;
-import moaon.backend.article.domain.Articles;
+import moaon.backend.article.repository.ArticleSearchResult;
 
 public record ArticleResponse(
         List<ArticleData> contents,
@@ -12,43 +11,16 @@ public record ArticleResponse(
         String nextCursor
 ) {
 
-    public static ArticleResponse from(Articles articles) {
+    public static ArticleResponse from(ArticleSearchResult searchResult) {
         return new ArticleResponse(
-                ArticleData.from(articles.getArticlesToReturn()),
-                (int) articles.getTotalCount(),
-                articles.hasNext(),
-                extractNextCursor(articles.getNextCursor())
+                ArticleData.from(searchResult.getArticles()),
+                (int) searchResult.getTotalCount(),
+                searchResult.hasNext(),
+                nextCursorToString(searchResult.getNextCursor())
         );
     }
 
-    public static ArticleResponse from(
-            List<Article> articles,
-            Long totalCount,
-            boolean hasNext,
-            String nextCursor
-    ) {
-        return new ArticleResponse(
-                ArticleData.from(articles),
-                totalCount.intValue(),
-                hasNext,
-                nextCursor
-        );
-    }
-
-    public static ArticleResponse withoutNextCursor(
-            List<Article> articles,
-            Long totalCount,
-            boolean hasNext
-    ) {
-        return new ArticleResponse(
-                ArticleData.from(articles),
-                totalCount.intValue(),
-                hasNext,
-                null
-        );
-    }
-
-    private static String extractNextCursor(ArticleCursor nextCursor) {
+    private static String nextCursorToString(ArticleCursor nextCursor) {
         if (nextCursor == null) {
             return null;
         }

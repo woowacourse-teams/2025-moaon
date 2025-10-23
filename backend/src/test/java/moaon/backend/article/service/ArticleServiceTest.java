@@ -10,11 +10,11 @@ import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.repository.db.ArticleRepository;
+import moaon.backend.article.repository.db.DBArticleSearchResult;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
@@ -73,7 +73,7 @@ class ArticleServiceTest {
                 .build();
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(new Articles(articles, totalCount, limit, sortType));
+                .thenReturn(new DBArticleSearchResult(articles, totalCount, limit, sortType));
 
         ArticleCursor articleCursor = new ArticleCursor(article2, articleQueryCondition.sortType());
 
@@ -116,7 +116,7 @@ class ArticleServiceTest {
         ArticleSortType sortType = ArticleSortType.CREATED_AT;
 
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
-                .thenReturn(new Articles(articles, totalCount, limit, sortType));
+                .thenReturn(new DBArticleSearchResult(articles, totalCount, limit, sortType));
 
         ArticleQueryCondition articleQueryCondition = new ArticleQueryConditionBuilder()
                 .limit(limit)

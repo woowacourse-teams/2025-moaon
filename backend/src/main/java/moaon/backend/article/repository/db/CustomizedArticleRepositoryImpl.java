@@ -1,4 +1,4 @@
-package moaon.backend.article.repository;
+package moaon.backend.article.repository.db;
 
 import java.util.List;
 import java.util.Set;
@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
@@ -23,7 +22,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
     private final ArticleDao articleDao;
 
     @Override
-    public Articles findWithSearchConditions(ArticleQueryCondition queryCondition) {
+    public DBArticleSearchResult findWithSearchConditions(ArticleQueryCondition queryCondition) {
         FilteringIds filteringIds = FilteringIds.init();
         filteringIds = applyTechStackFilter(filteringIds, queryCondition.techStackNames());
         filteringIds = applyTopicFilter(filteringIds, queryCondition.topics());
@@ -31,7 +30,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
         filteringIds = applySectorFilter(filteringIds, queryCondition.sector());
 
         if (filteringIds.hasEmptyResult()) {
-            return Articles.empty();
+            return DBArticleSearchResult.empty();
         }
 
         List<Article> articles = articleDao.findAllBy(
@@ -41,7 +40,7 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 queryCondition.sortType()
         );
         long totalCount = calculateTotalCount(filteringIds);
-        return new Articles(articles, totalCount, queryCondition.limit(), queryCondition.sortType());
+        return new DBArticleSearchResult(articles, totalCount, queryCondition.limit(), queryCondition.sortType());
     }
 
     @Override

@@ -5,15 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import moaon.backend.article.repository.db.DBArticleSearchResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ArticlesTest {
+class DBArticleSearchResultTest {
 
-    @DisplayName("비어있는 Articles를 만든다.")
+    @DisplayName("비어있는 ArticleSearchResult를 만든다.")
     @Test
     void empty() {
-        Articles articles = Articles.empty();
+        DBArticleSearchResult articles = DBArticleSearchResult.empty();
         assertAll(
                 () -> assertThat(articles.getArticles()).isEmpty(),
                 () -> assertThat(articles.getTotalCount()).isEqualTo(0),
@@ -29,10 +30,10 @@ class ArticlesTest {
     void getArticlesToReturn() {
         // given
         List<Article> threeArticles = List.of(anyArticle(), anyArticle(), anyArticle());
-        Articles articles = new Articles(threeArticles, 4, 2, ArticleSortType.CLICKS);
+        DBArticleSearchResult articles = new DBArticleSearchResult(threeArticles, 4, 2, ArticleSortType.CLICKS);
 
         // when
-        List<Article> toReturn = articles.getArticlesToReturn();
+        List<Article> toReturn = articles.getArticles();
 
         // then
         assertThat(toReturn).hasSize(2);
@@ -43,8 +44,8 @@ class ArticlesTest {
     void getNextCursor() {
         // given
         List<Article> threeArticles = List.of(anyArticle(), anyArticle(), anyArticle());
-        Articles articles = new Articles(threeArticles, 4, 2, ArticleSortType.CLICKS);
-        Article finallyLastArticle = articles.getArticlesToReturn().getLast();
+        DBArticleSearchResult articles = new DBArticleSearchResult(threeArticles, 4, 2, ArticleSortType.CLICKS);
+        Article finallyLastArticle = articles.getArticles().getLast();
 
         // when
         ArticleCursor nextCursor = articles.getNextCursor();
@@ -59,7 +60,7 @@ class ArticlesTest {
     void hasNextTrue() {
         // given
         List<Article> threeArticles = List.of(anyArticle(), anyArticle(), anyArticle());
-        Articles articles = new Articles(
+        DBArticleSearchResult articles = new DBArticleSearchResult(
                 threeArticles, // 현재 페이지 : 3개
                 999, // 전체 아티클 개수
                 2, // 페이지 크기
@@ -78,7 +79,7 @@ class ArticlesTest {
     void hasNextFalse() {
         // given
         List<Article> threeArticles = List.of(anyArticle(), anyArticle(), anyArticle());
-        Articles articles = new Articles(
+        DBArticleSearchResult articles = new DBArticleSearchResult(
                 threeArticles, // 현재 페이지 : 3개
                 999, // 전체 아티클 개수
                 3, // 페이지 크기

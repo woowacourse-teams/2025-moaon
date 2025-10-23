@@ -2,7 +2,7 @@ package moaon.backend.article.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import moaon.backend.article.repository.ArticleContentRepository;
+import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;

@@ -9,10 +9,11 @@ import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.repository.db.CustomizedArticleRepositoryImpl;
+import moaon.backend.article.repository.db.DBArticleSearchResult;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
@@ -225,7 +226,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -263,7 +264,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -301,7 +302,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -350,7 +351,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -455,32 +456,6 @@ class CustomizedArticleRepositoryImplTest {
             assertThat(articles).containsExactly(highClicks, middleClicks, lowClicks);
         }
 
-        @DisplayName("마지막 페이지가 아닐 시 limit + 1개 만큼 가져온다.")
-        @Test
-        void findArticlesForLimitPlusOne() {
-            // given
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                    .limit(4)
-                    .build();
-
-            // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
-
-            // then
-            assertAll(
-                    () -> assertThat(articles.getLimit()).isEqualTo(4),
-                    () -> assertThat(articles.getArticles()).hasSize(5),
-                    () -> assertThat(articles.hasNext()).isTrue()
-            );
-        }
-
         @DisplayName("마지막 페이지 도달하면 limit 개수 이하로 가져온다.")
         @Test
         void findArticlesForUnderLimit() {
@@ -497,7 +472,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(

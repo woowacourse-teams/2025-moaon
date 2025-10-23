@@ -1,4 +1,4 @@
-package moaon.backend.article.repository;
+package moaon.backend.article.repository.db;
 
 import static org.hibernate.type.StandardBasicTypes.DOUBLE;
 

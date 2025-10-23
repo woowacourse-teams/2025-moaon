@@ -22,7 +22,7 @@ import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.repository.ArticleFullTextSearchHQLFunction;
+import moaon.backend.article.repository.db.ArticleFullTextSearchHQLFunction;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
