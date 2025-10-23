@@ -39,7 +39,7 @@ function Header() {
     <S.Header>
       <S.HeaderBox>
         <S.Wrap>
-          <S.LogoLink to="/">
+          <S.LogoLink to="/" aria-label="모아온 홈페이지로 이동">
             <img src={HeaderLogoImage} alt="모아온 로고" />
           </S.LogoLink>
           <NavBar />
@@ -49,9 +49,12 @@ function Header() {
           {auth?.isLoggedIn && (
             <UserMenu
               name={auth.name ?? "Anonymous"}
-              onSelect={() => {
-                logout();
-                window.location.href = "/";
+              onSelect={async () => {
+                await logout();
+                getCookieValue("token")
+                  ? toast.error("로그아웃에 실패했어요. 다시 시도해주세요.")
+                  : toast.success("로그아웃에 성공했어요.");
+                navigate("/");
               }}
             />
           )}

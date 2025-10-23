@@ -112,8 +112,6 @@ export const Box = styled.div`
   ${BP_480} {
     width: 100%;
     padding: 0 1rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 1.125rem;
   }
 `;
@@ -167,5 +165,19 @@ export const ResetIcon = styled.img`
 
   ${BP_480} {
     width: 0.875rem;
+  }
+`;
+
+export const SortListContainer = styled.div`
+  ${BP_768} {
+    display: none;
+  }
+`;
+
+export const SortDropdownContainer = styled.div`
+  display: none;
+
+  ${BP_768} {
+    display: block;
   }
 `;

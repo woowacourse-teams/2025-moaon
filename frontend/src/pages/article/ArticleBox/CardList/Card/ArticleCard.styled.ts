@@ -111,6 +111,8 @@ export const ProjectLinkButton = styled.div`
 export const BadgeList = styled.ul`
   display: flex;
   gap: 0.5rem;
+  height: 1.8rem;
+  overflow: hidden;
   flex-wrap: wrap;
 
   ${BP_768} {

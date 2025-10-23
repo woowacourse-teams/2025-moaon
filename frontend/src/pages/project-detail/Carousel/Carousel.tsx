@@ -68,10 +68,16 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
       })}
       {imageUrls.length > 1 && (
         <>
-          <S.PrevButton onClick={handleSlidePrev}>
+          <S.PrevButton
+            onClick={handleSlidePrev}
+            aria-label="이전 슬라이드 이동"
+          >
             <ArrowIcon direction="left" />
           </S.PrevButton>
-          <S.NextButton onClick={handleSlideNext}>
+          <S.NextButton
+            onClick={handleSlideNext}
+            aria-label="다음 슬라이드 이동"
+          >
             <ArrowIcon direction="right" />
           </S.NextButton>
         </>

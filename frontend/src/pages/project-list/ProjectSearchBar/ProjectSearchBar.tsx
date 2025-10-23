@@ -44,6 +44,8 @@ function ProjectSearchBar() {
 
   return (
     <SearchBar
+      id="project-search"
+      label="프로젝트 검색"
       placeholder="프로젝트 제목, 한 줄 설명, 개요를 검색해 보세요"
       value={inputValue}
       onChange={setInputValue}

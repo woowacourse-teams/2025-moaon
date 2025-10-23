@@ -1,5 +1,7 @@
 import { toast } from "@shared/components/Toast/toast";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { articlesQueries } from "@/apis/articles/articles.queries";
 import type { ArticleFormDataType, SectorType } from "../../types";
 import {
   type ArticleFormErrors,
@@ -28,17 +30,27 @@ export const useArticleForm = ({
   onUpdate,
   onCancel,
 }: UseArticleFormProps) => {
+  const { data: token } = useQuery(articlesQueries.getToken());
+  const [descriptionToken, setDescriptionToken] = useState<number>(
+    () => token?.remainingCount ?? null
+  );
+  const [isButtonClicked, setIsButtonClicked] = useState(true);
   const [formData, setFormData] = useState<ArticleFormDataType>(() =>
     createEmptyFormData()
   );
   const [errors, setErrors] = useState<ArticleFormErrors>({});
 
   const fetchMetaMutation = useCrawlArticleMutation(setFormData);
-
   const isFormValid = useMemo(() => {
     const validationErrors = validateFormData(formData);
     return Object.values(validationErrors).every((error) => !error);
   }, [formData]);
+
+  useEffect(() => {
+    if (token?.remainingCount !== undefined) {
+      setDescriptionToken(token.remainingCount);
+    }
+  }, [token?.remainingCount]);
 
   useEffect(() => {
     if (!editingData) {
@@ -46,16 +58,30 @@ export const useArticleForm = ({
     }
 
     setFormData(editingData);
+    setIsButtonClicked(false);
   }, [editingData]);
 
-  const handleMetaDataFetchButtonClick = useCallback(() => {
+  const handleMetaDataFetchButtonClick = useCallback(async () => {
     if (!formData.address) {
       toast.warning("아티클 주소를 입력해주세요.");
       return;
     }
 
-    fetchMetaMutation.mutate(formData.address);
-  }, [formData.address, fetchMetaMutation]);
+    const previous = descriptionToken;
+    setDescriptionToken((prev) => Math.max(0, prev - 1));
+    setIsButtonClicked(true);
+
+    try {
+      const result = await fetchMetaMutation.mutateAsync(formData.address);
+      setIsButtonClicked(false);
+      if (result && typeof result.remainingCount === "number") {
+        setDescriptionToken(result.remainingCount);
+      }
+    } catch {
+      setDescriptionToken(previous);
+      setIsButtonClicked(false);
+    }
+  }, [formData.address, fetchMetaMutation, descriptionToken]);
 
   const updateFormFieldData = useCallback(
     <K extends keyof ArticleFormDataType>(
@@ -157,24 +183,30 @@ export const useArticleForm = ({
 
     if (onUpdate && editingData) {
       onUpdate(formData);
+      setFormData(createEmptyFormData());
+      setIsButtonClicked(true);
       return;
     }
 
     onSubmit(formData);
     setFormData(createEmptyFormData());
+    setIsButtonClicked(true);
     setErrors({});
   }, [formData, onSubmit, onUpdate, editingData]);
 
   const handleCancel = useCallback(() => {
     onCancel();
     setFormData(createEmptyFormData());
+    setIsButtonClicked(true);
     setErrors({});
   }, [onCancel]);
 
   return {
     formData,
+    isButtonClicked,
     errors,
     isFormValid,
+    descriptionToken,
     updateFormFieldData,
     updateNestedField,
     handleMetaDataFetchButtonClick,

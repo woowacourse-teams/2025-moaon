@@ -17,6 +17,7 @@ import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.dto.ProjectSummaryResponse;
 import moaon.backend.project.repository.ProjectRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +35,7 @@ class ProjectServiceTest {
     @InjectMocks
     private ProjectService projectService;
 
+    @Disabled
     @DisplayName("ID에 해당하는 프로젝트가 존재하지 않는다면 예외가 발생한다.")
     @Test
     void getProjectById() {

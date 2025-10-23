@@ -1,6 +1,11 @@
-import { infiniteQueryOptions, mutationOptions } from "@tanstack/react-query";
+import {
+  infiniteQueryOptions,
+  mutationOptions,
+  queryOptions,
+} from "@tanstack/react-query";
 import type { PostArticleData } from "./articles.type";
 import getArticles from "./getArticles";
+import getToken from "./getToken";
 import postArticle from "./postArticle";
 import postArticleView from "./postArticleView";
 
@@ -21,5 +26,12 @@ export const articlesQueries = {
   postArticles: () =>
     mutationOptions({
       mutationFn: (postData: PostArticleData[]) => postArticle(postData),
+    }),
+  getToken: () =>
+    queryOptions({
+      queryKey: ["authToken"],
+      queryFn: () => getToken(),
+      throwOnError: true,
+      retry: 0,
     }),
 };

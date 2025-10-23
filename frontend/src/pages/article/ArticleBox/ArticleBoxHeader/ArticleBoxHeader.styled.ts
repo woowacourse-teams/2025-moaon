@@ -60,3 +60,17 @@ export const SectorDropdownContainer = styled.div`
     display: block;
   }
 `;
+
+export const SortListContainer = styled.div`
+  ${BP_768} {
+    display: none;
+  }
+`;
+
+export const SortDropdownContainer = styled.div`
+  display: none;
+
+  ${BP_768} {
+    display: block;
+  }
+`;

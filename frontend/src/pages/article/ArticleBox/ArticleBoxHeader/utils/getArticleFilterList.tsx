@@ -17,16 +17,16 @@ export const getArticleFilterList = (sector: ArticleSectorKey) => {
 
   return [
     {
-      label: "주제",
-      param: "topics",
-      render: (onSelect: () => void) => <TopicFilterBox onSelect={onSelect} />,
-    },
-    {
       label: "기술 스택",
       param: "techStacks",
       render: (onSelect: () => void) => (
         <TechStackFilterBox onSelect={onSelect} />
       ),
+    },
+    {
+      label: "주제",
+      param: "topics",
+      render: (onSelect: () => void) => <TopicFilterBox onSelect={onSelect} />,
     },
   ];
 };

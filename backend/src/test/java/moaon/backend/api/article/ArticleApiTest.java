@@ -64,10 +64,11 @@ public class ArticleApiTest extends BaseApiTest {
 
     private String token;
 
+    private Member member;
+
     @BeforeEach
     void cookieSetUp() {
-        Member member = Fixture.anyMember();
-        repositoryHelper.save(member);
+        member = repositoryHelper.save(Fixture.anyMember());
 
         token = jwtTokenProvider.createToken(member.getId());
     }
@@ -77,8 +78,13 @@ public class ArticleApiTest extends BaseApiTest {
     void save() throws MalformedURLException {
         // given
         Project savedProject = repositoryHelper.save(
-                new ProjectFixtureBuilder().build()
+                new ProjectFixtureBuilder()
+                        .author(member)
+                        .build()
         );
+
+        Mockito.when(oAuthService.getUserByToken(token)).thenReturn(member);
+        Mockito.doNothing().when(oAuthService).validateToken(Mockito.any());
 
         repositoryHelper.save(new TechStack("react"));
 
@@ -93,8 +99,6 @@ public class ArticleApiTest extends BaseApiTest {
                 .sector("fe")
                 .topics(List.of("etc"))
                 .build();
-
-        Mockito.doNothing().when(oAuthService).validateToken(Mockito.any());
 
         // when
         RestAssured.given(documentationSpecification).log().all()

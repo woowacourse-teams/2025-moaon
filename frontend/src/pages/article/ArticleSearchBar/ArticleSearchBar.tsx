@@ -44,6 +44,8 @@ function ArticleSearchBar() {
 
   return (
     <SearchBar
+      id="article-search"
+      label="아티클 검색"
       placeholder="아티클 제목, 내용을 검색해 보세요"
       value={inputValue}
       onChange={setInputValue}

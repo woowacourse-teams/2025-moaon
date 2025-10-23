@@ -8,7 +8,6 @@ function OAuthCallback() {
 
   useEffect(() => {
     const returnTo = sessionStorage.getItem("oauthReturnTo") || "/";
-    sessionStorage.removeItem("oauthReturnTo");
 
     if (result === "success") {
       toast.success("로그인에 성공했어요.");

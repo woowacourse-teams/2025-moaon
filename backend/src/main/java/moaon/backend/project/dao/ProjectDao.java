@@ -1,8 +1,11 @@
 package moaon.backend.project.dao;
 
+import static moaon.backend.member.domain.QMember.member;
+import static moaon.backend.project.domain.QCategory.category;
 import static moaon.backend.project.domain.QProject.project;
 import static moaon.backend.project.domain.QProjectCategory.projectCategory;
 import static moaon.backend.techStack.domain.QProjectTechStack.projectTechStack;
+import static moaon.backend.techStack.domain.QTechStack.techStack;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -19,9 +22,11 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.project.domain.Project;
+import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
 import moaon.backend.project.repository.ProjectFullTextSearchHQLFunction;
+import moaon.backend.techStack.domain.ProjectTechStack;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -32,6 +37,30 @@ public class ProjectDao {
     private static final String BLANK = " ";
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public Optional<Project> findProjectById(Long id) {
+        return Optional.ofNullable(jpaQueryFactory
+                .selectFrom(project)
+                .leftJoin(project.author, member).fetchJoin()
+                .where(project.id.eq(id))
+                .fetchOne());
+    }
+
+    public List<ProjectCategory> findProjectCategoriesByProjectId(Long id) {
+        return jpaQueryFactory
+                .selectFrom(projectCategory)
+                .leftJoin(projectCategory.category, category).fetchJoin()
+                .where(projectCategory.project.id.eq(id))
+                .fetch();
+    }
+
+    public List<ProjectTechStack> findProjectTechStacksByProjectId(Long id) {
+        return jpaQueryFactory
+                .selectFrom(projectTechStack)
+                .leftJoin(projectTechStack.techStack, techStack).fetchJoin()
+                .where(projectTechStack.project.id.eq(id))
+                .fetch();
+    }
 
     public List<Project> findProjects(ProjectQueryCondition condition, Set<Long> projectIdsByFilter) {
         Cursor<?> cursor = condition.cursor();

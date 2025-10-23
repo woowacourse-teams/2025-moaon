@@ -7,6 +7,7 @@ interface InputFormFieldWithButtonProps extends ComponentProps<"input"> {
   name: string;
   buttonEvent: () => void;
   errorMessage?: string;
+  descriptionToken: number;
 }
 
 function InputFormFieldWithButton({
@@ -19,15 +20,16 @@ function InputFormFieldWithButton({
   placeholder,
   buttonEvent,
   errorMessage,
+  disabled,
+  descriptionToken,
 }: InputFormFieldWithButtonProps) {
   const hasError = !!errorMessage;
-
   return (
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={name}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={disabled}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={disabled} />}
         </FormField.Header>
         <S.InputFormFieldWithButtonWrapper>
           <FormField.Input
@@ -39,10 +41,17 @@ function InputFormFieldWithButton({
             placeholder={placeholder}
             required={required}
             hasError={hasError}
+            disabled={disabled}
           />
-          <FormField.Button buttonEvent={buttonEvent}>
-            가져오기
+          <FormField.Button buttonEvent={buttonEvent} disabled={disabled}>
+            검증하기
           </FormField.Button>
+          {descriptionToken === 0 && (
+            <S.InputFormFieldText isTokenZero={descriptionToken === 0}>
+              1일 요약 한도가 초과되었습니다. <br />
+              직접 입력 하거나 내일 다시 시도해주세요 🥹
+            </S.InputFormFieldText>
+          )}
         </S.InputFormFieldWithButtonWrapper>
         <FormField.ErrorBox>
           {errorMessage && <FormField.Error>{errorMessage}</FormField.Error>}

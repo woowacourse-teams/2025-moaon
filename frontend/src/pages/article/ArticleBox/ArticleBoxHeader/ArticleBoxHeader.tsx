@@ -1,3 +1,4 @@
+import SortDropdown from "@domains/components/SortDropdown/SortDropdown";
 import SortList from "@domains/components/SortList/SortList";
 import { useSearchSort } from "@domains/hooks/useSearchSort";
 import { ARTICLE_SORT_MAP } from "@domains/sort/article";
@@ -43,16 +44,28 @@ function ArticleBoxHeader({
       <S.FilterAndSortContainer>
         <FilterContainer filterList={filterList} onSelect={onSelectSort} />
         {shouldShowSort && (
-          <SortList
-            sortMap={ARTICLE_SORT_MAP}
-            onSelect={onSelectSort}
-            initialValue={hasSearch ? "relevance" : initialSort}
-            excludeKeys={excludeKeys}
-          />
+          <>
+            <S.SortListContainer>
+              <SortList
+                sortMap={ARTICLE_SORT_MAP}
+                onSelect={onSelectSort}
+                initialValue={hasSearch ? "relevance" : initialSort}
+                excludeKeys={excludeKeys}
+              />
+            </S.SortListContainer>
+            <S.SortDropdownContainer>
+              <SortDropdown
+                sortMap={ARTICLE_SORT_MAP}
+                onSelect={onSelectSort}
+                initialValue={hasSearch ? "relevance" : initialSort}
+                excludeKeys={excludeKeys}
+              />
+            </S.SortDropdownContainer>
+          </>
         )}
       </S.FilterAndSortContainer>
       <S.ArticleHeaderBox>
-        <S.ArticleIntro>
+        <S.ArticleIntro tabIndex={0} aria-hidden="true">
           {totalCount > 0 && (
             <>
               <S.ArticleIntroText>

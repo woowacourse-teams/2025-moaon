@@ -31,9 +31,6 @@ interface MarkdownProps {
 }
 
 function Markdown({ text, containerAs }: MarkdownProps) {
-  console.log(
-    parseBoldWithQuotes(removeTrailingSpaces(replaceAsteriskWithHyphen(text))),
-  );
   return (
     <S.MarkdownWrapper as={containerAs}>
       <MarkdownPreview
