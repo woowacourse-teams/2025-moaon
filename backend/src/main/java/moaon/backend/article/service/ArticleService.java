@@ -100,7 +100,7 @@ public class ArticleService {
                     () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)
             );
 
-            if (member.equals(project.getAuthor())) {
+            if (!member.equals(project.getAuthor())) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
             }
 
