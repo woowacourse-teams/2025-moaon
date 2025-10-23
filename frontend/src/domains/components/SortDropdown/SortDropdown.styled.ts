@@ -51,10 +51,4 @@ export const DropdownItem = styled.li`
   &:last-of-type {
     border-bottom: none;
   }
-
-  &[aria-selected="true"] {
-    background-color: #e3f2fd;
-    color: #007bff;
-    font-weight: 600;
-  }
 `;
