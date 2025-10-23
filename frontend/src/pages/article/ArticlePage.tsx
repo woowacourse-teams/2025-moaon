@@ -31,8 +31,10 @@ function ArticlePage() {
     <S.Main>
       <S.MainBox>
         <S.TitleBox>
-          <S.MainTitle>아티클 탐색</S.MainTitle>
-          <S.MainDescription>{ARTICLE_PAGE_DESCRIPTION}</S.MainDescription>
+          <S.MainTitle tabIndex={0}>아티클 탐색</S.MainTitle>
+          <S.MainDescription tabIndex={0}>
+            {ARTICLE_PAGE_DESCRIPTION}
+          </S.MainDescription>
         </S.TitleBox>
         <ArticleSearchBar />
       </S.MainBox>
