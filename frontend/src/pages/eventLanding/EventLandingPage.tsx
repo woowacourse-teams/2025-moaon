@@ -1,5 +1,6 @@
 import ArrowDownIcon from "@assets/icons/arrow-down-event.svg";
 import HeroIcon from "@assets/icons/hero.svg";
+import BGImage from "@assets/images/background.png";
 import TextEffectImage from "@assets/images/text-effect.avif";
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import LoginModal from "@shared/components/LoginModal/LoginModal";
@@ -103,6 +104,7 @@ function EventLandingPage() {
       </S.Header>
 
       <S.Container>
+        <S.ContainerBG src={BGImage} alt="" />
         <S.Section1>
           <S.Title1>
             양방향으로 <br /> 탐색하는 <br />{" "}

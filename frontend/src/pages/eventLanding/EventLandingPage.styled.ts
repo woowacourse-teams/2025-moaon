@@ -130,14 +130,17 @@ export const RegisterLink = styled.button`
   }
 `;
 
+export const ContainerBG = styled.img`
+  min-height: 100vh;
+  height: auto;
+  z-index: -1;
+  position: fixed;
+`;
+
 export const Container = styled.div`
   color: #fbfbfb;
   min-height: 100vh;
   height: auto;
-  background-color: #000;
-  background: url("https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/background.png")
-    no-repeat center fixed;
-  background-size: cover;
   display: flex;
   flex-direction: column;
   gap: 10rem;
