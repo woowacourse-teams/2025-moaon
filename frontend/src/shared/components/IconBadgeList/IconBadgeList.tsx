@@ -8,7 +8,10 @@ interface IconBadgeListProps {
 
 function IconBadgeList({ iconBadges }: IconBadgeListProps) {
   return (
-    <S.IconBadgeList>
+    <S.IconBadgeList
+      tabIndex={0}
+      aria-label={`${iconBadges.map((key) => ICON_BADGE_MAP[key]?.label).join(", ")}`}
+    >
       {iconBadges.map((key) => {
         const { label, imgUrl } = ICON_BADGE_MAP[key] ?? {};
         return <IconBadge key={key} label={label} imgUrl={imgUrl} />;
