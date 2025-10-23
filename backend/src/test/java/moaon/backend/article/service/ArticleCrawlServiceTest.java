@@ -7,6 +7,7 @@ import moaon.backend.fixture.Fixture;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
+import moaon.backend.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,8 +18,10 @@ class ArticleCrawlServiceTest {
     private ArticleContentRepository repository;
     @Mock
     private AiSummaryClient aiSummaryClient;
+    @Mock
+    private MemberRepository memberRepository;
 
-    private ArticleCrawlService crawlService = new ArticleCrawlService(repository, aiSummaryClient);
+    private ArticleCrawlService crawlService = new ArticleCrawlService(repository, aiSummaryClient, memberRepository);
 
     @DisplayName("하루 20번 초과 크롤링시 실패한다.")
     @Test
