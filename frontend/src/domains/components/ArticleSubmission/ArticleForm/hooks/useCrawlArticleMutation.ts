@@ -31,10 +31,6 @@ export const useCrawlArticleMutation = (
           toast.error(error.message);
           return;
         }
-
-        toast.error(
-          "메타데이터를 가져오는데 실패했어요. 아티클 제목과 줄거리를 직접 작성해주세요."
-        );
       },
     });
   };
@@ -56,10 +52,6 @@ export const useCrawlArticleMutation = (
       if (error instanceof Error) {
         toast.error(error.message);
       }
-
-      toast.error(
-        "메타데이터를 가져오는데 실패했어요. 아티클 제목과 줄거리를 직접 작성해주세요."
-      );
     }
   };
 

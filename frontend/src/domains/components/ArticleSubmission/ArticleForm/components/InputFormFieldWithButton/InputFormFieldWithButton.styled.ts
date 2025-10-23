@@ -9,5 +9,6 @@ export const InputFormFieldWithButtonWrapper = styled.div`
 export const InputFormFieldText = styled.p<{ isTokenZero: boolean }>`
   width: 100%;
   font-size: 0.75rem;
-  color: ${({ isTokenZero }) => (isTokenZero ? ' "#f00' : "#2906efff")};
+  line-height: 1.6;
+  ${({ isTokenZero }) => isTokenZero && "color:#f00;"};
 `;
