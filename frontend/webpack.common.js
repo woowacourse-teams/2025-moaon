@@ -38,7 +38,7 @@ export default {
         },
       },
       {
-        test: /\.(png|jpe?g|gif|svg|webp)$/i,
+        test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
         type: "asset/resource",
         generator: {
           filename: "assets/[name][hash][ext]",

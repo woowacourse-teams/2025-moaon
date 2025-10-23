@@ -1,3 +1,7 @@
+import ArrowDownIcon from "@assets/icons/arrow-down-event.svg";
+import HeroIcon from "@assets/icons/hero.svg";
+import BGImage from "@assets/images/background.png";
+import TextEffectImage from "@assets/images/text-effect.avif";
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import LoginModal from "@shared/components/LoginModal/LoginModal";
 import { toast } from "@shared/components/Toast/toast";
@@ -100,22 +104,22 @@ function EventLandingPage() {
       </S.Header>
 
       <S.Container>
+        <S.ContainerBG src={BGImage} alt="" />
         <S.Section1>
           <S.Title1>
             양방향으로 <br /> 탐색하는 <br />{" "}
             <S.PointText>
-              새로운{" "}
-              <S.TextEffect src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/text-effect.avif" />
+              새로운 <S.TextEffect src={TextEffectImage} />
             </S.PointText>{" "}
             경험
           </S.Title1>
           <S.LinkIconBox>
-            <S.LinkIcon src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/hero.svg" />
+            <S.LinkIcon src={HeroIcon} />
           </S.LinkIconBox>
           <S.ArrowDownIcon
             onClick={handleArrowClick}
             ref={arrowRef}
-            src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/arrow-down.svg"
+            src={ArrowDownIcon}
             alt=""
           />
         </S.Section1>
