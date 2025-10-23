@@ -5,13 +5,13 @@ interface TechStackListProps {
   techStacks: TechStackKey[];
 }
 
-function TechStackList({ techStacks }: TechStackListProps) {
+function TechStackList({ techStacks, ...rest }: TechStackListProps) {
   const shownTechStacks = TECH_STACK_ENTRY.filter(([key]) =>
     techStacks.includes(key as TechStackKey),
   );
 
   return (
-    <S.TechStackList>
+    <S.TechStackList {...rest}>
       {shownTechStacks.map(([key, { label }], idx) => {
         const techStack = idx === 0 ? label : `· ${label}`;
         return <S.TechStack key={key}>{techStack}</S.TechStack>;

@@ -43,7 +43,7 @@ function Card({ project, isEyeIcon = true }: CardProps) {
   return (
     <S.Card>
       <S.CardLink to={`/project/${id}`}>
-        <S.CardImageBox>
+        <S.CardImageBox aria-hidden="true">
           <S.CardImage
             src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
             onError={imageLoadError}
@@ -54,7 +54,7 @@ function Card({ project, isEyeIcon = true }: CardProps) {
         <S.CardInfo>
           <S.CardTitle>{title}</S.CardTitle>
           <S.CardSummary>{summary}</S.CardSummary>
-          <TechStackList techStacks={techStacks} />
+          <TechStackList techStacks={techStacks} aria-hidden="true" />
           <S.CardFooter>
             {/* <StatBox
               icon={
@@ -67,7 +67,7 @@ function Card({ project, isEyeIcon = true }: CardProps) {
             /> */}
             {isEyeIcon && (
               <StatBox
-                icon={<S.EyeIcon src={eyeIcon} alt="조회수 아이콘" />}
+                icon={<S.EyeIcon src={eyeIcon} alt="조회수" />}
                 count={views}
               />
             )}

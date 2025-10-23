@@ -120,6 +120,8 @@ function ArticleSection({
           )}
           <S.SearchBarBox>
             <SearchBar
+              id="project-article-search"
+              label="프로젝트 아티클 검색"
               size="small"
               placeholder="아티클 제목, 내용을 검색해보세요"
               value={inputValue}

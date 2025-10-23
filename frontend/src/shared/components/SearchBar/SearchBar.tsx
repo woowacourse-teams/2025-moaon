@@ -5,19 +5,23 @@ import * as S from "./SearchBar.styled";
 export type Test = "small" | "medium";
 
 interface SearchBarProps {
+  label: string;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
   maxLength: number;
   size?: Test;
+  id?: string;
 }
 
 function SearchBar({
+  label,
   placeholder,
   value,
   onChange,
   maxLength,
   size = "medium",
+  id = "search-input",
 }: SearchBarProps) {
   const hasSearchValue = value.trim() !== "";
 
@@ -31,14 +35,15 @@ function SearchBar({
 
   return (
     <S.SearchWrapper>
-      <S.SearchLabel htmlFor="search-input">
-        <S.SearchIcon variant={size} src={searchIcon} alt="검색" />
+      <S.SearchLabel htmlFor={id}>
+        <S.VisuallyHidden>{label}</S.VisuallyHidden>
+        <S.SearchIcon variant={size} src={searchIcon} alt="" />
         <S.SearchInput
           variant={size}
           type="text"
           placeholder={placeholder}
           value={value}
-          id="search-input"
+          id={id}
           onChange={handleInputChange}
           maxLength={maxLength}
         />

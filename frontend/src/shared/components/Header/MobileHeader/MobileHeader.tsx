@@ -47,7 +47,7 @@ function MobileHeader() {
   return (
     <S.Header>
       <S.TopBar>
-        <S.LogoLink to="/" onClick={close}>
+        <S.LogoLink to="/" onClick={close} aria-label="모아온 홈페이지로 이동">
           <img src={HeaderLogoImage} alt="모아온 로고" />
         </S.LogoLink>
         <S.HamburgerButton
@@ -67,7 +67,13 @@ function MobileHeader() {
         aria-hidden={!open}
         data-open={open}
       />
-      <S.Drawer id="mobile-drawer" role="dialog" aria-modal="true" $open={open}>
+      <S.Drawer
+        id="mobile-drawer"
+        role="dialog"
+        aria-modal="true"
+        $open={open}
+        aria-hidden={!open}
+      >
         <S.DrawerHeader>
           <S.DrawerTitle>메뉴 살펴보기</S.DrawerTitle>
           <CloseButtonIcon onClick={close} />
