@@ -12,8 +12,6 @@ import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.article.exception.AiNoCostException;
 import moaon.backend.article.exception.AiSummaryFailedException;
 import moaon.backend.article.repository.ArticleContentRepository;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.parser.URLParser;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
@@ -85,7 +83,7 @@ public class ArticleCrawlService {
 
         } catch (Exception e) {
             log.error("아티클 요약에 실패했습니다.", e);
-            throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED);
+            return ArticleCrawlResult.withoutSummary(crawlResult);
         }
     }
 
