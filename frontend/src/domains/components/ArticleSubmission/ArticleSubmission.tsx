@@ -61,13 +61,15 @@ function ArticleSubmission({
               />
             ))}
           </ArticleDraftList>
-          <S.ArticleSubmissionButton
-            type="button"
-            onClick={postArticleAndNavigate}
-            disabled={editingArticle !== undefined}
-          >
-            아티클 등록
-          </S.ArticleSubmissionButton>
+          {editingArticle === undefined && (
+            <S.ArticleSubmissionButton
+              type="button"
+              onClick={postArticleAndNavigate}
+              disabled={editingArticle !== undefined}
+            >
+              아티클 등록
+            </S.ArticleSubmissionButton>
+          )}
         </>
       )}
     </S.ArticleSubmissionContainer>
