@@ -26,10 +26,11 @@ export const MarkdownWrapper = styled(Polymorphic)`
   ol {
     display: flex !important;
     flex-direction: column !important;
-    gap: 1rem !important;
+    gap: 0.5rem !important;
     height: auto !important;
     margin-top: 0.75rem !important;
     padding-left: 1.25rem !important;
+    margin-bottom: 0 !important;
   }
 
   ol > li {
@@ -42,20 +43,35 @@ export const MarkdownWrapper = styled(Polymorphic)`
     line-height: 1.1 !important;
   }
 
+  ol > li > ul {
+    margin: 0 !important;
+  }
+
+  ul > li > ul {
+    margin: 0 !important;
+  }
+  
   li > p {
     margin: 0 !important;
   }
 
   p {
     line-height: 1.7 !important;
+    margin-bottom: 0 !important;
   }
 
   ul > li > p {
-    transform: translateY(-16px);
+    transform: translateY(-22.5px);
+    line-height: 1.7 !important;
   }
 
   ol > li > p {
-    transform: translateY(-16px);
+    transform: translateY(-22.5px);
+    line-height: 1.7 !important;
+  }
+
+  br {
+    height: 16px !important ;
   }
 
   hr {
@@ -66,7 +82,7 @@ export const MarkdownWrapper = styled(Polymorphic)`
     border: 0;
     height: 0;
     padding: 0;
-    margin: 0;
+    margin: 0 !important;
   }
 
   table {
