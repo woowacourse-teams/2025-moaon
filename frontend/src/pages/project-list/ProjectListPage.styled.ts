@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import { BP_480, BP_768, BP_1024, BP_1280 } from "@/styles/global.styled";
+import {
+  BP_400,
+  BP_480,
+  BP_768,
+  BP_1024,
+  BP_1280,
+} from "@/styles/global.styled";
 
 export const Main = styled.main`
   padding-bottom: 3rem;
@@ -114,6 +120,11 @@ export const Box = styled.div`
     padding: 0 1rem 1rem;
     gap: 1.125rem;
   }
+  ${BP_400} {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
 `;
 
 export const Wrap = styled.div`
@@ -172,6 +183,11 @@ export const SortListContainer = styled.div`
   ${BP_768} {
     display: none;
   }
+
+  ${BP_400} {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 `;
 
 export const SortDropdownContainer = styled.div`
@@ -179,5 +195,9 @@ export const SortDropdownContainer = styled.div`
 
   ${BP_768} {
     display: block;
+  }
+
+  ${BP_400} {
+    width: 100%;
   }
 `;
