@@ -95,6 +95,7 @@ public class ArticleCrawlService {
 
         if (content.isEmpty()) {
             repository.save(new ArticleContent(url, result.content()));
+            return;
         }
 
         content.get().update(result.content());
