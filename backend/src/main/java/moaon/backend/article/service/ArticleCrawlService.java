@@ -55,11 +55,11 @@ public class ArticleCrawlService {
                     return result;
                 } catch (AiNoCostException e1) {
                     log.warn("GPT AI 토큰 사용량이 한계에 달해 요약에 실패했습니다.");
-                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                    return ArticleCrawlResult.withoutSummary(crawlResult);
                 } catch (AiSummaryFailedException e1) {
                     log.error("GPT AI 요약에 실패했습니다. status code: {}, message: {}", e1.getResponseStatusCode(),
                             e1.getResponseMessage());
-                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                    return ArticleCrawlResult.withoutSummary(crawlResult);
                 }
 
             } catch (AiSummaryFailedException e) {
@@ -69,11 +69,11 @@ public class ArticleCrawlService {
                     return result;
                 } catch (AiNoCostException e1) {
                     log.warn("GPT AI 토큰 사용량이 한계에 달해 요약에 실패했습니다.");
-                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                    return ArticleCrawlResult.withoutSummary(crawlResult);
                 } catch (AiSummaryFailedException e1) {
                     log.error("GPT AI 요약에 실패했습니다. status code: {}, message: {}", e1.getResponseStatusCode(),
                             e1.getResponseMessage());
-                    throw new CustomException(ErrorCode.ARTICLE_CRAWL_FAILED, e1);
+                    return ArticleCrawlResult.withoutSummary(crawlResult);
                 }
 
             }
