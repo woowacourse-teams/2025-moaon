@@ -106,7 +106,8 @@ export const DrawerFooter = styled.div`
   padding: 1rem;
   border-top: 1px solid #f0f0f0;
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
 
   button,

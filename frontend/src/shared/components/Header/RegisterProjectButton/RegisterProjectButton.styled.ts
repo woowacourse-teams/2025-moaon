@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const RegisterProjectButton = styled.button`
-  font-size: 14px;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
