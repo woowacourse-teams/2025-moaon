@@ -61,10 +61,11 @@ export const FormFieldTextarea = styled.textarea<{
   border: none;
   outline: none;
   flex: 1;
-  padding: 0.75rem 0.5rem;
+  padding: 1rem;
+  line-height: 1.6;
   border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#d1d5db")};
   border-radius: 0.5rem;
-  min-height: 6rem;
+  min-height: 11rem;
 
   &:focus-visible {
     outline: none;
