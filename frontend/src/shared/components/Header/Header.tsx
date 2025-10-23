@@ -39,7 +39,7 @@ function Header() {
     <S.Header>
       <S.HeaderBox>
         <S.Wrap>
-          <S.LogoLink to="/">
+          <S.LogoLink to="/" aria-label="모아온 홈페이지로 이동">
             <img src={HeaderLogoImage} alt="모아온 로고" />
           </S.LogoLink>
           <NavBar />
