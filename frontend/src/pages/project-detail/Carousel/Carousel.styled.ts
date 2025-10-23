@@ -195,13 +195,13 @@ export const Indicators = styled.div`
   z-index: 10;
 
   ${BP_1280} {
-    bottom: -1rem;
-    gap: 0.25rem;
+    bottom: -2rem;
+    gap: 0.35rem;
   }
 `;
 
 export const Indicator = styled.button<{ $active: boolean }>`
-  width: 0.75rem;
+  width: 0.6rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
   border: 1px solid #007bff;
