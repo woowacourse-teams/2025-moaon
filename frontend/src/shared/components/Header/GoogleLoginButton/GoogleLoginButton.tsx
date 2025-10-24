@@ -10,21 +10,21 @@ function GoogleLoginButton() {
 
     if (!googleAuthUrl) {
       toast.error(
-        "구글 로그인 주소가 설정되지 않았습니다. 환경변수 GOOGLE_AUTH_URL을 확인하세요."
+        "구글 로그인 주소가 설정되지 않았습니다. 환경변수 GOOGLE_AUTH_URL을 확인하세요.",
       );
       return;
     }
 
     if (!googleClientId) {
       toast.error(
-        "구글 클라이언트 ID가 설정되지 않았습니다. 환경변수 GOOGLE_CLIENT_ID를 확인하세요."
+        "구글 클라이언트 ID가 설정되지 않았습니다. 환경변수 GOOGLE_CLIENT_ID를 확인하세요.",
       );
       return;
     }
 
     if (!googleRedirectUri) {
       toast.error(
-        "구글 리디렉트 URI가 설정되지 않았습니다. 환경변수 GOOGLE_REDIRECT_URI를 확인하세요."
+        "구글 리디렉트 URI가 설정되지 않았습니다. 환경변수 GOOGLE_REDIRECT_URI를 확인하세요.",
       );
       return;
     }
@@ -35,7 +35,7 @@ function GoogleLoginButton() {
     const state = encodeURIComponent(
       JSON.stringify({
         redirectBase: window.location.origin,
-      })
+      }),
     );
 
     const url = new URL(googleAuthUrl);
