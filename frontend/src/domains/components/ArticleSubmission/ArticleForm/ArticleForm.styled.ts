@@ -38,7 +38,8 @@ export const ArticleAddButton = styled.button<{ disabled: boolean }>`
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #e5e7eb;
-  background-color: ${({ disabled }) => (disabled ? "#e5e7eb" : "#007bff")};
+  background-color: ${({ disabled }) => (disabled ? "#9ea3aaff" : "#007bff")};
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
   color: #fff;
   border-radius: 8px;
 

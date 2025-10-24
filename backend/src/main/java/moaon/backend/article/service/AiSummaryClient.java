@@ -89,7 +89,7 @@ public class AiSummaryClient {
 
             int statusCode = response.statusCode();
 
-            if (statusCode == 429) {
+            if (statusCode == 429 || statusCode == 402) {
                 throw new AiNoCostException();
             }
 
@@ -107,7 +107,7 @@ public class AiSummaryClient {
             String summary = parsed.get("summary").asText("");
 
             summary = enforceLength(summary, 0, 255);
-            return new ArticleCrawlResult(title, summary, content);
+            return ArticleCrawlResult.success(title, summary, content);
 
         } catch (IOException | InterruptedException e) {
             log.error("AI 요약 API 연결에서 실패했습니다.", e);

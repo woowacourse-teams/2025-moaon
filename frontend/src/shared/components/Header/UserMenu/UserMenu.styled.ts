@@ -13,7 +13,7 @@ export const UserMenuButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
   text-decoration: underline;

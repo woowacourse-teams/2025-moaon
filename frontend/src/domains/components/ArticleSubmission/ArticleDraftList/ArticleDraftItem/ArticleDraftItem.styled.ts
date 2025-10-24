@@ -29,6 +29,7 @@ export const ArticleDraftHeader = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
+  font-weight: 500;
 `;
 
 export const ArticleDraftBadge = styled.span<{ bgColor: string }>`
@@ -48,7 +49,7 @@ export const ArticleDraftTitle = styled.h3`
 
 export const ArticleDraftDescription = styled.p`
   font-size: 0.75rem;
-  line-height: 1.2;
+  line-height: 1.6;
   min-height: 2.25rem;
   ${textOverflowEllipsis(3)}
 `;

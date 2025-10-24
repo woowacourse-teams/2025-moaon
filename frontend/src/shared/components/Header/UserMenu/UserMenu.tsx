@@ -24,7 +24,7 @@ function UserMenu<K>({ name, direction = "down", onSelect }: UserMenuProps<K>) {
     setIsOpen(false);
   };
 
-  const top = direction === "up" ? "-200%" : "150%";
+  const top = direction === "up" ? "-250%" : "150%";
 
   return (
     <S.UserMenuContainer ref={addToSafeZone}>

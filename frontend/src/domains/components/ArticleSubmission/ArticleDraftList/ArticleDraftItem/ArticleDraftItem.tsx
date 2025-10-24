@@ -1,4 +1,3 @@
-import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
 import DeleteButtonIcon from "@shared/components/DeleteButtonIcon/DeleteButtonIcon";
 import EditButtonIcon from "@shared/components/EditButtonIcon/EditButtonIcon";
 import type { ArticleFormDataType } from "../../types";
@@ -15,8 +14,7 @@ function ArticleDraftItem({
   onEdit,
   article,
 }: ArticleDraftItemProps) {
-  const { title, description, sector, id } = article;
-  const { color, label } = ARTICLE_SECTOR_MAP[sector.value];
+  const { title, description, id } = article;
 
   const handleDeleteDraft = (id: string) => {
     const confirmDelete = window.confirm("해당 아티클을 삭제하시겠습니까?");
@@ -32,7 +30,6 @@ function ArticleDraftItem({
   return (
     <S.ArticleDraftItem>
       <S.ArticleDraftHeader>
-        <S.ArticleDraftBadge bgColor={color}>{label}</S.ArticleDraftBadge>
         <S.ArticleDraftTitle>{title}</S.ArticleDraftTitle>
       </S.ArticleDraftHeader>
       <S.ArticleDraftDescription>{description}</S.ArticleDraftDescription>

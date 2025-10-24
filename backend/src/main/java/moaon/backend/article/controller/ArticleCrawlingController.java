@@ -8,6 +8,7 @@ import moaon.backend.article.service.ArticleCrawlService;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
+import moaon.backend.member.service.MemberService;
 import moaon.backend.member.service.OAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -23,6 +24,7 @@ public class ArticleCrawlingController {
 
     private final OAuthService oAuthService;
     private final ArticleCrawlService articleCrawlService;
+    private final MemberService memberService;
 
     @GetMapping
     public ResponseEntity<ArticleCrawlResponse> crawl(
@@ -31,8 +33,11 @@ public class ArticleCrawlingController {
     ) {
         Member member = validateAndGetMember(token);
 
-        ArticleCrawlResult result = articleCrawlService.crawl(url, member.getId());
+        ArticleCrawlResult result = articleCrawlService.crawl(url, member);
         articleCrawlService.saveTemporary(url, result);
+        if (result.isSucceed()) {
+            memberService.increaseCrawlCount(member.getId());
+        }
 
         return ResponseEntity.ok(ArticleCrawlResponse.from(result, member));
     }
