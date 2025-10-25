@@ -16,6 +16,7 @@ import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
+import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -102,6 +103,15 @@ public class ESArticleQueryBuilder {
     public ESArticleQueryBuilder withSort(ArticleSortType sortType) {
         this.sort = createSort(sortType);
         return this;
+    }
+
+    public ESArticleQueryBuilder withQueryCondition(ArticleQueryCondition condition) {
+        return this.withTextSearch(condition.search())
+                .withSector(condition.sector())
+                .withTechStacksAndMatch(condition.techStackNames())
+                .withTopicsAndMatch(condition.topics())
+                .withSort(condition.sortType())
+                .withPagination(condition.limit(), condition.cursor(), condition.sortType());
     }
 
     public NativeQuery build() {

@@ -21,13 +21,17 @@ public class ArticleDocumentRepository {
 
     public SearchHits<ArticleDocument> search(ArticleQueryCondition condition) {
         NativeQuery esArticleQuery = new ESArticleQueryBuilder()
-                .withTextSearch(condition.search())
-                .withSector(condition.sector())
-                .withTechStacksAndMatch(condition.techStackNames())
-                .withTopicsAndMatch(condition.topics())
-                .withSort(condition.sortType())
-                .withPagination(condition.limit(), condition.cursor(), condition.sortType())
+                .withQueryCondition(condition)
                 .build();
+        return ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
+    }
+
+    public SearchHits<ArticleDocument> searchInIds(List<Long> articleIds, ArticleQueryCondition condition) {
+        NativeQuery esArticleQuery = new ESArticleQueryBuilder()
+                .withIds(articleIds)
+                .withQueryCondition(condition)
+                .build();
+
         return ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
     }
 
@@ -35,19 +39,5 @@ public class ArticleDocumentRepository {
         return ops
                 .withRefreshPolicy(RefreshPolicy.IMMEDIATE)
                 .save(articleDocument, ARTICLE_ALIAS);
-    }
-
-    public SearchHits<ArticleDocument> searchInIds(List<Long> articleIds, ArticleQueryCondition condition) {
-        NativeQuery esArticleQuery = new ESArticleQueryBuilder()
-                .withIds(articleIds)
-                .withTextSearch(condition.search())
-                .withSector(condition.sector())
-                .withTechStacksAndMatch(condition.techStackNames())
-                .withTopicsAndMatch(condition.topics())
-                .withSort(condition.sortType())
-                .withPagination(condition.limit(), condition.cursor(), condition.sortType())
-                .build();
-
-        return ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
     }
 }
