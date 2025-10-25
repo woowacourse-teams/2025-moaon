@@ -20,12 +20,18 @@ const getFilteredListWithoutSelected = (
   sector: ArticleSectorKey,
 ) => {
   const techStacks = getTechStackBySector(sector);
-  const filteredList = techStacks.filter(([_, { label }]) =>
-    label.toLowerCase().startsWith(keyword.toLowerCase()),
-  );
+
+  const filteredList =
+    keyword === ""
+      ? techStacks
+      : techStacks.filter(([_, { label }]) =>
+          label.toLowerCase().startsWith(keyword.toLowerCase()),
+        );
+
   const selectedTechStackLabels = selectedTechStacks.map(
     (techStack) => TECH_STACK_ICON_MAP[techStack].label,
   );
+
   return filteredList.filter(
     ([_, { label }]) => !selectedTechStackLabels.includes(label),
   );
@@ -36,6 +42,7 @@ interface TechStackSearchBarProps {
   mode?: "query" | "controlled";
   selectedTechStacks?: TechStackKey[];
   onTechStackChange?: (techStack: TechStackKey) => void;
+  closeOnSelect?: boolean;
 }
 
 function TechStackSearchBar({
@@ -43,6 +50,7 @@ function TechStackSearchBar({
   mode = "query",
   selectedTechStacks: controlledSelectedTechStacks,
   onTechStackChange,
+  closeOnSelect = false,
 }: TechStackSearchBarProps) {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +79,26 @@ function TechStackSearchBar({
     }
 
     setValue("");
-    setIsOpen(false);
+
+    const updatedSelectedTechStacks =
+      mode === "controlled"
+        ? [...selectedTechStacks, techStack]
+        : [...queryTechStacks, techStack];
+
+    const newFilterList = getFilteredListWithoutSelected(
+      "",
+      updatedSelectedTechStacks,
+      sector,
+    );
+
+    setFilterList(newFilterList);
+
+    if (closeOnSelect) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+
     onSelect?.();
   };
 
@@ -111,18 +138,22 @@ function TechStackSearchBar({
     const keyword = event.target.value;
     setValue(keyword);
 
-    if (keyword === "") {
-      setFilterList([]);
-      setIsOpen(false);
-      return;
-    }
-
     const filteredListWithoutSelected = getFilteredListWithoutSelected(
       keyword,
       selectedTechStacks,
       sector,
     );
     setFilterList(filteredListWithoutSelected);
+    setIsOpen(true);
+  };
+
+  const handleInputFocus = () => {
+    const allList = getFilteredListWithoutSelected(
+      value,
+      selectedTechStacks,
+      sector,
+    );
+    setFilterList(allList);
     setIsOpen(true);
   };
 
@@ -138,6 +169,7 @@ function TechStackSearchBar({
           value={value}
           ref={inputRef}
           onChange={handleFilterInputChange}
+          onFocus={handleInputFocus}
           onKeyDown={onKeyDown}
         />
       </S.SearchLabel>

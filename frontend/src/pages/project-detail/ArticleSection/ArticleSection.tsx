@@ -42,7 +42,6 @@ function ArticleSection({
   const { selectedSector, updateSector } = useArticleSector(
     DEFAULT_ARTICLE_CATEGORY_TYPE,
   );
-
   const params = useSearchParams({ key: "search", mode: "single" });
   const urlSearchValue = params.get()[0];
   const searchValue = urlSearchValue ?? "";
@@ -114,13 +113,15 @@ function ArticleSection({
       {shouldShowSearchBar && (
         <S.SearchHeader hasArticles={hasArticles}>
           {hasArticles && (
-            <S.ArticleDescriptionText>
+            <S.ArticleDescriptionText tabIndex={0}>
               <S.ArticleIntroText>{articles.length}개</S.ArticleIntroText>의
               아티클이 모여있어요.
             </S.ArticleDescriptionText>
           )}
           <S.SearchBarBox>
             <SearchBar
+              id="project-article-search"
+              label="프로젝트 아티클 검색"
               size="small"
               placeholder="아티클 제목, 내용을 검색해보세요"
               value={inputValue}

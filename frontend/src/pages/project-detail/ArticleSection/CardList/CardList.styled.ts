@@ -11,3 +11,22 @@ export const CardListContainer = styled.ul`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+
+export const SkipToTitleButton = styled.a`
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1000;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+  transform: translateY(-150%);
+  transition: transform 0.2s ease;
+
+  &:focus {
+    transform: translateY(0);
+  }
+`;

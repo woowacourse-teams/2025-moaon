@@ -13,7 +13,7 @@ export const UserMenuButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
   white-space: nowrap;
   text-decoration: underline;
@@ -26,12 +26,11 @@ export const UserMenuList = styled.ul`
   z-index: 10;
   overflow: hidden;
   position: absolute;
-  top: 150%;
   right: 0;
 `;
 
 export const UserMenuItem = styled.li`
-  padding: 0.5rem;
+  padding: 1rem;
   cursor: pointer;
   white-space: nowrap;
 

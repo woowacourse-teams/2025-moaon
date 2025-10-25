@@ -19,6 +19,7 @@ import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.member.domain.Member;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
@@ -67,11 +68,15 @@ public class ArticleService {
     }
 
     @Transactional
-    public void save(List<ArticleCreateRequest> requests) {
+    public void save(List<ArticleCreateRequest> requests, Member member) {
         for (ArticleCreateRequest request : requests) {
             Project project = projectRepository.findById(request.projectId()).orElseThrow(
                     () -> new CustomException(ErrorCode.PROJECT_NOT_FOUND)
             );
+
+            if (!member.equals(project.getAuthor())) {
+                throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
+            }
 
             Article article = new Article(
                     request.title(),

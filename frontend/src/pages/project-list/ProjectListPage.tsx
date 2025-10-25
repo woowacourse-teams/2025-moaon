@@ -1,4 +1,6 @@
 import resetIcon from "@assets/icons/reset.svg";
+import SortDropdown from "@domains/components/SortDropdown/SortDropdown";
+import SortList from "@domains/components/SortList/SortList";
 import TechStackFilterBox from "@domains/components/TechStackFilterBox/TechStackFilterBox";
 import { META_TITLE_PREFIX } from "@domains/constants/meta";
 import { useSearchSort } from "@domains/hooks/useSearchSort";
@@ -7,7 +9,6 @@ import FilterContainer from "@shared/components/FilterContainer/FilterContainer"
 import { useMeta } from "@shared/hooks/useMeta";
 import MoveTop from "@/shared/components/MoveTop/MoveTop";
 import CategoryFilterBox from "../../domains/components/CategoryFilterBox/CategoryFilterBox";
-import SortList from "../../domains/components/SortList/SortList";
 import CardList from "./CardList/CardList";
 import { useFilterParams } from "./hooks/useFilterParams";
 import useProjectList from "./hooks/useProjectList";
@@ -22,11 +23,11 @@ function ProjectListPage() {
   const { techStacks, categories, resetFilter } = useFilterParams();
   const { refetch, totalCount } = useProjectList();
 
-  const { hasSearch, excludeKeys } = useSearchSort<
-    keyof typeof PROJECT_SORT_MAP
-  >({
-    excludeKeysWhenNoSearch: ["relevance"],
-  });
+  // const {  excludeKeys } = useSearchSort<
+  //   keyof typeof PROJECT_SORT_MAP
+  // >({
+  //   excludeKeysWhenNoSearch: [""],
+  // });
 
   useMeta({
     title: `${META_TITLE_PREFIX}프로젝트 탐색`,
@@ -59,17 +60,17 @@ function ProjectListPage() {
           <FilterContainer
             filterList={[
               {
-                label: "주제",
-                param: "categories",
-                render: (onSelect: () => void) => (
-                  <CategoryFilterBox onSelect={onSelect} />
-                ),
-              },
-              {
                 label: "기술 스택",
                 param: "techStacks",
                 render: (onSelect: () => void) => (
                   <TechStackFilterBox onSelect={onSelect} />
+                ),
+              },
+              {
+                label: "주제",
+                param: "categories",
+                render: (onSelect: () => void) => (
+                  <CategoryFilterBox onSelect={onSelect} />
                 ),
               },
             ]}
@@ -82,12 +83,24 @@ function ProjectListPage() {
           )}
         </S.Wrap>
         {shouldShowSort && (
-          <SortList
-            sortMap={PROJECT_SORT_MAP}
-            onSelect={handleSelect}
-            initialValue={hasSearch ? "relevance" : DEFAULT_SORT_TYPE}
-            excludeKeys={excludeKeys}
-          />
+          <>
+            <S.SortListContainer>
+              <SortList
+                sortMap={PROJECT_SORT_MAP}
+                onSelect={handleSelect}
+                initialValue={DEFAULT_SORT_TYPE}
+                // excludeKeys={excludeKeys}
+              />
+            </S.SortListContainer>
+            <S.SortDropdownContainer>
+              <SortDropdown
+                sortMap={PROJECT_SORT_MAP}
+                onSelect={handleSelect}
+                initialValue={DEFAULT_SORT_TYPE}
+                // excludeKeys={excludeKeys}
+              />
+            </S.SortDropdownContainer>
+          </>
         )}
       </S.Box>
       <CardList />

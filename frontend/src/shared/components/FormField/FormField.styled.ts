@@ -11,31 +11,33 @@ export const FormFieldHeader = styled.label`
   gap: 0.5rem;
 `;
 
-export const FormFieldTitle = styled.h3`
+export const FormFieldTitle = styled.h3<{ disabled?: boolean }>`
   font-size: 1rem;
+  color: ${({ disabled }) => (disabled ? "#d2cfcfff" : "#000")};
 `;
 
-export const FormFieldRequiredMark = styled.span`
+export const FormFieldRequiredMark = styled.span<{ disabled?: boolean }>`
   font-size: 0.875rem;
-  color: #f00;
+  color: ${({ disabled }) => (disabled ? "#d2cfcfff" : "#f00")};
 `;
 
-export const FormFieldButton = styled.button`
+export const FormFieldButton = styled.button<{ disabled: boolean }>`
   padding: 0.75rem 1rem;
-  background-color: #007bff;
+  background-color: ${({ disabled }) => (disabled ? "#e5e7eb" : "#007bff")};
   color: #fff;
   border-radius: 8px;
-
-  &:hover {
-    background-color: #0569d4ff;
-  }
+  ${({ disabled }) => disabled && "cursor:not-allowed"};
 `;
 
-export const FormFieldInput = styled.input<{ hasError?: boolean }>`
+export const FormFieldInput = styled.input<{
+  hasError?: boolean;
+  disabled: boolean;
+}>`
   flex: 1;
   padding: 0.75rem 0.75rem;
   border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#d1d5db")};
   border-radius: 0.5rem;
+  ${({ disabled }) => disabled && "color:#d2cfcfff;"};
 
   &:focus-visible {
     outline: none;
@@ -45,32 +47,47 @@ export const FormFieldInput = styled.input<{ hasError?: boolean }>`
         ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
         : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
   }
+
+  &::placeholder {
+    color: ${({ disabled }) => disabled && "#d2cfcfff"};
+  }
 `;
 
-export const FormFieldTextarea = styled.textarea`
+export const FormFieldTextarea = styled.textarea<{
+  hasError?: boolean;
+  disabled: boolean;
+}>`
   resize: none;
   border: none;
   outline: none;
   flex: 1;
-  padding: 0.75rem 0.5rem;
-  border: 1px solid #d1d5db;
+  padding: 0.75rem;
+  line-height: 1.6;
+  border: 1px solid ${({ hasError }) => (hasError ? "#ef4444" : "#d1d5db")};
   border-radius: 0.5rem;
-  min-height: 6rem;
+  min-height: 10.4rem;
 
   &:focus-visible {
     outline: none;
-    border-color: #005eff;
-    box-shadow: 0 0 0 4px rgba(0, 94, 255, 0.12);
+    border-color: ${({ hasError }) => (hasError ? "#dc2626" : "#005eff")};
+    box-shadow: ${({ hasError }) =>
+      hasError
+        ? "0 0 0 4px rgba(239, 68, 68, 0.12)"
+        : "0 0 0 4px rgba(0, 94, 255, 0.12)"};
+  }
+
+  &::placeholder {
+    color: ${({ disabled }) => disabled && "#d2cfcfff"};
   }
 `;
 
-export const FormFieldLabel = styled.label`
+export const FormFieldLabel = styled.label<{ readOnly: boolean }>`
   position: relative;
   display: flex;
   border: 1px solid #ccc;
   border-radius: 16px;
   overflow: hidden;
-  cursor: pointer;
+  cursor: ${({ readOnly }) => (readOnly ? "not-allowed" : "pointer")};
 `;
 
 export const FormFieldLabelInner = styled.div`
@@ -85,11 +102,12 @@ export const FormFieldLabelImage = styled.img`
   margin-right: 0.5rem;
 `;
 
-export const FormFieldLabelText = styled.span`
+export const FormFieldLabelText = styled.span<{ readOnly: boolean }>`
   font-size: 0.875rem;
+  color: ${({ readOnly }) => (readOnly ? "#d2cfcfff" : "#000")};
 `;
 
-export const FormFieldSelectionInput = styled.input`
+export const FormFieldSelectionInput = styled.input<{ readOnly: boolean }>`
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -97,7 +115,7 @@ export const FormFieldSelectionInput = styled.input`
   position: absolute;
   inset: 0;
   opacity: 0;
-  cursor: pointer;
+  cursor: ${({ readOnly }) => (readOnly ? "not-allowed" : "pointer")};
 
   &:checked + ${FormFieldLabelInner} > ${FormFieldLabelText} {
     color: #fff;

@@ -1,5 +1,8 @@
 import { toast } from "@shared/components/Toast/toast";
+import { getCookieValue } from "@shared/utils/getCookieValue";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import { authQueries } from "@/apis/login/auth.queries";
 import ArticleDraftItem from "./ArticleDraftList/ArticleDraftItem/ArticleDraftItem";
 import ArticleDraftList from "./ArticleDraftList/ArticleDraftList";
 import ArticleForm from "./ArticleForm/ArticleForm";
@@ -17,6 +20,13 @@ function ArticleSubmission({
   initialArticles,
 }: ArticleSubmissionProps) {
   const navigate = useNavigate();
+  const token = getCookieValue("token");
+  const { data: auth } = useQuery(authQueries.fetchAuth(token));
+
+  if (!auth?.isLoggedIn) {
+    navigate("/");
+    toast.warning("로그인이 필요한 서비스입니다.");
+  }
   const {
     articles,
     editingArticle,
@@ -31,11 +41,16 @@ function ArticleSubmission({
     projectId,
   });
 
-  const postArticleAndNavigate = () => {
-    postArticlesClick();
-    toast.success("아티클이 성공적으로 등록되었어요!");
-    navigate(`/project/${projectId}`);
+  const postArticleAndNavigate = async () => {
+    try {
+      await postArticlesClick();
+      toast.success("아티클이 성공적으로 등록되었어요!");
+      navigate(`/project/${projectId}`);
+    } catch {
+      toast.error("아티클 등록에 실패했습니다.");
+    }
   };
+
   return (
     <S.ArticleSubmissionContainer>
       <ArticleForm
@@ -56,12 +71,15 @@ function ArticleSubmission({
               />
             ))}
           </ArticleDraftList>
-          <S.ArticleSubmissionButton
-            type="button"
-            onClick={postArticleAndNavigate}
-          >
-            아티클 등록
-          </S.ArticleSubmissionButton>
+          {editingArticle === undefined && (
+            <S.ArticleSubmissionButton
+              type="button"
+              onClick={postArticleAndNavigate}
+              disabled={editingArticle !== undefined}
+            >
+              아티클 등록
+            </S.ArticleSubmissionButton>
+          )}
         </>
       )}
     </S.ArticleSubmissionContainer>

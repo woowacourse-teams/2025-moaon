@@ -7,7 +7,6 @@ export const authQueries = {
     queryOptions({
       queryKey: ["auth"],
       queryFn: () => getAuth(token),
-      throwOnError: true,
       retry: 0,
     }),
   logout: () =>

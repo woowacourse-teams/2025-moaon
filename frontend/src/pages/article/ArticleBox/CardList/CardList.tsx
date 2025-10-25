@@ -1,5 +1,6 @@
 import EmptyState from "@shared/components/EmptyState/EmptyState";
-import type { Ref } from "react";
+import type { KeyboardEvent, Ref } from "react";
+import { useRef } from "react";
 import type { Article } from "@/apis/articles/articles.type";
 import ArticleSkeletonList from "../ArticleSkeletonList/ArticleSkeletonList";
 import ArticleCard from "./Card/ArticleCard";
@@ -22,6 +23,15 @@ function CardList({
   targetRef,
   isLoading,
 }: CardListProps) {
+  const skipButtonRef = useRef<HTMLAnchorElement>(null);
+
+  const handleKeyDownCapture = (e: KeyboardEvent<HTMLUListElement>) => {
+    if (e.key === "Tab" && e.repeat) {
+      e.preventDefault();
+      skipButtonRef.current?.focus();
+    }
+  };
+
   if (totalCount === 0 && !isLoading) {
     return (
       <S.EmptyContainer>
@@ -31,12 +41,19 @@ function CardList({
   }
 
   return (
-    <S.CardListContainer>
+    <S.CardListContainer onKeyDownCapture={handleKeyDownCapture}>
       {articles?.map((article) => (
         <ArticleCard key={article.id} article={article} />
       ))}
       {scrollEnabled && <div ref={targetRef} />}
       {showSkeleton && <ArticleSkeletonList />}
+      <S.SkipToTitleButton
+        ref={skipButtonRef}
+        href="#article-page-all-tab-list"
+        aria-label="상단 제목으로 이동"
+      >
+        상단으로 이동
+      </S.SkipToTitleButton>
     </S.CardListContainer>
   );
 }

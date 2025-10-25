@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { BP_480, BP_768 } from "@/styles/global.styled";
+import { BP_400, BP_480, BP_768 } from "@/styles/global.styled";
 
 export const ArticleHeader = styled.div`
   display: flex;
@@ -23,6 +23,12 @@ export const FilterAndSortContainer = styled.div`
 
   ${BP_768} {
     gap: 0.75rem;
+  }
+
+  ${BP_400} {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
 `;
 
@@ -58,5 +64,23 @@ export const SectorDropdownContainer = styled.div`
 
   ${BP_768} {
     display: block;
+  }
+`;
+
+export const SortListContainer = styled.div`
+  ${BP_768} {
+    display: none;
+  }
+`;
+
+export const SortDropdownContainer = styled.div`
+  display: none;
+
+  ${BP_768} {
+    display: block;
+  }
+
+  ${BP_400} {
+    width: 100%;
   }
 `;

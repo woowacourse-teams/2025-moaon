@@ -130,14 +130,17 @@ export const RegisterLink = styled.button`
   }
 `;
 
+export const ContainerBG = styled.img`
+  min-height: 100vh;
+  height: auto;
+  z-index: -1;
+  position: fixed;
+`;
+
 export const Container = styled.div`
   color: #fbfbfb;
   min-height: 100vh;
   height: auto;
-  background-color: #000;
-  background: url("https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/background.png")
-    no-repeat center fixed;
-  background-size: cover;
   display: flex;
   flex-direction: column;
   gap: 10rem;
@@ -358,7 +361,7 @@ export const Section2 = styled.section`
   flex-direction: column;
   gap: 1rem;
   position: relative;
-  opacity: 0;
+  opacity: 0.2;
   padding: 1rem 0;
   min-height: 450px;
 
@@ -380,7 +383,7 @@ export const Section2 = styled.section`
 
   @keyframes fadeIn {
     from {
-      opacity: 0;
+      opacity: 0.2;
       transform: translateY(40px);
     }
     to {

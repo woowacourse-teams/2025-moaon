@@ -32,6 +32,7 @@ export const FilterTitle = styled.p`
 
   ${BP_480} {
     gap: 0.375rem;
+    white-space: nowrap;
   }
 `;
 

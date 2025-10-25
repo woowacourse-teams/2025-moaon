@@ -27,7 +27,7 @@ export const LogoLink = styled(Link)`
 export const Wrap = styled.div`
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 1.5rem;
 `;
 
 export const UserName = styled.button`

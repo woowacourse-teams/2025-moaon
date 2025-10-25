@@ -2,33 +2,43 @@ import { toast } from "@shared/components/Toast/toast";
 import type { Dispatch, SetStateAction } from "react";
 import { crawlArticleQueries } from "@/apis/crawl/crawlArticle.queries";
 import type { ArticleFormDataType } from "../../types";
+import { createEmptyFormData } from "../utils/formUtils";
 
 export const useCrawlArticleMutation = (
   setFormData: Dispatch<SetStateAction<ArticleFormDataType>>
 ) => {
-  const { mutate, isPending } = crawlArticleQueries.fetchCrawl();
+  const { mutateAsync, isPending } = crawlArticleQueries.fetchCrawl();
 
-  const handleFetch = (url: string) => {
-    mutate(url, {
-      onSuccess: ({ title, summary }) => {
-        setFormData((prev) => ({
-          ...prev,
-          ...(title ? { title } : {}),
-          ...(summary ? { description: summary } : {}),
-        }));
-      },
-      onError: (error) => {
-        if (error instanceof Error) {
-          toast.error(error.message);
-          return;
-        }
+  const handleFetchAsync = async (
+    url: string,
+    disabledCondition: (condition: boolean) => void
+  ) => {
+    try {
+      const data = await mutateAsync(url, {
+        onSuccess: () => {
+          disabledCondition(false);
+        },
+        onError: () => {
+          disabledCondition(true);
+          setFormData(createEmptyFormData());
+        },
+      });
 
-        toast.error(
-          "메타데이터를 가져오는데 실패했어요. 아티클 제목과 줄거리를 직접 작성해주세요."
-        );
-      },
-    });
+      const { title, summary, remainingCount } = data;
+
+      setFormData((prev) => ({
+        ...prev,
+        ...(title ? { title } : {}),
+        ...(summary ? { description: summary } : {}),
+      }));
+
+      return { remainingCount };
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
 
-  return { mutate: handleFetch, isPending };
+  return { mutateAsync: handleFetchAsync, isPending };
 };

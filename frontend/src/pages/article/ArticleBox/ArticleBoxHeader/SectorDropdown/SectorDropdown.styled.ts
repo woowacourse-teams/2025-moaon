@@ -24,6 +24,7 @@ export const DropdownList = styled.ul`
   position: absolute;
   top: 100%;
   left: 0;
+  overflow: hidden;
   width: 100%;
   border: 1px solid #afafaf;
   border-radius: 6px;

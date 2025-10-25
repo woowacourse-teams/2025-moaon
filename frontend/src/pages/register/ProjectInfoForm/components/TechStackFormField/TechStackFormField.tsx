@@ -36,6 +36,7 @@ function TechStackFormField({
           mode="controlled"
           selectedTechStacks={selectedTechStacks}
           onTechStackChange={onTechStackChange}
+          closeOnSelect={true}
         />
 
         {selectedTechStacks.length > 0 && (

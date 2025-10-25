@@ -27,9 +27,10 @@ public record ArticleQueryCondition(
             int limit,
             String cursor
     ) {
-        ArticleSortType sortBy = createArticleSortType(search, sortType);
+        SearchKeyword searchKeyword = new SearchKeyword(search);
+        ArticleSortType sortBy = createArticleSortType(sortType, searchKeyword);
         return new ArticleQueryCondition(
-                new SearchKeyword(search),
+                searchKeyword,
                 Sector.of(sector),
                 topics == null
                         ? List.of()
@@ -46,12 +47,13 @@ public record ArticleQueryCondition(
         );
     }
 
-    private static ArticleSortType createArticleSortType(String search, String sortType) {
-        boolean noSortButHasSearchKeyword =
-                (sortType == null || sortType.isBlank()) && (search != null && !search.isBlank());
-        if (noSortButHasSearchKeyword) {
-            return ArticleSortType.RELEVANCE;
+    private static ArticleSortType createArticleSortType(String sortType, SearchKeyword searchKeyword) {
+        ArticleSortType sort = ArticleSortType.from(sortType);
+        // 관련도순 정렬이나 검색어가 없으면 CREATED_AT으로 방어
+        if (ArticleSortType.RELEVANCE == sort && !searchKeyword.hasValue()) {
+            return ArticleSortType.CREATED_AT;
         }
-        return ArticleSortType.from(sortType);
+
+        return sort;
     }
 }

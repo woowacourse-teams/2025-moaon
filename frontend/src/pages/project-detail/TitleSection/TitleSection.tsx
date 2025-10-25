@@ -34,7 +34,7 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
 
   return (
     <S.TitleSectionContainer>
-      <S.TitleSectionLeft>
+      <S.TitleSectionLeft tabIndex={0}>
         <S.OverlineSection>
           <S.Subject>
             {categories
@@ -47,9 +47,9 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
         <S.ProductDescription>{summary}</S.ProductDescription>
       </S.TitleSectionLeft>
       <S.TitleSectionRight>
-        <S.View>
+        <S.View tabIndex={0}>
           <img src={eyeIcon} alt="조회수" />
-          {views}
+          {views.toLocaleString()}
         </S.View>
         <S.OverlineSection>
           {/* <S.LoveButton isLiked={isLiked} onClick={handleLikeToggle}>
@@ -62,8 +62,9 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="깃허브 바로가기"
               >
-                <img width={23} src={githubIcon} alt="github 바로가기 아이콘" />
+                <img width={23} src={githubIcon} alt="" />
                 깃허브
               </S.GithubLink>
             )}
@@ -72,8 +73,9 @@ function TitleSection({ projectDetail }: TitleSectionProps) {
                 href={productionUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="서비스 바로가기"
               >
-                <img src={productionIcon} alt="서비스 바로가기 아이콘" />
+                <img src={productionIcon} alt="" />
                 서비스
               </S.ProductionLink>
             )}

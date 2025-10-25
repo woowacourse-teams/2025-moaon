@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import { BP_480, BP_768, BP_1024, BP_1280 } from "@/styles/global.styled";
+import {
+  BP_400,
+  BP_480,
+  BP_768,
+  BP_1024,
+  BP_1280,
+} from "@/styles/global.styled";
 
 export const Main = styled.main`
   padding-bottom: 3rem;
@@ -53,10 +59,9 @@ export const TitleBox = styled.div`
   align-items: center;
   gap: 0.5rem;
 
-  ${BP_768} {
+  ${BP_1024} {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.25rem;
   }
 `;
 
@@ -112,9 +117,12 @@ export const Box = styled.div`
   ${BP_480} {
     width: 100%;
     padding: 0 1rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 1.125rem;
+  }
+  ${BP_400} {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
 `;
 
@@ -167,5 +175,28 @@ export const ResetIcon = styled.img`
 
   ${BP_480} {
     width: 0.875rem;
+  }
+`;
+
+export const SortListContainer = styled.div`
+  ${BP_768} {
+    display: none;
+  }
+
+  ${BP_400} {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+`;
+
+export const SortDropdownContainer = styled.div`
+  display: none;
+
+  ${BP_768} {
+    display: block;
+  }
+
+  ${BP_400} {
+    width: 100%;
   }
 `;

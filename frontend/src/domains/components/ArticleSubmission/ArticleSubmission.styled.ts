@@ -8,10 +8,11 @@ export const ArticleSubmissionContainer = styled.section`
   gap: 2rem;
 `;
 
-export const ArticleSubmissionButton = styled.button`
+export const ArticleSubmissionButton = styled.button<{ disabled: boolean }>`
   flex: 1;
-  background-color: #007bff;
+  background-color: ${({ disabled }) => (disabled ? "#e5e7eb" : "#007bff")};
   color: #fff;
   border-radius: 8px;
   padding: 0.75rem 1rem;
+  ${({ disabled }) => disabled && "cursor:not-allowed"};
 `;

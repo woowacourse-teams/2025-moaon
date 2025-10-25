@@ -13,6 +13,7 @@ import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.member.domain.Member;
 import moaon.backend.member.service.OAuthService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -54,15 +55,8 @@ public class ArticleController {
             throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
         }
         oAuthService.validateToken(token);
-        articleService.save(requests);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping("/temp")
-    public ResponseEntity<Void> saveArticlesTemp(
-            @RequestBody @Valid List<ArticleCreateRequest> requests
-    ) {
-        articleService.save(requests);
+        Member member = oAuthService.getUserByToken(token);
+        articleService.save(requests, member);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

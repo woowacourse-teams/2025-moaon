@@ -1,5 +1,5 @@
-import { ARTICLE_SECTOR_MAP } from "@domains/filter/articleSector";
-import CloseButtonIcon from "@shared/components/CloseButtonIcon/CloseButtonIcon";
+import DeleteButtonIcon from "@shared/components/DeleteButtonIcon/DeleteButtonIcon";
+import EditButtonIcon from "@shared/components/EditButtonIcon/EditButtonIcon";
 import type { ArticleFormDataType } from "../../types";
 import * as S from "./ArticleDraftItem.styled";
 
@@ -14,8 +14,7 @@ function ArticleDraftItem({
   onEdit,
   article,
 }: ArticleDraftItemProps) {
-  const { title, description, sector, id } = article;
-  const { color, label } = ARTICLE_SECTOR_MAP[sector.value];
+  const { title, description, id } = article;
 
   const handleDeleteDraft = (id: string) => {
     const confirmDelete = window.confirm("해당 아티클을 삭제하시겠습니까?");
@@ -30,19 +29,13 @@ function ArticleDraftItem({
 
   return (
     <S.ArticleDraftItem>
-      <S.ArticleDraftItemDetailButton
-        type="button"
-        onClick={() => handleEditDraft(article)}
-      >
-        수정하기
-      </S.ArticleDraftItemDetailButton>
       <S.ArticleDraftHeader>
-        <S.ArticleDraftBadge bgColor={color}>{label}</S.ArticleDraftBadge>
         <S.ArticleDraftTitle>{title}</S.ArticleDraftTitle>
       </S.ArticleDraftHeader>
       <S.ArticleDraftDescription>{description}</S.ArticleDraftDescription>
       <S.CloseButtonBox>
-        <CloseButtonIcon onClick={() => handleDeleteDraft(id)} />
+        <EditButtonIcon onClick={() => handleEditDraft(article)} />
+        <DeleteButtonIcon onClick={() => handleDeleteDraft(id)} />
       </S.CloseButtonBox>
     </S.ArticleDraftItem>
   );

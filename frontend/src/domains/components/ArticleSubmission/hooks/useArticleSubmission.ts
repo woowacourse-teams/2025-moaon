@@ -42,10 +42,12 @@ export const useArticleSubmission = ({
     setEditingArticle(undefined);
   }, []);
 
-  const postArticleClickMutation = useMutation(articlesQueries.postArticles());
+  const { mutateAsync: postArticlesMutation } = useMutation(
+    articlesQueries.postArticles()
+  );
 
-  const postArticlesClick = useCallback(() => {
-    postArticleClickMutation.mutate(
+  const postArticlesClick = useCallback(async () => {
+    await postArticlesMutation(
       articles.map((article) => ({
         projectId,
         title: article.title,
@@ -56,7 +58,7 @@ export const useArticleSubmission = ({
         topics: article.sector.topics,
       }))
     );
-  }, [projectId, articles, postArticleClickMutation]);
+  }, [projectId, articles, postArticlesMutation]);
 
   return {
     articles,

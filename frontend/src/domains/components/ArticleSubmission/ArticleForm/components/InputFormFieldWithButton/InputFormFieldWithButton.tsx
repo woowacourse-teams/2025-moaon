@@ -19,15 +19,15 @@ function InputFormFieldWithButton({
   placeholder,
   buttonEvent,
   errorMessage,
+  disabled,
 }: InputFormFieldWithButtonProps) {
   const hasError = !!errorMessage;
-
   return (
     <FormField>
       <FormField.Wrapper>
         <FormField.Header inputId={name}>
-          <FormField.Title>{title}</FormField.Title>
-          {required && <FormField.RequiredMark />}
+          <FormField.Title disabled={disabled}>{title}</FormField.Title>
+          {required && <FormField.RequiredMark disabled={disabled} />}
         </FormField.Header>
         <S.InputFormFieldWithButtonWrapper>
           <FormField.Input
@@ -39,9 +39,10 @@ function InputFormFieldWithButton({
             placeholder={placeholder}
             required={required}
             hasError={hasError}
+            disabled={disabled}
           />
-          <FormField.Button buttonEvent={buttonEvent}>
-            가져오기
+          <FormField.Button buttonEvent={buttonEvent} disabled={disabled}>
+            검증하기
           </FormField.Button>
         </S.InputFormFieldWithButtonWrapper>
         <FormField.ErrorBox>
