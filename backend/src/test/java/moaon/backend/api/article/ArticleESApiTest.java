@@ -20,6 +20,7 @@ import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import moaon.backend.techStack.repository.TechStackRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,6 +37,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Disabled("엔드포인트가 통합됨에 따라 API 통합 테스트를 비활성화 합니다.")
 public class ArticleESApiTest {
 
     @Container

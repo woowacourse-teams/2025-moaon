@@ -49,7 +49,7 @@ public class ArticleDao {
         if (searchKeyword != null && searchKeyword.hasValue()) {
             return findAllWithScore(ids, cursor, limit, sortType, searchKeyword);
         }
-        
+
         return jpaQueryFactory
                 .select(article)
                 .from(article)
@@ -213,16 +213,17 @@ public class ArticleDao {
     }
 
     private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy, SearchKeyword searchKeyword) {
-        if (sortBy == ArticleSortType.CLICKS) {
+        if (ArticleSortType.RELEVANCE == sortBy && searchKeyword != null && searchKeyword.hasValue()) {
+            NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
+            return new OrderSpecifier<?>[]{score.desc(), article.id.desc()};
+        }
+        if (ArticleSortType.CLICKS == sortBy) {
             return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }
-        return switch (sortBy) {
-            case RELEVANCE -> {
-                NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
-                yield new OrderSpecifier<?>[]{score.desc(), article.id.desc()};
-            }
-            case CLICKS -> new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
-            case CREATED_AT -> new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
-        };
+        if (ArticleSortType.CREATED_AT == sortBy) {
+            return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
+        }
+
+        return new OrderSpecifier[]{};
     }
 }
