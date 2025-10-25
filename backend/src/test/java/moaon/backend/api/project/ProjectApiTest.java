@@ -2,6 +2,9 @@ package moaon.backend.api.project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -15,12 +18,12 @@ import io.restassured.response.ValidatableResponse;
 import java.util.List;
 import moaon.backend.api.BaseApiTest;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleSectorCount;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.db.DBArticleSearchResult;
+import moaon.backend.article.service.ElasticSearchService;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -41,7 +44,6 @@ import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.RequestFieldsSnippet;
@@ -62,10 +64,10 @@ public class ProjectApiTest extends BaseApiTest {
     private MemberRepository memberRepository;
 
     @MockitoBean
-    private ArticleDocumentRepository articleDocumentRepository;
+    private OAuthService oAuthService;
 
     @MockitoBean
-    private OAuthService oAuthService;
+    private ElasticSearchService elasticSearchService;
 
     private String token;
 
@@ -110,7 +112,7 @@ public class ProjectApiTest extends BaseApiTest {
                 .imageKeys(List.of("www.images.com"))
                 .build();
 
-        Mockito.when(oAuthService.getUserByToken(Mockito.any())).thenReturn(member);
+        when(oAuthService.getUserByToken(any())).thenReturn(member);
 
         // when
         ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
@@ -255,21 +257,21 @@ public class ProjectApiTest extends BaseApiTest {
         String filteredSearch = "모아온";
         String unfilteredSearch = "핏토링";
 
-        Article targetProjectArticle1 = repositoryHelper.save(
+        Article filteredArticle1 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(targetProject)
                         .sector(filteredSector)
                         .title(filteredSearch)
                         .build()
         );
-        Article targetProjectArticle2 = repositoryHelper.save(
+        Article filteredArticle2 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(targetProject)
                         .sector(filteredSector)
                         .summary(filteredSearch)
                         .build()
         );
-        Article targetProjectArticle3 = repositoryHelper.save(
+        Article filteredArticle3 = repositoryHelper.save(
                 new ArticleFixtureBuilder()
                         .project(targetProject)
                         .sector(filteredSector)
@@ -297,11 +299,11 @@ public class ProjectApiTest extends BaseApiTest {
                         .build()
         );
 
-        Mockito.doReturn(List.of(
-                new ArticleDocument(targetProjectArticle1),
-                new ArticleDocument(targetProjectArticle2),
-                new ArticleDocument(targetProjectArticle3))
-        ).when(articleDocumentRepository).searchInIds(Mockito.anyList(), Mockito.any(ArticleQueryCondition.class));
+        when(elasticSearchService.searchInProject(eq(targetProject), any(ArticleQueryCondition.class)))
+                .thenReturn(new DBArticleSearchResult(
+                        List.of(filteredArticle1, filteredArticle2, filteredArticle3),
+                        6, 20, null
+                ));
 
         // when
         ProjectArticleResponse actualResponse = RestAssured.given(documentationSpecification).log().all()
@@ -328,9 +330,9 @@ public class ProjectApiTest extends BaseApiTest {
                 () -> assertThat(actualResponse.articles())
                         .extracting(ArticleDetailResponse::id)
                         .containsExactlyInAnyOrder(
-                                targetProjectArticle1.getId(),
-                                targetProjectArticle2.getId(),
-                                targetProjectArticle3.getId()
+                                filteredArticle1.getId(),
+                                filteredArticle2.getId(),
+                                filteredArticle3.getId()
                         )
         );
     }

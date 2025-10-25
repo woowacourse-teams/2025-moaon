@@ -7,7 +7,6 @@ import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.global.domain.SearchKeyword;
-import moaon.backend.project.dto.ProjectArticleQueryCondition;
 
 public record ArticleQueryCondition(
         SearchKeyword search,
@@ -44,20 +43,6 @@ public record ArticleQueryCondition(
                 sortBy,
                 limit,
                 cursor == null ? null : new ArticleCursor(cursor)
-        );
-    }
-
-    public static ArticleQueryCondition fromProjectDetail(
-            ProjectArticleQueryCondition pac
-    ) {
-        return new ArticleQueryCondition(
-                pac.search(),
-                pac.sector(),
-                List.of(),
-                List.of(),
-                ArticleSortType.CREATED_AT, // 프로젝트 상세 페이지 정렬옵션 정책 없으므로 기본값
-                999, // 프로젝트 상세 페이지 무제한 페이징
-                null
         );
     }
 

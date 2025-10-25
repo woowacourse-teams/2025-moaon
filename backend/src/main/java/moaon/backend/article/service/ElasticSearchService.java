@@ -10,6 +10,7 @@ import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.article.repository.es.ESArticleSearchResult;
+import moaon.backend.project.domain.Project;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,24 @@ public class ElasticSearchService {
 
     public ArticleSearchResult search(ArticleQueryCondition condition) {
         SearchHits<ArticleDocument> searchHits = elasticSearch.search(condition);
-        List<Article> originArticles = getOriginArticles(searchHits);
+        return wrapSearchHits(condition, searchHits);
+    }
 
+    public ArticleSearchResult searchInProject(Project project, ArticleQueryCondition condition) {
+        List<Article> projectArticles = project.getArticles();
+        List<Long> allArticleIds = projectArticles.stream().map(Article::getId).toList();
+
+        SearchHits<ArticleDocument> searchHits = elasticSearch.searchInIds(allArticleIds, condition);
+        return wrapSearchHits(condition, searchHits);
+    }
+
+    private ArticleSearchResult wrapSearchHits(
+            ArticleQueryCondition condition,
+            SearchHits<ArticleDocument> searchHits
+    ) {
         return new ESArticleSearchResult(
                 searchHits,
-                originArticles,
+                getOriginArticles(searchHits),
                 condition.limit()
         );
     }
@@ -42,5 +56,9 @@ public class ElasticSearchService {
                 .stream()
                 .sorted(Comparator.comparingInt(a -> ids.indexOf(a.getId())))
                 .toList();
+    }
+
+    public ArticleDocument save(ArticleDocument articleDocument) {
+        return elasticSearch.save(articleDocument);
     }
 }

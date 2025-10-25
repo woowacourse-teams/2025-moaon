@@ -7,7 +7,6 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Repository;
@@ -38,7 +37,7 @@ public class ArticleDocumentRepository {
                 .save(articleDocument, ARTICLE_ALIAS);
     }
 
-    public List<ArticleDocument> searchInIds(List<Long> articleIds, ArticleQueryCondition condition) {
+    public SearchHits<ArticleDocument> searchInIds(List<Long> articleIds, ArticleQueryCondition condition) {
         NativeQuery esArticleQuery = new ESArticleQueryBuilder()
                 .withIds(articleIds)
                 .withTextSearch(condition.search())
@@ -49,9 +48,6 @@ public class ArticleDocumentRepository {
                 .withPagination(condition.limit(), condition.cursor(), condition.sortType())
                 .build();
 
-        SearchHits<ArticleDocument> searchHits = ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
-        return searchHits.getSearchHits().stream()
-                .map(SearchHit::getContent)
-                .toList();
+        return ops.search(esArticleQuery, ArticleDocument.class, ARTICLE_ALIAS);
     }
 }

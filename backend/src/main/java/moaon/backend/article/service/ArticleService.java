@@ -17,7 +17,6 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.article.repository.db.ArticleRepository;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
@@ -35,50 +34,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ElasticSearchService elasticSearchService;
-    private final ArticleDocumentRepository articleDocumentRepository;
     private final ArticleRepository articleRepository;
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
-        ArticleSearchResult searchResult;
         try {
-            searchResult = elasticSearchService.search(queryCondition);
+            return ArticleResponse.from(elasticSearchService.search(queryCondition));
         } catch (Exception e) {
             log.warn("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
-            searchResult = articleRepository.findWithSearchConditions(queryCondition);
+            return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
         }
-
-        return ArticleResponse.from(searchResult);
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
-        List<Article> allArticlesInProject = project.getArticles();
-        List<Long> retrievedIds = retrieveInGivenArticles(allArticlesInProject, condition);
-        List<Article> filteredArticles = allArticlesInProject.stream().filter(a -> retrievedIds.contains(a.getId()))
-                .toList();
+        ArticleQueryCondition articleCondition = condition.toArticleCondition();
+        ArticleSearchResult filteredArticles = elasticSearchService.searchInProject(project, articleCondition);
 
-        Map<Sector, Long> articleCountBySector = allArticlesInProject.stream()
-                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
-        for (Sector sector : Sector.values()) {
-            articleCountBySector.computeIfAbsent(sector, k -> 0L);
-        }
-        return ProjectArticleResponse.of(filteredArticles, articleCountBySector);
-    }
-
-    private List<Long> retrieveInGivenArticles(List<Article> allArticlesInProject,
-                                               ProjectArticleQueryCondition condition) {
-        ArticleQueryCondition articleCondition = ArticleQueryCondition.fromProjectDetail(condition);
-
-        List<Long> allArticleIds = allArticlesInProject.stream().map(Article::getId).toList();
-        return articleDocumentRepository.searchInIds(allArticleIds, articleCondition)
-                .stream()
-                .map(ArticleDocument::getId)
-                .toList();
+        Map<Sector, Long> articleCountBySector = countArticlesGroupBySector(project);
+        return ProjectArticleResponse.of(filteredArticles.getArticles(), articleCountBySector);
     }
 
     @Transactional
@@ -117,7 +95,16 @@ public class ArticleService {
             );
 
             articleRepository.save(article);
-            articleDocumentRepository.save(new ArticleDocument(article));
+            elasticSearchService.save(new ArticleDocument(article));
         }
+    }
+
+    private Map<Sector, Long> countArticlesGroupBySector(Project project) {
+        Map<Sector, Long> articleCountBySector = project.getArticles().stream()
+                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
+        for (Sector sector : Sector.values()) {
+            articleCountBySector.computeIfAbsent(sector, k -> 0L);
+        }
+        return articleCountBySector;
     }
 }
