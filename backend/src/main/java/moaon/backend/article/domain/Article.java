@@ -14,6 +14,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.global.exception.custom.CustomException;
@@ -36,7 +38,7 @@ import moaon.backend.techStack.domain.TechStack;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = {"project", "techStacks", "topics"})
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Builder
 @Table(indexes = {
         @Index(name = "idx_article_created_at_id", columnList = "createdAt DESC, id DESC"),
@@ -79,6 +81,10 @@ public class Article extends BaseTimeEntity {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Topic> topics;
+
+    @Transient
+    @Setter
+    private double score = 0.0;
 
     // todo topic과 sector의 포함 관계 확인?
     public Article(

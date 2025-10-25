@@ -46,6 +46,9 @@ public class ArticleCursor {
             return article.getClicks();
         }
 
+        if (ArticleSortType.RELEVANCE == sortType) {
+            return article.getScore();
+        }
         throw new IllegalArgumentException("Unknown SortType : " + sortType);
     }
 }

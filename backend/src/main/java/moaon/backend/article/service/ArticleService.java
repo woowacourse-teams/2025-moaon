@@ -49,8 +49,7 @@ public class ArticleService {
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        Project project = projectRepository.getByIdOrElseThrow(id);
 
         ArticleQueryCondition articleCondition = condition.toArticleCondition();
         ArticleSearchResult filteredArticles = elasticSearchService.searchInProject(project, articleCondition);

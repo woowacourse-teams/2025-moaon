@@ -37,7 +37,8 @@ public class CustomizedArticleRepositoryImpl implements CustomizedArticleReposit
                 filteringIds.getIds(),
                 queryCondition.cursor(),
                 queryCondition.limit(),
-                queryCondition.sortType()
+                queryCondition.sortType(),
+                queryCondition.search()
         );
         long totalCount = calculateTotalCount(filteringIds);
         return new DBArticleSearchResult(articles, totalCount, queryCondition.limit(), queryCondition.sortType());

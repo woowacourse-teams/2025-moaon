@@ -4,22 +4,23 @@ import static moaon.backend.article.domain.QArticle.article;
 import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.QArticle;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.repository.db.ArticleFullTextSearchHQLFunction;
@@ -42,17 +43,45 @@ public class ArticleDao {
             Set<Long> ids,
             ArticleCursor cursor,
             int limit,
-            ArticleSortType sortType
+            ArticleSortType sortType,
+            @Nullable SearchKeyword searchKeyword
     ) {
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            return findAllWithScore(ids, cursor, limit, sortType, searchKeyword);
+        }
+        
         return jpaQueryFactory
-                .selectFrom(article)
+                .select(article)
+                .from(article)
                 .where(
                         idIn(ids),
-                        cursorWhereClause(cursor, sortType)
+                        cursorWhereClause(cursor, sortType, searchKeyword)
                 )
-                .orderBy(toOrderBy(sortType))
+                .orderBy(toOrderBy(sortType, searchKeyword))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
+    }
+
+    private List<Article> findAllWithScore(Set<Long> ids, ArticleCursor cursor, int limit, ArticleSortType sortType,
+                                           SearchKeyword searchKeyword) {
+        NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
+        List<Tuple> tuples = jpaQueryFactory
+                .select(article, score)
+                .from(article)
+                .where(
+                        idIn(ids),
+                        cursorWhereClause(cursor, sortType, searchKeyword)
+                )
+                .orderBy(toOrderBy(sortType, searchKeyword))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+
+        return tuples.stream()
+                .map(t -> {
+                    Article article = t.get(QArticle.article);
+                    article.setScore(t.get(score));
+                    return article;
+                }).toList();
     }
 
     public List<Article> findAllBy(
@@ -165,45 +194,35 @@ public class ArticleDao {
         return article.sector.eq(sector);
     }
 
-    private BooleanExpression cursorWhereClause(ArticleCursor cursor, ArticleSortType sortType) {
+    private BooleanExpression cursorWhereClause(ArticleCursor cursor, ArticleSortType sortType,
+                                                SearchKeyword searchKeyword) {
         if (cursor == null) {
             return null;
         }
 
-        return CursorExpressionMapper.toWhereClause(cursor, sortType);
+        return CursorExpressionMapper.toWhereClause(cursor, sortType, searchKeyword);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
             return null;
         }
-        return Expressions.numberTemplate(
-                        Double.class,
-                        ArticleFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
-                        formatSearchKeyword(searchKeyword)
-                )
+        return ArticleFullTextSearchHQLFunction
+                .scoreReference(searchKeyword)
                 .gt(MINIMUM_MATCH_SCORE);
     }
 
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy, SearchKeyword searchKeyword) {
         if (sortBy == ArticleSortType.CLICKS) {
             return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }
-
-        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
-    }
-
-    private String formatSearchKeyword(SearchKeyword searchKeyword) {
-        String search = searchKeyword.replaceSpecialCharacters(BLANK);
-        return Arrays.stream(search.split(BLANK))
-                .map(this::applyBooleanModeExpression)
-                .collect(Collectors.joining(BLANK));
-    }
-
-    private String applyBooleanModeExpression(String keyword) {
-        if (keyword.length() == 1) {
-            return String.format("%s*", keyword);
-        }
-        return String.format("+%s*", keyword.toLowerCase());
+        return switch (sortBy) {
+            case RELEVANCE -> {
+                NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
+                yield new OrderSpecifier<?>[]{score.desc(), article.id.desc()};
+            }
+            case CLICKS -> new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
+            case CREATED_AT -> new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
+        };
     }
 }
