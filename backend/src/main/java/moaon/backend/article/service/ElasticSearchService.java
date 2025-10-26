@@ -28,10 +28,8 @@ public class ElasticSearchService {
     }
 
     public ArticleSearchResult searchInProject(Project project, ArticleQueryCondition condition) {
-        List<Article> projectArticles = project.getArticles();
-        List<Long> allArticleIds = projectArticles.stream().map(Article::getId).toList();
-
-        SearchHits<ArticleDocument> searchHits = elasticSearch.searchInIds(allArticleIds, condition);
+        List<Long> articleIds = project.getArticleIds();
+        SearchHits<ArticleDocument> searchHits = elasticSearch.searchInIds(articleIds, condition);
         return wrapSearchHits(condition, searchHits);
     }
 

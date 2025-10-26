@@ -195,6 +195,12 @@ public class Project extends BaseTimeEntity {
         return List.copyOf(lovedMembers);
     }
 
+    public List<Long> getArticleIds() {
+        return articles.stream()
+                .map(Article::getId)
+                .toList();
+    }
+
     public Map<Sector, Long> countArticlesGroupBySector() {
         Map<Sector, Long> articleCountBySector = getArticles().stream()
                 .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));

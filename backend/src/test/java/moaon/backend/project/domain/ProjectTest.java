@@ -192,6 +192,20 @@ class ProjectTest {
                 .isEqualTo(ErrorCode.PROJECT_INVALID_CATEGORY);
     }
 
+    @DisplayName("아티클들을 ID 목록으로 얻는다.")
+    @Test
+    void getArticleIds() {
+        Project project = Project.builder()
+                .articles(List.of(
+                        new ArticleFixtureBuilder().id(1L).build(),
+                        new ArticleFixtureBuilder().id(2L).build(),
+                        new ArticleFixtureBuilder().id(3L).build()
+                )).build();
+
+        assertThat(project.getArticleIds())
+                .containsExactly(1L, 2L, 3L);
+    }
+
     @DisplayName("아티클들을 섹터별로 그룹화하여 개수를 센다.")
     @Test
     void countArticlesGroupBySector_groupsCorrectly() {
