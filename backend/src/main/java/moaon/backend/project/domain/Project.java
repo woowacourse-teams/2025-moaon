@@ -78,7 +78,7 @@ public class Project extends BaseTimeEntity {
     private Member author;
 
     @ManyToMany
-    private List<Member> lovedMembers;
+    private List<Member> lovedMembers = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTechStack> techStacks = new ArrayList<>();
@@ -87,7 +87,7 @@ public class Project extends BaseTimeEntity {
     private List<ProjectCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 
     public Project(
             Project project,

@@ -80,7 +80,7 @@ public class Article extends BaseTimeEntity {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<Topic> topics;
+    private List<Topic> topics = new ArrayList<>();
 
     @Transient
     @Setter
