@@ -75,7 +75,7 @@ class ArticleServiceTest {
         Mockito.when(articleRepository.findWithSearchConditions(Mockito.any()))
                 .thenReturn(new DBArticleSearchResult(articles, totalCount, limit, sortType));
 
-        ArticleCursor articleCursor = new ArticleCursor(article2, articleQueryCondition.sortType());
+        ArticleCursor articleCursor = new ArticleCursor(article2.getCreatedAt(), article2.getId());
 
         ArticleData articleData1 = ArticleData.from(article1);
         ArticleData articleData2 = ArticleData.from(article2);
@@ -88,7 +88,7 @@ class ArticleServiceTest {
                 () -> assertThat(actual.contents()).containsExactly(articleData1, articleData2),
                 () -> assertThat(actual.totalCount()).isEqualTo(5),
                 () -> assertThat(actual.hasNext()).isTrue(),
-                () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.asString())
+                () -> assertThat(actual.nextCursor()).isEqualTo(articleCursor.toString())
         );
     }
 

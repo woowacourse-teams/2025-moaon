@@ -91,8 +91,7 @@ public class ESArticleQueryBuilder {
         }
         this.pageable = PageRequest.ofSize(limit);
         if (ArticleSortType.CREATED_AT == sortType) {
-            this.searchAfter = List.of(cursor.getSortValueAs(obj -> Long.parseLong(obj.toString())),
-                    cursor.getLastId());
+            this.searchAfter = List.of(cursor.getSortValueAsLong(), cursor.getLastId());
             return this;
         }
 

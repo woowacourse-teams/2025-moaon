@@ -5,11 +5,7 @@ import static moaon.backend.article.domain.QArticle.article;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberTemplate;
 import jakarta.annotation.Nullable;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.repository.db.ArticleFullTextSearchHQLFunction;
@@ -17,7 +13,8 @@ import moaon.backend.global.domain.SearchKeyword;
 
 public class CursorExpressionMapper {
 
-    private static final DateTimeFormatter CREATED_AT_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private CursorExpressionMapper() {
+    }
 
     public static BooleanExpression toWhereClause(
             ArticleCursor cursor,
@@ -25,32 +22,23 @@ public class CursorExpressionMapper {
             @Nullable SearchKeyword searchKeyword
     ) {
         if (ArticleSortType.CREATED_AT == sortType) {
-            LocalDateTime sortValue = cursor.getSortValueAs(
-                    obj -> {
-                        try {
-                            return LocalDateTime.parse(obj.toString(), CREATED_AT_FORMATTER);
-                        } catch (DateTimeParseException e) {
-                            return Instant.ofEpochMilli(Long.parseLong(obj.toString())).atOffset(ZoneOffset.UTC)
-                                    .toLocalDateTime();
-                        }
-                    }
-            );
+            LocalDateTime sortValue = cursor.getSortValueAsLocalDateTime();
 
             return article.createdAt.lt(sortValue)
-                    .or(article.createdAt.eq(sortValue).and(article.id.lt(cursor.getLastIdAsLong())));
+                    .or(article.createdAt.eq(sortValue).and(article.id.lt(cursor.getLastId())));
         }
 
         if (ArticleSortType.CLICKS == sortType) {
-            Integer sortValue = cursor.getSortValueAs(obj -> Integer.parseInt(obj.toString()));
+            Integer sortValue = cursor.getSortValueAsInt();
             return article.clicks.lt(sortValue)
-                    .or(article.clicks.eq(sortValue).and(article.id.lt(cursor.getLastIdAsLong())));
+                    .or(article.clicks.eq(sortValue).and(article.id.lt(cursor.getLastId())));
         }
 
         if (ArticleSortType.RELEVANCE == sortType && searchKeyword != null && searchKeyword.hasValue()) {
-            Double sortValue = cursor.getSortValueAs(obj -> Double.parseDouble(obj.toString()));
+            Double sortValue = cursor.getSortValueAsDouble();
             NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
             return score.lt(sortValue)
-                    .or(score.eq(sortValue).and(article.id.lt(cursor.getLastIdAsLong())));
+                    .or(score.eq(sortValue).and(article.id.lt(cursor.getLastId())));
         }
 
         return null;

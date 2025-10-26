@@ -28,7 +28,7 @@ public class ESArticleSearchResult implements ArticleSearchResult {
         }
 
         List<Object> sortValues = searchHits.getSearchHits().getLast().getSortValues();
-        return new ArticleCursor(sortValues.get(0), sortValues.get(1));
+        return new ArticleCursor(sortValues.get(0), (long) sortValues.get(1));
     }
 
     @Override

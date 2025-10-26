@@ -39,8 +39,25 @@ public class DBArticleSearchResult implements ArticleSearchResult {
     @Override
     public ArticleCursor getNextCursor() {
         if (hasNext()) {
-            Article lastArticle = getArticles().getLast();
-            return new ArticleCursor(lastArticle, sortType);
+            return generateCursor();
+        }
+        return null;
+    }
+
+    private ArticleCursor generateCursor() {
+        Article lastArticle = getArticles().getLast();
+        Long lastId = lastArticle.getId();
+
+        if (ArticleSortType.CREATED_AT == sortType) {
+            return new ArticleCursor(lastArticle.getCreatedAt(), lastId);
+        }
+
+        if (ArticleSortType.CLICKS == sortType) {
+            return new ArticleCursor(lastArticle.getClicks(), lastId);
+        }
+
+        if (ArticleSortType.RELEVANCE == sortType) {
+            return new ArticleCursor(lastArticle.getScore(), lastId);
         }
 
         return null;

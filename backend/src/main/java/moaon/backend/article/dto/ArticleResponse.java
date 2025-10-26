@@ -24,6 +24,6 @@ public record ArticleResponse(
         if (nextCursor == null) {
             return null;
         }
-        return nextCursor.asString();
+        return nextCursor.toString();
     }
 }

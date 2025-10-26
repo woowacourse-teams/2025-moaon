@@ -1,5 +1,6 @@
 package moaon.backend.article.domain;
 
+import java.time.LocalDateTime;
 import java.util.function.Function;
 import lombok.Getter;
 
@@ -7,9 +8,9 @@ import lombok.Getter;
 public class ArticleCursor {
 
     private final Object sortValue;
-    private final Object lastId;
+    private final Long lastId;
 
-    public ArticleCursor(Object sortValue, Object lastId) {
+    public ArticleCursor(Object sortValue, Long lastId) {
         this.sortValue = sortValue;
         this.lastId = lastId;
     }
@@ -17,38 +18,31 @@ public class ArticleCursor {
     public ArticleCursor(String rawCursor) {
         String[] split = rawCursor.split("_");
         this.sortValue = split[0];
-        this.lastId = split[1];
-    }
-
-    public ArticleCursor(Article article, ArticleSortType sortType) {
-        this.sortValue = determineSortValue(article, sortType);
-        this.lastId = article.getId();
-    }
-
-    public String asString() {
-        return sortValue + "_" + lastId;
+        this.lastId = Long.parseLong(split[1]);
     }
 
     public <T> T getSortValueAs(Function<Object, T> mapper) {
         return mapper.apply(sortValue);
     }
 
-    public Long getLastIdAsLong() {
-        return Long.parseLong(lastId.toString());
+    public LocalDateTime getSortValueAsLocalDateTime() {
+        return LocalDateTime.parse(sortValue.toString());
     }
 
-    private Object determineSortValue(Article article, ArticleSortType sortType) {
-        if (ArticleSortType.CREATED_AT == sortType) {
-            return article.getCreatedAt();
-        }
+    public int getSortValueAsInt() {
+        return Integer.parseInt(sortValue.toString());
+    }
 
-        if (ArticleSortType.CLICKS == sortType) {
-            return article.getClicks();
-        }
+    public double getSortValueAsDouble() {
+        return Double.parseDouble(sortValue.toString());
+    }
 
-        if (ArticleSortType.RELEVANCE == sortType) {
-            return article.getScore();
-        }
-        throw new IllegalArgumentException("Unknown SortType : " + sortType);
+    public long getSortValueAsLong() {
+        return Long.parseLong(sortValue.toString());
+    }
+
+    @Override
+    public String toString() {
+        return sortValue + "_" + lastId;
     }
 }
