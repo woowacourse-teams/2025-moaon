@@ -12,7 +12,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +46,6 @@ public class ArticleDao {
             ArticleSortType sortType,
             @Nullable SearchKeyword searchKeyword
     ) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return new ArrayList<>();
-        }
-
         if (searchKeyword != null && searchKeyword.hasValue()) {
             return findAllWithScore(ids, cursor, limit, sortType, searchKeyword);
         }
