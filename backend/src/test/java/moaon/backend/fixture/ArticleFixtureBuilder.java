@@ -117,6 +117,7 @@ public class ArticleFixtureBuilder {
                 .sector(this.sector)
                 .topics(this.topics)
                 .techStacks(new ArrayList<>())
+                .score(this.score)
                 .build();
 
         for (TechStack techStack : techStacks) {
