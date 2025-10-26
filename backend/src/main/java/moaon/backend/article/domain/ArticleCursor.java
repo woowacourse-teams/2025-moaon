@@ -3,6 +3,12 @@ package moaon.backend.article.domain;
 import java.time.LocalDateTime;
 import java.util.function.Function;
 import lombok.Getter;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
+import moaon.backend.global.parser.DoubleParser;
+import moaon.backend.global.parser.IntegerParser;
+import moaon.backend.global.parser.LocalDateTimeParser;
+import moaon.backend.global.parser.LongParser;
 
 @Getter
 public class ArticleCursor {
@@ -16,9 +22,13 @@ public class ArticleCursor {
     }
 
     public ArticleCursor(String rawCursor) {
+        if (rawCursor == null || !rawCursor.matches("^\\S+_\\d+$")) {
+            throw new CustomException(ErrorCode.INVALID_CURSOR_FORMAT);
+        }
+
         String[] split = rawCursor.split("_");
         this.sortValue = split[0];
-        this.lastId = Long.parseLong(split[1]);
+        this.lastId = new LongParser().parse(split[1]);
     }
 
     public <T> T getSortValueAs(Function<Object, T> mapper) {
@@ -26,19 +36,19 @@ public class ArticleCursor {
     }
 
     public LocalDateTime getSortValueAsLocalDateTime() {
-        return LocalDateTime.parse(sortValue.toString());
+        return new LocalDateTimeParser().parse(sortValue.toString());
     }
 
     public int getSortValueAsInt() {
-        return Integer.parseInt(sortValue.toString());
+        return new IntegerParser().parse(sortValue.toString());
     }
 
     public double getSortValueAsDouble() {
-        return Double.parseDouble(sortValue.toString());
+        return new DoubleParser().parse(sortValue.toString());
     }
 
     public long getSortValueAsLong() {
-        return Long.parseLong(sortValue.toString());
+        return new LongParser().parse(sortValue.toString());
     }
 
     @Override

@@ -1,11 +1,16 @@
 package moaon.backend.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ArticleCursorTest {
 
@@ -33,6 +38,16 @@ class ArticleCursorTest {
                 () -> assertThat(cursor.getSortValue()).isEqualTo("2025-09-25T04:35:00.764"),
                 () -> assertThat(cursor.getLastId()).isEqualTo(35867L)
         );
+    }
+
+    @DisplayName("잘못된 형식의 문자열로 커서를 만드려고 하면 예외가 발생한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "\n", "\t", "1_", "_1", "1_notLong"})
+    void constructWithInvalidString(String invalidString) {
+        assertThatThrownBy(() -> new ArticleCursor(invalidString))
+                .isInstanceOf(CustomException.class)
+                .extracting("errorCode")
+                .isEqualTo(ErrorCode.INVALID_CURSOR_FORMAT);
     }
 
     @DisplayName("커서를 문자열로 직렬화하면 sortValue_lastId 형식이 된다.")
