@@ -38,7 +38,7 @@ import moaon.backend.techStack.domain.TechStack;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = {"project", "techStacks", "topics"})
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Table(indexes = {
         @Index(name = "idx_article_created_at_id", columnList = "createdAt DESC, id DESC"),
