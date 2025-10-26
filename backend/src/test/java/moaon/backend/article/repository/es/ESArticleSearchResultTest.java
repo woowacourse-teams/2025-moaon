@@ -71,11 +71,11 @@ class ESArticleSearchResultTest {
     @Test
     void hasNextFalse() {
         List<Article> twoArticles = List.of(anyArticle(), anyArticle());
-        when(mockSearchHits.getTotalHits()).thenReturn(3L);
+        when(mockSearchHits.getTotalHits()).thenReturn(2L);
         ESArticleSearchResult articles = new ESArticleSearchResult(
                 mockSearchHits, // totalHits 2
                 twoArticles, // 검색결과 2개
-                3 // 페이지 크기 3
+                20 // 페이지 크기 20
         );
 
         // when
