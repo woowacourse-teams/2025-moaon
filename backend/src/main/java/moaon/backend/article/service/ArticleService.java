@@ -3,7 +3,6 @@ package moaon.backend.article.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
@@ -56,7 +55,7 @@ public class ArticleService {
         ArticleQueryCondition articleCondition = condition.toArticleCondition();
         ArticleSearchResult filteredArticles = elasticSearchService.searchInProject(project, articleCondition);
 
-        Map<Sector, Long> articleCountBySector = countArticlesGroupBySector(project);
+        Map<Sector, Long> articleCountBySector = project.countArticlesGroupBySector();
         return ProjectArticleResponse.of(filteredArticles.getArticles(), articleCountBySector);
     }
 
@@ -102,14 +101,5 @@ public class ArticleService {
             articleRepository.save(article);
             elasticSearchService.save(new ArticleDocument(article));
         }
-    }
-
-    private Map<Sector, Long> countArticlesGroupBySector(Project project) {
-        Map<Sector, Long> articleCountBySector = project.getArticles().stream()
-                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
-        for (Sector sector : Sector.values()) {
-            articleCountBySector.computeIfAbsent(sector, k -> 0L);
-        }
-        return articleCountBySector;
     }
 }

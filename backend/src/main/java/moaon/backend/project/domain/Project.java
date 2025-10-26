@@ -15,6 +15,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -190,5 +193,14 @@ public class Project extends BaseTimeEntity {
 
     public List<Member> getLovedMembers() {
         return List.copyOf(lovedMembers);
+    }
+
+    public Map<Sector, Long> countArticlesGroupBySector() {
+        Map<Sector, Long> articleCountBySector = getArticles().stream()
+                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
+        for (Sector sector : Sector.values()) {
+            articleCountBySector.computeIfAbsent(sector, k -> 0L);
+        }
+        return articleCountBySector;
     }
 }

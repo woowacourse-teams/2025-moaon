@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.DBArticleSearchResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,12 +15,10 @@ class DBArticleSearchResultTest {
     @DisplayName("비어있는 ArticleSearchResult를 만든다.")
     @Test
     void empty() {
-        DBArticleSearchResult articles = DBArticleSearchResult.empty();
+        ArticleSearchResult articles = DBArticleSearchResult.empty();
         assertAll(
                 () -> assertThat(articles.getArticles()).isEmpty(),
                 () -> assertThat(articles.getTotalCount()).isEqualTo(0),
-                () -> assertThat(articles.getLimit()).isEqualTo(0),
-                () -> assertThat(articles.getSortType()).isEqualTo(null),
                 () -> assertThat(articles.getNextCursor()).isNull(),
                 () -> assertThat(articles.hasNext()).isFalse()
         );
@@ -27,7 +26,7 @@ class DBArticleSearchResultTest {
 
     @DisplayName("limit와 articles의 크기를 비교해 최종적으로 반환할 아티클 리스트를 반환한다.")
     @Test
-    void getArticlesToReturn() {
+    void getArticles() {
         // given
         List<Article> threeArticles = List.of(anyArticle(), anyArticle(), anyArticle());
         DBArticleSearchResult articles = new DBArticleSearchResult(threeArticles, 4, 2, ArticleSortType.CLICKS);
