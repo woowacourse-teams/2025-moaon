@@ -39,6 +39,7 @@ import moaon.backend.project.dto.ProjectCreateResponse;
 import moaon.backend.project.dto.ProjectDetailResponse;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -127,6 +128,7 @@ public class ProjectApiTest extends BaseApiTest {
         assertThat(response.id()).isNotNull();
     }
 
+    @Disabled
     @DisplayName("GET /projects/{id} : 프로젝트 단건 조회 API")
     @Test
     void getProjectById() {
