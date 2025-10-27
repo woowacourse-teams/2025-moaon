@@ -76,6 +76,7 @@ public class Project extends BaseTimeEntity {
     private Member author;
 
     @ManyToMany
+    @BatchSize(size = 100)
     private List<Member> lovedMembers;
 
     @BatchSize(size = 100)
