@@ -75,13 +75,12 @@ public class ProjectController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-//        AccessHistory accessHistory = cookieManager.extractViewedMap(request);
-//        if (cookieManager.isCountIncreasable(id, accessHistory)) {
-//            ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
-//            cookieManager.createOrUpdateCookie(id, accessHistory, response);
-//            return ResponseEntity.ok(projectDetailResponse);
-//        }
-        projectService.increaseViewsCount(id);
+        AccessHistory accessHistory = cookieManager.extractViewedMap(request);
+        if (cookieManager.isCountIncreasable(id, accessHistory)) {
+            ProjectDetailResponse projectDetailResponse = projectService.increaseViewsCount(id);
+            cookieManager.createOrUpdateCookie(id, accessHistory, response);
+            return ResponseEntity.ok(projectDetailResponse);
+        }
         ProjectDetailResponse projectDetailResponse = projectService.getById(id);
 
         return ResponseEntity.ok(projectDetailResponse);
