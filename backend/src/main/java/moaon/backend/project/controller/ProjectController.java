@@ -81,7 +81,7 @@ public class ProjectController {
 //            cookieManager.createOrUpdateCookie(id, accessHistory, response);
 //            return ResponseEntity.ok(projectDetailResponse);
 //        }
-
+        projectService.increaseViewsCount(id);
         ProjectDetailResponse projectDetailResponse = projectService.getById(id);
 
         return ResponseEntity.ok(projectDetailResponse);
