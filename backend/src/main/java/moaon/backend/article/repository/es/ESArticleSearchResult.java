@@ -7,10 +7,14 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.repository.ArticleSearchResult;
+import moaon.backend.global.parser.LongParser;
+import moaon.backend.global.parser.Parser;
 import org.springframework.data.elasticsearch.core.SearchHits;
 
 @RequiredArgsConstructor
 public class ESArticleSearchResult implements ArticleSearchResult {
+
+    private static final Parser<Long> ID_PARSER = new LongParser();
 
     private final SearchHits<ArticleDocument> searchHits;
     private final List<Article> originArticles;
@@ -28,7 +32,9 @@ public class ESArticleSearchResult implements ArticleSearchResult {
         }
 
         List<Object> sortValues = searchHits.getSearchHits().getLast().getSortValues();
-        return new ArticleCursor(sortValues.get(0), (long) sortValues.get(1));
+        Object sortValue = sortValues.get(0);
+        Long id = ID_PARSER.parse(sortValues.get(1).toString());
+        return new ArticleCursor(sortValue, id);
     }
 
     @Override
