@@ -4,25 +4,26 @@ import static moaon.backend.article.domain.QArticle.article;
 import static moaon.backend.techStack.domain.QArticleTechStack.articleTechStack;
 import static moaon.backend.techStack.domain.QTechStack.techStack;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
+import moaon.backend.article.domain.QArticle;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.repository.ArticleFullTextSearchHQLFunction;
-import moaon.backend.global.cursor.Cursor;
+import moaon.backend.article.repository.db.ArticleFullTextSearchHQLFunction;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
@@ -40,19 +41,47 @@ public class ArticleDao {
 
     public List<Article> findAllBy(
             Set<Long> ids,
-            Cursor<?> cursor,
+            ArticleCursor cursor,
             int limit,
-            ArticleSortType sortType
+            ArticleSortType sortType,
+            @Nullable SearchKeyword searchKeyword
     ) {
+        if (searchKeyword != null && searchKeyword.hasValue()) {
+            return findAllWithScore(ids, cursor, limit, sortType, searchKeyword);
+        }
+
         return jpaQueryFactory
-                .selectFrom(article)
+                .select(article)
+                .from(article)
                 .where(
                         idIn(ids),
-                        applyCursor(cursor)
+                        cursorWhereClause(cursor, sortType, searchKeyword)
                 )
-                .orderBy(toOrderBy(sortType))
+                .orderBy(toOrderBy(sortType, searchKeyword))
                 .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
                 .fetch();
+    }
+
+    private List<Article> findAllWithScore(Set<Long> ids, ArticleCursor cursor, int limit, ArticleSortType sortType,
+                                           SearchKeyword searchKeyword) {
+        NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
+        List<Tuple> tuples = jpaQueryFactory
+                .select(article, score)
+                .from(article)
+                .where(
+                        idIn(ids),
+                        cursorWhereClause(cursor, sortType, searchKeyword)
+                )
+                .orderBy(toOrderBy(sortType, searchKeyword))
+                .limit(limit + FETCH_EXTRA_FOR_HAS_NEXT)
+                .fetch();
+
+        return tuples.stream()
+                .map(t -> {
+                    Article article = t.get(QArticle.article);
+                    article.setScore(t.get(score));
+                    return article;
+                }).toList();
     }
 
     public List<Article> findAllBy(
@@ -165,44 +194,36 @@ public class ArticleDao {
         return article.sector.eq(sector);
     }
 
-    private BooleanExpression applyCursor(Cursor<?> cursor) {
+    private BooleanExpression cursorWhereClause(ArticleCursor cursor, ArticleSortType sortType,
+                                                SearchKeyword searchKeyword) {
         if (cursor == null) {
             return null;
         }
-        return cursor.getCursorExpression();
+
+        return CursorExpressionMapper.toWhereClause(cursor, sortType, searchKeyword);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
             return null;
         }
-        return Expressions.numberTemplate(
-                        Double.class,
-                        ArticleFullTextSearchHQLFunction.EXPRESSION_TEMPLATE,
-                        formatSearchKeyword(searchKeyword)
-                )
+        return ArticleFullTextSearchHQLFunction
+                .scoreReference(searchKeyword)
                 .gt(MINIMUM_MATCH_SCORE);
     }
 
-    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy) {
-        if (sortBy == ArticleSortType.CLICKS) {
+    private OrderSpecifier<?>[] toOrderBy(ArticleSortType sortBy, SearchKeyword searchKeyword) {
+        if (ArticleSortType.RELEVANCE == sortBy && searchKeyword != null && searchKeyword.hasValue()) {
+            NumberTemplate<Double> score = ArticleFullTextSearchHQLFunction.scoreReference(searchKeyword);
+            return new OrderSpecifier<?>[]{score.desc(), article.id.desc()};
+        }
+        if (ArticleSortType.CLICKS == sortBy) {
             return new OrderSpecifier<?>[]{article.clicks.desc(), article.id.desc()};
         }
-
-        return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
-    }
-
-    private String formatSearchKeyword(SearchKeyword searchKeyword) {
-        String search = searchKeyword.replaceSpecialCharacters(BLANK);
-        return Arrays.stream(search.split(BLANK))
-                .map(this::applyBooleanModeExpression)
-                .collect(Collectors.joining(BLANK));
-    }
-
-    private String applyBooleanModeExpression(String keyword) {
-        if (keyword.length() == 1) {
-            return String.format("%s*", keyword);
+        if (ArticleSortType.CREATED_AT == sortBy) {
+            return new OrderSpecifier<?>[]{article.createdAt.desc(), article.id.desc()};
         }
-        return String.format("+%s*", keyword.toLowerCase());
+
+        return new OrderSpecifier[]{};
     }
 }

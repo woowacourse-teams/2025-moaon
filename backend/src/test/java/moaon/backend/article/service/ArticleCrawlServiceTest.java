@@ -3,7 +3,7 @@ package moaon.backend.article.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import moaon.backend.article.dto.ArticleCrawlResult;
-import moaon.backend.article.repository.ArticleContentRepository;
+import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

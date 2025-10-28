@@ -9,6 +9,7 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.repository.db.CustomizedArticleRepositoryImpl;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;

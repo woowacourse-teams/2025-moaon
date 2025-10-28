@@ -11,7 +11,7 @@ import moaon.backend.article.dto.ArticleCrawlResult;
 import moaon.backend.article.dto.FinderCrawlResult;
 import moaon.backend.article.exception.AiNoCostException;
 import moaon.backend.article.exception.AiSummaryFailedException;
-import moaon.backend.article.repository.ArticleContentRepository;
+import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.global.parser.URLParser;
 import moaon.backend.member.domain.Member;
 import org.springframework.stereotype.Service;

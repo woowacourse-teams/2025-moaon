@@ -23,6 +23,7 @@ public class ArticleFixtureBuilder {
     private List<Topic> topics;
     private List<TechStack> techStacks;
     private int clicks;
+    private double score;
 
     public ArticleFixtureBuilder() {
         this.title = Fixture.nameWithSequence("테스트 아티클 제목");
@@ -35,6 +36,7 @@ public class ArticleFixtureBuilder {
         this.topics = new ArrayList<>(List.of(Topic.ETC));
         this.techStacks = new ArrayList<>(List.of(Fixture.anyTechStack()));
         this.clicks = 0;
+        this.score = 0.0;
     }
 
     public ArticleFixtureBuilder id(Long id) {
@@ -97,6 +99,11 @@ public class ArticleFixtureBuilder {
         return this;
     }
 
+    public ArticleFixtureBuilder score(double score) {
+        this.score = score;
+        return this;
+    }
+
     public Article build() {
         Article article = Article.builder()
                 .id(this.id)
@@ -110,6 +117,7 @@ public class ArticleFixtureBuilder {
                 .sector(this.sector)
                 .topics(this.topics)
                 .techStacks(new ArrayList<>())
+                .score(this.score)
                 .build();
 
         for (TechStack techStack : techStacks) {
