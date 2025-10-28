@@ -18,10 +18,10 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 
-class ArticleDocumentRepositoryTest {
+class ArticleDocumentOperationsTest {
 
     private final ElasticsearchOperations ops = mock(ElasticsearchOperations.class);
-    private final ArticleDocumentRepository repository = new ArticleDocumentRepository(ops);
+    private final ArticleDocumentOperations operations = new ArticleDocumentOperations(ops);
 
     @DisplayName("검색 조건을 받아 <articles> 인덱스에 검색 요청을 수행한다.")
     @Test
@@ -30,7 +30,7 @@ class ArticleDocumentRepositoryTest {
         ArticleQueryCondition condition = new ArticleQueryConditionBuilder().sortBy(CREATED_AT).build();
 
         // when
-        repository.search(condition);
+        operations.search(condition);
 
         // then
         verify(ops).search(any(NativeQuery.class), eq(ArticleDocument.class), eq(IndexCoordinates.of("articles")));
@@ -44,7 +44,7 @@ class ArticleDocumentRepositoryTest {
         when(ops.withRefreshPolicy(any(RefreshPolicy.class))).thenReturn(ops);
 
         // when
-        repository.save(doc);
+        operations.save(doc);
 
         // then
         verify(ops).withRefreshPolicy(RefreshPolicy.IMMEDIATE);

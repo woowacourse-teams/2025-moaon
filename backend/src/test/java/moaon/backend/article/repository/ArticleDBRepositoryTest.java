@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
-import moaon.backend.article.repository.db.ArticleRepository;
+import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
@@ -20,10 +20,10 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import({RepositoryHelper.class, QueryDslConfig.class, ArticleDao.class, ProjectDao.class})
-class ArticleRepositoryTest {
+class ArticleDBRepositoryTest {
 
     @Autowired
-    private ArticleRepository repository;
+    private ArticleDBRepository repository;
 
     @Autowired
     private RepositoryHelper repositoryHelper;

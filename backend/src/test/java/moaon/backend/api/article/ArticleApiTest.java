@@ -21,7 +21,7 @@ import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -51,7 +51,7 @@ public class ArticleApiTest extends BaseApiTest {
     protected RepositoryHelper repositoryHelper;
 
     @MockitoBean
-    private ArticleDocumentRepository documentRepository;
+    private ArticleDocumentOperations documentOperations;
 
     @Autowired
     private MemberRepository memberRepository;

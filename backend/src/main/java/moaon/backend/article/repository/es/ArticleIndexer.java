@@ -1,4 +1,4 @@
-package moaon.backend.article.service;
+package moaon.backend.article.repository.es;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -10,25 +10,24 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.repository.db.ArticleRepository;
-import moaon.backend.article.repository.es.ArticleIndexRepository;
+import moaon.backend.article.repository.db.ArticleDBRepository;
 import org.springframework.data.elasticsearch.annotations.Alias;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Service
+@Component
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ArticleIndexer {
 
     private static final Document DOCUMENT_ANNOTATION = ArticleDocument.class.getAnnotation(Document.class);
 
-    private final ArticleRepository entityRepository;
+    private final ArticleDBRepository entityRepository;
     private final ArticleIndexRepository indexRepository;
 
     public void indexAll(int batchSize) {

@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import({RepositoryHelper.class, QueryDslConfig.class, ArticleDao.class, ProjectDao.class})
-class CustomizedArticleRepositoryImplTest {
+class CustomizedArticleDBRepositoryImplTest {
 
     @Autowired
     private CustomizedArticleRepositoryImpl customizedArticleRepository;

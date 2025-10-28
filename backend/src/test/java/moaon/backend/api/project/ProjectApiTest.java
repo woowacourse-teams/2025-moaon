@@ -23,7 +23,7 @@ import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleSectorCount;
 import moaon.backend.article.repository.db.DBArticleSearchResult;
-import moaon.backend.article.service.ElasticSearchService;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -67,7 +67,7 @@ public class ProjectApiTest extends BaseApiTest {
     private OAuthService oAuthService;
 
     @MockitoBean
-    private ElasticSearchService elasticSearchService;
+    private ArticleDocumentRepository articleDocumentRepository;
 
     private String token;
 
@@ -299,7 +299,7 @@ public class ProjectApiTest extends BaseApiTest {
                         .build()
         );
 
-        when(elasticSearchService.searchInProject(eq(targetProject), any(ArticleQueryCondition.class)))
+        when(articleDocumentRepository.searchInProject(eq(targetProject), any(ArticleQueryCondition.class)))
                 .thenReturn(new DBArticleSearchResult(
                         List.of(filteredArticle1, filteredArticle2, filteredArticle3),
                         6, 20, null

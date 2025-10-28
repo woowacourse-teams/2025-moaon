@@ -2,7 +2,7 @@ package moaon.backend.article.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.service.ArticleIndexer;
+import moaon.backend.article.repository.es.ArticleIndexer;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;

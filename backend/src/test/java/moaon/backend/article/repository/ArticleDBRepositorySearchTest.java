@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootTest
 @Import({RepositoryHelper.class, ArticleDao.class})
-public class ArticleRepositorySearchTest {
+public class ArticleDBRepositorySearchTest {
 
     @Autowired
     private CustomizedArticleRepositoryImpl repository;
