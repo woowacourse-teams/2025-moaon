@@ -31,8 +31,8 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
-import moaon.backend.member.service.JwtTokenProvider;
-import moaon.backend.member.service.OAuthService;
+import moaon.backend.member.service.JwtTokenService;
+import moaon.backend.member.service.MemberService;
 import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.PagedProjectResponse;
@@ -58,13 +58,13 @@ public class ProjectApiTest extends BaseApiTest {
     protected RepositoryHelper repositoryHelper;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MemberRepository memberRepository;
 
     @MockitoBean
-    private OAuthService oAuthService;
+    private MemberService memberService;
 
     @MockitoBean
     private ArticleDocumentRepository articleDocumentRepository;
@@ -76,7 +76,7 @@ public class ProjectApiTest extends BaseApiTest {
         Member member = Fixture.anyMember();
         repositoryHelper.save(member);
 
-        token = jwtTokenProvider.createToken(member.getId());
+        token = jwtTokenService.createToken(member.getId());
     }
 
 
@@ -112,7 +112,7 @@ public class ProjectApiTest extends BaseApiTest {
                 .imageKeys(List.of("www.images.com"))
                 .build();
 
-        when(oAuthService.getUserByToken(any())).thenReturn(member);
+        when(memberService.getUserByToken(any())).thenReturn(member);
 
         // when
         ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()

@@ -11,16 +11,16 @@ import javax.crypto.SecretKey;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class JwtTokenProvider {
+@Service
+public class JwtTokenService {
 
     private static final long EXPIRATION_DURATION_IN_MILLISECONDS = 24 * 60 * 60 * 1000L;
 
     private final SecretKey secretKey;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
+    public JwtTokenService(@Value("${jwt.secret}") String secret) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
@@ -51,6 +51,12 @@ public class JwtTokenProvider {
                 .getSubject();
 
         return Long.parseLong(id);
+    }
+
+    public void validateToken(String token) {
+        if (token == null || !isValidToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
+        }
     }
 
     public boolean isValidToken(String token) {

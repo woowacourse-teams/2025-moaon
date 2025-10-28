@@ -5,11 +5,8 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.article.api.crawl.dto.ArticleCrawlResponse;
 import moaon.backend.article.api.crawl.dto.ArticleCrawlResult;
 import moaon.backend.article.api.crawl.service.ArticleCrawlService;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.service.MemberService;
-import moaon.backend.member.service.OAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ArticleCrawlingController {
 
-    private final OAuthService oAuthService;
     private final ArticleCrawlService articleCrawlService;
     private final MemberService memberService;
 
@@ -31,7 +27,7 @@ public class ArticleCrawlingController {
             @CookieValue(value = "token", required = false) String token,
             @RequestParam(value = "url") String url
     ) {
-        Member member = validateAndGetMember(token);
+        Member member = memberService.getUserByToken(token);
 
         ArticleCrawlResult result = articleCrawlService.crawl(url, member);
         articleCrawlService.saveTemporary(url, result);
@@ -46,18 +42,9 @@ public class ArticleCrawlingController {
     public ResponseEntity<Map<String, Integer>> getRemainingTokens(
             @CookieValue(value = "token", required = false) String token
     ) {
-        Member member = validateAndGetMember(token);
+        Member member = memberService.getUserByToken(token);
         return ResponseEntity.ok(
                 Map.of("remainingCount", member.getTodayRemainingTokens())
         );
-    }
-
-    private Member validateAndGetMember(String token) {
-        if (token == null) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
-        }
-
-        oAuthService.validateToken(token);
-        return oAuthService.getUserByToken(token);
     }
 }

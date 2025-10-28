@@ -8,10 +8,8 @@ import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
-import moaon.backend.member.service.OAuthService;
+import moaon.backend.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +26,16 @@ public class ArticleController {
 
     private final TrackingCookieManager cookieManager;
     private final ArticleService articleService;
-    private final OAuthService oAuthService;
+    private final MemberService memberService;
 
     public ArticleController(
             @Qualifier("articleClickCookieManager") TrackingCookieManager cookieManager,
             ArticleService articleService,
-            OAuthService oAuthService
+            MemberService memberService
     ) {
         this.cookieManager = cookieManager;
         this.articleService = articleService;
-        this.oAuthService = oAuthService;
+        this.memberService = memberService;
     }
 
     @PostMapping
@@ -45,11 +43,7 @@ public class ArticleController {
             @CookieValue(value = "token", required = false) String token,
             @RequestBody @Valid List<ArticleCreateRequest> requests
     ) {
-        if (token == null) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
-        }
-        oAuthService.validateToken(token);
-        Member member = oAuthService.getUserByToken(token);
+        Member member = memberService.getUserByToken(token);
         articleService.save(requests, member);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

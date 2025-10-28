@@ -8,7 +8,7 @@ import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
-import moaon.backend.member.service.OAuthService;
+import moaon.backend.member.service.MemberService;
 import moaon.backend.project.domain.Images;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final OAuthService oAuthService;
+    private final MemberService memberService;
     private final TechStackRepository techStackRepository;
     private final CategoryRepository categoryRepository;
 
@@ -72,7 +72,7 @@ public class ProjectService {
 
     @Transactional
     public Long save(String token, ProjectCreateRequest request) {
-        Member member = oAuthService.getUserByToken(token);
+        Member member = memberService.getUserByToken(token);
         Project project = new Project(
                 request.title(),
                 request.summary(),
