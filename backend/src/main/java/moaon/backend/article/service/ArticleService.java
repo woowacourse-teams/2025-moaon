@@ -43,7 +43,7 @@ public class ArticleService {
         try {
             return ArticleResponse.from(elasticSearchService.search(queryCondition));
         } catch (Exception e) {
-            log.warn("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
+            log.error("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
             return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
         }
     }
