@@ -1,4 +1,4 @@
-package moaon.backend.member.dto;
+package moaon.backend.member.login;
 
 public record JwtToken(
         String token

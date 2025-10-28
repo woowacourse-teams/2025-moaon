@@ -1,11 +1,10 @@
-package moaon.backend.member.service;
+package moaon.backend.member.login;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.member.domain.Member;
-import moaon.backend.member.dto.JwtToken;
-import moaon.backend.member.dto.UserInformation;
 import moaon.backend.member.repository.MemberRepository;
+import moaon.backend.member.service.JwtTokenService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,13 +12,13 @@ import org.springframework.stereotype.Service;
 public class GoogleLoginService {
 
     private final MemberRepository memberRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
     private final GoogleOAuthClient client;
 
     public JwtToken login(String code) {
         UserInformation userInformation = client.getUserInformation(code);
         Member member = registerIfNewUser(userInformation);
-        return new JwtToken(jwtTokenProvider.createToken(member.getId()));
+        return new JwtToken(jwtTokenService.createToken(member.getId()));
     }
 
     private Member registerIfNewUser(UserInformation userInformation) {

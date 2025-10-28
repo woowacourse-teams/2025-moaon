@@ -1,4 +1,4 @@
-package moaon.backend.member.service;
+package moaon.backend.member.login;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,6 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import moaon.backend.member.dto.UserInformation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
