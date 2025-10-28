@@ -1,0 +1,24 @@
+package moaon.backend.global.elastic;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Component;
+
+@Component
+public class IndexNameResolver {
+
+    private final Map<String, String> indexNameMap = new ConcurrentHashMap<>();
+
+    public void register(String eventType, String indexName) {
+        indexNameMap.put(eventType, indexName);
+        // log.info("인덱스 매핑 등록: {} -> {}", eventType, indexName);
+    }
+
+    public String getIndexName(String eventType) {
+        String indexName = indexNameMap.get(eventType);
+        if (indexName == null) {
+            throw new IllegalArgumentException("Unknown eventType: " + eventType);
+        }
+        return indexName;
+    }
+}
