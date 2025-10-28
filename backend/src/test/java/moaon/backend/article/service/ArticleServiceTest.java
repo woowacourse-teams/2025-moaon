@@ -80,6 +80,34 @@ class ArticleServiceTest {
         verify(articleRepository).findWithSearchConditions(queryCondition);
     }
 
+    @DisplayName("오직 ElasticSearch에서 검색한다.")
+    @Test
+    void getPagedArticlesFromElasticSearch() {
+        // given
+        when(elasticSearchService.search(queryCondition)).thenReturn(mock(ArticleSearchResult.class));
+
+        // when
+        articleService.getPagedArticlesFromElasticSearch(queryCondition);
+
+        // then
+        verify(elasticSearchService).search(queryCondition);
+        verifyNoInteractions(articleRepository);
+    }
+
+    @DisplayName("오직 DB에서 검색한다.")
+    @Test
+    void getPagedArticlesFromDatabase() {
+        // given
+        when(articleRepository.findWithSearchConditions(queryCondition)).thenReturn(mock(ArticleSearchResult.class));
+
+        // when
+        articleService.getPagedArticlesFromDatabase(queryCondition);
+
+        // then
+        verify(articleRepository).findWithSearchConditions(queryCondition);
+        verifyNoInteractions(elasticSearchService);
+    }
+
     @DisplayName("프로젝트 ID로 검색 시 ES에서 해당 프로젝트로 한정지어서 검색한다.")
     @Test
     void getByProjectId_success() {

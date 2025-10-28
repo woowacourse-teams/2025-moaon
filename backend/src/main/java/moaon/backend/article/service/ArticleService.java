@@ -48,6 +48,14 @@ public class ArticleService {
         }
     }
 
+    public ArticleResponse getPagedArticlesFromElasticSearch(ArticleQueryCondition queryCondition) {
+        return ArticleResponse.from(elasticSearchService.search(queryCondition));
+    }
+
+    public ArticleResponse getPagedArticlesFromDatabase(ArticleQueryCondition queryCondition) {
+        return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
+    }
+
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));

@@ -2,6 +2,7 @@ package moaon.backend.article.domain;
 
 import java.time.LocalDateTime;
 import java.util.function.Function;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -11,6 +12,7 @@ import moaon.backend.global.parser.LocalDateTimeParser;
 import moaon.backend.global.parser.LongParser;
 
 @Getter
+@EqualsAndHashCode
 public class ArticleCursor {
 
     private final Object sortValue;
