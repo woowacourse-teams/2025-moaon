@@ -1,5 +1,7 @@
 package moaon.backend.article.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,9 @@ import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleContentRepository;
 import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventAction;
+import moaon.backend.event.repository.EsEventOutboxRepository;
 import moaon.backend.global.cursor.Cursor;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -41,6 +46,8 @@ public class ArticleService {
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
+    private final EsEventOutboxRepository outboxRepository;
+    private final ObjectMapper objectMapper;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         Articles articles = articleRepository.findWithSearchConditions(queryCondition);
@@ -91,6 +98,14 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
         article.addClickCount();
+
+        EsEventOutbox outboxEvent = EsEventOutbox.builder()
+                .entityId(article.getId())
+                .eventType(Article.class.getSimpleName())
+                .action(EventAction.UPDATED)
+                .payload(convertToJson(new ArticleDocument(article)))
+                .build();
+        outboxRepository.save(outboxEvent);
     }
 
     @Transactional
@@ -126,7 +141,21 @@ public class ArticleService {
             );
 
             articleRepository.save(article);
-            articleDocumentRepository.save(new ArticleDocument(article));
+            EsEventOutbox outboxEvent = EsEventOutbox.builder()
+                    .entityId(article.getId())
+                    .eventType(Article.class.getSimpleName())
+                    .action(EventAction.INSERT)
+                    .payload(convertToJson(new ArticleDocument(article)))
+                    .build();
+
+            outboxRepository.save(outboxEvent);
+        }
+    }
+    private String convertToJson(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ErrorCode.ARTICLE_PROCESSING_FAILED);
         }
     }
 }
