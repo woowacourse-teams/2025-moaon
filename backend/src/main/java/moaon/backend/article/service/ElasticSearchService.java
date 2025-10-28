@@ -33,15 +33,8 @@ public class ElasticSearchService {
         return wrapSearchHits(condition, searchHits);
     }
 
-    private ArticleSearchResult wrapSearchHits(
-            ArticleQueryCondition condition,
-            SearchHits<ArticleDocument> searchHits
-    ) {
-        return new ESArticleSearchResult(
-                searchHits,
-                getOriginArticles(searchHits),
-                condition.limit()
-        );
+    public ArticleDocument save(ArticleDocument articleDocument) {
+        return elasticSearch.save(articleDocument);
     }
 
     private List<Article> getOriginArticles(SearchHits<ArticleDocument> searchHits) {
@@ -56,7 +49,14 @@ public class ElasticSearchService {
                 .toList();
     }
 
-    public ArticleDocument save(ArticleDocument articleDocument) {
-        return elasticSearch.save(articleDocument);
+    private ArticleSearchResult wrapSearchHits(
+            ArticleQueryCondition condition,
+            SearchHits<ArticleDocument> searchHits
+    ) {
+        return new ESArticleSearchResult(
+                searchHits,
+                getOriginArticles(searchHits),
+                condition.limit()
+        );
     }
 }
