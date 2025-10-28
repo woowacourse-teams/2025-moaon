@@ -1,9 +1,8 @@
-package moaon.backend.article.service;
+package moaon.backend.article.api.crawl.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import moaon.backend.article.api.crawl.dto.ArticleCrawlResult;
-import moaon.backend.article.api.crawl.service.ArticleCrawlService;
 import moaon.backend.article.api.crawl.service.client.AiSummaryClient;
 import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.member.domain.Member;

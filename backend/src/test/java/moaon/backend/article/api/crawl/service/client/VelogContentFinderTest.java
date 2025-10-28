@@ -1,4 +1,4 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.api.crawl.service.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.net.MalformedURLException;
 import java.net.URL;
 import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
-import moaon.backend.article.api.crawl.service.client.VelogContentFinder;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;

@@ -1,12 +1,14 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.repository.db;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCursor;
+import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.repository.ArticleSearchResult;
-import moaon.backend.article.repository.db.DBArticleSearchResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

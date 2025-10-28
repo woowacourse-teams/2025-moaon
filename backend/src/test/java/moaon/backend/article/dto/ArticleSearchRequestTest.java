@@ -1,4 +1,4 @@
-package moaon.backend.article.controller;
+package moaon.backend.article.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,6 @@ import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.dto.ArticleSearchRequest;
 import moaon.backend.global.domain.SearchKeyword;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

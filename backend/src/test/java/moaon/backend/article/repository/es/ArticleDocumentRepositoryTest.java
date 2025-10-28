@@ -1,4 +1,4 @@
-package moaon.backend.article.service;
+package moaon.backend.article.repository.es;
 
 import static moaon.backend.article.domain.ArticleSortType.CREATED_AT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,9 +11,6 @@ import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleDBRepository;
-import moaon.backend.article.repository.es.ArticleDocumentOperations;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
-import moaon.backend.article.repository.es.ESArticleSearchResult;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.project.domain.Project;
