@@ -1,10 +1,10 @@
-package moaon.backend.article.controller;
+package moaon.backend.article.api.crawl.controller;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.ArticleCrawlResponse;
-import moaon.backend.article.dto.ArticleCrawlResult;
-import moaon.backend.article.service.ArticleCrawlService;
+import moaon.backend.article.api.crawl.dto.ArticleCrawlResponse;
+import moaon.backend.article.api.crawl.dto.ArticleCrawlResult;
+import moaon.backend.article.api.crawl.service.ArticleCrawlService;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;

@@ -1,16 +1,17 @@
-package moaon.backend.article.service;
+package moaon.backend.article.api.crawl.service;
 
 import java.net.URL;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaon.backend.article.api.crawl.dto.ArticleCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.exception.AiNoCostException;
+import moaon.backend.article.api.crawl.exception.AiSummaryFailedException;
+import moaon.backend.article.api.crawl.service.client.AiSummaryClient;
+import moaon.backend.article.api.crawl.service.client.ContentFinder;
+import moaon.backend.article.api.crawl.service.client.ContentFinders;
 import moaon.backend.article.domain.ArticleContent;
-import moaon.backend.article.domain.ContentFinder;
-import moaon.backend.article.domain.ContentFinders;
-import moaon.backend.article.dto.ArticleCrawlResult;
-import moaon.backend.article.dto.FinderCrawlResult;
-import moaon.backend.article.exception.AiNoCostException;
-import moaon.backend.article.exception.AiSummaryFailedException;
 import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.global.parser.URLParser;
 import moaon.backend.member.domain.Member;

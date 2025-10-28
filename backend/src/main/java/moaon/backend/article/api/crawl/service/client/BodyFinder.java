@@ -1,8 +1,8 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.api.crawl.service.client;
 
 import java.io.IOException;
 import java.net.URL;
-import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.jsoup.Connection.Response;

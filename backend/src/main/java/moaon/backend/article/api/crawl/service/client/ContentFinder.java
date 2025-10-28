@@ -1,7 +1,7 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.api.crawl.service.client;
 
 import java.net.URL;
-import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 
 public abstract class ContentFinder {
 

@@ -1,4 +1,4 @@
-package moaon.backend.s3;
+package moaon.backend.article.api.s3;
 
 public record S3UrlResponse(
         String preSignedUrl,

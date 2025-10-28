@@ -1,4 +1,4 @@
-package moaon.backend.article.dto;
+package moaon.backend.article.api.crawl.dto;
 
 public record ArticleCrawlResult(
         String title,

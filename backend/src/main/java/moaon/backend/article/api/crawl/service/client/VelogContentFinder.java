@@ -1,4 +1,4 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.api.crawl.service.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 

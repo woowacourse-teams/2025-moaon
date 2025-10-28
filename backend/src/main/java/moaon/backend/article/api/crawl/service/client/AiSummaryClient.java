@@ -1,4 +1,4 @@
-package moaon.backend.article.service;
+package moaon.backend.article.api.crawl.service.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaon.backend.article.dto.ArticleCrawlResult;
-import moaon.backend.article.dto.FinderCrawlResult;
-import moaon.backend.article.exception.AiNoCostException;
-import moaon.backend.article.exception.AiSummaryFailedException;
+import moaon.backend.article.api.crawl.dto.ArticleCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.exception.AiNoCostException;
+import moaon.backend.article.api.crawl.exception.AiSummaryFailedException;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;

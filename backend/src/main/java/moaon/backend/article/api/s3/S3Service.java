@@ -1,4 +1,4 @@
-package moaon.backend.s3;
+package moaon.backend.article.api.s3;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;

@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.service.client.TistoryContentFinder;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import org.junit.jupiter.api.DisplayName;

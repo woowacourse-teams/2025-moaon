@@ -1,4 +1,4 @@
-package moaon.backend.article.exception;
+package moaon.backend.article.api.crawl.exception;
 
 import lombok.Getter;
 

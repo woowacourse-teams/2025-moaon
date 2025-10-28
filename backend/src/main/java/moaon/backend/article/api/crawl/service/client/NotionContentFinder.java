@@ -1,4 +1,4 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.api.crawl.service.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.article.dto.FinderCrawlResult;
+import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 

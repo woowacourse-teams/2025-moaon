@@ -1,4 +1,4 @@
-package moaon.backend.article.domain;
+package moaon.backend.article.api.crawl.service.client;
 
 import java.net.URL;
 import java.util.List;
