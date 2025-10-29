@@ -44,12 +44,11 @@ public class EsEventPoller {
         }
 
         List<PreparedEvent> preparedEvents = new ArrayList<>();
-        List<EsEventOutbox> invalidEvents = new ArrayList<>();
+        List<EsEventOutbox> esFailedEvents = new ArrayList<>();
 
-        validateAndSeparateEvents(events, preparedEvents, invalidEvents);
+        validateAndSeparateEvents(events, preparedEvents, esFailedEvents);
 
         List<EsEventOutbox> successfulEvents = new ArrayList<>();
-        List<EsEventOutbox> esFailedEvents = new ArrayList<>();
 
         try {
             if (!preparedEvents.isEmpty()) {
@@ -68,13 +67,13 @@ public class EsEventPoller {
             );
         }
 
-        updateEventsState(successfulEvents, invalidEvents, esFailedEvents);
+        updateEventsState(successfulEvents, esFailedEvents);
     }
 
     private void validateAndSeparateEvents(
             List<EsEventOutbox> events,
             List<PreparedEvent> preparedEvents,
-            List<EsEventOutbox> invalidEvents
+            List<EsEventOutbox> esFailedEvents
     ) {
         for (EsEventOutbox event : events) {
             try {
@@ -82,7 +81,7 @@ public class EsEventPoller {
                 preparedEvents.add(prepared);
             } catch (JsonProcessingException | IllegalArgumentException e) {
                 log.warn("ES 색인 과정 중 실패 (EventID: {}). 이 이벤트는 격리됩니다.", event.getId());
-                invalidEvents.add(event);
+                esFailedEvents.add(event);
             }
         }
     }
@@ -124,14 +123,10 @@ public class EsEventPoller {
 
     private void updateEventsState(
             List<EsEventOutbox> successfulEvents,
-            List<EsEventOutbox> invalidEvents,
             List<EsEventOutbox> esFailedEvents
     ) {
-        List<EsEventOutbox> allFailedEvents = new ArrayList<>(invalidEvents);
-        allFailedEvents.addAll(esFailedEvents);
-
         processSuccessfulEvents(successfulEvents);
-        processFailedEvents(allFailedEvents);
+        processFailedEvents(esFailedEvents);
     }
 
     private void processSuccessfulEvents(List<EsEventOutbox> successfulEvents) {
