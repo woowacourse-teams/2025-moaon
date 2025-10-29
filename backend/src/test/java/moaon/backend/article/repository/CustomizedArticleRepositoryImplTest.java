@@ -7,11 +7,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.repository.db.CustomizedArticleRepositoryImpl;
+import moaon.backend.article.repository.db.DBArticleSearchResult;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
@@ -19,8 +21,6 @@ import moaon.backend.fixture.ProjectArticleQueryConditionFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
-import moaon.backend.global.cursor.ClickArticleCursor;
-import moaon.backend.global.cursor.CreatedAtArticleCursor;
 import moaon.backend.project.dao.ProjectDao;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
@@ -226,7 +226,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -264,7 +264,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -302,7 +302,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -351,7 +351,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(
@@ -399,7 +399,7 @@ class CustomizedArticleRepositoryImplTest {
 
             ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .sortBy(ArticleSortType.CREATED_AT)
-                    .cursor(new CreatedAtArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
+                    .cursor(new ArticleCursor(LocalDateTime.of(2024, 7, 31, 10, 0), 1L))
                     .build();
 
             // when
@@ -445,7 +445,7 @@ class CustomizedArticleRepositoryImplTest {
 
             ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
                     .sortBy(ArticleSortType.CLICKS)
-                    .cursor(new ClickArticleCursor(4, 4L))
+                    .cursor(new ArticleCursor(4, 4L))
                     .build();
 
             // when
@@ -454,32 +454,6 @@ class CustomizedArticleRepositoryImplTest {
 
             // then
             assertThat(articles).containsExactly(highClicks, middleClicks, lowClicks);
-        }
-
-        @DisplayName("마지막 페이지가 아닐 시 limit + 1개 만큼 가져온다.")
-        @Test
-        void findArticlesForLimitPlusOne() {
-            // given
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-            repositoryHelper.save(new ArticleFixtureBuilder().build());
-
-            ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder()
-                    .limit(4)
-                    .build();
-
-            // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
-
-            // then
-            assertAll(
-                    () -> assertThat(articles.getLimit()).isEqualTo(4),
-                    () -> assertThat(articles.getArticles()).hasSize(5),
-                    () -> assertThat(articles.hasNext()).isTrue()
-            );
         }
 
         @DisplayName("마지막 페이지 도달하면 limit 개수 이하로 가져온다.")
@@ -498,7 +472,7 @@ class CustomizedArticleRepositoryImplTest {
                     .build();
 
             // when
-            Articles articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
+            DBArticleSearchResult articles = customizedArticleRepository.findWithSearchConditions(queryCondition);
 
             // then
             assertAll(

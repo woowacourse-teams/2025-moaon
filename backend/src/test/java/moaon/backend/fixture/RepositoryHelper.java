@@ -1,7 +1,7 @@
 package moaon.backend.fixture;
 
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.project.domain.Category;

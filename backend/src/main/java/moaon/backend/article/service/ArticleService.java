@@ -5,26 +5,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
 import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.domain.ArticleSortType;
-import moaon.backend.article.domain.Articles;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
-import moaon.backend.article.dto.ArticleESQuery;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.ArticleContentRepository;
-import moaon.backend.article.repository.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.event.domain.EsEventOutbox;
 import moaon.backend.event.domain.EventAction;
 import moaon.backend.event.repository.EsEventOutboxRepository;
 import moaon.backend.global.cursor.Cursor;
+import moaon.backend.article.repository.ArticleSearchResult;
+import moaon.backend.article.repository.db.ArticleContentRepository;
+import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
@@ -36,12 +34,13 @@ import moaon.backend.techStack.repository.TechStackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleDocumentRepository articleDocumentRepository;
+    private final ElasticSearchService elasticSearchService;
     private final ArticleRepository articleRepository;
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
@@ -50,47 +49,31 @@ public class ArticleService {
     private final ObjectMapper objectMapper;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
-        Articles articles = articleRepository.findWithSearchConditions(queryCondition);
+        try {
+            return ArticleResponse.from(elasticSearchService.search(queryCondition));
+        } catch (Exception e) {
+            log.error("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
+            return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
+        }
+    }
 
-        List<Article> articlesToReturn = articles.getArticlesToReturn();
-        long totalCount = articles.getTotalCount();
-        boolean hasNext = articles.hasNext();
-        Cursor<?> nextCursor = articles.getNextCursor();
+    public ArticleResponse getPagedArticlesFromElasticSearch(ArticleQueryCondition queryCondition) {
+        return ArticleResponse.from(elasticSearchService.search(queryCondition));
+    }
 
-        return ArticleResponse.from(articlesToReturn, totalCount, hasNext, nextCursor);
+    public ArticleResponse getPagedArticlesFromDatabase(ArticleQueryCondition queryCondition) {
+        return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
-        List<Article> allArticlesInProject = project.getArticles();
-        List<Long> retrievedIds = retrieveInGivenArticles(allArticlesInProject, condition);
-        List<Article> filteredArticles = allArticlesInProject.stream().filter(a -> retrievedIds.contains(a.getId()))
-                .toList();
+        ArticleQueryCondition articleCondition = condition.toArticleCondition();
+        ArticleSearchResult filteredArticles = elasticSearchService.searchInProject(project, articleCondition);
 
-        Map<Sector, Long> articleCountBySector = allArticlesInProject.stream()
-                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
-        for (Sector sector : Sector.values()) {
-            articleCountBySector.computeIfAbsent(sector, k -> 0L);
-        }
-        return ProjectArticleResponse.of(filteredArticles, articleCountBySector);
-    }
-
-    private List<Long> retrieveInGivenArticles(List<Article> allArticlesInProject,
-                                               ProjectArticleQueryCondition condition) {
-        ArticleESQuery esQuery = ArticleESQuery.builder()
-                .search(condition.search())
-                .sector(condition.sector())
-                .sortBy(ArticleSortType.CREATED_AT)
-                .limit(999)
-                .build();
-
-        List<Long> allArticleIds = allArticlesInProject.stream().map(Article::getId).toList();
-        return articleDocumentRepository.searchInIds(allArticleIds, esQuery)
-                .stream()
-                .map(ArticleDocument::getId)
-                .toList();
+        Map<Sector, Long> articleCountBySector = project.countArticlesGroupBySector();
+        return ProjectArticleResponse.of(filteredArticles.getArticles(), articleCountBySector);
     }
 
     @Transactional

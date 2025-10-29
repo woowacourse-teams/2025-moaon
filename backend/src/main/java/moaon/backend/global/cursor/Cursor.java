@@ -2,7 +2,7 @@ package moaon.backend.global.cursor;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-public interface Cursor<T extends Comparable<? super T>> {
+public interface Cursor<T> {
 
     T getSortValue();
 
