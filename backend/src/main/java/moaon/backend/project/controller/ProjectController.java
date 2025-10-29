@@ -8,9 +8,7 @@ import java.util.List;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.global.cookie.AccessHistory;
 import moaon.backend.global.cookie.TrackingCookieManager;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
-import moaon.backend.member.service.OAuthService;
+import moaon.backend.member.service.MemberService;
 import moaon.backend.project.dto.PagedProjectResponse;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.dto.ProjectArticleResponse;
@@ -39,18 +37,16 @@ public class ProjectController {
     private final TrackingCookieManager cookieManager;
     private final ProjectService projectService;
     private final ArticleService articleService;
-    private final OAuthService oAuthService;
 
     public ProjectController(
             @Qualifier("projectViewCookieManager") TrackingCookieManager cookieManager,
             ProjectService projectService,
             ArticleService articleService,
-            OAuthService oAuthService
+            MemberService memberService
     ) {
         this.cookieManager = cookieManager;
         this.projectService = projectService;
         this.articleService = articleService;
-        this.oAuthService = oAuthService;
     }
 
     @PostMapping
@@ -58,11 +54,6 @@ public class ProjectController {
             @CookieValue(value = "token", required = false) String token,
             @RequestBody @Valid ProjectCreateRequest projectCreateRequest
     ) {
-        if (token == null) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER);
-        }
-        oAuthService.validateToken(token);
-
         Long savedId = projectService.save(token, projectCreateRequest);
         ProjectCreateResponse response = ProjectCreateResponse.from(savedId);
 

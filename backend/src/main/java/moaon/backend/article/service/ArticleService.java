@@ -7,15 +7,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
-import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
+import moaon.backend.article.repository.ArticleRepositoryFacade;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleContentRepository;
-import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
@@ -33,43 +32,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ElasticSearchService elasticSearchService;
-    private final ArticleRepository articleRepository;
+    private final ArticleRepositoryFacade articleRepositoryFacade;
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
-        try {
-            return ArticleResponse.from(elasticSearchService.search(queryCondition));
-        } catch (Exception e) {
-            log.error("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
-            return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
-        }
-    }
-
-    public ArticleResponse getPagedArticlesFromElasticSearch(ArticleQueryCondition queryCondition) {
-        return ArticleResponse.from(elasticSearchService.search(queryCondition));
-    }
-
-    public ArticleResponse getPagedArticlesFromDatabase(ArticleQueryCondition queryCondition) {
-        return ArticleResponse.from(articleRepository.findWithSearchConditions(queryCondition));
+        ArticleSearchResult result = articleRepositoryFacade.search(queryCondition);
+        return ArticleResponse.from(result);
     }
 
     public ProjectArticleResponse getByProjectId(long id, ProjectArticleQueryCondition condition) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
-        ArticleQueryCondition articleCondition = condition.toArticleCondition();
-        ArticleSearchResult filteredArticles = elasticSearchService.searchInProject(project, articleCondition);
-
+        ArticleSearchResult filteredArticles = articleRepositoryFacade.searchInProject(project, condition);
         Map<Sector, Long> articleCountBySector = project.countArticlesGroupBySector();
         return ProjectArticleResponse.of(filteredArticles.getArticles(), articleCountBySector);
     }
 
     @Transactional
     public void increaseClicksCount(long id) {
-        Article article = articleRepository.findById(id)
+        Article article = articleRepositoryFacade.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
         article.addClickCount();
     }
@@ -106,8 +90,7 @@ public class ArticleService {
                             .toList()
             );
 
-            articleRepository.save(article);
-            elasticSearchService.save(new ArticleDocument(article));
+            articleRepositoryFacade.save(article);
         }
     }
 }

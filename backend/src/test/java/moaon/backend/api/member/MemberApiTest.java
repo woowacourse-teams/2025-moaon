@@ -14,7 +14,7 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.dto.LoginStatusResponse;
-import moaon.backend.member.service.JwtTokenProvider;
+import moaon.backend.member.service.JwtTokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class MemberApiTest extends BaseApiTest {
     private RepositoryHelper helper;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenService jwtTokenService;
 
     @DisplayName("GET /auth/me: 로그인 상태 확인 API")
     @Test
@@ -38,7 +38,7 @@ public class MemberApiTest extends BaseApiTest {
         Member member = Fixture.anyMember();
         Member savedMember = helper.save(member);
 
-        String token = jwtTokenProvider.createToken(member.getId());
+        String token = jwtTokenService.createToken(member.getId());
 
         // when - then
         LoginStatusResponse statusResponse = RestAssured.given(documentationSpecification).log().all()
