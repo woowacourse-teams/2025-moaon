@@ -11,6 +11,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
@@ -21,6 +23,9 @@ import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.article.repository.db.ArticleRepository;
+import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -44,9 +49,12 @@ class ArticleServiceTest {
     private final ArticleContentRepository articleContentRepository = Mockito.mock(ArticleContentRepository.class);
     private final ProjectRepository projectRepository = Mockito.mock(ProjectRepository.class);
     private final TechStackRepository techStackRepository = Mockito.mock(TechStackRepository.class);
+    private final EsEventOutboxRepository outboxRepository = Mockito.mock(EsEventOutboxRepository.class);
+    private final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
 
     private final ArticleService articleService = new ArticleService(
-            elasticSearchService, articleRepository, articleContentRepository, projectRepository, techStackRepository
+            elasticSearchService, articleRepository, articleContentRepository, projectRepository, techStackRepository,
+            outboxRepository, objectMapper
     );
 
     private final ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder().sortBy(CREATED_AT).build();
@@ -139,7 +147,11 @@ class ArticleServiceTest {
     @DisplayName("클릭 수를 증가시킨다.")
     @Test
     void increaseClicksCount_success() {
-        Article article = Article.builder().id(123L).clicks(5).build();
+        Article article = new ArticleFixtureBuilder()
+                .id(123L)
+                .clicks(5)
+                .build();
+
         when(articleRepository.findById(123L)).thenReturn(Optional.of(article));
 
         articleService.increaseClicksCount(123L);
@@ -179,7 +191,8 @@ class ArticleServiceTest {
 
         // then
         verify(articleRepository, times(3)).save(any(Article.class));
-        verify(elasticSearchService, times(3)).save(any(ArticleDocument.class));
+        verify(outboxRepository, times(3)).save(any(EsEventOutbox.class))
+        ;
     }
 
     @DisplayName("아티클 저장 시 로그인한 멤버가 프로젝트의 작성자가 아니면 예외 발생")
