@@ -32,6 +32,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.techStack.domain.ProjectTechStack;
 import moaon.backend.techStack.domain.TechStack;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -78,8 +79,10 @@ public class Project extends BaseTimeEntity {
     private Member author;
 
     @ManyToMany
+    @BatchSize(size = 100)
     private List<Member> lovedMembers = new ArrayList<>();
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTechStack> techStacks = new ArrayList<>();
 
