@@ -11,13 +11,12 @@ public class IndexNameResolver {
 
     public void register(String eventType, String indexName) {
         indexNameMap.put(eventType, indexName);
-        // log.info("인덱스 매핑 등록: {} -> {}", eventType, indexName);
     }
 
     public String getIndexName(String eventType) {
         String indexName = indexNameMap.get(eventType);
         if (indexName == null) {
-            throw new IllegalArgumentException("Unknown eventType: " + eventType);
+            throw new IllegalArgumentException();
         }
         return indexName;
     }

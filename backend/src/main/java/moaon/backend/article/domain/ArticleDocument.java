@@ -3,6 +3,7 @@ package moaon.backend.article.domain;
 import static java.util.stream.Collectors.toSet;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,7 +90,7 @@ public class ArticleDocument {
         this.topics = new HashSet<>(article.getTopics());
         this.techStacks = setTechStacks(article.getTechStacks());
         this.clicks = article.getClicks();
-        this.createdAt = article.getCreatedAt();
+        this.createdAt = article.getCreatedAt().truncatedTo(ChronoUnit.MILLIS);
     }
 
     private Set<String> setTechStacks(List<TechStack> techStacks) {
