@@ -12,12 +12,13 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleCreateRequest;
-import moaon.backend.article.dto.ArticleESQuery;
-import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.event.EsEventPoller;
 import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;
@@ -123,13 +124,11 @@ class OutboxIntegrationTest {
                 .untilAsserted(() -> {
                     ops.indexOps(ArticleDocument.class).refresh();
                     ArticleDocument esDocument = articleDocumentRepository.searchInIds(
-                            List.of(
-                                    savedArticle.getId()),
-                            ArticleESQuery.builder()
+                            List.of(savedArticle.getId()),
+                            new ArticleQueryConditionBuilder()
                                     .sortBy(ArticleSortType.CREATED_AT)
                                     .build()
-                    ).getFirst();
-
+                    ).getSearchHits().get(0).getContent();
                     assertThat(esDocument.getTitle()).isEqualTo("테스트 제목");
                     assertThat(esDocument.getSummary()).isEqualTo("테스트 요약");
                     assertThat(esDocument.getTechStacks()).containsExactlyInAnyOrder(techStack.getName());
