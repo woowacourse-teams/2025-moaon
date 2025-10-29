@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.Sector;
+import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.fixture.RepositoryHelper;

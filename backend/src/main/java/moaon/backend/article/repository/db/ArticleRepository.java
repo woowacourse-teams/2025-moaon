@@ -1,4 +1,4 @@
-package moaon.backend.article.repository;
+package moaon.backend.article.repository.db;
 
 import java.util.stream.Stream;
 import moaon.backend.article.domain.Article;
