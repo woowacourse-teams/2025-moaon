@@ -67,4 +67,8 @@ public class EsEventOutbox {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isUpsert(){
+        return action == EventAction.INSERT || action == EventAction.UPDATED;
+    }
 }

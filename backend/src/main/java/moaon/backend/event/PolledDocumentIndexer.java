@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ElasticSearchProcessor {
+public class PolledDocumentIndexer {
 
     private final ElasticsearchClient esClient;
 
@@ -25,11 +25,10 @@ public class ElasticSearchProcessor {
         BulkRequest.Builder br = new BulkRequest.Builder();
         for (PreparedEvent preparedEvent : preparedEvents) {
             EsEventOutbox event = preparedEvent.event();
-            if (event.getAction() == EventAction.DELETED) {
-                appendDeleteOperation(event, br, preparedEvent.indexName());
-            }
-            if (event.getAction() == EventAction.INSERT || event.getAction() == EventAction.UPDATED) {
+            if (event.isUpsert()) {
                 appendUpsertOperation(event, br, preparedEvent.indexName(), preparedEvent.payload());
+            } else {
+                appendDeleteOperation(event, br, preparedEvent.indexName());
             }
         }
 

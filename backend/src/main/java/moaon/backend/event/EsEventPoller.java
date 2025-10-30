@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 public class EsEventPoller {
 
     private final EsEventOutboxRepository outboxRepository;
-    private final ElasticSearchProcessor elasticSearchProcessor;
+    private final PolledDocumentIndexer polledDocumentIndexer;
     private final ObjectMapper objectMapper;
     private final IndexNameResolver indexNameResolver;
 
@@ -52,7 +52,7 @@ public class EsEventPoller {
 
         try {
             if (!preparedEvents.isEmpty()) {
-                BulkResponse esResponse = elasticSearchProcessor.processEvents(preparedEvents);
+                BulkResponse esResponse = polledDocumentIndexer.processEvents(preparedEvents);
                 processBulkResponse(esResponse, preparedEvents, successfulEvents, esFailedEvents);
             }
         } catch (IOException e) {
