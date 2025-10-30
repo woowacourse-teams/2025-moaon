@@ -12,8 +12,6 @@ import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.event.domain.EsEventOutbox;
 import moaon.backend.event.domain.EventAction;
 import moaon.backend.event.repository.EsEventOutboxRepository;
-import moaon.backend.global.exception.custom.CustomException;
-import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;

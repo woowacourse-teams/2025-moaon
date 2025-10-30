@@ -1,6 +1,5 @@
 package moaon.backend.article.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,18 +8,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleContent;
-import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepositoryFacade;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
-import moaon.backend.event.domain.EsEventOutbox;
-import moaon.backend.event.domain.EventAction;
 import moaon.backend.event.repository.EsEventOutboxRepository;
-import moaon.backend.global.cursor.Cursor;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.global.exception.custom.CustomException;

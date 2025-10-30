@@ -1,7 +1,6 @@
 package moaon.backend.article.domain;
 
 import static java.util.stream.Collectors.toSet;
-import static moaon.backend.article.domain.QArticle.article;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
