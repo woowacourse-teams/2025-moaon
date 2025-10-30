@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import moaon.backend.event.domain.EventStatus;
 import moaon.backend.global.exception.custom.CustomException;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -31,7 +32,8 @@ public class EsEventPoller {
     @Scheduled(fixedDelay = 2000)
     @Transactional
     public void pollAndProcessEvents() {
-        List<EsEventOutbox> events = outboxRepository.findPendingEvents(BATCH_SIZE);
+        List<EsEventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING, BATCH_SIZE);
+
         if (events.isEmpty()) {
             return;
         }

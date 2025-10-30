@@ -15,10 +15,10 @@ public class EsEventOutboxRepositoryImpl implements EsEventOutboxRepositoryCusto
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<EsEventOutbox> findPendingEvents(int batchSize) {
+    public List<EsEventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
         return queryFactory
                 .selectFrom(esEventOutbox)
-                .where(esEventOutbox.status.eq(EventStatus.PENDING))
+                .where(esEventOutbox.status.eq(status))
                 .orderBy(esEventOutbox.createdAt.asc())
                 .limit(batchSize)
                 .fetch();
