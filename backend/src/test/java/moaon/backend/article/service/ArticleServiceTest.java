@@ -1,39 +1,29 @@
 package moaon.backend.article.service;
 
-import static moaon.backend.article.domain.ArticleSortType.CREATED_AT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.domain.ArticleDocument;
-import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.repository.ArticleRepositoryFacade;
 import moaon.backend.article.repository.db.ArticleContentRepository;
-import moaon.backend.article.repository.db.ArticleRepository;
 import moaon.backend.event.domain.EsEventOutbox;
 import moaon.backend.event.repository.EsEventOutboxRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
-import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
-import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.global.parser.URLParser;
 import moaon.backend.member.domain.Member;
-import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import moaon.backend.project.repository.ProjectRepository;
 import moaon.backend.techStack.repository.TechStackRepository;
@@ -44,19 +34,19 @@ import org.mockito.Mockito;
 class ArticleServiceTest {
 
     private final ArticleRepositoryFacade articleRepositoryFacade = Mockito.mock(ArticleRepositoryFacade.class);
-    private final ElasticSearchService elasticSearchService = Mockito.mock(ElasticSearchService.class);
-    private final ArticleRepository articleRepository = Mockito.mock(ArticleRepository.class);
     private final ArticleContentRepository articleContentRepository = Mockito.mock(ArticleContentRepository.class);
     private final ProjectRepository projectRepository = Mockito.mock(ProjectRepository.class);
     private final TechStackRepository techStackRepository = Mockito.mock(TechStackRepository.class);
     private final EsEventOutboxRepository outboxRepository = Mockito.mock(EsEventOutboxRepository.class);
     private final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
-    private final ArticleRepositoryFacade articleRepositoryFacade = Mockito.mock(ArticleRepositoryFacade.class);
 
     private final ArticleService articleService = new ArticleService(
-            articleRepositoryFacade, articleContentRepository, projectRepository, techStackRepository
-            elasticSearchService, articleRepository, articleContentRepository, projectRepository, techStackRepository,
-            outboxRepository, objectMapper
+            articleRepositoryFacade,
+            articleContentRepository,
+            projectRepository,
+            techStackRepository,
+            outboxRepository,
+            objectMapper
     );
 
     @DisplayName("존재하지 않는 프로젝트 ID로 검색하면 예외가 발생한다.")

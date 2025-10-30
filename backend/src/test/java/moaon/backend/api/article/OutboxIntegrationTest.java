@@ -12,8 +12,9 @@ import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.dto.ArticleCreateRequest;
-import moaon.backend.article.dto.ArticleQueryCondition;
-import moaon.backend.article.repository.db.ArticleRepository;
+import moaon.backend.article.repository.ArticleSearchResult;
+import moaon.backend.article.repository.db.ArticleDBRepository;
+import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.event.EsEventPoller;
@@ -66,13 +67,13 @@ class OutboxIntegrationTest {
     private ArticleService articleService;
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleDBRepository articleDBRepository;
 
     @Autowired
     private EsEventOutboxRepository outboxRepository;
 
     @Autowired
-    private ArticleDocumentRepository articleDocumentRepository;
+    private ArticleDocumentOperations articleDocumentRepository;
 
     @Autowired
     private EsEventPoller eventPoller;
@@ -118,7 +119,7 @@ class OutboxIntegrationTest {
         eventPoller.pollAndProcessEvents();
 
         // then
-        Article savedArticle = articleRepository.findAll().get(0);
+        Article savedArticle = articleDBRepository.findAll().get(0);
         await().atMost(Duration.ofSeconds(5))
                 .pollInterval(Duration.ofMillis(500))
                 .untilAsserted(() -> {
