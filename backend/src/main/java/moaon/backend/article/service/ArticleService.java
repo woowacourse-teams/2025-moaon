@@ -1,5 +1,6 @@
 package moaon.backend.article.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleResponse;
 import moaon.backend.article.repository.ArticleRepositoryFacade;
+import moaon.backend.event.repository.EsEventOutboxRepository;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.db.ArticleContentRepository;
 import moaon.backend.global.exception.custom.CustomException;
@@ -36,6 +38,8 @@ public class ArticleService {
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
+    private final EsEventOutboxRepository outboxRepository;
+    private final ObjectMapper objectMapper;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         ArticleSearchResult result = articleRepositoryFacade.search(queryCondition);
@@ -56,6 +60,7 @@ public class ArticleService {
         Article article = articleRepositoryFacade.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
         article.addClickCount();
+        articleRepositoryFacade.updateClicksCount(article);
     }
 
     @Transactional

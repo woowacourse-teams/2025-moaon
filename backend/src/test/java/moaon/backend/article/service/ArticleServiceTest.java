@@ -8,12 +8,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.repository.ArticleRepositoryFacade;
 import moaon.backend.article.repository.db.ArticleContentRepository;
+import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
 import moaon.backend.global.exception.custom.CustomException;
@@ -33,9 +36,16 @@ class ArticleServiceTest {
     private final ArticleContentRepository articleContentRepository = Mockito.mock(ArticleContentRepository.class);
     private final ProjectRepository projectRepository = Mockito.mock(ProjectRepository.class);
     private final TechStackRepository techStackRepository = Mockito.mock(TechStackRepository.class);
+    private final EsEventOutboxRepository outboxRepository = Mockito.mock(EsEventOutboxRepository.class);
+    private final ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
 
     private final ArticleService articleService = new ArticleService(
-            articleRepositoryFacade, articleContentRepository, projectRepository, techStackRepository
+            articleRepositoryFacade,
+            articleContentRepository,
+            projectRepository,
+            techStackRepository,
+            outboxRepository,
+            objectMapper
     );
 
     @DisplayName("존재하지 않는 프로젝트 ID로 검색하면 예외가 발생한다.")
@@ -53,7 +63,12 @@ class ArticleServiceTest {
     @DisplayName("클릭 수를 증가시킨다.")
     @Test
     void increaseClicksCount_success() {
-        Article article = Article.builder().id(123L).clicks(5).build();
+        Article article = new ArticleFixtureBuilder()
+                .id(123L)
+                .clicks(5)
+                .build();
+
+        when(articleRepositoryFacade.findById(123L)).thenReturn(Optional.of(article));
         when(articleRepositoryFacade.findById(123L)).thenReturn(Optional.of(article));
 
         articleService.increaseClicksCount(123L);
