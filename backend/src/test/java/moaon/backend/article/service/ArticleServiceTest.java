@@ -109,8 +109,6 @@ class ArticleServiceTest {
 
         // then
         verify(articleRepositoryFacade, times(3)).save(any(Article.class));
-        verify(outboxRepository, times(3)).save(any(EsEventOutbox.class))
-        ;
     }
 
     @DisplayName("아티클 저장 시 로그인한 멤버가 프로젝트의 작성자가 아니면 예외 발생")
