@@ -66,14 +66,7 @@ public class ArticleService {
         Article article = articleRepositoryFacade.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
         article.addClickCount();
-
-        EsEventOutbox outboxEvent = EsEventOutbox.builder()
-                .entityId(article.getId())
-                .eventType(Article.class.getSimpleName())
-                .action(EventAction.UPDATED)
-                .payload(convertToJson(new ArticleDocument(article)))
-                .build();
-        outboxRepository.save(outboxEvent);
+        articleRepositoryFacade.updateClicksCount(article);
     }
 
     @Transactional
@@ -109,21 +102,6 @@ public class ArticleService {
             );
 
             articleRepositoryFacade.save(article);
-            EsEventOutbox outboxEvent = EsEventOutbox.builder()
-                    .entityId(article.getId())
-                    .eventType(Article.class.getSimpleName())
-                    .action(EventAction.INSERT)
-                    .payload(convertToJson(new ArticleDocument(article)))
-                    .build();
-
-            outboxRepository.save(outboxEvent);
-        }
-    }
-    private String convertToJson(Object object) {
-        try {
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new CustomException(ErrorCode.ARTICLE_PROCESSING_FAILED);
         }
     }
 }

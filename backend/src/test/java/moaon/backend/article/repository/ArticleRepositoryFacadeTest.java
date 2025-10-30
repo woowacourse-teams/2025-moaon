@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import moaon.backend.article.domain.Article;
 import moaon.backend.article.domain.ArticleDocument;
@@ -14,6 +15,9 @@ import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventAction;
+import moaon.backend.event.repository.EsEventOutboxRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -29,8 +33,15 @@ class ArticleRepositoryFacadeTest {
 
     private final ArticleDocumentRepository articleDocumentRepository = mock(ArticleDocumentRepository.class);
     private final ArticleDBRepository articleDBRepository = mock(ArticleDBRepository.class);
-    private final ArticleRepositoryFacade articleRepositoryFacade = new ArticleRepositoryFacade(articleDBRepository,
-            articleDocumentRepository);
+    private final EsEventOutboxRepository outboxRepository = mock(EsEventOutboxRepository.class);
+    private final ObjectMapper objectMapper = mock(ObjectMapper.class);
+
+    private final ArticleRepositoryFacade articleRepositoryFacade = new ArticleRepositoryFacade(
+            articleDBRepository,
+            articleDocumentRepository,
+            outboxRepository,
+            objectMapper
+    );
 
     private final ProjectRepository projectRepository = Mockito.mock(ProjectRepository.class);
 
@@ -87,12 +98,13 @@ class ArticleRepositoryFacadeTest {
         // given
         Article article = new ArticleFixtureBuilder().build();
         when(articleDBRepository.save(eq(article))).thenReturn(article);
-
+        ArticleDocument document = new ArticleDocument(article);
+        EsEventOutbox outboxEvent = document.toEventOutbox(EventAction.INSERT, objectMapper);
         // when
         articleRepositoryFacade.save(article);
 
         // then
         verify(articleDBRepository).save(eq(article));
-        verify(articleDocumentRepository).save(eq(new ArticleDocument(article)));
+        verify(outboxRepository).save(eq(outboxEvent));
     }
 }
