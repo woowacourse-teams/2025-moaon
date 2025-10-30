@@ -28,10 +28,6 @@ import moaon.backend.global.exception.custom.ErrorCode;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@Table(indexes = {
-        @Index(name = "idx_pending_events", columnList = "status, createdAt"),
-        @Index(name = "idx_processed", columnList = "processedAt")
-})
 public class EsEventOutbox {
 
     @Id
