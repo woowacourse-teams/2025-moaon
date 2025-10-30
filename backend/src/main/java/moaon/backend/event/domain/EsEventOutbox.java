@@ -63,11 +63,6 @@ public class EsEventOutbox {
     @Column
     private LocalDateTime processedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
     public boolean isUpsert(){
         return action == EventAction.INSERT || action == EventAction.UPDATED;
     }
