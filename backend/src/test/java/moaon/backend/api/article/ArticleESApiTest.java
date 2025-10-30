@@ -12,8 +12,8 @@ import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.db.ArticleRepository;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.db.ArticleDBRepository;
+import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.project.domain.Project;
@@ -57,13 +57,13 @@ public class ArticleESApiTest {
     private ElasticsearchOperations ops;
 
     @Autowired
-    private ArticleDocumentRepository articleDocumentRepository;
+    private ArticleDocumentOperations articleDocumentOperations;
 
     @Autowired
     private TechStackRepository techStackRepository;
 
     @MockitoBean
-    private ArticleRepository repository;
+    private ArticleDBRepository repository;
 
     @BeforeEach
     void setUp() {
@@ -90,7 +90,7 @@ public class ArticleESApiTest {
         String unfilteredSearch = "momo";
         Project project = Project.builder().id(1L).build();
 
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(1L)
                         .sector(unfilteredSector)
@@ -101,7 +101,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(2L)
                         .techStacks(List.of(unfilteredTechStack))
@@ -112,7 +112,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(3L)
                         .title(unfilteredSearch)
@@ -123,7 +123,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(4L)
                         .summary(unfilteredSearch)
@@ -134,7 +134,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(5L)
                         .content(unfilteredSearch)
@@ -145,7 +145,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(6L)
                         .topics(unfilteredTopic)
@@ -165,7 +165,7 @@ public class ArticleESApiTest {
                 .clicks(1)
                 .topics(filteredTopic)
                 .build();
-        ArticleDocument articleClickRankThird = articleDocumentRepository.save(new ArticleDocument(article7));
+        ArticleDocument articleClickRankThird = articleDocumentOperations.save(new ArticleDocument(article7));
         Article article8 = new ArticleFixtureBuilder()
                 .id(8L)
                 .title(filteredSearch)
@@ -175,7 +175,7 @@ public class ArticleESApiTest {
                 .clicks(2)
                 .topics(filteredTopic)
                 .build();
-        ArticleDocument articleClickRankSecond = articleDocumentRepository.save(new ArticleDocument(article8));
+        ArticleDocument articleClickRankSecond = articleDocumentOperations.save(new ArticleDocument(article8));
 
         Article article9 = new ArticleFixtureBuilder()
                 .id(9L)
@@ -186,7 +186,7 @@ public class ArticleESApiTest {
                 .clicks(3)
                 .topics(filteredTopic)
                 .build();
-        ArticleDocument articleClickRankFirst = articleDocumentRepository.save(new ArticleDocument(article9));
+        ArticleDocument articleClickRankFirst = articleDocumentOperations.save(new ArticleDocument(article9));
 
         Mockito.when(repository.findAllById(List.of(9L, 8L))).thenReturn(List.of(article9, article8));
 

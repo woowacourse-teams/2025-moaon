@@ -1,53 +1,77 @@
 package moaon.backend.article.repository.es;
 
 import static moaon.backend.article.domain.ArticleSortType.CREATED_AT;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.dto.ArticleQueryCondition;
+import moaon.backend.article.repository.ArticleSearchResult;
+import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
+import moaon.backend.project.domain.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.elasticsearch.client.elc.NativeQuery;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.RefreshPolicy;
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.mockito.Mockito;
+import org.springframework.data.elasticsearch.core.SearchHits;
 
 class ArticleDocumentRepositoryTest {
 
-    private final ElasticsearchOperations ops = mock(ElasticsearchOperations.class);
-    private final ArticleDocumentRepository repository = new ArticleDocumentRepository(ops);
+    private final ArticleDocumentOperations documentOperations = Mockito.mock(ArticleDocumentOperations.class);
+    private final ArticleDBRepository databaseRepository = Mockito.mock(ArticleDBRepository.class);
+    private final ArticleDocumentRepository service = new ArticleDocumentRepository(documentOperations,
+            databaseRepository);
 
-    @DisplayName("검색 조건을 받아 <articles> 인덱스에 검색 요청을 수행한다.")
+    private final ArticleQueryCondition queryCondition = new ArticleQueryConditionBuilder().sortBy(CREATED_AT).build();
+
+    @DisplayName("검색 요청 시 Elasticsearch에서 결과를 가져와 ArticleSearchResult로 감싼다.")
     @Test
     void search() {
         // given
-        ArticleQueryCondition condition = new ArticleQueryConditionBuilder().sortBy(CREATED_AT).build();
+        when(documentOperations.search(queryCondition)).thenReturn(mock(SearchHits.class));
 
         // when
-        repository.search(condition);
+        ArticleSearchResult result = service.search(queryCondition);
 
         // then
-        verify(ops).search(any(NativeQuery.class), eq(ArticleDocument.class), eq(IndexCoordinates.of("articles")));
+        assertThat(result).isInstanceOf(ArticleSearchResult.class);
+        verify(documentOperations).search(queryCondition);
     }
 
-    @DisplayName("문서를 저장할 때 즉시 새로고침 전략으로 <articles> 인덱스에 저장 요청을 수행한다.")
+    @DisplayName("프로젝트의 아티클 검색 시 프로젝트의 아티클 ID 목록을 Elasticsearch에 전달한다.")
+    @Test
+    void searchInProject() {
+        // given
+        Project project = Project.builder().id(99L)
+                .articles(List.of(
+                        new ArticleFixtureBuilder().id(1L).build(),
+                        new ArticleFixtureBuilder().id(2L).build())
+                ).build();
+
+        when(documentOperations.searchInIds(List.of(1L, 2L), queryCondition)).thenReturn(mock(SearchHits.class));
+
+        // when
+        ArticleSearchResult result = service.searchInProject(project, queryCondition);
+
+        // then
+        assertThat(result).isInstanceOf(ESArticleSearchResult.class);
+        verify(documentOperations).searchInIds(List.of(1L, 2L), queryCondition);
+    }
+
+    @DisplayName("ArticleDocument 저장 요청을 위임한다.")
     @Test
     void save() {
         // given
-        ArticleDocument doc = new ArticleDocument(new ArticleFixtureBuilder().build());
-        when(ops.withRefreshPolicy(any(RefreshPolicy.class))).thenReturn(ops);
+        ArticleDocument document = new ArticleDocument(new ArticleFixtureBuilder().build());
 
         // when
-        repository.save(doc);
+        service.save(document);
 
         // then
-        verify(ops).withRefreshPolicy(RefreshPolicy.IMMEDIATE);
-        verify(ops).save(doc, IndexCoordinates.of("articles"));
+        verify(documentOperations).save(document);
     }
 }

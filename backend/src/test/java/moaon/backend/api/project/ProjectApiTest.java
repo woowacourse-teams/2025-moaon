@@ -23,7 +23,7 @@ import moaon.backend.article.dto.ArticleDetailResponse;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.dto.ArticleSectorCount;
 import moaon.backend.article.repository.db.DBArticleSearchResult;
-import moaon.backend.article.service.ElasticSearchService;
+import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -31,8 +31,8 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
-import moaon.backend.member.service.JwtTokenProvider;
-import moaon.backend.member.service.OAuthService;
+import moaon.backend.member.service.JwtTokenService;
+import moaon.backend.member.service.MemberService;
 import moaon.backend.project.domain.Category;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.PagedProjectResponse;
@@ -58,16 +58,16 @@ public class ProjectApiTest extends BaseApiTest {
     protected RepositoryHelper repositoryHelper;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MemberRepository memberRepository;
 
     @MockitoBean
-    private OAuthService oAuthService;
+    private MemberService memberService;
 
     @MockitoBean
-    private ElasticSearchService elasticSearchService;
+    private ArticleDocumentRepository articleDocumentRepository;
 
     private String token;
 
@@ -76,7 +76,7 @@ public class ProjectApiTest extends BaseApiTest {
         Member member = Fixture.anyMember();
         repositoryHelper.save(member);
 
-        token = jwtTokenProvider.createToken(member.getId());
+        token = jwtTokenService.createToken(member.getId());
     }
 
 
@@ -112,7 +112,7 @@ public class ProjectApiTest extends BaseApiTest {
                 .imageKeys(List.of("www.images.com"))
                 .build();
 
-        when(oAuthService.getUserByToken(any())).thenReturn(member);
+        when(memberService.getUserByToken(any())).thenReturn(member);
 
         // when
         ProjectCreateResponse response = RestAssured.given(documentationSpecification).log().all()
@@ -299,7 +299,7 @@ public class ProjectApiTest extends BaseApiTest {
                         .build()
         );
 
-        when(elasticSearchService.searchInProject(eq(targetProject), any(ArticleQueryCondition.class)))
+        when(articleDocumentRepository.searchInProject(eq(targetProject), any(ArticleQueryCondition.class)))
                 .thenReturn(new DBArticleSearchResult(
                         List.of(filteredArticle1, filteredArticle2, filteredArticle3),
                         6, 20, null
