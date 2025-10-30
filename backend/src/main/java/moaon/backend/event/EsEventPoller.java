@@ -57,7 +57,6 @@ public class EsEventPoller {
             }
         } catch (IOException e) {
             log.error("ES Bulk API 통신 실패");
-            throw new CustomException(ErrorCode.ES_PROCESSING_FAILED);
         } catch (Exception e) {
             log.error("Outbox Poller 알 수 없는 예외 발생: {}", e.getMessage(), e);
             esFailedEvents.addAll(
