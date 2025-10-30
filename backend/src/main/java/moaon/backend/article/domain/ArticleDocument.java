@@ -1,7 +1,10 @@
 package moaon.backend.article.domain;
 
 import static java.util.stream.Collectors.toSet;
+import static moaon.backend.article.domain.QArticle.article;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -13,6 +16,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventAction;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.techStack.domain.TechStack;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Alias;
@@ -33,6 +40,8 @@ import org.springframework.util.CollectionUtils;
 @ToString
 @Getter
 public class ArticleDocument {
+
+    public static final String OUTBOX_EVENT_TYPE = "articles";
 
     @Id
     @Field(type = FieldType.Keyword)
@@ -98,5 +107,22 @@ public class ArticleDocument {
             return new HashSet<>();
         }
         return techStacks.stream().map(TechStack::getName).collect(toSet());
+    }
+
+    public EsEventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
+        return EsEventOutbox.builder()
+                .entityId(this.getId())
+                .eventType(OUTBOX_EVENT_TYPE)
+                .action(eventAction)
+                .payload(convertToJson(this, objectMapper))
+                .build();
+    }
+
+    private String convertToJson(Object object, ObjectMapper objectMapper) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ErrorCode.ARTICLE_PROCESSING_FAILED);
+        }
     }
 }
