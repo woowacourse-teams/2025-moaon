@@ -101,13 +101,6 @@ public class ArticleDocument {
         this.createdAt = article.getCreatedAt().truncatedTo(ChronoUnit.MILLIS);
     }
 
-    private Set<String> setTechStacks(List<TechStack> techStacks) {
-        if (CollectionUtils.isEmpty(techStacks)) {
-            return new HashSet<>();
-        }
-        return techStacks.stream().map(TechStack::getName).collect(toSet());
-    }
-
     public EsEventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
         return EsEventOutbox.builder()
                 .entityId(this.getId())
@@ -115,6 +108,13 @@ public class ArticleDocument {
                 .action(eventAction)
                 .payload(convertToJson(this, objectMapper))
                 .build();
+    }
+
+    private Set<String> setTechStacks(List<TechStack> techStacks) {
+        if (CollectionUtils.isEmpty(techStacks)) {
+            return new HashSet<>();
+        }
+        return techStacks.stream().map(TechStack::getName).collect(toSet());
     }
 
     private String convertToJson(Object object, ObjectMapper objectMapper) {
