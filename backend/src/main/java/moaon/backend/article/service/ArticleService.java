@@ -38,8 +38,6 @@ public class ArticleService {
     private final ArticleContentRepository articleContentRepository;
     private final ProjectRepository projectRepository;
     private final TechStackRepository techStackRepository;
-    private final EsEventOutboxRepository outboxRepository;
-    private final ObjectMapper objectMapper;
 
     public ArticleResponse getPagedArticles(ArticleQueryCondition queryCondition) {
         ArticleSearchResult result = articleRepositoryFacade.search(queryCondition);
