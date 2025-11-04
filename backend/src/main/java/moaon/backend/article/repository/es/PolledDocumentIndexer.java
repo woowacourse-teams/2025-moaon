@@ -1,4 +1,4 @@
-package moaon.backend.event;
+package moaon.backend.article.repository.es;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;

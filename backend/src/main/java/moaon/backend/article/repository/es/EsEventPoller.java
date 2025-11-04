@@ -1,4 +1,4 @@
-package moaon.backend.event;
+package moaon.backend.article.repository.es;
 
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
