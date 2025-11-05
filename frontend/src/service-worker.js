@@ -118,9 +118,13 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       const cacheNames = await caches.keys();
+      console.log(cacheNames);
       await Promise.all(
         cacheNames
-          .filter((cacheName) => !cacheName.startsWith("workbox-"))
+          .filter((cacheName) => {
+            console.log(cacheName);
+            return !cacheName.startsWith("workbox-");
+          })
           .map((cacheName) => caches.delete(cacheName)),
       );
       // 모든 클라이언트 즉시 제어
