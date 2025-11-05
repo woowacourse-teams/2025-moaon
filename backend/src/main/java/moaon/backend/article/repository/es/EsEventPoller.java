@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaon.backend.event.domain.EsEventOutbox;
@@ -121,6 +122,7 @@ public class EsEventPoller {
         if (!toMarkFailed.isEmpty()) outboxRepository.markAsFailed(toMarkFailed);
     }
 
+    @Getter
     private static class ProcessingResult {
         private final List<EsEventOutbox> success = new ArrayList<>();
         private final List<EsEventOutbox> fail = new ArrayList<>();
@@ -131,14 +133,6 @@ public class EsEventPoller {
 
         public void addFail(EsEventOutbox event) {
             fail.add(event);
-        }
-
-        public List<EsEventOutbox> getSuccess() {
-            return success;
-        }
-
-        public List<EsEventOutbox> getFail() {
-            return fail;
         }
     }
 }
