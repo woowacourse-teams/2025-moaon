@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+const APP_VERSION = process.env.APP_VERSION;
 const CURRENT_VERSION = process.env.BUILD_HASH;
 const VERSION_CHECK_INTERVAL = 1 * 60 * 1000;
 
@@ -69,7 +70,7 @@ function TestPage() {
   return (
     <div>
       {showUpdateBanner && <UpdateBanner onUpdate={handleUpdate} />}
-      <h1>배포 ver: 0.0.2</h1>
+      <h1>배포 ver: {APP_VERSION}</h1>
     </div>
   );
 }
@@ -81,11 +82,11 @@ function UpdateBanner({ onUpdate }: { onUpdate: () => void }) {
     <div
       style={{
         position: "fixed",
-        top: 0,
+        top: "75px",
         left: 0,
         right: 0,
         background: "rgba(255, 99, 71, 0.7)",
-        color: "white",
+        color: "#fff",
         padding: "12px",
         width: "100vw",
         textAlign: "center",
