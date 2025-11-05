@@ -1,0 +1,101 @@
+import { useEffect, useState } from "react";
+
+const CURRENT_VERSION = process.env.BUILD_HASH;
+const VERSION_CHECK_INTERVAL = 5 * 60 * 1000; // 5분마다 체크
+
+export const checkForNewVersion = async () => {
+  try {
+    const response = await fetch("/asset-manifest.json", {
+      cache: "no-cache", // 캐시 우회
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
+
+    if (!response.ok) return false;
+
+    const manifest = await response.json();
+    const latestVersion = manifest.buildHash || manifest.version;
+
+    // 버전이 다르면 true 반환
+    return latestVersion !== CURRENT_VERSION;
+  } catch (error) {
+    console.error("Failed to check version:", error);
+    return false;
+  }
+};
+
+export const startVersionCheck = (onNewVersion: () => void) => {
+  const checkInterval = setInterval(async () => {
+    const hasNewVersion = await checkForNewVersion();
+
+    if (hasNewVersion) {
+      clearInterval(checkInterval);
+      onNewVersion();
+    }
+  }, VERSION_CHECK_INTERVAL);
+
+  return () => clearInterval(checkInterval);
+};
+
+function TestPage() {
+  const [showUpdateBanner, setShowUpdateBanner] = useState(false);
+
+  useEffect(() => {
+    // 버전 체크 시작
+    const cleanup = startVersionCheck(() => {
+      setShowUpdateBanner(true);
+    });
+
+    // 페이지 포커스 시에도 체크
+    const handleFocus = async () => {
+      const hasNewVersion = await checkForNewVersion();
+      if (hasNewVersion) {
+        setShowUpdateBanner(true);
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      cleanup();
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, []);
+
+  const handleUpdate = () => {
+    window.location.reload();
+  };
+
+  return (
+    <div>
+      {showUpdateBanner && <UpdateBanner onUpdate={handleUpdate} />}
+      <h1>배포 ver: 0.0.1</h1>
+    </div>
+  );
+}
+
+export default TestPage;
+
+function UpdateBanner({ onUpdate }: { onUpdate: () => void }) {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        background: "var(--color-primary)",
+        color: "white",
+        padding: "12px",
+        textAlign: "center",
+        zIndex: 9999,
+      }}
+    >
+      <p>새로운 버전이 있습니다. 업데이트하시겠습니까?</p>
+      <button type="button" onClick={onUpdate}>
+        업데이트
+      </button>
+    </div>
+  );
+}

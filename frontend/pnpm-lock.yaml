@@ -93,6 +93,9 @@ importers:
       style-loader:
         specifier: ^4.0.0
         version: 4.0.0(webpack@5.101.0)
+      terser-webpack-plugin:
+        specifier: ^5.3.14
+        version: 5.3.14(webpack@5.101.0)
       typescript:
         specifier: ^5.8.3
         version: 5.9.2
@@ -105,6 +108,9 @@ importers:
       webpack-dev-server:
         specifier: ^5.2.2
         version: 5.2.2(webpack-cli@6.0.1)(webpack@5.101.0)
+      webpack-manifest-plugin:
+        specifier: ^6.0.1
+        version: 6.0.1(webpack@5.101.0)
       webpack-merge:
         specifier: ^6.0.1
         version: 6.0.1
@@ -3094,6 +3100,12 @@ packages:
         optional: true
       webpack-cli:
         optional: true
+
+  webpack-manifest-plugin@6.0.1:
+    resolution: {integrity: sha512-R0p/8/IJVY5hIhQtkeWUQugalVpIwojc09eb14zGq+oiZOCmN5paAz2NBJfd+6v9eBbxAS3YMjc2ov8UMlCDLQ==}
+    engines: {node: '>=20.19.0'}
+    peerDependencies:
+      webpack: ^5.75.0
 
   webpack-merge@6.0.1:
     resolution: {integrity: sha512-hXXvrjtx2PLYx4qruKl+kyRSLc52V+cCvMxRjmKwoA+CBbbF5GfIBtR6kCvl0fYGqTUPKB+1ktVmTHqMOzgCBg==}
@@ -6754,6 +6766,12 @@ snapshots:
       - debug
       - supports-color
       - utf-8-validate
+
+  webpack-manifest-plugin@6.0.1(webpack@5.101.0):
+    dependencies:
+      tapable: 2.2.2
+      webpack: 5.101.0(webpack-cli@6.0.1)
+      webpack-sources: 3.3.3
 
   webpack-merge@6.0.1:
     dependencies:

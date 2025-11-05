@@ -1,17 +1,27 @@
 import { LoadingSpinner } from "@shared/components/LoadingSpinner/LoadingSpinner";
 import { ScrollToTop } from "@shared/components/ScrollToTop/ScrollToTop";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Link, Route, Routes } from "react-router";
 import useTrackPageTimeGA from "./libs/googleAnalytics/hooks/useTrackPageTimeGA";
-import ArticlePage from "./pages/article/ArticlePage";
-import EventLandingPage from "./pages/eventLanding/EventLandingPage";
-import OAuthCallback from "./pages/oauth/OAuthCallback";
-import ProjectDetailPage from "./pages/project-detail/ProjectDetailPage";
-import ProjectListPage from "./pages/project-list/ProjectListPage";
-import RegisterPage from "./pages/register/RegisterPage";
-import CompanyEventPage from "./pages/wooteco/company/CompanyEventPage";
-import WootecoEventPage from "./pages/wooteco/WootecoEventPage";
+import TestPage from "./pages/TestPage";
 import GlobalLayout from "./shared/components/Layout/GlobalLayout";
+
+const ProjectListPage = lazy(
+  () => import("./pages/project-list/ProjectListPage"),
+);
+const ProjectDetailPage = lazy(
+  () => import("./pages/project-detail/ProjectDetailPage"),
+);
+const ArticlePage = lazy(() => import("./pages/article/ArticlePage"));
+const WootecoEventPage = lazy(() => import("./pages/wooteco/WootecoEventPage"));
+const CompanyEventPage = lazy(
+  () => import("./pages/wooteco/company/CompanyEventPage"),
+);
+const EventLandingPage = lazy(
+  () => import("./pages/eventLanding/EventLandingPage"),
+);
+const OAuthCallback = lazy(() => import("./pages/oauth/OAuthCallback"));
+const RegisterPage = lazy(() => import("./pages/register/RegisterPage"));
 
 function App() {
   useTrackPageTimeGA();
@@ -22,13 +32,14 @@ function App() {
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             {/* <Route path="/" element={<LandingPage />} /> */}
+            <Route path="/" element={<EventLandingPage />} />
             <Route path="/project" element={<ProjectListPage />} />
             <Route path="/project/:id" element={<ProjectDetailPage />} />
             <Route path="/article" element={<ArticlePage />} />
             <Route path="/wooteco" element={<WootecoEventPage />} />
             <Route path="/wooteco/:company" element={<CompanyEventPage />} />
-            <Route path="/" element={<EventLandingPage />} />
             <Route path="/oauth/callback/:result" element={<OAuthCallback />} />
+            <Route path="/test" element={<TestPage />} />
             <Route
               path="*"
               element={
