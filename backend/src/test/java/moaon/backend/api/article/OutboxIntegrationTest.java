@@ -15,7 +15,7 @@ import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.article.service.ArticleService;
-import moaon.backend.article.repository.es.EsEventPoller;
+import moaon.backend.article.sync.ArticleSyncScheduler;
 import moaon.backend.event.repository.EsEventOutboxRepository;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
@@ -74,7 +74,7 @@ class OutboxIntegrationTest {
     private ArticleDocumentOperations articleDocumentRepository;
 
     @Autowired
-    private EsEventPoller eventPoller;
+    private ArticleSyncScheduler eventPoller;
 
     @Autowired
     private ElasticsearchOperations ops;

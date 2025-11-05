@@ -1,4 +1,4 @@
-package moaon.backend.article.repository.es;
+package moaon.backend.article.sync;
 
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
@@ -21,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class EsEventPoller {
+public class ArticleSyncScheduler {
 
     private final EsEventOutboxRepository outboxRepository;
-    private final PolledDocumentIndexer polledDocumentIndexer;
+    private final ArticleEsProcessor articleEsProcessor;
     private final ObjectMapper objectMapper;
 
     private static final int BATCH_SIZE = 100;
@@ -51,7 +51,7 @@ public class EsEventPoller {
         List<EsEventOutbox> validEvents = validateEvents(events, result);
         if (validEvents.isEmpty()) return result;
 
-        BulkResponse response = polledDocumentIndexer.processEvents(validEvents);
+        BulkResponse response = articleEsProcessor.processEvents(validEvents);
         handleBulkResponse(response, validEvents, result);
 
         return result;

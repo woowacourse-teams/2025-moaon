@@ -1,4 +1,4 @@
-package moaon.backend.article.repository.es;
+package moaon.backend.article.sync;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PolledDocumentIndexer {
+public class ArticleEsProcessor {
 
     private final ElasticsearchClient esClient;
     private final ObjectMapper objectMapper;
