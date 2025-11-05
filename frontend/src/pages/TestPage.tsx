@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const CURRENT_VERSION = process.env.BUILD_HASH;
-const VERSION_CHECK_INTERVAL = 5 * 60 * 1000; // 5분마다 체크
+const VERSION_CHECK_INTERVAL = 1 * 60 * 1000;
 
 export const checkForNewVersion = async () => {
   try {
@@ -15,9 +15,8 @@ export const checkForNewVersion = async () => {
     if (!response.ok) return false;
 
     const manifest = await response.json();
-    const latestVersion = manifest.buildHash || manifest.version;
+    const latestVersion = manifest.buildHash;
 
-    // 버전이 다르면 true 반환
     return latestVersion !== CURRENT_VERSION;
   } catch (error) {
     console.error("Failed to check version:", error);
@@ -85,9 +84,10 @@ function UpdateBanner({ onUpdate }: { onUpdate: () => void }) {
         top: 0,
         left: 0,
         right: 0,
-        background: "var(--color-primary)",
+        background: "rgba(255, 99, 71, 0.7)",
         color: "white",
         padding: "12px",
+        width: "100vw",
         textAlign: "center",
         zIndex: 9999,
       }}
