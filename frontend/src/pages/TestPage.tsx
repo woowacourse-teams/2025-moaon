@@ -81,10 +81,9 @@ function UpdateBanner({ onUpdate }: { onUpdate: () => void }) {
   return (
     <div
       style={{
-        position: "fixed",
+        position: "absolute",
         top: "75px",
         left: 0,
-        right: 0,
         background: "rgba(255, 99, 71, 0.7)",
         color: "#fff",
         padding: "12px",
