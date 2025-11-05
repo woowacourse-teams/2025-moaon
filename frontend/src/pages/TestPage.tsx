@@ -1,94 +1,96 @@
 import { useEffect, useState } from "react";
+import { register } from "@/worker";
 
 const APP_VERSION = process.env.APP_VERSION;
 const CURRENT_VERSION = process.env.BUILD_HASH;
-const VERSION_CHECK_INTERVAL = 1 * 60 * 1000;
+// const VERSION_CHECK_INTERVAL = 1 * 60 * 1000;
 
-interface AssetManifest {
-  files: Record<string, string>;
-  entrypoints: string[];
-  version: string;
-  buildHash: string;
-  buildTime: string;
-}
+// interface AssetManifest {
+//   files: Record<string, string>;
+//   entrypoints: string[];
+//   version: string;
+//   buildHash: string;
+//   buildTime: string;
+// }
 
-// 새 버전의 리소스를 백그라운드에서 프리페치
-const prefetchNewAssets = async (manifest: AssetManifest) => {
-  try {
-    // entrypoints에 있는 주요 JS 파일들을 프리페치
-    const prefetchPromises = manifest.entrypoints.map(async (entrypoint) => {
-      const assetUrl = manifest.files[entrypoint] || `/${entrypoint}`;
+// // 새 버전의 리소스를 백그라운드에서 프리페치
+// const prefetchNewAssets = async (manifest: AssetManifest) => {
+//   try {
+//     // entrypoints에 있는 주요 JS 파일들을 프리페치
+//     const prefetchPromises = manifest.entrypoints.map(async (entrypoint) => {
+//       const assetUrl = manifest.files[entrypoint] || `/${entrypoint}`;
 
-      // link 태그로 prefetch 추가
-      const link = document.createElement("link");
-      link.rel = "prefetch";
-      document.head.appendChild(link);
+//       // link 태그로 prefetch 추가
+//       const link = document.createElement("link");
+//       link.rel = "prefetch";
+//       link.href = assetUrl;
+//       document.head.appendChild(link);
 
-      // 실제로 fetch도 수행 (브라우저 캐시에 저장)
-      return fetch(assetUrl, {
-        cache: "force-cache",
-        credentials: "same-origin",
-      });
-    });
+//       // 실제로 fetch도 수행 (브라우저 캐시에 저장)
+//       return fetch(assetUrl, {
+//         cache: "force-cache",
+//         credentials: "same-origin",
+//       });
+//     });
 
-    // 모든 주요 리소스를 병렬로 프리페치
-    await Promise.all(prefetchPromises);
+//     // 모든 주요 리소스를 병렬로 프리페치
+//     await Promise.all(prefetchPromises);
 
-    console.log("✅ 새 버전의 리소스를 백그라운드에서 다운로드 완료");
-    return true;
-  } catch (error) {
-    console.error("프리페치 실패:", error);
-    return false;
-  }
-};
+//     console.log("✅ 새 버전의 리소스를 백그라운드에서 다운로드 완료");
+//     return true;
+//   } catch (error) {
+//     console.error("프리페치 실패:", error);
+//     return false;
+//   }
+// };
 
-export const checkForNewVersion = async (): Promise<{
-  hasNewVersion: boolean;
-  manifest?: AssetManifest;
-}> => {
-  try {
-    const response = await fetch("/asset-manifest.json", {
-      cache: "no-cache",
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    });
+// export const checkForNewVersion = async (): Promise<{
+//   hasNewVersion: boolean;
+//   manifest?: AssetManifest;
+// }> => {
+//   try {
+//     const response = await fetch("/asset-manifest.json", {
+//       cache: "no-cache",
+//       headers: {
+//         "Cache-Control": "no-cache",
+//       },
+//     });
 
-    if (!response.ok) return { hasNewVersion: false };
+//     if (!response.ok) return { hasNewVersion: false };
 
-    const manifest: AssetManifest = await response.json();
-    const latestVersion = manifest.buildHash;
-    const hasNewVersion = latestVersion !== CURRENT_VERSION;
+//     const manifest: AssetManifest = await response.json();
+//     const latestVersion = manifest.buildHash;
+//     const hasNewVersion = latestVersion !== CURRENT_VERSION;
 
-    return {
-      hasNewVersion,
-      manifest: hasNewVersion ? manifest : undefined,
-    };
-  } catch (error) {
-    console.error("Failed to check version:", error);
-    return { hasNewVersion: false };
-  }
-};
+//     return {
+//       hasNewVersion,
+//       manifest: hasNewVersion ? manifest : undefined,
+//     };
+//   } catch (error) {
+//     console.error("Failed to check version:", error);
+//     return { hasNewVersion: false };
+//   }
+// };
 
-export const startVersionCheck = (
-  onNewVersion: (manifest: AssetManifest) => void,
-) => {
-  const checkInterval = setInterval(async () => {
-    const { hasNewVersion, manifest } = await checkForNewVersion();
+// export const startVersionCheck = (
+//   onNewVersion: (manifest: AssetManifest) => void,
+// ) => {
+//   const checkInterval = setInterval(async () => {
+//     const { hasNewVersion, manifest } = await checkForNewVersion();
 
-    if (hasNewVersion && manifest) {
-      clearInterval(checkInterval);
+//     if (hasNewVersion && manifest) {
+//       clearInterval(checkInterval);
 
-      // 백그라운드에서 새 버전 리소스 프리페치
-      await prefetchNewAssets(manifest);
+//       // 백그라운드에서 새 버전 리소스 프리페치
+//       await prefetchNewAssets(manifest);
 
-      // 프리페치 완료 후 콜백 실행
-      onNewVersion(manifest);
-    }
-  }, VERSION_CHECK_INTERVAL);
+//       // 프리페치 완료 후 콜백 실행
+//       onNewVersion(manifest);
+//     }
+//   }, VERSION_CHECK_INTERVAL);
 
-  return () => clearInterval(checkInterval);
-};
+//   return () => clearInterval(checkInterval);
+// };
 
 function TestPage() {
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
@@ -104,7 +106,7 @@ function TestPage() {
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
-      onSuccess: (registration) => {
+      onSuccess: () => {
         console.log("[App] Service Worker 등록 성공");
       },
       onWaiting: (registration) => {

@@ -8,7 +8,7 @@ import {
   StaleWhileRevalidate,
 } from "workbox-strategies";
 
-// Webpack이 자동으로 생성한 프리캐시 매니페스트
+// precacheAndRoute 실행
 precacheAndRoute(self.__WB_MANIFEST);
 
 // HTML - 네트워크 우선 (3초 타임아웃)
@@ -63,24 +63,6 @@ registerRoute(
   }),
 );
 
-// API 요청 - 네트워크 우선
-registerRoute(
-  ({ url }) => url.pathname.startsWith("/api/"),
-  new NetworkFirst({
-    cacheName: "api-cache",
-    networkTimeoutSeconds: 5,
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 5 * 60, // 5분
-      }),
-    ],
-  }),
-);
-
 // 폰트 - 캐시 우선
 registerRoute(
   ({ request }) => request.destination === "font",
@@ -97,6 +79,24 @@ registerRoute(
     ],
   }),
 );
+
+// // API 요청 - 네트워크 우선
+// registerRoute(
+//   ({ url }) => url.pathname.startsWith("/api/"),
+//   new NetworkFirst({
+//     cacheName: "api-cache",
+//     networkTimeoutSeconds: 5,
+//     plugins: [
+//       new CacheableResponsePlugin({
+//         statuses: [0, 200],
+//       }),
+//       new ExpirationPlugin({
+//         maxEntries: 50,
+//         maxAgeSeconds: 5 * 60, // 5분
+//       }),
+//     ],
+//   }),
+// );
 
 // 새 Service Worker 활성화 메시지 처리
 self.addEventListener("message", (event) => {
@@ -118,18 +118,15 @@ self.addEventListener("activate", (event) => {
 
   // 오래된 캐시 정리
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(
         cacheNames
-          .filter((cacheName) => {
-            // 현재 버전이 아닌 캐시 삭제
-            return !cacheName.startsWith("workbox-");
-          })
+          .filter((cacheName) => !cacheName.startsWith("workbox-"))
           .map((cacheName) => caches.delete(cacheName)),
       );
-    }),
+      // 모든 클라이언트 즉시 제어
+      await self.clients.claim();
+    })(),
   );
-
-  // 모든 클라이언트 즉시 제어
-  return self.clients.claim();
 });
