@@ -40,8 +40,6 @@ import org.springframework.util.CollectionUtils;
 @Getter
 public class ArticleDocument {
 
-    public static final String OUTBOX_EVENT_TYPE = "articles";
-
     @Id
     @Field(type = FieldType.Keyword)
     private Long id;
@@ -104,7 +102,7 @@ public class ArticleDocument {
     public EsEventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
         return EsEventOutbox.builder()
                 .entityId(this.getId())
-                .eventType(OUTBOX_EVENT_TYPE)
+                .eventType("articles")
                 .action(eventAction)
                 .payload(convertToJson(this, objectMapper))
                 .build();
