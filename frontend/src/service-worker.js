@@ -47,21 +47,21 @@ registerRoute(
 );
 
 // 이미지 - 캐시 우선
-registerRoute(
-  ({ request }) => request.destination === "image",
-  new CacheFirst({
-    cacheName: "images",
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-      new ExpirationPlugin({
-        maxEntries: 100,
-        maxAgeSeconds: 60 * 24 * 60 * 60, // 60일
-      }),
-    ],
-  }),
-);
+// registerRoute(
+//   ({ request }) => request.destination === "image",
+//   new CacheFirst({
+//     cacheName: "images",
+//     plugins: [
+//       new CacheableResponsePlugin({
+//         statuses: [0, 200],
+//       }),
+//       new ExpirationPlugin({
+//         maxEntries: 100,
+//         maxAgeSeconds: 60 * 24 * 60 * 60, // 60일
+//       }),
+//     ],
+//   }),
+// );
 
 // 폰트 - 캐시 우선
 registerRoute(
