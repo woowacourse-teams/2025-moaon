@@ -21,6 +21,10 @@ public class PolledDocumentIndexer {
     private final ObjectMapper objectMapper;
 
     public BulkResponse processEvents(List<EsEventOutbox> preparedEvents) throws IOException {
+        if (preparedEvents.isEmpty()) {
+            return BulkResponse.of(b -> b.items(List.of()).errors(false).took(0));
+        }
+
         BulkRequest.Builder br = new BulkRequest.Builder();
         for (EsEventOutbox event : preparedEvents) {
             if (event.isUpsert()) {
@@ -28,10 +32,6 @@ public class PolledDocumentIndexer {
             } else {
                 appendDeleteOperation(event, br);
             }
-        }
-
-        if (preparedEvents.isEmpty()) {
-            return BulkResponse.of(b -> b.items(List.of()).errors(false).took(0));
         }
 
         return esClient.bulk(br.build());
