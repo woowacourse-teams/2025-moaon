@@ -70,7 +70,7 @@ function TestPage() {
   return (
     <div>
       {showUpdateBanner && <UpdateBanner onUpdate={handleUpdate} />}
-      <h1>배포 ver: 0.0.1</h1>
+      <h1>배포 ver: 0.0.2</h1>
     </div>
   );
 }
