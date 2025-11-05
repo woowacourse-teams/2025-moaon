@@ -92,45 +92,41 @@ export const startVersionCheck = (
 
 function TestPage() {
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
-  const [isPrefetching, setIsPrefetching] = useState(false);
-  const [newManifest, setNewManifest] = useState<AssetManifest | null>(null);
+  const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(
+    null,
+  );
 
   useEffect(() => {
-    // 버전 체크 시작
-    const cleanup = startVersionCheck((manifest) => {
-      setNewManifest(manifest);
-      setShowUpdateBanner(true);
+    // Service Worker 등록
+    const wb = register({
+      onUpdate: (registration) => {
+        console.log("[App] 새 버전 감지됨");
+        setWaitingWorker(registration.waiting);
+        setShowUpdateBanner(true);
+      },
+      onSuccess: (registration) => {
+        console.log("[App] Service Worker 등록 성공");
+      },
+      onWaiting: (registration) => {
+        console.log("[App] 새 버전이 대기 중입니다");
+        setWaitingWorker(registration.waiting);
+        setShowUpdateBanner(true);
+      },
     });
 
-    // 페이지 포커스 시에도 체크
-    const handleFocus = async () => {
-      if (isPrefetching) return; // 이미 프리페치 중이면 무시
-
-      setIsPrefetching(true);
-      const { hasNewVersion, manifest } = await checkForNewVersion();
-
-      if (hasNewVersion && manifest) {
-        // 백그라운드에서 새 버전 리소스 프리페치
-        await prefetchNewAssets(manifest);
-        setNewManifest(manifest);
-        setShowUpdateBanner(true);
-      }
-
-      setIsPrefetching(false);
-    };
-
-    window.addEventListener("focus", handleFocus);
-
     return () => {
-      cleanup();
-      window.removeEventListener("focus", handleFocus);
+      // cleanup
     };
-  }, [isPrefetching]);
+  }, []);
 
   const handleUpdate = () => {
-    // 이미 새 리소스가 브라우저 캐시에 있으므로
-    // 새로고침 시 즉시 로드됨 (네트워크 대기 없음)
-    window.location.reload();
+    if (waitingWorker) {
+      // 새 Service Worker에게 즉시 활성화 메시지 전송
+      waitingWorker.postMessage({ type: "SKIP_WAITING" });
+
+      // controlling 이벤트에서 자동으로 reload 됨
+      setShowUpdateBanner(false);
+    }
   };
 
   const handleDismiss = () => {
@@ -143,7 +139,7 @@ function TestPage() {
         <UpdateBanner
           onUpdate={handleUpdate}
           onDismiss={handleDismiss}
-          newVersion={newManifest?.version}
+          newVersion={APP_VERSION}
         />
       )}
       <h1>배포 ver: {APP_VERSION}</h1>
@@ -179,10 +175,10 @@ function UpdateBanner({
       }}
     >
       <p style={{ margin: "0 0 12px 0", fontSize: "14px" }}>
-        새로운 버전({newVersion})이 준비되었습니다.
+        🚀 새로운 버전({newVersion})이 준비되었습니다.
         <br />
         <small style={{ opacity: 0.8 }}>
-          ✨ 업데이트 파일이 이미 다운로드되어 즉시 적용됩니다
+          업데이트하면 최신 기능을 사용할 수 있습니다.
         </small>
       </p>
       <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
