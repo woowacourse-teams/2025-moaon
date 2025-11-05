@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleSyncScheduler {
 
     private final EsEventOutboxRepository outboxRepository;
-    private final ArticleEsProcessor articleEsProcessor;
+    private final ArticleEsSender articleEsSender;
     private final ObjectMapper objectMapper;
 
     private static final int BATCH_SIZE = 100;
@@ -51,7 +51,7 @@ public class ArticleSyncScheduler {
         List<EsEventOutbox> validEvents = validateEvents(events, result);
         if (validEvents.isEmpty()) return result;
 
-        BulkResponse response = articleEsProcessor.processEvents(validEvents);
+        BulkResponse response = articleEsSender.processEvents(validEvents);
         handleBulkResponse(response, validEvents, result);
 
         return result;

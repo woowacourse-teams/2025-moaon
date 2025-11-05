@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ArticleEsProcessor {
+public class ArticleEsSender {
 
     private final ElasticsearchClient esClient;
     private final ObjectMapper objectMapper;
