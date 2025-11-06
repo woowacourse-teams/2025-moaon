@@ -16,7 +16,7 @@ phases:
       - pnpm run build
       - pwd
       - ls -al dist
-      - SHORT_HASH=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:6}
+      - SHORT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c1-6)
       - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/$SHORT_HASH/
       # - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete
 
