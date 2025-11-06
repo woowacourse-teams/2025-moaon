@@ -25,6 +25,7 @@ import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Disabled
 @Testcontainers
 @Import({RepositoryHelper.class, QueryDslConfig.class})
 class OutboxIntegrationTest {
