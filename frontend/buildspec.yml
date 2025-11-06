@@ -13,6 +13,7 @@ phases:
 
   build:
     commands:
+      - aws s3 rm s3://techcourse-project-2025/moaon/fe-dev-build/ --recursive
       - pnpm run build
       - pwd
       - ls -al dist
