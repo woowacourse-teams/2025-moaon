@@ -13,7 +13,7 @@ phases:
 
   build:
     commands:
-      - PREV_HASH=$(cat ../commit_hash.txt)
+      # - PREV_HASH=$(cat ../commit_hash.txt)
       - git rev-parse --short HEAD > ../commit_hash.txt
       - CURRENT_HASH=$(cat ../commit_hash.txt)
       - pnpm run build
