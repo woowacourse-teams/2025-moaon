@@ -9,7 +9,7 @@ public interface EventOutboxRepositoryCustom {
 
     List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize);
 
-    void markAsProcessed(List<Long> ids, LocalDateTime processedTime);
+    void markAsProcessed(List<Long> ids);
 
     void incrementFailCount(List<Long> ids);
 

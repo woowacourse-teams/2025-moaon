@@ -26,10 +26,10 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     }
 
     @Override
-    public void markAsProcessed(List<Long> ids, LocalDateTime processedTime) {
+    public void markAsProcessed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
-                .set(eventOutbox.processedAt, processedTime)
+                .set(eventOutbox.processedAt, LocalDateTime.now())
                 .set(eventOutbox.status, EventStatus.PROCESSED)
                 .where(eventOutbox.id.in(ids))
                 .execute();
