@@ -1,5 +1,7 @@
 package moaon.backend.event.repository;
 
+import static moaon.backend.event.domain.QEventOutbox.eventOutbox;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
 
-import static moaon.backend.event.domain.QEsEventOutbox.esEventOutbox;
 
 @RequiredArgsConstructor
 public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
@@ -17,9 +18,9 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     @Override
     public List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
         return queryFactory
-                .selectFrom(esEventOutbox)
-                .where(esEventOutbox.status.eq(status))
-                .orderBy(esEventOutbox.createdAt.asc())
+                .selectFrom(eventOutbox)
+                .where(eventOutbox.status.eq(status))
+                .orderBy(eventOutbox.createdAt.asc())
                 .limit(batchSize)
                 .fetch();
     }
@@ -27,28 +28,28 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     @Override
     public void markAsProcessed(List<Long> ids, LocalDateTime processedTime) {
         queryFactory
-                .update(esEventOutbox)
-                .set(esEventOutbox.processedAt, processedTime)
-                .set(esEventOutbox.status, EventStatus.PROCESSED)
-                .where(esEventOutbox.id.in(ids))
+                .update(eventOutbox)
+                .set(eventOutbox.processedAt, processedTime)
+                .set(eventOutbox.status, EventStatus.PROCESSED)
+                .where(eventOutbox.id.in(ids))
                 .execute();
     }
 
     @Override
     public void incrementFailCount(List<Long> ids) {
         queryFactory
-                .update(esEventOutbox)
-                .set(esEventOutbox.failCount, esEventOutbox.failCount.add(1))
-                .where(esEventOutbox.id.in(ids))
+                .update(eventOutbox)
+                .set(eventOutbox.failCount, eventOutbox.failCount.add(1))
+                .where(eventOutbox.id.in(ids))
                 .execute();
     }
 
     @Override
     public void markAsFailed(List<Long> ids) {
         queryFactory
-                .update(esEventOutbox)
-                .set(esEventOutbox.status, EventStatus.FAILED)
-                .where(esEventOutbox.id.in(ids))
+                .update(eventOutbox)
+                .set(eventOutbox.status, EventStatus.FAILED)
+                .where(eventOutbox.id.in(ids))
                 .execute();
     }
 }
