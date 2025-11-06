@@ -100,21 +100,21 @@ function TestPage() {
 
   useEffect(() => {
     // Service Worker 등록
-    const wb = register({
-      onUpdate: (registration) => {
-        console.log("[App] 새 버전 감지됨");
-        setWaitingWorker(registration.waiting);
-        setShowUpdateBanner(true);
-      },
-      onSuccess: () => {
-        console.log("[App] Service Worker 등록 성공");
-      },
-      onWaiting: (registration) => {
-        console.log("[App] 새 버전이 대기 중입니다");
-        setWaitingWorker(registration.waiting);
-        setShowUpdateBanner(true);
-      },
-    });
+    // const wb = register({
+    //   onUpdate: (registration) => {
+    //     console.log("[App] 새 버전 감지됨");
+    //     setWaitingWorker(registration.waiting);
+    //     setShowUpdateBanner(true);
+    //   },
+    //   onSuccess: () => {
+    //     console.log("[App] Service Worker 등록 성공");
+    //   },
+    //   onWaiting: (registration) => {
+    //     console.log("[App] 새 버전이 대기 중입니다");
+    //     setWaitingWorker(registration.waiting);
+    //     setShowUpdateBanner(true);
+    //   },
+    // });
 
     return () => {
       // cleanup
