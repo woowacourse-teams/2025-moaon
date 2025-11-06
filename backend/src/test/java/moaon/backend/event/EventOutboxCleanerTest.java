@@ -28,7 +28,6 @@ class EventOutboxCleanerTest {
     @InjectMocks
     private EventOutboxCleaner cleaner;
 
-    @Disabled
     @DisplayName("7일 이전의 처리 완료된 이벤트를 삭제한다")
     @Test
     void cleanupOldEvents_deletesProcessedEvents() {
