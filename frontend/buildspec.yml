@@ -13,17 +13,12 @@ phases:
 
   build:
     commands:
-      # - PREV_HASH=$(cat ../commit_hash.txt)
-      - git rev-parse --short HEAD > ../commit_hash.txt
-      - CURRENT_HASH=$(cat ../commit_hash.txt)
       - pnpm run build
       - pwd
       - ls -al dist
-      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/$CURRENT_HASH/
-      # - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete
+      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete
 
 artifacts:
   base-directory: frontend/dist
   files:
-    - commit_hash.txt
     - "**/*"
