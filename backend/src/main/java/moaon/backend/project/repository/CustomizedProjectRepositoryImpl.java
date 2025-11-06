@@ -62,7 +62,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             return filteringIds;
         }
 
-        Set<Long> projectIdsByTechStacks = projectDao.findProjectIdsByTechStacks(techStack);
+        Set<Long> projectIdsByTechStacks = projectDao.findProjectIdsByTechStacks(filteringIds, techStack);
         return filteringIds.addFilterResult(projectIdsByTechStacks);
     }
 
@@ -71,7 +71,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             return filteringIds;
         }
 
-        Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(categories);
+        Set<Long> projectIdsByCategories = projectDao.findProjectIdsByCategories(filteringIds, categories);
         return filteringIds.addFilterResult(projectIdsByCategories);
     }
 
@@ -80,7 +80,7 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
             return filteringIds;
         }
 
-        Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(keyword);
+        Set<Long> projectIdsBySearchKeyword = projectDao.findProjectIdsBySearchKeyword(filteringIds, keyword);
         return filteringIds.addFilterResult(projectIdsBySearchKeyword);
     }
 
