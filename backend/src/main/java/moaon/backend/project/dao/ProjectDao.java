@@ -80,7 +80,7 @@ public class ProjectDao {
                 .fetch();
     }
 
-    public Set<Long> findProjectIdsByTechStacks(FilteringIds filteringIds, List<String> techStacks) {
+    public Set<Long> findProjectIdsByTechStacks(List<String> techStacks) {
         if (CollectionUtils.isEmpty(techStacks)) {
             return new HashSet<>();
         }
@@ -88,15 +88,14 @@ public class ProjectDao {
         return new HashSet<>(jpaQueryFactory.select(projectTechStack.project.id)
                 .from(projectTechStack)
                 .where(
-                        projectTechStack.techStack.name.in(techStacks),
-                        projectIdInFilteringIds(filteringIds, projectTechStack.project.id)
+                        projectTechStack.techStack.name.in(techStacks)
                 )
                 .groupBy(projectTechStack.project.id)
                 .having(projectTechStack.techStack.name.count().eq((long) techStacks.size()))
                 .fetch());
     }
 
-    public Set<Long> findProjectIdsByCategories(FilteringIds filteringIds, List<String> categories) {
+    public Set<Long> findProjectIdsByCategories(List<String> categories) {
         if (CollectionUtils.isEmpty(categories)) {
             return new HashSet<>();
         }
@@ -104,15 +103,14 @@ public class ProjectDao {
         return new HashSet<>(jpaQueryFactory.select(projectCategory.project.id)
                 .from(projectCategory)
                 .where(
-                        projectCategory.category.name.in(categories),
-                        projectIdInFilteringIds(filteringIds, projectCategory.project.id)
+                        projectCategory.category.name.in(categories)
                 )
                 .groupBy(projectCategory.project.id)
                 .having(projectCategory.category.name.count().eq((long) categories.size()))
                 .fetch());
     }
 
-    public Set<Long> findProjectIdsBySearchKeyword(FilteringIds filteringIds, SearchKeyword searchKeyword) {
+    public Set<Long> findProjectIdsBySearchKeyword(SearchKeyword searchKeyword) {
         if (searchKeyword == null || !searchKeyword.hasValue()) {
             return new HashSet<>();
         }
@@ -120,8 +118,7 @@ public class ProjectDao {
         return new HashSet<>(jpaQueryFactory.select(project.id)
                 .from(project)
                 .where(
-                        satisfiesMatchScore(searchKeyword),
-                        projectIdInFilteringIds(filteringIds, project.id)
+                        satisfiesMatchScore(searchKeyword)
                 )
                 .fetch());
     }
