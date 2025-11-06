@@ -2,6 +2,7 @@ package moaon.backend.api.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -98,5 +99,45 @@ class OutboxIntegrationTest {
         List<EventOutbox> outboxes = outboxRepository.findAll();
         assertThat(outboxes).hasSize(1);
         assertThat(outboxes.get(0).getStatus()).isEqualTo(EventStatus.PROCESSED);
+    }
+
+    @Test
+    @DisplayName("ES 연결 실패(IOException) 발생 시 failCount가 1 증가한다 (실패 케이스)")
+    void articleCreation_ShouldIncrementFailCount_WhenEsSenderThrowsIOException() throws IOException {
+        // given
+        ArticleCreateRequest request = ArticleCreateRequest.builder()
+                .projectId(project.getId())
+                .title("ES 실패 테스트")
+                .summary("ES 실패 요약")
+                .techStacks(List.of(techStack.getName()))
+                .url(new URL("https://example.com/article2"))
+                .sector("be")
+                .topics(List.of("database"))
+                .build();
+
+        when(articleEsSender.processEvents(anyList()))
+                .thenThrow(new IOException("타임아웃"));
+
+        // when
+        articleService.save(List.of(request), project.getAuthor());
+
+        em.flush();
+        List<EventOutbox> pendingOutboxes = outboxRepository.findAll();
+
+        //then
+        assertThat(pendingOutboxes).hasSize(1);
+        EventOutbox pendingEvent = pendingOutboxes.get(0);
+        assertThat(pendingEvent.getStatus()).isEqualTo(EventStatus.PENDING);
+        assertThat(pendingEvent.getFailCount()).isZero();
+
+        //when
+        eventPoller.pollAndProcessEvents();
+        em.flush();
+        em.clear();
+
+        // then
+        EventOutbox failedEvent = outboxRepository.findById(pendingEvent.getId()).orElseThrow();
+        assertThat(failedEvent.getStatus()).isEqualTo(EventStatus.PENDING);
+        assertThat(failedEvent.getFailCount()).isEqualTo(1);
     }
 }
