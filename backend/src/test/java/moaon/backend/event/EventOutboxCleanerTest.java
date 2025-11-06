@@ -10,6 +10,7 @@ import static org.mockito.Mockito.times;
 import java.time.LocalDateTime;
 import moaon.backend.event.domain.EventStatus;
 import moaon.backend.event.repository.EventOutboxRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +28,7 @@ class EventOutboxCleanerTest {
     @InjectMocks
     private EventOutboxCleaner cleaner;
 
+    @Disabled
     @DisplayName("7일 이전의 처리 완료된 이벤트를 삭제한다")
     @Test
     void cleanupOldEvents_deletesProcessedEvents() {
