@@ -26,7 +26,7 @@ import moaon.backend.global.exception.custom.ErrorCode;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class EsEventOutbox {
+public class EventOutbox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

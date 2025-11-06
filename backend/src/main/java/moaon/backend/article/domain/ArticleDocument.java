@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventAction;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
@@ -99,8 +99,8 @@ public class ArticleDocument {
         this.createdAt = article.getCreatedAt().truncatedTo(ChronoUnit.MILLIS);
     }
 
-    public EsEventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
-        return EsEventOutbox.builder()
+    public EventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
+        return EventOutbox.builder()
                 .entityId(this.getId())
                 .eventType("articles")
                 .action(eventAction)

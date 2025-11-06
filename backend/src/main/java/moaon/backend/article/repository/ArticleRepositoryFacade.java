@@ -9,9 +9,9 @@ import moaon.backend.article.domain.ArticleDocument;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventAction;
-import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.event.repository.EventOutboxRepository;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.dto.ProjectArticleQueryCondition;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class ArticleRepositoryFacade {
 
     private final ArticleDBRepository database;
     private final ArticleDocumentRepository elasticSearch;
-    private final EsEventOutboxRepository outboxRepository;
+    private final EventOutboxRepository outboxRepository;
     private final ObjectMapper objectMapper;
 
     public ArticleSearchResult search(ArticleQueryCondition condition) {
@@ -46,14 +46,14 @@ public class ArticleRepositoryFacade {
 
     public void updateClicksCount(Article article) {
         ArticleDocument articleDocument = new ArticleDocument(article);
-        EsEventOutbox outboxEvent = articleDocument.toEventOutbox(EventAction.UPDATED, objectMapper);
+        EventOutbox outboxEvent = articleDocument.toEventOutbox(EventAction.UPDATED, objectMapper);
         outboxRepository.save(outboxEvent);
     }
 
     public Article save(Article article) {
         Article saved = database.save(article);
         ArticleDocument document = new ArticleDocument(saved);
-        EsEventOutbox outboxEvent = document.toEventOutbox(EventAction.INSERT, objectMapper);
+        EventOutbox outboxEvent = document.toEventOutbox(EventAction.INSERT, objectMapper);
         outboxRepository.save(outboxEvent);
         return saved;
     }

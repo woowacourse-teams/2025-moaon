@@ -2,12 +2,12 @@ package moaon.backend.event.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
 
-public interface EsEventOutboxRepositoryCustom {
+public interface EventOutboxRepositoryCustom {
 
-    List<EsEventOutbox> findEventsByStatus(EventStatus status, int batchSize);
+    List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize);
 
     void markAsProcessed(List<Long> ids, LocalDateTime processedTime);
 

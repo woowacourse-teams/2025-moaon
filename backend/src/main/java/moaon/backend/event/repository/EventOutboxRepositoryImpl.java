@@ -4,18 +4,18 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
 
 import static moaon.backend.event.domain.QEsEventOutbox.esEventOutbox;
 
 @RequiredArgsConstructor
-public class EsEventOutboxRepositoryImpl implements EsEventOutboxRepositoryCustom {
+public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<EsEventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
+    public List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
         return queryFactory
                 .selectFrom(esEventOutbox)
                 .where(esEventOutbox.status.eq(status))

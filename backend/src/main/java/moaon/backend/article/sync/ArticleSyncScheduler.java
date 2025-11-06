@@ -10,9 +10,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
-import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.event.repository.EventOutboxRepository;
 import moaon.backend.global.exception.custom.CustomException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleSyncScheduler {
 
-    private final EsEventOutboxRepository outboxRepository;
+    private final EventOutboxRepository outboxRepository;
     private final ArticleEsSender articleEsSender;
     private final ObjectMapper objectMapper;
 
@@ -34,7 +34,7 @@ public class ArticleSyncScheduler {
     @Transactional
     public void pollAndProcessEvents() {
         try {
-            List<EsEventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING, BATCH_SIZE);
+            List<EventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING, BATCH_SIZE);
             if (events.isEmpty()) return;
 
             ProcessingResult result = processEvents(events);
@@ -45,10 +45,10 @@ public class ArticleSyncScheduler {
         }
     }
 
-    private ProcessingResult processEvents(List<EsEventOutbox> events) throws IOException {
+    private ProcessingResult processEvents(List<EventOutbox> events) throws IOException {
         ProcessingResult result = new ProcessingResult();
 
-        List<EsEventOutbox> validEvents = validateEvents(events, result);
+        List<EventOutbox> validEvents = validateEvents(events, result);
         if (validEvents.isEmpty()) return result;
 
         BulkResponse response = articleEsSender.processEvents(validEvents);
@@ -57,10 +57,10 @@ public class ArticleSyncScheduler {
         return result;
     }
 
-    private List<EsEventOutbox> validateEvents(List<EsEventOutbox> events, ProcessingResult result) {
-        List<EsEventOutbox> validEvents = new ArrayList<>();
+    private List<EventOutbox> validateEvents(List<EventOutbox> events, ProcessingResult result) {
+        List<EventOutbox> validEvents = new ArrayList<>();
 
-        for (EsEventOutbox event : events) {
+        for (EventOutbox event : events) {
             try {
                 event.getPayload(objectMapper);
                 validEvents.add(event);
@@ -73,13 +73,13 @@ public class ArticleSyncScheduler {
         return validEvents;
     }
 
-    private void handleBulkResponse(BulkResponse response, List<EsEventOutbox> events, ProcessingResult result) {
+    private void handleBulkResponse(BulkResponse response, List<EventOutbox> events, ProcessingResult result) {
         if (response == null || response.items() == null) return;
 
         List<BulkResponseItem> items = response.items();
         for (int i = 0; i < items.size(); i++) {
             BulkResponseItem item = items.get(i);
-            EsEventOutbox event = events.get(i);
+            EventOutbox event = events.get(i);
 
             if (item.error() == null) {
                 result.addSuccess(event);
@@ -95,22 +95,22 @@ public class ArticleSyncScheduler {
         processFailedEvents(result.getFail());
     }
 
-    private void processSuccessfulEvents(List<EsEventOutbox> successEvents) {
+    private void processSuccessfulEvents(List<EventOutbox> successEvents) {
         if (successEvents.isEmpty()) return;
 
         List<Long> ids = successEvents.stream()
-                .map(EsEventOutbox::getId)
+                .map(EventOutbox::getId)
                 .toList();
         outboxRepository.markAsProcessed(ids, LocalDateTime.now());
     }
 
-    private void processFailedEvents(List<EsEventOutbox> failedEvents) {
+    private void processFailedEvents(List<EventOutbox> failedEvents) {
         if (failedEvents.isEmpty()) return;
 
         List<Long> toIncrement = new ArrayList<>();
         List<Long> toMarkFailed = new ArrayList<>();
 
-        for (EsEventOutbox failed : failedEvents) {
+        for (EventOutbox failed : failedEvents) {
             if (failed.getFailCount() + 1 >= MAX_RETRIES) {
                 toMarkFailed.add(failed.getId());
             } else {
@@ -124,14 +124,14 @@ public class ArticleSyncScheduler {
 
     @Getter
     private static class ProcessingResult {
-        private final List<EsEventOutbox> success = new ArrayList<>();
-        private final List<EsEventOutbox> fail = new ArrayList<>();
+        private final List<EventOutbox> success = new ArrayList<>();
+        private final List<EventOutbox> fail = new ArrayList<>();
 
-        public void addSuccess(EsEventOutbox event) {
+        public void addSuccess(EventOutbox event) {
             success.add(event);
         }
 
-        public void addFail(EsEventOutbox event) {
+        public void addFail(EventOutbox event) {
             fail.add(event);
         }
     }

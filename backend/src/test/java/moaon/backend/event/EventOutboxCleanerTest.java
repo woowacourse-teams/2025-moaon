@@ -9,7 +9,7 @@ import static org.mockito.Mockito.times;
 
 import java.time.LocalDateTime;
 import moaon.backend.event.domain.EventStatus;
-import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.event.repository.EventOutboxRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,13 +19,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class EsEventOutboxCleanerTest {
+class EventOutboxCleanerTest {
 
     @Mock
-    private EsEventOutboxRepository outboxRepository;
+    private EventOutboxRepository outboxRepository;
 
     @InjectMocks
-    private EsEventOutboxCleaner cleaner;
+    private EventOutboxCleaner cleaner;
 
     @DisplayName("7일 이전의 처리 완료된 이벤트를 삭제한다")
     @Test

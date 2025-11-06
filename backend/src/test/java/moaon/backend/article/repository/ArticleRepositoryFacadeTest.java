@@ -15,9 +15,9 @@ import moaon.backend.article.domain.Sector;
 import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventAction;
-import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.event.repository.EventOutboxRepository;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -33,7 +33,7 @@ class ArticleRepositoryFacadeTest {
 
     private final ArticleDocumentRepository articleDocumentRepository = mock(ArticleDocumentRepository.class);
     private final ArticleDBRepository articleDBRepository = mock(ArticleDBRepository.class);
-    private final EsEventOutboxRepository outboxRepository = mock(EsEventOutboxRepository.class);
+    private final EventOutboxRepository outboxRepository = mock(EventOutboxRepository.class);
     private final ObjectMapper objectMapper = mock(ObjectMapper.class);
 
     private final ArticleRepositoryFacade articleRepositoryFacade = new ArticleRepositoryFacade(
@@ -99,7 +99,7 @@ class ArticleRepositoryFacadeTest {
         Article article = new ArticleFixtureBuilder().build();
         when(articleDBRepository.save(eq(article))).thenReturn(article);
         ArticleDocument document = new ArticleDocument(article);
-        EsEventOutbox outboxEvent = document.toEventOutbox(EventAction.INSERT, objectMapper);
+        EventOutbox outboxEvent = document.toEventOutbox(EventAction.INSERT, objectMapper);
         // when
         articleRepositoryFacade.save(article);
 

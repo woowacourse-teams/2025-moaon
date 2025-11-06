@@ -16,7 +16,7 @@ import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.article.service.ArticleService;
 import moaon.backend.article.sync.ArticleSyncScheduler;
-import moaon.backend.event.repository.EsEventOutboxRepository;
+import moaon.backend.event.repository.EventOutboxRepository;
 import moaon.backend.fixture.ArticleQueryConditionBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -68,7 +68,7 @@ class OutboxIntegrationTest {
     private ArticleDBRepository articleDBRepository;
 
     @Autowired
-    private EsEventOutboxRepository outboxRepository;
+    private EventOutboxRepository outboxRepository;
 
     @Autowired
     private ArticleDocumentOperations articleDocumentRepository;

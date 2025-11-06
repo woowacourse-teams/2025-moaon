@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaon.backend.event.domain.EsEventOutbox;
+import moaon.backend.event.domain.EventOutbox;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -20,13 +20,13 @@ public class ArticleEsSender {
     private final ElasticsearchClient esClient;
     private final ObjectMapper objectMapper;
 
-    public BulkResponse processEvents(List<EsEventOutbox> preparedEvents) throws IOException {
+    public BulkResponse processEvents(List<EventOutbox> preparedEvents) throws IOException {
         if (preparedEvents.isEmpty()) {
             return BulkResponse.of(b -> b.items(List.of()).errors(false).took(0));
         }
 
         BulkRequest.Builder br = new BulkRequest.Builder();
-        for (EsEventOutbox event : preparedEvents) {
+        for (EventOutbox event : preparedEvents) {
             if (event.isUpsert()) {
                 appendUpsertOperation(event, br);
             } else {
@@ -37,7 +37,7 @@ public class ArticleEsSender {
         return esClient.bulk(br.build());
     }
 
-    private void appendUpsertOperation(EsEventOutbox event, Builder br) {
+    private void appendUpsertOperation(EventOutbox event, Builder br) {
         br.operations(op -> op
                 .update(u -> u
                         .index(event.getEventType())
@@ -50,7 +50,7 @@ public class ArticleEsSender {
         );
     }
 
-    private void appendDeleteOperation(EsEventOutbox event, Builder br) {
+    private void appendDeleteOperation(EventOutbox event, Builder br) {
         br.operations(op -> op
                 .delete(d -> d
                         .index(event.getEventType())
