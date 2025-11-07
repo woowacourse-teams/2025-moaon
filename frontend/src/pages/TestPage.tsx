@@ -97,6 +97,7 @@ function TestPage() {
   const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(
     null,
   );
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     // Service Worker 등록
@@ -146,6 +147,10 @@ function TestPage() {
       )} */}
       <h1>배포 ver: {APP_VERSION}</h1>
       <p>현재 빌드: {CURRENT_VERSION}</p>
+      <p>카운트: {count}</p>
+      <button type="button" onClick={() => setCount((c) => c + 1)}>
+        카운트 증가
+      </button>
     </div>
   );
 }
