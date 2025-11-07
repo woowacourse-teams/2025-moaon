@@ -138,13 +138,13 @@ function TestPage() {
 
   return (
     <div>
-      {/* {showUpdateBanner && (
+      {showUpdateBanner && (
         <UpdateBanner
           onUpdate={handleUpdate}
           onDismiss={handleDismiss}
           newVersion={APP_VERSION}
         />
-      )} */}
+      )}
       <h1>배포 ver: {APP_VERSION}</h1>
       <p>현재 빌드: {CURRENT_VERSION}</p>
       <p>카운트: {count}</p>
