@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @Import(QueryDslConfig.class)
-class EventOutboxRepositoryTest {
+class EventOutboxRepositoryImplTest {
 
     @Autowired
     private EventOutboxRepository eventOutboxRepository;
