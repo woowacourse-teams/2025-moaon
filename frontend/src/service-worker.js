@@ -9,6 +9,7 @@ import {
 } from "workbox-strategies";
 
 // precacheAndRoute 실행
+console.log("hi");
 precacheAndRoute(self.__WB_MANIFEST);
 
 // // HTML - 네트워크 우선 (3초 타임아웃)
