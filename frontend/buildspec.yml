@@ -16,7 +16,7 @@ phases:
       - pnpm run build
       - pwd
       - ls -al dist
-      # - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete
+      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete
 
 artifacts:
   base-directory: frontend/dist
