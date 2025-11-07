@@ -8,14 +8,18 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-
+@Repository
+@Transactional
 @RequiredArgsConstructor
 public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
         return queryFactory
                 .selectFrom(eventOutbox)
@@ -26,10 +30,10 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     }
 
     @Override
-    public void markAsProcessed(List<Long> ids, LocalDateTime processedTime) {
+    public void markAsProcessed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
-                .set(eventOutbox.processedAt, processedTime)
+                .set(eventOutbox.processedAt, LocalDateTime.now())
                 .set(eventOutbox.status, EventStatus.PROCESSED)
                 .where(eventOutbox.id.in(ids))
                 .execute();

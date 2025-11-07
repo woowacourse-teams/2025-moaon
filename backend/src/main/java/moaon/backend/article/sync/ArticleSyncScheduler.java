@@ -4,7 +4,6 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -35,7 +34,9 @@ public class ArticleSyncScheduler {
     public void pollAndProcessEvents() {
         try {
             List<EventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING, BATCH_SIZE);
-            if (events.isEmpty()) return;
+            if (events.isEmpty()) {
+                return;
+            }
 
             ProcessingResult result = processEvents(events);
             updateEventsState(result);
@@ -49,11 +50,17 @@ public class ArticleSyncScheduler {
         ProcessingResult result = new ProcessingResult();
 
         List<EventOutbox> validEvents = validateEvents(events, result);
-        if (validEvents.isEmpty()) return result;
+        if (validEvents.isEmpty()) {
+            return result;
+        }
+        try {
+            BulkResponse response = articleEsSender.processEvents(validEvents);
+            handleBulkResponse(response, validEvents, result);
 
-        BulkResponse response = articleEsSender.processEvents(validEvents);
-        handleBulkResponse(response, validEvents, result);
-
+        } catch (IOException e) {
+            log.warn("ES 색인 과정 실패. 배치 전체를 재시도 대상으로 처리합니다. {}", e.getMessage());
+            result.addFail(validEvents);
+        }
         return result;
     }
 
@@ -74,7 +81,9 @@ public class ArticleSyncScheduler {
     }
 
     private void handleBulkResponse(BulkResponse response, List<EventOutbox> events, ProcessingResult result) {
-        if (response == null || response.items() == null) return;
+        if (response == null || response.items() == null) {
+            return;
+        }
 
         List<BulkResponseItem> items = response.items();
         for (int i = 0; i < items.size(); i++) {
@@ -96,16 +105,20 @@ public class ArticleSyncScheduler {
     }
 
     private void processSuccessfulEvents(List<EventOutbox> successEvents) {
-        if (successEvents.isEmpty()) return;
+        if (successEvents.isEmpty()) {
+            return;
+        }
 
         List<Long> ids = successEvents.stream()
                 .map(EventOutbox::getId)
                 .toList();
-        outboxRepository.markAsProcessed(ids, LocalDateTime.now());
+        outboxRepository.markAsProcessed(ids);
     }
 
     private void processFailedEvents(List<EventOutbox> failedEvents) {
-        if (failedEvents.isEmpty()) return;
+        if (failedEvents.isEmpty()) {
+            return;
+        }
 
         List<Long> toIncrement = new ArrayList<>();
         List<Long> toMarkFailed = new ArrayList<>();
@@ -118,8 +131,12 @@ public class ArticleSyncScheduler {
             }
         }
 
-        if (!toIncrement.isEmpty()) outboxRepository.incrementFailCount(toIncrement);
-        if (!toMarkFailed.isEmpty()) outboxRepository.markAsFailed(toMarkFailed);
+        if (!toIncrement.isEmpty()) {
+            outboxRepository.incrementFailCount(toIncrement);
+        }
+        if (!toMarkFailed.isEmpty()) {
+            outboxRepository.markAsFailed(toMarkFailed);
+        }
     }
 
     @Getter
@@ -133,6 +150,10 @@ public class ArticleSyncScheduler {
 
         public void addFail(EventOutbox event) {
             fail.add(event);
+        }
+
+        public void addFail(List<EventOutbox> events) {
+            fail.addAll(events);
         }
     }
 }
