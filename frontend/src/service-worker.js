@@ -109,6 +109,8 @@ self.addEventListener("message", (event) => {
 // 설치 이벤트
 self.addEventListener("install", (event) => {
   console.log("[SW] Installing new version...");
+  self.skipWaiting();
+  console.log("skip!");
 });
 
 // 활성화 이벤트
@@ -126,7 +128,6 @@ self.addEventListener("activate", (event) => {
       );
       // 모든 클라이언트 즉시 제어
       await self.clients.claim();
-      console.log("제어권 변경!");
     })(),
   );
 });
