@@ -1,32 +1,31 @@
 package moaon.backend.event.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import moaon.backend.article.dao.ArticleDao;
 import moaon.backend.event.domain.EventAction;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
 import moaon.backend.global.config.QueryDslConfig;
+import moaon.backend.project.dao.ProjectDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-@Import(QueryDslConfig.class)
+@DataJpaTest
+@Transactional(propagation = NOT_SUPPORTED)
+@Import({QueryDslConfig.class, ArticleDao.class, ProjectDao.class})
 class EventOutboxRepositoryImplTest {
 
     @Autowired
     private EventOutboxRepository eventOutboxRepository;
-
-    @Autowired
-    private EntityManager em;
 
     @Test
     @DisplayName("특정 상태(PENDING)의 이벤트 목록을 오래된 순으로 N개 조회한다")
@@ -80,9 +79,8 @@ class EventOutboxRepositoryImplTest {
 
         // when
         eventOutboxRepository.markAsProcessed(List.of(event1.getId(), event2.getId()));
-        em.flush();
-        em.clear();
         List<EventOutbox> processedEvents = eventOutboxRepository.findEventsByStatus(EventStatus.PROCESSED, 5);
+
         // then
         assertThat(processedEvents).hasSize(2);
         assertThat(processedEvents).extracting(EventOutbox::getStatus).containsOnly(EventStatus.PROCESSED);
@@ -102,8 +100,6 @@ class EventOutboxRepositoryImplTest {
 
         // when
         eventOutboxRepository.incrementFailCount(List.of(event.getId()));
-        em.flush();
-        em.clear();
         Optional<EventOutbox> findEvent = eventOutboxRepository.findById(event.getId());
 
         // then
@@ -127,8 +123,6 @@ class EventOutboxRepositoryImplTest {
 
         // when
         eventOutboxRepository.markAsFailed(idsToFail);
-        em.flush();
-        em.clear();
         Optional<EventOutbox> findEvent = eventOutboxRepository.findById(event.getId());
 
         // then

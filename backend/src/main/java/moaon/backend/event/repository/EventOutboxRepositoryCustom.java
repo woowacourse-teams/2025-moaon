@@ -1,6 +1,5 @@
 package moaon.backend.event.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
