@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
-import jakarta.persistence.EntityManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -25,6 +24,7 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,11 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Import({RepositoryHelper.class, QueryDslConfig.class})
-@Transactional
 class OutboxIntegrationTest {
 
     @Autowired
@@ -54,9 +52,6 @@ class OutboxIntegrationTest {
     @MockitoBean
     private ArticleEsSender articleEsSender;
 
-    @Autowired
-    private EntityManager em;
-
     private Project project;
     private TechStack techStack;
 
@@ -65,6 +60,11 @@ class OutboxIntegrationTest {
         ProjectFixtureBuilder projectFixtureBuilder = new ProjectFixtureBuilder();
         project = repositoryHelper.save(projectFixtureBuilder.build());
         techStack = repositoryHelper.save(Fixture.anyTechStack());
+    }
+
+    @AfterEach
+    void clear() {
+        outboxRepository.deleteAll();
     }
 
     @Test
@@ -92,8 +92,6 @@ class OutboxIntegrationTest {
         // when
         articleService.save(List.of(request), project.getAuthor());
         eventPoller.pollAndProcessEvents();
-        em.flush();
-        em.clear();
 
         // then
         List<EventOutbox> outboxes = outboxRepository.findAll();
@@ -121,7 +119,6 @@ class OutboxIntegrationTest {
         // when
         articleService.save(List.of(request), project.getAuthor());
 
-        em.flush();
         List<EventOutbox> pendingOutboxes = outboxRepository.findAll();
 
         //then
@@ -132,8 +129,6 @@ class OutboxIntegrationTest {
 
         //when
         eventPoller.pollAndProcessEvents();
-        em.flush();
-        em.clear();
 
         // then
         EventOutbox failedEvent = outboxRepository.findById(pendingEvent.getId()).orElseThrow();
