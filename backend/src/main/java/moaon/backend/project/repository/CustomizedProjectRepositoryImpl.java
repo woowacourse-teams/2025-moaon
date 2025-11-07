@@ -30,30 +30,30 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         SearchKeyword search = condition.search();
         List<String> categoryNames = condition.categoryNames();
 
-        FilteringIds filteringIds = FilteringIds.init();
-        filteringIds = applyTechStacks(filteringIds, techStackNames);
-        filteringIds = applyCategories(filteringIds, categoryNames);
-        filteringIds = applySearch(filteringIds, search);
-
-        if (filteringIds.hasEmptyResult()) {
-            return Projects.empty(limit);
-        }
-
-        List<Project> projects = projectDao.findProjects(condition, filteringIds.getIds());
-        return new Projects(projects, calculateTotalCount(filteringIds), limit);
-
-//        ProjectIds projectIds = ProjectIds.init();
-//        projectIds = applyTechStacks(projectIds, techStackNames);
-//        projectIds = applyCategories(projectIds, categoryNames);
-//        projectIds = applySearch(projectIds, search);
+//        FilteringIds filteringIds = FilteringIds.init();
+//        filteringIds = applyTechStacks(filteringIds, techStackNames);
+//        filteringIds = applyCategories(filteringIds, categoryNames);
+//        filteringIds = applySearch(filteringIds, search);
 //
-//        if (projectIds.hasEmptyResult()) {
+//        if (filteringIds.hasEmptyResult()) {
 //            return Projects.empty(limit);
 //        }
 //
-//        List<Long> ids = projectIds.getProjectIds();
-//        List<Project> projects = projectDao.findProjects(condition, ids);
-//        return new Projects(projects, calculateTotalCount(ids), limit);
+//        List<Project> projects = projectDao.findProjects(condition, filteringIds.getIds());
+//        return new Projects(projects, calculateTotalCount(filteringIds), limit);
+
+        ProjectIds projectIds = ProjectIds.init();
+        projectIds = applyTechStacks(projectIds, techStackNames);
+        projectIds = applyCategories(projectIds, categoryNames);
+        projectIds = applySearch(projectIds, search);
+
+        if (projectIds.hasEmptyResult()) {
+            return Projects.empty(limit);
+        }
+
+        List<Long> ids = projectIds.getProjectIds();
+        List<Project> projects = projectDao.findProjects(condition, ids);
+        return new Projects(projects, calculateTotalCount(ids), limit);
     }
 
     @Override
