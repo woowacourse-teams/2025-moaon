@@ -10,9 +10,7 @@ import static moaon.backend.techStack.domain.QTechStack.techStack;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,7 +25,6 @@ import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.FilteringIds;
 import moaon.backend.project.repository.ProjectFullTextSearchHQLFunction;
 import moaon.backend.techStack.domain.ProjectTechStack;
 import org.springframework.stereotype.Repository;
@@ -108,18 +105,6 @@ public class ProjectDao {
                 .fetch());
     }
 
-    private BooleanExpression projectIdInFilteringIds(
-            FilteringIds filteringIds,
-            SimpleExpression<Long> projectIdExpression
-    ) {
-        if (filteringIds.isHasResult()) {
-            return projectIdExpression.in(filteringIds.getIds());
-        }
-
-        return null;
-    }
-
-
     private BooleanExpression idsInCondition(Set<Long> projectIdsByFilter) {
         if (CollectionUtils.isEmpty(projectIdsByFilter)) {
             return null;
@@ -144,77 +129,10 @@ public class ProjectDao {
                 .fetch();
     }
 
-    public List<Project> findProjects(ProjectQueryCondition condition, List<Long> projectIdsByFilter) {
-        Cursor<?> cursor = condition.cursor();
-        ProjectSortType sortBy = condition.projectSortType();
-        int limit = condition.limit();
-
-        int fetchExtraForHasNext = 1;
-        return jpaQueryFactory.selectFrom(project)
-                .where(
-                        idsInCondition(projectIdsByFilter),
-                        applyCursor(cursor)
-                )
-                .orderBy(toOrderBy(sortBy))
-                .limit(limit + fetchExtraForHasNext)
-                .fetch();
-    }
-
-    public JPQLQuery<Long> findProjectIdsByTechStacks(ProjectIds projectIds, List<String> techStacks) {
-        return jpaQueryFactory.select(projectTechStack.project.id)
-                .from(projectTechStack)
-                .where(
-                        projectTechStack.techStack.name.in(techStacks),
-                        projectIdInFilteringIds(projectIds, projectTechStack.project.id)
-                )
-                .groupBy(projectTechStack.project.id)
-                .having(projectTechStack.techStack.name.count().eq((long) techStacks.size()));
-    }
-
-    public JPQLQuery<Long> findProjectIdsByCategories(ProjectIds projectIds, List<String> categories) {
-        return jpaQueryFactory.select(projectCategory.project.id)
-                .from(projectCategory)
-                .where(
-                        projectCategory.category.name.in(categories),
-                        projectIdInFilteringIds(projectIds, projectCategory.project.id)
-                )
-                .groupBy(projectCategory.project.id)
-                .having(projectCategory.category.name.count().eq((long) categories.size()));
-    }
-
-    public JPQLQuery<Long> findProjectIdsBySearchKeyword(ProjectIds projectIds, SearchKeyword searchKeyword) {
-        return jpaQueryFactory.select(project.id)
-                .from(project)
-                .where(
-                        satisfiesMatchScore(searchKeyword),
-                        projectIdInFilteringIds(projectIds, project.id)
-                );
-    }
-
     public long count() {
         return Optional.ofNullable(jpaQueryFactory.select(Wildcard.count)
                 .from(project)
                 .fetchOne()).orElse(0L);
-    }
-
-    private BooleanExpression projectIdInFilteringIds(
-            ProjectIds projectIds,
-            SimpleExpression<Long> projectIdExpression
-    ) {
-        if (projectIds.isHasResult()) {
-            return projectIdExpression.in(projectIds.getIds());
-        }
-
-        return null;
-    }
-
-
-    private BooleanExpression idsInCondition(List<Long> projectIdsByFilter) {
-        if (CollectionUtils.isEmpty(projectIdsByFilter)) {
-            return null;
-        }
-
-        return project.id.in(projectIdsByFilter);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {

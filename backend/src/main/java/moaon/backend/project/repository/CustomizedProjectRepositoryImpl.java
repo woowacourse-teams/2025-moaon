@@ -1,6 +1,5 @@
 package moaon.backend.project.repository;
 
-import com.querydsl.jpa.JPQLQuery;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,6 @@ import moaon.backend.global.domain.SearchKeyword;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.project.dao.ProjectDao;
-import moaon.backend.project.dao.ProjectIds;
 import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.Projects;
@@ -30,30 +28,17 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         SearchKeyword search = condition.search();
         List<String> categoryNames = condition.categoryNames();
 
-//        FilteringIds filteringIds = FilteringIds.init();
-//        filteringIds = applyTechStacks(filteringIds, techStackNames);
-//        filteringIds = applyCategories(filteringIds, categoryNames);
-//        filteringIds = applySearch(filteringIds, search);
-//
-//        if (filteringIds.hasEmptyResult()) {
-//            return Projects.empty(limit);
-//        }
-//
-//        List<Project> projects = projectDao.findProjects(condition, filteringIds.getIds());
-//        return new Projects(projects, calculateTotalCount(filteringIds), limit);
+        FilteringIds filteringIds = FilteringIds.init();
+        filteringIds = applyTechStacks(filteringIds, techStackNames);
+        filteringIds = applyCategories(filteringIds, categoryNames);
+        filteringIds = applySearch(filteringIds, search);
 
-        ProjectIds projectIds = ProjectIds.init();
-        projectIds = applyTechStacks(projectIds, techStackNames);
-        projectIds = applyCategories(projectIds, categoryNames);
-        projectIds = applySearch(projectIds, search);
-
-        if (projectIds.hasEmptyResult()) {
+        if (filteringIds.hasEmptyResult()) {
             return Projects.empty(limit);
         }
 
-        List<Long> ids = projectIds.getProjectIds();
-        List<Project> projects = projectDao.findProjects(condition, ids);
-        return new Projects(projects, calculateTotalCount(ids), limit);
+        List<Project> projects = projectDao.findProjects(condition, filteringIds.getIds());
+        return new Projects(projects, calculateTotalCount(filteringIds), limit);
     }
 
     @Override
@@ -105,40 +90,5 @@ public class CustomizedProjectRepositoryImpl implements CustomizedProjectReposit
         }
 
         return filteringIds.size();
-    }
-
-    private ProjectIds applyTechStacks(ProjectIds projectIds, List<String> techStack) {
-        if (projectIds.hasEmptyResult() || CollectionUtils.isEmpty(techStack)) {
-            return projectIds;
-        }
-
-        JPQLQuery<Long> ids = projectDao.findProjectIdsByTechStacks(projectIds, techStack);
-        return ProjectIds.of(ids);
-    }
-
-    private ProjectIds applyCategories(ProjectIds projectIds, List<String> categories) {
-        if (projectIds.hasEmptyResult() || CollectionUtils.isEmpty(categories)) {
-            return projectIds;
-        }
-
-        JPQLQuery<Long> ids = projectDao.findProjectIdsByCategories(projectIds, categories);
-        return ProjectIds.of(ids);
-    }
-
-    private ProjectIds applySearch(ProjectIds projectIds, SearchKeyword keyword) {
-        if (projectIds.hasEmptyResult() || keyword == null || !keyword.hasValue()) {
-            return projectIds;
-        }
-
-        JPQLQuery<Long> ids = projectDao.findProjectIdsBySearchKeyword(projectIds, keyword);
-        return ProjectIds.of(ids);
-    }
-
-    private long calculateTotalCount(List<Long> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return projectDao.count();
-        }
-
-        return ids.size();
     }
 }
