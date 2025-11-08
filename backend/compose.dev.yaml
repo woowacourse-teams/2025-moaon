@@ -31,7 +31,7 @@ services:
       JAVA_TOOL_OPTIONS: >
         -Xlog:gc*,gc+heap,gc+age=trace,safepoint:file=/app/logs/gc.log:time,uptime,level,tags
     volumes:
-      - /Users/yuminjae/Downloads:/app/logs
+      - ./logs:/app/logs
 
   node-exporter:
     image: prom/node-exporter:latest
