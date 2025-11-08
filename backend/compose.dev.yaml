@@ -28,7 +28,8 @@ services:
       SERVER_TOMCAT_THREADS_MIN_SPARE: ${SERVER_TOMCAT_THREADS_MIN_SPARE}
       SERVER_TOMCAT_CONNECTION_TIMEOUT: ${SERVER_TOMCAT_CONNECTION_TIMEOUT}
       GPT_API_KEY: ${GPT_API_KEY}
-      JAVA_TOOL_OPTIONS: "-Xloggc:/app/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
+      JAVA_TOOL_OPTIONS: >
+        -Xlog:gc*,gc+heap,gc+age=trace,safepoint:file=/app/logs/gc.log:time,uptime,level,tags
     volumes:
       - ./logs:/app/logs
 
