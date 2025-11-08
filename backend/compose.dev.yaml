@@ -30,8 +30,6 @@ services:
       GPT_API_KEY: ${GPT_API_KEY}
       JAVA_TOOL_OPTIONS: >
         -Xlog:gc*,gc+heap,gc+age=trace,safepoint:file=/app/logs/gc.log:time,uptime,level,tags
-    volumes:
-      - ./logs:/app/logs
 
   node-exporter:
     image: prom/node-exporter:latest
