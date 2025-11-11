@@ -13,6 +13,7 @@ export function register(config?: ServiceWorkerConfig) {
   }
 
   if ("serviceWorker" in navigator) {
+    console.log("sw.js 등록 시도");
     const wb = new Workbox("/sw.js");
 
     // 새 Service Worker가 설치되고 대기 중일 때
@@ -63,11 +64,11 @@ export function register(config?: ServiceWorkerConfig) {
         console.error("[SW] Service Worker 등록 실패:", error);
       });
 
-    // 1분마다 업데이트 체크
-    setInterval(() => {
-      console.log("check");
-      wb.update();
-    }, 60 * 60 * 1000);
+    // // 1분마다 업데이트 체크
+    // setInterval(() => {
+    //   console.log("check");
+    //   wb.update();
+    // }, 60 * 60 * 1000);
 
     return wb;
   }
