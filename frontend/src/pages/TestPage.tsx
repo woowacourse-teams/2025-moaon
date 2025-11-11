@@ -101,6 +101,7 @@ function TestPage() {
 
   useEffect(() => {
     // Service Worker 등록
+    console.log("[TestPage] Service Worker 등록 시도");
     const wb = register({
       onUpdate: (registration) => {
         console.log("[App] 새 버전 감지됨");
