@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { register } from "@/worker";
+import { register, unregister } from "@/worker";
 
 const APP_VERSION = process.env.APP_VERSION;
 const CURRENT_VERSION = process.env.BUILD_HASH;
@@ -119,6 +119,7 @@ function TestPage() {
 
     return () => {
       // cleanup
+      unregister();
     };
   }, []);
 
