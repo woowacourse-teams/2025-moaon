@@ -1,7 +1,7 @@
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 import * as navigationPreload from "workbox-navigation-preload";
-import { precacheAndRoute } from "workbox-precaching";
+import { NavigationRoute, precacheAndRoute, Route } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 
@@ -9,6 +9,30 @@ import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 // precacheAndRoute(self.__WB_MANIFEST);
 
 navigationPreload.enable();
+
+const navigationRoute = new NavigationRoute(
+  new NetworkFirst({
+    cacheName: "navigations",
+  }),
+);
+
+// Register the navigation route
+registerRoute(navigationRoute);
+
+// Create a route for image, script, or style requests that use a
+// stale-while-revalidate strategy. This route will be unaffected
+// by navigation preload.
+const staticAssetsRoute = new Route(
+  ({ request }) => {
+    return ["image", "script", "style"].includes(request.destination);
+  },
+  new StaleWhileRevalidate({
+    cacheName: "static-assets",
+  }),
+);
+
+// Register the route handling static assets
+registerRoute(staticAssetsRoute);
 
 // // HTML - 네트워크 우선 (3초 타임아웃)
 registerRoute(
