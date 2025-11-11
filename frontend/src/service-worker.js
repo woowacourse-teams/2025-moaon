@@ -9,7 +9,10 @@ import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 // // HTML - 네트워크 우선 (3초 타임아웃)
 registerRoute(
-  ({ request }) => request.mode === "navigate",
+  ({ request }) => {
+    console.log(request);
+    return request.mode === "navigate";
+  },
   new NetworkFirst({
     cacheName: "pages",
     networkTimeoutSeconds: 3,
