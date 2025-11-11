@@ -120,7 +120,6 @@ function TestPage() {
 
     return () => {
       // cleanup
-      unregister();
     };
   }, []);
 
