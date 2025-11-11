@@ -20,6 +20,11 @@ const NAV_LIST = [
     href: "/wooteco",
     text: "우아한테크코스",
   },
+  {
+    id: 4,
+    href: "/test",
+    text: "테스트 페이지",
+  },
 ];
 
 function NavBar() {
