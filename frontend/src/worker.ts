@@ -66,7 +66,7 @@ export function register(config?: ServiceWorkerConfig) {
     // 1분마다 업데이트 체크
     setInterval(() => {
       wb.update();
-    }, 1 * 60 * 1000);
+    }, 60 * 60 * 1000);
 
     return wb;
   }
