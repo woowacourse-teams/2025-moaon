@@ -151,6 +151,9 @@ function TestPage() {
       <button type="button" onClick={() => setCount((c) => c + 1)}>
         카운트 증가
       </button>
+      <button type="button" onClick={() => window.location.reload()}>
+        윈도우 리로드
+      </button>
     </div>
   );
 }
