@@ -5,7 +5,24 @@ import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 // precacheAndRoute 실행
-precacheAndRoute(self.__WB_MANIFEST);
+// precacheAndRoute(self.__WB_MANIFEST);
+
+// // HTML - 네트워크 우선 (3초 타임아웃)
+registerRoute(
+  ({ request }) => request.mode === "navigate",
+  new NetworkFirst({
+    cacheName: "pages",
+    networkTimeoutSeconds: 3,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        maxEntries: 50,
+      }),
+    ],
+  }),
+);
 
 // JS/CSS - Stale While Revalidate
 registerRoute(
