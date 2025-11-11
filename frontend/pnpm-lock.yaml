@@ -44,6 +44,9 @@ importers:
       workbox-expiration:
         specifier: ^7.3.0
         version: 7.3.0
+      workbox-navigation-preload:
+        specifier: ^7.3.0
+        version: 7.3.0
       workbox-precaching:
         specifier: ^7.3.0
         version: 7.3.0

@@ -1,11 +1,14 @@
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
+import * as navigationPreload from "workbox-navigation-preload";
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 // precacheAndRoute 실행
 // precacheAndRoute(self.__WB_MANIFEST);
+
+navigationPreload.enable();
 
 // // HTML - 네트워크 우선 (3초 타임아웃)
 registerRoute(
