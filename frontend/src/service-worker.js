@@ -14,15 +14,12 @@ self.addEventListener("fetch", (event) => {
           "workbox-precache-v2-https://moaon.site/",
         );
         const oldCacheKey = getCacheKeyForURL("/index.html");
-        console.log("Old Cache Key:", oldCacheKey);
         const oldHTML = await cache.match(oldCacheKey);
 
         const keys = await cache.keys();
-        console.log(keys);
         for (const key of keys) {
           if (key.url.includes("/index.html") && key.url !== oldCacheKey) {
             const newHTML = await cache.match(key);
-            console.log("New HTML:", key.url);
             if (newHTML) {
               return newHTML;
             }
