@@ -36,7 +36,7 @@ self.addEventListener("activate", (event) => {
       const cacheNames = await caches.keys();
       await Promise.all(
         cacheNames
-          .filter((cacheName) => cacheName !== CACHE_NAME)
+          .filter((cacheName) => cacheName !== "static-resources")
           .map((cacheName) => caches.delete(cacheName)),
       );
       await self.clients.claim();
