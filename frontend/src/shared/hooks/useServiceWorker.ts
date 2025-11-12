@@ -15,9 +15,6 @@ export const useServiceWorker = () => {
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
-      onSuccess: () => {
-        console.log("[App] Service Worker 등록 성공");
-      },
       onWaiting: (registration) => {
         console.log("[App] 새 버전이 대기 중입니다");
         setWaitingWorker(registration.waiting);
