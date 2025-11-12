@@ -64,12 +64,6 @@ export function register(config?: ServiceWorkerConfig) {
         console.error("[SW] Service Worker 등록 실패:", error);
       });
 
-    // 1분마다 업데이트 체크
-    setInterval(() => {
-      console.log("check");
-      wb.update();
-    }, 1 * 60 * 1000);
-
     return wb;
   }
 }
