@@ -34,6 +34,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       const cacheNames = await caches.keys();
+      console.log("Existing cache names:", cacheNames);
       await Promise.all(
         cacheNames
           .filter((cacheName) => cacheName !== "static-resources")
