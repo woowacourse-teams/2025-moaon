@@ -5,9 +5,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
-  const url = new URL(req.url);
-  console.log("==============================");
-  console.log(url.pathname);
 
   // CSR 라우트 요청(일반적으로 mode가 'navigate')이면 처리
   if (req.mode === "navigate") {
