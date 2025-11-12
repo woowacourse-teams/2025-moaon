@@ -1,5 +1,10 @@
-import { getCacheKeyForURL, precacheAndRoute } from "workbox-precaching";
+import {
+  cleanupOutdatedCaches,
+  getCacheKeyForURL,
+  precacheAndRoute,
+} from "workbox-precaching";
 
+cleanupOutdatedCaches();
 // precacheAndRoute 실행
 precacheAndRoute(self.__WB_MANIFEST);
 
