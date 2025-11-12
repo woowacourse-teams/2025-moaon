@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.1.64",
+  "version": "1.1.65",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -53,6 +53,7 @@
     "react-ga4": "^2.1.0",
     "react-router": "^7.6.3",
     "react-tooltip": "^5.30.0",
+    "workbox-broadcast-update": "^7.3.0",
     "workbox-cacheable-response": "^7.3.0",
     "workbox-expiration": "^7.3.0",
     "workbox-navigation-preload": "^7.3.0",

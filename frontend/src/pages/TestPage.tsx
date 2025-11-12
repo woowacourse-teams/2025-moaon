@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { register, unregister } from "@/worker";
+import { register } from "@/worker";
 
 const APP_VERSION = process.env.APP_VERSION;
 const CURRENT_VERSION = process.env.BUILD_HASH;
@@ -9,14 +9,11 @@ function TestPage() {
   const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(
     null,
   );
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
     // Service Worker 등록
-    console.log("[TestPage] Service Worker 등록 시도");
     const wb = register({
       onUpdate: (registration) => {
-        console.log("[App] 새 버전 감지됨");
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
@@ -24,23 +21,34 @@ function TestPage() {
         console.log("[App] Service Worker 등록 성공");
       },
       onWaiting: (registration) => {
-        console.log("[App] 새 버전이 대기 중입니다");
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
     });
 
+    // BroadcastUpdatePlugin에서 보내는 메시지 수신
+    const messageHandler = async (event: MessageEvent) => {
+      if (event.data?.meta === "workbox-broadcast-update") {
+        const { cacheName, updatedURL } = event.data.payload;
+        console.log("[Broadcast] 업데이트 감지:", cacheName, updatedURL);
+        setShowUpdateBanner(true);
+      }
+    };
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.addEventListener("message", messageHandler);
+    }
+
     return () => {
-      // cleanup
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.removeEventListener("message", messageHandler);
+      }
     };
   }, []);
 
   const handleUpdate = () => {
     if (waitingWorker) {
-      // 새 Service Worker에게 즉시 활성화 메시지 전송
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
-
-      // controlling 이벤트에서 자동으로 reload 됨
       setShowUpdateBanner(false);
     }
   };
@@ -60,10 +68,6 @@ function TestPage() {
       )}
       <h1>배포 ver: {APP_VERSION}</h1>
       <p>현재 빌드: {CURRENT_VERSION}</p>
-      <p>카운트: {count}</p>
-      <button type="button" onClick={() => setCount((c) => c + 1)}>
-        카운트 증가
-      </button>
       <button type="button" onClick={() => window.location.reload()}>
         윈도우 리로드
       </button>
