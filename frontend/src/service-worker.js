@@ -9,7 +9,27 @@ self.addEventListener("fetch", (event) => {
   // CSR 라우트 요청(일반적으로 mode가 'navigate')이면 처리
   if (req.mode === "navigate") {
     event.respondWith(
-      matchPrecache("/index.html").then((response) => response || fetch(req)),
+      (async () => {
+        const cache = await caches.open(
+          "workbox-precache-v2-https://moaon.site/",
+        );
+        const oldHTML = await matchPrecache("/index.html");
+        console.log("Old HTML:", oldHTML);
+
+        const keys = await cache.keys();
+        console.log(keys);
+        for (const key of keys) {
+          if (key.url.includes("/index.html") && key.url !== oldHTML.url) {
+            const newHTML = await cache.match(key);
+            console.log("New HTML:", newHTML);
+            if (newHTML) {
+              return newHTML;
+            }
+          }
+        }
+
+        return oldHTML || fetch(req);
+      })(),
     );
     return;
   }
