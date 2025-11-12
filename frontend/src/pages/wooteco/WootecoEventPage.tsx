@@ -6,12 +6,13 @@ import * as S from "./WootecoEventPage.styled";
 function WootecoEventPage() {
   return (
     <S.MainContainer>
-      <VisuallyHidden>
+      123
+      {/* <VisuallyHidden>
         <h1>네카라당토배 개발자가 참여한 프로젝트 모아보기</h1>
       </VisuallyHidden>
       {COMPANY_LIST.map((company) => (
         <CompanySection key={company} company={company} />
-      ))}
+      ))} */}
     </S.MainContainer>
   );
 }

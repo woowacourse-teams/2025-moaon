@@ -29,7 +29,7 @@ export default {
         },
         // workbox 별도 분리
         workbox: {
-          test: /[\\/]node_modules[\\/](workbox)[\\/]/,
+          test: /[\\/]node_modules[\\/]workbox-[^\\/]+[\\/]/,
           name: "workbox",
           chunks: "all",
           priority: 30,
