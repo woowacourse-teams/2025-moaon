@@ -28,6 +28,8 @@ function TestPage() {
 
     // BroadcastUpdatePlugin에서 보내는 메시지 수신
     const messageHandler = (event: MessageEvent) => {
+      console.log("Received message:", event.data);
+
       if (event.data?.meta === "workbox-broadcast-update") {
         const { cacheName, updatedURL } = event.data.payload;
         console.log("[Broadcast] 업데이트 감지:", cacheName, updatedURL);

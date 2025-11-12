@@ -27,6 +27,13 @@ export default {
           chunks: "all",
           priority: 30,
         },
+        // workbox 별도 분리
+        workbox: {
+          test: /[\\/]node_modules[\\/](workbox)[\\/]/,
+          name: "workbox",
+          chunks: "all",
+          priority: 30,
+        },
         // 라이브러리 별도 분리
         vendor: {
           test: /[\\/]node_modules[\\/]/,
@@ -86,21 +93,13 @@ export default {
       },
     }),
     // Service Worker 플러그인 추가
-    // new InjectManifest({
-    //   swSrc: "./src/service-worker.js", // Service Worker 소스 파일
-    //   swDest: "sw.js", // 빌드 후 출력 파일명
-    //   maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
-    //   // 프리캐시할 파일 패턴
-    //   include: [
-    //     /\.html$/,
-    //     /\.js$/,
-    //     /\.css$/,
-    //     /\.png$/,
-    //     /\.svg$/,
-    //     /\.avif$/,
-    //     /\.ico$/,
-    //   ],
-    //   exclude: [/asset-manifest\.json$/, /^sw\.js$/],
-    // }),
+    new InjectManifest({
+      swSrc: "./src/service-worker.js", // Service Worker 소스 파일
+      swDest: "sw.js", // 빌드 후 출력 파일명
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+      // 프리캐시할 파일 패턴
+      include: [],
+      exclude: [/asset-manifest\.json$/, /^sw\.js$/],
+    }),
   ],
 };

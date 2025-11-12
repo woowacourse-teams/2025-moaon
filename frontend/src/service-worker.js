@@ -4,8 +4,8 @@ import { ExpirationPlugin } from "workbox-expiration";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
 
-// // precacheAndRoute 실행
-// precacheAndRoute(self.__WB_MANIFEST);
+// precacheAndRoute 실행
+precacheAndRoute(self.__WB_MANIFEST);
 
 // SWR 전략 + BroadcastUpdatePlugin 적용 (index.html 포함 문서, JS, CSS)
 registerRoute(
