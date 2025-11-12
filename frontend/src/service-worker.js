@@ -6,7 +6,8 @@ precacheAndRoute(self.__WB_MANIFEST);
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
-  console.log(url);
+  console.log("==============================");
+  console.log(url.pathname);
 
   // CSR 라우트 요청(일반적으로 mode가 'navigate')이면 처리
   if (req.mode === "navigate") {
@@ -14,7 +15,8 @@ self.addEventListener("fetch", (event) => {
       caches
         .open("workbox-precache-v2-https://moaon.site/")
         .then(async (cache) => {
-          console.loh(cache);
+          console.log(cache);
+          console.log(cache.match("/index.html", { ignoreSearch: true }));
           return cache
             .match("/index.html", { ignoreSearch: true })
             .then((response) => response || fetch(req));
