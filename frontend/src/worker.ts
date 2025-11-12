@@ -67,7 +67,7 @@ export function register(config?: ServiceWorkerConfig) {
     setInterval(() => {
       console.log("check");
       wb.update();
-    }, 60 * 60 * 1000);
+    }, 1 * 60 * 1000);
 
     return wb;
   }
