@@ -11,6 +11,7 @@ export const useServiceWorker = () => {
     // Service Worker 등록
     const wb = register({
       onUpdate: (registration) => {
+        console.log("[App] 새 버전 감지됨");
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
@@ -18,31 +19,13 @@ export const useServiceWorker = () => {
         console.log("[App] Service Worker 등록 성공");
       },
       onWaiting: (registration) => {
+        console.log("[App] 새 버전이 대기 중입니다");
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
     });
 
-    // BroadcastUpdatePlugin에서 보내는 메시지 수신
-    const messageHandler = (event: MessageEvent) => {
-      console.log("Received message:", event.data);
-
-      if (event.data?.meta === "workbox-broadcast-update") {
-        const { cacheName, updatedURL } = event.data.payload;
-        console.log("[Broadcast] 업데이트 감지:", cacheName, updatedURL);
-        setShowUpdateBanner(true);
-      }
-    };
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.addEventListener("message", messageHandler);
-    }
-
-    return () => {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.removeEventListener("message", messageHandler);
-      }
-    };
+    return () => {};
   }, []);
 
   const handleUpdate = () => {

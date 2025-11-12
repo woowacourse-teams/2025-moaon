@@ -98,7 +98,15 @@ export default {
       swDest: "sw.js", // 빌드 후 출력 파일명
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
       // 프리캐시할 파일 패턴
-      include: [],
+      include: [
+        /\.html$/,
+        /\.js$/,
+        /\.css$/,
+        /\.png$/,
+        /\.svg$/,
+        /\.avif$/,
+        /\.ico$/,
+      ],
       exclude: [/asset-manifest\.json$/, /^sw\.js$/],
     }),
   ],
