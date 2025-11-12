@@ -15,8 +15,6 @@ self.addEventListener("fetch", (event) => {
       caches
         .open("workbox-precache-v2-https://moaon.site/")
         .then(async (cache) => {
-          console.log(cache);
-          console.log(cache.match("/index.html", { ignoreSearch: true }));
           return cache
             .match("/index.html", { ignoreSearch: true })
             .then((response) => response || fetch(req));
