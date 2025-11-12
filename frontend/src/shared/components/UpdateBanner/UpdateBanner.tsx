@@ -10,7 +10,7 @@ export default function UpdateBanner({
     <div
       style={{
         position: "fixed",
-        top: "75px",
+        top: 0,
         left: 0,
         background: "rgba(33, 128, 141, 0.95)",
         color: "#fff",
