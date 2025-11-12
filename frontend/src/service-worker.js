@@ -12,16 +12,8 @@ self.addEventListener("fetch", (event) => {
   // CSR 라우트 요청(일반적으로 mode가 'navigate')이면 처리
   if (req.mode === "navigate") {
     event.respondWith(
-      caches
-        .open("workbox-precache-v2-https://moaon.site/")
-        .then(async (cache) => {
-          console.log(cache);
-          return cache
-            .matchPrecache("/index.html")
-            .then((response) => response || fetch(req));
-        }),
+      matchPrecache("/index.html").then((response) => response || fetch(req)),
     );
-    self.skipWaiting();
     return;
   }
 });
