@@ -38,7 +38,7 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Global styles={resetStyle} />
-        <SentryErrorBoundary
+        {/* <SentryErrorBoundary
           fallback={
             <FallbackErrorUi
               scope="viewport"
@@ -47,13 +47,10 @@ root.render(
             />
           }
         >
-          <GAInitializer />
-          <App />
-          <ToastContainer
-            position={TOAST_DEFAULT_POSITION}
-            limit={TOAST_LIMIT}
-          />
-        </SentryErrorBoundary>
+          <GAInitializer /> */}
+        <App />
+        <ToastContainer position={TOAST_DEFAULT_POSITION} limit={TOAST_LIMIT} />
+        {/* </SentryErrorBoundary> */}
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,

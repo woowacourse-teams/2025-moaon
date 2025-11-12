@@ -15,7 +15,7 @@ function GlobalLayout({ children }: PropsWithChildren) {
       {showUpdateBanner && (
         <UpdateBanner onUpdate={handleUpdate} onDismiss={handleDismiss} />
       )}
-      {!isLandingPage && <Header />}
+      {/* {!isLandingPage && <Header />} */}
       <S.GlobalLayout isLandingPage={isLandingPage}>{children}</S.GlobalLayout>
     </>
   );

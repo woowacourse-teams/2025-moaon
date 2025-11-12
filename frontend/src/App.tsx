@@ -24,7 +24,7 @@ const OAuthCallback = lazy(() => import("./pages/oauth/OAuthCallback"));
 const RegisterPage = lazy(() => import("./pages/register/RegisterPage"));
 
 function App() {
-  useTrackPageTimeGA();
+  // useTrackPageTimeGA();
   return (
     <>
       <ScrollToTop />
