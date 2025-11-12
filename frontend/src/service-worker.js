@@ -1,4 +1,4 @@
-import { precacheAndRoute } from "workbox-precaching";
+import { matchPrecache, precacheAndRoute } from "workbox-precaching";
 
 // precacheAndRoute 실행
 precacheAndRoute(self.__WB_MANIFEST);
@@ -15,11 +15,13 @@ self.addEventListener("fetch", (event) => {
       caches
         .open("workbox-precache-v2-https://moaon.site/")
         .then(async (cache) => {
+          console.log(cache);
           return cache
-            .match("/index.html", { ignoreSearch: true })
+            .matchPrecache("/index.html")
             .then((response) => response || fetch(req));
         }),
     );
+    self.skipWaiting();
     return;
   }
 });
