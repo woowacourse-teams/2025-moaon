@@ -29,6 +29,7 @@ export const useServiceWorker = () => {
     if (waitingWorker) {
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
       setShowUpdateBanner(false);
+      // window.location.reload();
     }
   };
 
