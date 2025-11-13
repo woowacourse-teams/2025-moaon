@@ -6,7 +6,6 @@ export const useServiceWorker = () => {
   const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(
     null
   );
-  console.log(waitingWorker);
 
   useEffect(() => {
     // Service Worker 등록
@@ -34,10 +33,12 @@ export const useServiceWorker = () => {
   }, [waitingWorker]);
 
   useEffect(() => {
+    console.log(waitingWorker);
     if (waitingWorker?.state === "installed") {
-      handleUpdate();
+      waitingWorker.postMessage({ type: "SKIP_WAITING" });
+      setShowUpdateBanner(false);
     }
-  }, [waitingWorker?.state, handleUpdate]);
+  }, [waitingWorker?.state, waitingWorker?.postMessage, waitingWorker]);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
