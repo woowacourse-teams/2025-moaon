@@ -4,7 +4,6 @@ export default function UpdateBanner({
 }: {
   onUpdate: () => void;
   onDismiss: () => void;
-  newVersion?: string;
 }) {
   return (
     <div

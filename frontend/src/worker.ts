@@ -5,7 +5,7 @@ interface ServiceWorkerConfig {
   onWaiting: (registration: ServiceWorkerRegistration) => void;
 }
 
-export function register(config?: ServiceWorkerConfig) {
+export function register(config: ServiceWorkerConfig) {
   if (process.env.NODE_ENV !== "production") {
     console.log("[SW] Service Worker는 프로덕션에서만 실행됩니다.");
     return;
@@ -17,23 +17,17 @@ export function register(config?: ServiceWorkerConfig) {
     // 새 Service Worker가 설치되고 대기 중일 때
     wb.addEventListener("waiting", (event) => {
       console.log("[SW] 새 버전이 설치되었습니다. 업데이트 대기 중...");
-      config?.onWaiting({
+      config.onWaiting({
         ...event,
         waiting: event.sw,
       } as unknown as ServiceWorkerRegistration);
     });
 
-    // // 새 Service Worker가 컨트롤을 받았을 때
-    // wb.addEventListener("controlling", () => {
-    //   console.log("[SW] 새 버전이 활성화되었습니다.");
-    //   window.location.reload();
-    // });
-
     // Service Worker 업데이트 감지
     wb.addEventListener("installed", (event) => {
       if (event.isUpdate) {
         console.log("[SW] Service Worker가 업데이트되었습니다.");
-        config?.onUpdate({
+        config.onUpdate({
           ...event,
           waiting: event?.sw,
         } as unknown as ServiceWorkerRegistration);
@@ -43,11 +37,10 @@ export function register(config?: ServiceWorkerConfig) {
     // Service Worker 등록
     wb.register();
 
-    // 1분마다 업데이트 체크
-    setInterval(() => {
-      console.log("check");
-      wb.update();
-    }, 5 * 60 * 1000);
+    // setInterval(() => {
+    //   console.log("check");
+    //   wb.update();
+    // }, 5 * 60 * 1000);
 
     return wb;
   }

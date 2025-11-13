@@ -4,14 +4,12 @@ import {
   precacheAndRoute,
 } from "workbox-precaching";
 
-// precacheAndRoute 실행
 precacheAndRoute(self.__WB_MANIFEST);
 cleanupOutdatedCaches();
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // CSR 라우트 요청(일반적으로 mode가 'navigate')이면 처리
   if (req.mode === "navigate") {
     event.respondWith(
       (async () => {
@@ -39,7 +37,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+  if (event.data?.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 });

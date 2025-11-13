@@ -6,6 +6,7 @@ export const useServiceWorker = () => {
   const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(
     null
   );
+  console.log(waitingWorker);
 
   useEffect(() => {
     // Service Worker 등록
