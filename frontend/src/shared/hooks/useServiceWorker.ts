@@ -33,12 +33,12 @@ export const useServiceWorker = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(waitingWorker);
-    if (waitingWorker?.state === "installed") {
-      handleUpdate();
-    }
-  }, [waitingWorker?.state]);
+  // useEffect(() => {
+  //   console.log(waitingWorker);
+  //   if (waitingWorker?.state === "installed") {
+  //     handleUpdate();
+  //   }
+  // }, [waitingWorker?.state]);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
