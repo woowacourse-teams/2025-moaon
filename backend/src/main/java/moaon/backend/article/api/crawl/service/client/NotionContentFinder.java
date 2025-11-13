@@ -11,15 +11,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.RequiredArgsConstructor;
 import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 
-@RequiredArgsConstructor
 public class NotionContentFinder extends ContentFinder {
 
     /*
@@ -32,6 +31,12 @@ public class NotionContentFinder extends ContentFinder {
 
     private final String notionUserId;
     private final String tokenV2;
+
+    public NotionContentFinder(int connectionTimeoutSec, int readTimeoutSec, String notionUserId, String tokenV2) {
+        super(connectionTimeoutSec, readTimeoutSec);
+        this.notionUserId = notionUserId;
+        this.tokenV2 = tokenV2;
+    }
 
     @Override
     public boolean canHandle(URL url) {
@@ -123,14 +128,16 @@ public class NotionContentFinder extends ContentFinder {
         만약 여기서 200 OK 가 나오지 않는다면, 애초에 요청이 잘못 됐다는 뜻이다.
          */
         HttpRequest request = HttpRequest.newBuilder(URI.create(notionInternalApiUrl))
+                .timeout(Duration.ofMillis(readTimeoutSeconds))
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .header("Content-Type", "application/json")
                 .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)")
                 .header("cookie", "token_v2=" + decodedToken + "; notion_user_id=" + notionUserId)
                 .build();
 
-        try {
-            return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+        try (HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofMillis(connectionTimeoutSeconds))
+                .build()) {
+            return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
         } catch (IOException | InterruptedException e) {
             throw new CustomException(ErrorCode.UNKNOWN, e);
         }

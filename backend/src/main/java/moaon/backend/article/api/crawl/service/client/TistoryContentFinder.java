@@ -18,10 +18,15 @@ public class TistoryContentFinder extends ContentFinder {
 
     public static final String DIV_CONTENT_STYLE = "div.content_style, div.contents_style";
 
+    public TistoryContentFinder(int connectionTimeoutSec, int readTimeoutSec) {
+        super(connectionTimeoutSec, readTimeoutSec);
+    }
+
     @Override
     public FinderCrawlResult crawl(URL link) {
         try {
             Response response = Jsoup.connect(link.toString())
+                    .timeout((int) ((connectionTimeoutSeconds + readTimeoutSeconds)))
                     .ignoreHttpErrors(true)
                     .execute();
             validateLink(response.statusCode());

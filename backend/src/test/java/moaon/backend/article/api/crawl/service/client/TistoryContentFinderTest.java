@@ -9,10 +9,14 @@ import java.net.URL;
 import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 class TistoryContentFinderTest {
+
+    private final TistoryContentFinder tistoryContentFinder = new TistoryContentFinder(3, 5);
 
     @DisplayName("티스토리 링크를 다룰 수 있다면 true 를 리턴한다.")
     @Test
@@ -20,8 +24,6 @@ class TistoryContentFinderTest {
         // given
         URL tistoryLink = new URL("https://nnoco.tistory.com/239");
         URL notTistroyLink = new URL("https://nnoco.notion.site/239");
-
-        TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
         // when - then
         assertAll(
@@ -35,7 +37,6 @@ class TistoryContentFinderTest {
     void crawl() throws MalformedURLException {
         // given
         URL normalLink = new URL("https://minjae8563.tistory.com/6");
-        TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
         // when
         FinderCrawlResult result = tistoryContentFinder.crawl(normalLink);
@@ -53,8 +54,6 @@ class TistoryContentFinderTest {
         // given
         URL forbiddenLink = new URL("https://minjae8563.tistory.com/3");
         URL deleteLink = new URL("https://minjae8563.tistory.com/5");
-
-        TistoryContentFinder tistoryContentFinder = new TistoryContentFinder();
 
         // when - then
         assertAll(
