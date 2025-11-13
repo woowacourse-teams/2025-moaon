@@ -16,17 +16,15 @@ export const useServiceWorker = () => {
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
-      onWaiting: (registration) => {
-        console.log("[App] 새 버전이 대기 중입니다");
-        setWaitingWorker(registration.waiting);
-        setShowUpdateBanner(true);
-      },
+      // onWaiting: (registration) => {
+      //   console.log("[App] 새 버전이 대기 중입니다");
+      //   setWaitingWorker(registration.waiting);
+      //   setShowUpdateBanner(true);
+      // },
     });
 
     return () => {};
   }, []);
-
-  console.log(waitingWorker);
 
   const handleUpdate = () => {
     if (waitingWorker) {
