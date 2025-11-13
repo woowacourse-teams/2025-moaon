@@ -41,3 +41,22 @@ self.addEventListener("message", (event) => {
     self.skipWaiting();
   }
 });
+
+// 활성화 이벤트
+self.addEventListener("activate", (event) => {
+  console.log("[SW] Activated new version");
+
+  // 오래된 캐시 정리
+  event.waitUntil(
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(
+        cacheNames
+          .filter((cacheName) => !cacheName.startsWith("workbox-"))
+          .map((cacheName) => caches.delete(cacheName)),
+      );
+      // 모든 클라이언트 즉시 제어
+      await self.clients.claim();
+    })(),
+  );
+});
