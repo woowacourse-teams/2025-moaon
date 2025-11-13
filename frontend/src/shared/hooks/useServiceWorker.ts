@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { register } from "@/worker";
 
 export const useServiceWorker = () => {
@@ -26,18 +26,18 @@ export const useServiceWorker = () => {
     return () => {};
   }, []);
 
-  useEffect(() => {
-    if (waitingWorker?.state === "installed") {
-      setShowUpdateBanner(false);
-    }
-  }, [waitingWorker?.state]);
-
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
     if (waitingWorker) {
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
       setShowUpdateBanner(false);
     }
-  };
+  }, [waitingWorker]);
+
+  useEffect(() => {
+    if (waitingWorker?.state === "installed") {
+      handleUpdate();
+    }
+  }, [waitingWorker?.state, handleUpdate]);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
