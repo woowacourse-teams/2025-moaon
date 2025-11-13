@@ -37,10 +37,9 @@ export function register(config: ServiceWorkerConfig) {
     // Service Worker 등록
     wb.register();
 
-    // setInterval(() => {
-    //   console.log("check");
-    //   wb.update();
-    // }, 5 * 60 * 1000);
+    setInterval(() => {
+      wb.update();
+    }, 1 * 60 * 1000);
 
     return wb;
   }

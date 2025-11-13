@@ -13,7 +13,7 @@ export const useServiceWorker = () => {
       onUpdate: (registration) => {
         console.log("[App] 새 버전 감지됨");
         setWaitingWorker(registration.waiting);
-        // setShowUpdateBanner(true);
+        setShowUpdateBanner(true);
       },
       // onWaiting: (registration) => {
       //   console.log("[App] 새 버전이 대기 중입니다");
@@ -33,6 +33,7 @@ export const useServiceWorker = () => {
   };
 
   useEffect(() => {
+    console.log("state changed:", waitingWorker?.state);
     if (waitingWorker?.state === "installed") {
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
       // handleUpdate();
