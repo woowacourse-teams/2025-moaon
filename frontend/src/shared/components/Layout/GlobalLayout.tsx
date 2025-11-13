@@ -1,4 +1,4 @@
-import { useServiceWorker } from "@shared/hooks/useServiceWorker";
+// import { useServiceWorker } from "@shared/hooks/useServiceWorker";
 import type { PropsWithChildren } from "react";
 import { useLocation } from "react-router";
 import Header from "../Header/Header";
