@@ -27,7 +27,7 @@ export const useServiceWorker = () => {
   }, []);
 
   useEffect(() => {
-    if (waitingWorker?.state === "activated") {
+    if (waitingWorker?.state === "installed") {
       setShowUpdateBanner(false);
     }
   }, [waitingWorker?.state]);
