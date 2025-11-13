@@ -69,14 +69,14 @@ public class AiSummaryClient {
 
         try (
                 HttpClient httpClient = HttpClient.newBuilder()
-                        .connectTimeout(Duration.ofSeconds(10))
+                        .connectTimeout(Duration.ofSeconds(3))
                         .build()
         ) {
             String requestJson = objectMapper.writeValueAsString(requestBody);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(OPEN_ROUTER_URI)
-                    .timeout(Duration.ofSeconds(30))
+                    .timeout(Duration.ofSeconds(60))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + apiKey)
                     .header("User-Agent", "Moaon/1.0 (http://localhost:8080)")
