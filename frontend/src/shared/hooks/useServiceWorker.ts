@@ -25,9 +25,10 @@ export const useServiceWorker = () => {
     return () => {};
   }, []);
 
+  console.log(waitingWorker);
+
   const handleUpdate = () => {
     if (waitingWorker) {
-      console.log(waitingWorker);
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
       setShowUpdateBanner(false);
     }
