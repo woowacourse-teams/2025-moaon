@@ -7,7 +7,8 @@ import * as S from "./GlobalLayout.styled";
 
 function GlobalLayout({ children }: PropsWithChildren) {
   const location = useLocation();
-  const isLandingPage = location.pathname === "/";
+  const isLandingPage =
+    location.pathname === "/" || location.pathname === "/test";
   const { handleUpdate, handleDismiss, showUpdateBanner } = useServiceWorker();
 
   return (
