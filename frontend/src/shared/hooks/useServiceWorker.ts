@@ -26,6 +26,12 @@ export const useServiceWorker = () => {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    if (waitingWorker?.state === "activated") {
+      setShowUpdateBanner(false);
+    }
+  }, [waitingWorker?.state]);
+
   const handleUpdate = () => {
     if (waitingWorker) {
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
