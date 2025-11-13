@@ -32,13 +32,13 @@ export const useServiceWorker = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("state changed:", waitingWorker?.state);
-    if (waitingWorker?.state === "installed") {
-      waitingWorker.postMessage({ type: "SKIP_WAITING" });
-      // handleUpdate();
-    }
-  }, [waitingWorker?.state]);
+  // useEffect(() => {
+  //   console.log("state changed:", waitingWorker?.state);
+  //   if (waitingWorker?.state === "installed") {
+  //     waitingWorker.postMessage({ type: "SKIP_WAITING" });
+  //     // handleUpdate();
+  //   }
+  // }, [waitingWorker?.state]);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
