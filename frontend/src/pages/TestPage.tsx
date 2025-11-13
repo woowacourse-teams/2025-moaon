@@ -1,6 +1,10 @@
 const APP_VERSION = process.env.APP_VERSION;
 
 function TestPage() {
+  const bigObj = Array(1_000_000).fill("x");
+  const bigObj1 = Array(1_000_000).fill("x");
+  const bigObj2 = Array(1_000_000).fill("x");
+
   return (
     <div
       style={{
