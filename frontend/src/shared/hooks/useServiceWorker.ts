@@ -37,6 +37,7 @@ export const useServiceWorker = () => {
   useEffect(() => {
     console.log("state : " + waitingWorker?.state);
     if (waitingWorker?.state === "installed") {
+      waitingWorker.postMessage({ type: "SKIP_WAITING" });
       // handleUpdate();
     }
   }, [waitingWorker?.state]);
