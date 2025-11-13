@@ -26,7 +26,7 @@ public class TistoryContentFinder extends ContentFinder {
     public FinderCrawlResult crawl(URL link) {
         try {
             Response response = Jsoup.connect(link.toString())
-                    .timeout((int) ((connectionTimeoutSeconds + readTimeoutSeconds)))
+                    .timeout((connectionTimeoutSeconds + readTimeoutSeconds) * 1_000)
                     .ignoreHttpErrors(true)
                     .execute();
             validateLink(response.statusCode());

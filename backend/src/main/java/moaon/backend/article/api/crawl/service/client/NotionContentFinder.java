@@ -128,14 +128,14 @@ public class NotionContentFinder extends ContentFinder {
         만약 여기서 200 OK 가 나오지 않는다면, 애초에 요청이 잘못 됐다는 뜻이다.
          */
         HttpRequest request = HttpRequest.newBuilder(URI.create(notionInternalApiUrl))
-                .timeout(Duration.ofMillis(readTimeoutSeconds))
+                .timeout(Duration.ofSeconds(readTimeoutSeconds))
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .header("Content-Type", "application/json")
                 .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)")
                 .header("cookie", "token_v2=" + decodedToken + "; notion_user_id=" + notionUserId)
                 .build();
 
-        try (HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofMillis(connectionTimeoutSeconds))
+        try (HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(connectionTimeoutSeconds))
                 .build()) {
             return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
         } catch (IOException | InterruptedException e) {

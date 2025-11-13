@@ -61,8 +61,8 @@ public class VelogContentFinder extends ContentFinder {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
-            connection.setConnectTimeout((int) connectionTimeoutSeconds);
-            connection.setReadTimeout((int) readTimeoutSeconds);
+            connection.setConnectTimeout(connectionTimeoutSeconds * 1_000);
+            connection.setReadTimeout(readTimeoutSeconds * 1_000);
             connection.setDoOutput(true);
 
             try (OutputStream os = connection.getOutputStream()) {
