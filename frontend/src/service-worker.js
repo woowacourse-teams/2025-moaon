@@ -39,7 +39,6 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener("message", (event) => {
   if (event.data?.type === "SKIP_WAITING") {
     self.skipWaiting();
-    window.location.reload();
   }
 });
 
@@ -58,6 +57,11 @@ self.addEventListener("activate", (event) => {
       );
       // 모든 클라이언트 즉시 제어
       await self.clients.claim();
+      const allClients = await self.clients.matchAll({ type: "window" });
+      console.log(allClients);
+      for (const client of allClients) {
+        client.postMessage({ type: "RELOAD_PAGE" });
+      }
     })(),
   );
 });

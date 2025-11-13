@@ -32,13 +32,15 @@ export const useServiceWorker = () => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("state changed:", waitingWorker?.state);
-  //   if (waitingWorker?.state === "installed") {
-  //     waitingWorker.postMessage({ type: "SKIP_WAITING" });
-  //     // handleUpdate();
-  //   }
-  // }, [waitingWorker?.state]);
+  useEffect(() => {
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data?.type === "RELOAD_PAGE") {
+          window.location.reload();
+        }
+      });
+    }
+  }, []);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
