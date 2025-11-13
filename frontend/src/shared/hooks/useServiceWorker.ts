@@ -34,11 +34,12 @@ export const useServiceWorker = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (waitingWorker?.state === "installed") {
-  //     handleUpdate();
-  //   }
-  // }, [waitingWorker?.state]);
+  useEffect(() => {
+    console.log("state : " + waitingWorker?.state);
+    if (waitingWorker?.state === "installed") {
+      // handleUpdate();
+    }
+  }, [waitingWorker?.state]);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
