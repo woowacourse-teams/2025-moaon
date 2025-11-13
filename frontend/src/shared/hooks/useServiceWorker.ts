@@ -13,7 +13,7 @@ export const useServiceWorker = () => {
       onUpdate: (registration) => {
         console.log("[App] 새 버전 감지됨");
         setWaitingWorker(registration.waiting);
-        setShowUpdateBanner(true);
+        // setShowUpdateBanner(true);
       },
       // onWaiting: (registration) => {
       //   console.log("[App] 새 버전이 대기 중입니다");
