@@ -38,6 +38,7 @@ export function register(config: ServiceWorkerConfig) {
     wb.register();
 
     setInterval(() => {
+      console.log("checking for SW update...");
       wb.update();
     }, 1 * 60 * 1000);
 
