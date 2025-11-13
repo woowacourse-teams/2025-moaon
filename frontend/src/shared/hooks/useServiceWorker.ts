@@ -26,6 +26,8 @@ export const useServiceWorker = () => {
     return () => {};
   }, []);
 
+  console.log(waitingWorker);
+
   const handleUpdate = () => {
     if (waitingWorker) {
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
@@ -33,11 +35,11 @@ export const useServiceWorker = () => {
     }
   };
 
-  useEffect(() => {
-    if (waitingWorker?.state === "installed") {
-      handleUpdate();
-    }
-  }, [waitingWorker?.state]);
+  // useEffect(() => {
+  //   if (waitingWorker?.state === "installed") {
+  //     handleUpdate();
+  //   }
+  // }, [waitingWorker?.state]);
 
   const handleDismiss = () => {
     setShowUpdateBanner(false);
