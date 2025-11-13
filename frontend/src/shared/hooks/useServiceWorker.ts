@@ -12,7 +12,6 @@ export const useServiceWorker = () => {
     const wb = register({
       onUpdate: (registration) => {
         console.log("[App] 새 버전 감지됨");
-        console.log(registration);
         setWaitingWorker(registration.waiting);
         setShowUpdateBanner(true);
       },
