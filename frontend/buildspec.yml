@@ -13,12 +13,12 @@ phases:
       - cd frontend
       - npm install -g pnpm
       - pnpm store path
-      - pnpm config set store-dir /codebuild/output/.pnpm-store
+      - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile
   build:
     commands:
       - pnpm run build
-      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete --only-show-errors --exact-timestamps --max-concurrent-requests 20
+      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete --only-show-errors --exact-timestamps
 
 artifacts:
   base-directory: frontend/dist
