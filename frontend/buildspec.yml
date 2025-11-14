@@ -11,6 +11,7 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
+      - pnpm store path
       - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile --prefer-offline
   build:
