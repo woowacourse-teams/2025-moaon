@@ -16,8 +16,8 @@ phases:
       - export STORE_DIR=$(pnpm store path)
       - echo "Setting pnpm store-dir to $STORE_DIR"
       - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
-      - ls -alR /codebuild/output/.pnpm-store/v10
-      - ls -alR frontend/node_module
+      # - ls -alR /codebuild/output/.pnpm-store/v10
+      # - ls -alR frontend/node_module
       # - pnpm config set store-dir .pnpm-store
       - pnpm install --frozen-lockfile
       - ls -alR /codebuild/output/.pnpm-store/v10
