@@ -15,6 +15,7 @@ phases:
       - pnpm config set store-dir .pnpm-store
       # - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile --prefer-offline
+      - ls -al .pnpm-store
 
   build:
     commands:
