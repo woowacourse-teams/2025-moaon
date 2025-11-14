@@ -14,6 +14,10 @@ phases:
       - npm install -g pnpm
       - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile --prefer-offline
+      - echo "=== node_modules 심볼릭 링크 점검 시작 ==="
+      - ls -lR frontend/node_modules | grep '^l' || echo "심볼릭 링크 없음"
+      - echo "=== node_modules 권한 상태 ==="
+      - ls -alR frontend/node_modules
 
   build:
     commands:
