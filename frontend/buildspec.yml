@@ -2,7 +2,7 @@ version: 0.2
 
 cache:
   paths:
-    - '/codebuild/output/.pnpm-store/v10/**'   
+    - '/codebuild/output/.pnpm-store/**'  
     - 'frontend/node_modules/**'
 
 phases:
@@ -12,7 +12,6 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
-      - pnpm config set node-linker hoisted
       - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile --prefer-offline
 
