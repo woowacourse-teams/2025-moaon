@@ -2,9 +2,9 @@ version: 0.2
 
 cache:
   paths:
-    - '.pnpm-store/**/*'
-    # - '/codebuild/output/.pnpm-store/v10/**'    # pnpm store 전체 캐시
-    # - 'frontend/node_modules/**'
+    # - '.pnpm-store/**/*'
+    - '/codebuild/output/.pnpm-store/v10/**'    # pnpm store 전체 캐시
+    - 'frontend/node_modules/**'
 
 phases:
   install:
