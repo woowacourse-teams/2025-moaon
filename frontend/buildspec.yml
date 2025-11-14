@@ -14,9 +14,7 @@ phases:
       - npm install -g pnpm
       - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile --prefer-offline
-      - ls -al frontend || echo "frontend 디렉토리 없음"
-      - ls -al frontend/node_modules || echo "node_modules 디렉토리 없음"
-      - pnpm list # 설치된 패키지 확인
+      - pnpm config get virtual-store-dir
 
   build:
     commands:
