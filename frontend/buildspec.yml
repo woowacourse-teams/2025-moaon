@@ -15,7 +15,6 @@ phases:
       - pnpm config set node-linker hoisted
       - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       - pnpm install --frozen-lockfile --prefer-offline
-      - ls -alR node_modules || echo "node_modules 디렉토리 없음"
 
   build:
     commands:
