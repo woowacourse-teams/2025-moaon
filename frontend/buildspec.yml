@@ -11,16 +11,18 @@ phases:
     runtime-versions:
       nodejs: 22
     commands:
-      - ls -alR /codebuild/output/.pnpm-store/v10  
+      - STORE_DIR=$(pnpm store path) 
+      - echo "Setting pnpm store-dir to $STORE_DIR"
+      - pnpm config set store-dir $STORE_DIR
+
+      - ls -alR $STORE_DIR
       - ls -alR frontend/node_modules
       - cd frontend
       - npm install -g pnpm
-      # - STORE_DIR=$(pnpm store path)
-      # - echo "Setting pnpm store-dir to $STORE_DIR"
-      # - pnpm config set store-dir $STORE_DIR
+
       - pnpm config set store-dir .pnpm-store
       - pnpm install --frozen-lockfile
-      - ls -alR /codebuild/output/.pnpm-store/v10  
+      - ls -alR $STORE_DIR
       - ls -alR frontend/node_modules
 
   build:
