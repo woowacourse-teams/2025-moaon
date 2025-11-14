@@ -15,10 +15,9 @@ phases:
       - ls -al
       - cd frontend
       - npm install -g pnpm
+      - pnpm config set store-dir /codebuild/output/.pnpm-store
       - echo "Actual store path: $(pnpm store path)"
-      - pnpm config set store-dir /codebuild/output/.pnpm-store/**/*
       - pnpm install --frozen-lockfile
-
   build:
     commands:
       - pnpm run build
@@ -29,4 +28,4 @@ phases:
 artifacts:
   base-directory: frontend/dist
   files:
-    - "**/*"
+    - '**/*'
