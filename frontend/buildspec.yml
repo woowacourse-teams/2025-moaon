@@ -2,30 +2,47 @@ version: 0.2
 
 cache:
   paths:
-    - '.pnpm-store/**/*'
-    # - '/codebuild/output/.pnpm-store/v10/**'    # pnpm store 전체 캐시
-    # - 'frontend/node_modules/**'
+    - '/codebuild/output/.pnpm-store/v10/**'    # pnpm 저장소 전체 캐시
+    - 'frontend/node_modules/**'                # node_modules 캐시도 포함
 
 phases:
   install:
     runtime-versions:
       nodejs: 22
     commands:
+      - echo "===== 설치 단계 시작 ====="
       - cd frontend
       - npm install -g pnpm
-      # - STORE_DIR=$(pnpm store path)
-      # - echo "Setting pnpm store-dir to $STORE_DIR"
-      # - pnpm config set store-dir $STORE_DIR
-      - pnpm config set store-dir .pnpm-store
-      - pnpm install --frozen-lockfile
+      - pnpm --version
+      - echo "pnpm 저장소 디렉토리 상태 (store-dir 설정 전):"
+      - ls -alR /codebuild/output/.pnpm-store/v10 || echo "디렉토리가 존재하지 않습니다"
+      - STORE_DIR=$(pnpm store path)
+      - echo "pnpm 저장소 경로: $STORE_DIR"
+      - pnpm config set store-dir $STORE_DIR
+      - echo "pnpm config store-dir: $(pnpm config get store-dir)"
+      - echo "node_modules 디렉토리 상태 (설치 전):"
+      - ls -alR node_modules || echo "node_modules 디렉토리가 없습니다"
+      - pnpm install --frozen-lockfile --prefer-offline
+      - echo "pnpm 저장소 디렉토리 상태 (설치 후):"
+      - ls -alR $STORE_DIR
+      - echo "node_modules 디렉토리 상태 (설치 후):"
+      - ls -alR node_modules
+      - echo "===== 설치 단계 종료 ====="
 
   build:
     commands:
+      - echo "===== 빌드 단계 시작 ====="
       - pnpm run build
+      - echo "dist 폴더를 S3로 동기화 중..."
       - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete --only-show-errors --exact-timestamps
+      - echo "CloudFront 캐시 무효화 요청 중..."
       - aws cloudfront create-invalidation --distribution-id "$CF_DISTRIBUTION_ID" --paths "/index.html"
+      - echo "===== 빌드 단계 종료 ====="
 
-artifacts:
-  base-directory: frontend/dist
-  files:
-    - '**/*'
+post_build:
+  commands:
+    - echo "===== 빌드 후 단계: 캐시 디렉토리 확인 ====="
+    - echo "pnpm 저장소 디렉토리 상태 (빌드 후):"
+    - ls -alR /codebuild/output/.pnpm-store/v10 || echo "pnpm 저장소 디렉토리가 없습니다"
+    - echo "node_modules 디렉토리 상태 (빌드 후):"
+    - ls -alR frontend/node_modules || echo "node_modules 디렉토리가 없습니다"
