@@ -15,12 +15,12 @@ phases:
       - npm install -g pnpm
       - export STORE_DIR=$(pnpm store path)
       - echo "Setting pnpm store-dir to $STORE_DIR"
-      - ls -al $STORE_DIR
+      - ls -al /codebuild/output/.pnpm-store/v10
       - ls -al frontend/node_module
-      - pnpm config set store-dir $STORE_DIR
+      - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
       # - pnpm config set store-dir .pnpm-store
       - pnpm install --frozen-lockfile
-      - ls -al $STORE_DIR
+      - ls -al /codebuild/output/.pnpm-store/v10
       - ls -al frontend/node_modules
 
   build:
