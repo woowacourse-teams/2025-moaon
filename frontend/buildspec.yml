@@ -13,16 +13,11 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
-
       - STORE_DIR=$(pnpm store path) 
       - echo "Setting pnpm store-dir to $STORE_DIR"
-
       - ls -alR $STORE_DIR
-      - ls -alR frontend/node_modules
-
-
+      - ls -alR frontend/node_module
       - pnpm config set store-dir $STORE_DIR
-
       # - pnpm config set store-dir .pnpm-store
       - pnpm install --frozen-lockfile
       - ls -alR $STORE_DIR
