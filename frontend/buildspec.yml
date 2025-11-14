@@ -13,7 +13,7 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
-      - STORE_DIR=$(pnpm store path) 
+      - export STORE_DIR=$(pnpm store path)
       - echo "Setting pnpm store-dir to $STORE_DIR"
       - ls -alR $STORE_DIR
       - ls -alR frontend/node_module
