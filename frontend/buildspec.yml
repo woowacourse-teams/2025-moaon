@@ -21,7 +21,7 @@ phases:
       # - pnpm config set store-dir .pnpm-store
       - pnpm install --frozen-lockfile
       - ls -alR /codebuild/output/.pnpm-store/v10
-      - ls -alR frontend/node_modules
+      # - ls -alR frontend/node_modules
 
   build:
     commands:
