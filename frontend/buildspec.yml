@@ -2,7 +2,7 @@ version: 0.2
 
 cache:
   paths:
-    - 'frontend/.pnpm-store/**/*'
+    - '/codebuild/output/.pnpm-store/**/*'
     - 'frontend/pnpm-lock.yaml'
 
 phases:
@@ -10,12 +10,13 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
+      - aws --version
       - pwd
       - ls -al
       - cd frontend
       - npm install -g pnpm
-      - pnpm store path
-      - pnpm config set store-dir .pnpm-store
+      - echo "Actual store path: $(pnpm store path)"
+      - pnpm config set store-dir /codebuild/output/.pnpm-store/**/*
       - pnpm install --frozen-lockfile
 
   build:
@@ -23,7 +24,7 @@ phases:
       - pnpm run build
       - pwd
       - ls -al dist
-      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete --max-concurrent-requests 20 --size-only --only-show-errors --exact-timestamps
+      - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete --only-show-errors --exact-timestamps
 
 artifacts:
   base-directory: frontend/dist
