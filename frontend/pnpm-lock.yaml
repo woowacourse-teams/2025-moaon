@@ -38,27 +38,6 @@ importers:
       react-tooltip:
         specifier: ^5.30.0
         version: 5.30.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      workbox-broadcast-update:
-        specifier: ^7.3.0
-        version: 7.3.0
-      workbox-cacheable-response:
-        specifier: ^7.3.0
-        version: 7.3.0
-      workbox-expiration:
-        specifier: ^7.3.0
-        version: 7.3.0
-      workbox-navigation-preload:
-        specifier: ^7.3.0
-        version: 7.3.0
-      workbox-precaching:
-        specifier: ^7.3.0
-        version: 7.3.0
-      workbox-routing:
-        specifier: ^7.3.0
-        version: 7.3.0
-      workbox-strategies:
-        specifier: ^7.3.0
-        version: 7.3.0
     devDependencies:
       '@babel/core':
         specifier: ^7.28.0
@@ -135,6 +114,9 @@ importers:
       webpack-merge:
         specifier: ^6.0.1
         version: 6.0.1
+      workbox-precaching:
+        specifier: ^7.3.0
+        version: 7.3.0
       workbox-webpack-plugin:
         specifier: ^7.3.0
         version: 7.3.0(webpack@5.101.0)

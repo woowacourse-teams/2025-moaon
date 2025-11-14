@@ -2,8 +2,8 @@ version: 0.2
 
 cache:
   paths:
-    - '/codebuild/output/.pnpm-store/v10'
-    - 'frontend/pnpm-lock.yaml'
+    - '/codebuild/output/.pnpm-store/**'  # pnpm store 디렉토리 전체 캐시
+  # pnpm-lock.yaml은 캐시 경로에서 제거
 
 phases:
   install:
@@ -12,9 +12,11 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
-      - pnpm store path
-      - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
-      - pnpm install --frozen-lockfile
+      - STORE_DIR=$(pnpm store path)          # 실제 store 경로 확인
+      - echo "Using pnpm store-dir: $STORE_DIR"
+      - pnpm config set store-dir $STORE_DIR  # store-dir 환경변수로 설정
+      - pnpm install --frozen-lockfile --prefer-offline  # 캐시 재사용 우선 설치
+      
   build:
     commands:
       - pnpm run build

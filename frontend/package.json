@@ -40,7 +40,8 @@
     "webpack-manifest-plugin": "^6.0.1",
     "webpack-merge": "^6.0.1",
     "workbox-webpack-plugin": "^7.3.0",
-    "workbox-window": "^7.3.0"
+    "workbox-window": "^7.3.0",
+    "workbox-precaching": "^7.3.0"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -52,13 +53,6 @@
     "react-dom": "^19.1.0",
     "react-ga4": "^2.1.0",
     "react-router": "^7.6.3",
-    "react-tooltip": "^5.30.0",
-    "workbox-broadcast-update": "^7.3.0",
-    "workbox-cacheable-response": "^7.3.0",
-    "workbox-expiration": "^7.3.0",
-    "workbox-navigation-preload": "^7.3.0",
-    "workbox-precaching": "^7.3.0",
-    "workbox-routing": "^7.3.0",
-    "workbox-strategies": "^7.3.0"
+    "react-tooltip": "^5.30.0"
   }
 }
