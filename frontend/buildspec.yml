@@ -3,7 +3,6 @@ version: 0.2
 cache:
   paths:
     - '/codebuild/output/.pnpm-store/v10/**'    # pnpm store 전체 캐시
-    # 필요하다면 아래 주석 해제하여 node_modules도 캐시 가능
     - 'frontend/node_modules/**'
 
 phases:
