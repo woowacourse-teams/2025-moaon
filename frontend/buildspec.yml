@@ -7,9 +7,9 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
-      - PNPM_STORE_PATH=$(pnpm store path); if [ -d "$PNPM_STORE_PATH" ]; then echo "Using cached pnpm store"; else mkdir -p "$PNPM_STORE_PATH"; fi
-      # - if [ -d node_modules ]; then echo "Using cached node_modules"; else mkdir -p node_modules; fi
-      - pnpm config set store-dir "$PNPM_STORE_PATH"
+      # - PNPM_STORE_PATH=$(pnpm store path); if [ -d "$PNPM_STORE_PATH" ]; then echo "Using cached pnpm store"; else mkdir -p "$PNPM_STORE_PATH"; fi
+      - if [ -d node_modules ]; then echo "Using cached node_modules"; else mkdir -p node_modules; fi
+      # - pnpm config set store-dir "$PNPM_STORE_PATH"
       - pnpm install --frozen-lockfile --prefer-offline
 
   build:
@@ -20,5 +20,5 @@ phases:
 
 cache:
   paths:
-    # - frontend/node_modules/**/*
-    - /codebuild/output/.pnpm-store/**/*
+    - frontend/node_modules/**/*
+    # - /codebuild/output/.pnpm-store/**/*
