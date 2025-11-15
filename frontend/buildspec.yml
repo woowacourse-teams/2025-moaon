@@ -1,10 +1,5 @@
 version: 0.2
 
-cache:
-  paths:
-    - '.pnpm-store/**/*'
-    # - '/codebuild/output/.pnpm-store/**'  
-
 phases:
   install:
     runtime-versions:
@@ -12,10 +7,9 @@ phases:
     commands:
       - cd frontend
       - npm install -g pnpm
-      - pnpm config set store-dir .pnpm-store
-      # - pnpm config set store-dir /codebuild/output/.pnpm-store/v10
+      - if [ -d ~/.pnpm-store ]; then echo "Using cached pnpm store"; else mkdir -p ~/.pnpm-store; fi
+      - if [ -d node_modules ]; then echo "Using cached node_modules"; else mkdir -p node_modules; fi
       - pnpm install --frozen-lockfile --prefer-offline
-      - ls -al .pnpm-store
 
   build:
     commands:
@@ -23,7 +17,7 @@ phases:
       - aws s3 sync ./dist s3://techcourse-project-2025/moaon/fe-dev-build/ --delete --only-show-errors --exact-timestamps
       - aws cloudfront create-invalidation --distribution-id "$CF_DISTRIBUTION_ID" --paths "/index.html"
 
-artifacts:
-  base-directory: frontend/dist
-  files:
-    - '**/*'
+cache:
+  paths:
+    - frontend/node_modules/**/*
+    - ~/.pnpm-store/**/*
