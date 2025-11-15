@@ -10,6 +10,7 @@ phases:
       - if [ -d ~/.pnpm-store ]; then echo "Using cached pnpm store"; else mkdir -p ~/.pnpm-store; fi
       - if [ -d node_modules ]; then echo "Using cached node_modules"; else mkdir -p node_modules; fi
       - pnpm install --frozen-lockfile --prefer-offline
+      - pnpm store path
 
   build:
     commands:
