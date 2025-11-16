@@ -1,4 +1,4 @@
-import UnmountAfterAnimation from "@shared/components/UnmountAfterAnimation/UnmountAnimation";
+import UnmountAfterAnimation from "@shared/components/UnmountAfterAnimation/UnmountAfterAnimation";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
 import useSearchParams from "@shared/hooks/useSearchParams";
 import { type PropsWithChildren, useState } from "react";
