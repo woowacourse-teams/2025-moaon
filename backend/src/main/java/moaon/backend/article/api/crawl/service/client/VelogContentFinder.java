@@ -16,8 +16,12 @@ import moaon.backend.global.exception.custom.ErrorCode;
 
 public class VelogContentFinder extends ContentFinder {
 
+    private final int connectionTimeoutSeconds;
+    private final int readTimeoutSeconds;
+
     public VelogContentFinder(int connectionTimeoutSec, int readTimeoutSec) {
-        super(connectionTimeoutSec, readTimeoutSec);
+        this.connectionTimeoutSeconds = connectionTimeoutSec;
+        this.readTimeoutSeconds = readTimeoutSec;
     }
 
     /*

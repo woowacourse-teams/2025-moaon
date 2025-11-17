@@ -29,11 +29,14 @@ public class NotionContentFinder extends ContentFinder {
             "notion.site", "notion.com", "notion.so"
     );
 
+    private final int connectionTimeoutSeconds;
+    private final int readTimeoutSeconds;
     private final String notionUserId;
     private final String tokenV2;
 
     public NotionContentFinder(int connectionTimeoutSec, int readTimeoutSec, String notionUserId, String tokenV2) {
-        super(connectionTimeoutSec, readTimeoutSec);
+        this.connectionTimeoutSeconds = connectionTimeoutSec;
+        this.readTimeoutSeconds = readTimeoutSec;
         this.notionUserId = notionUserId;
         this.tokenV2 = tokenV2;
     }

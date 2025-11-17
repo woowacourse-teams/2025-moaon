@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 @Disabled
 class TistoryContentFinderTest {
 
-    private final TistoryContentFinder tistoryContentFinder = new TistoryContentFinder(3, 5);
+    private final TistoryContentFinder tistoryContentFinder = new TistoryContentFinder(30);
 
     @DisplayName("티스토리 링크를 다룰 수 있다면 true 를 리턴한다.")
     @Test
