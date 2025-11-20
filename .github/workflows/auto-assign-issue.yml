@@ -35,5 +35,5 @@ jobs:
         if: steps.set_label.outputs.label != ''
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: ${{ steps.set_label.outputs.label }}
