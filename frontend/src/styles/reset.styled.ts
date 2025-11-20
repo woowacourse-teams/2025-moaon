@@ -129,13 +129,11 @@ export const resetStyle = css`
 
   input {
     border: none;
-    outline: none;
     background-color: transparent;
   }
 
   button {
     border: none;
-    outline: none;
     background-color: transparent;
     padding: 0;
     cursor: pointer;
