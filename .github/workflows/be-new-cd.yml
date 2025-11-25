@@ -44,7 +44,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           cache-dir: ./gradle-cache-dev-home
-          dockerfile: ./backend/Dockerfile
+          dockerfile: ./backend/new.Dockerfile
           skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
 
       - name: Build and push Docker image
@@ -52,6 +52,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend
+          file: ./backend/new.Dockerfile
           push: true
           platforms: linux/arm64
           tags: |
