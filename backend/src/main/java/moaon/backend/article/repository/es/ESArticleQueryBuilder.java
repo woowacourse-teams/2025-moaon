@@ -12,14 +12,11 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
 import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.List;
+import moaon.backend.article.domain.ArticleCursor;
 import moaon.backend.article.domain.ArticleSortType;
 import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
-import moaon.backend.global.cursor.ESCursor;
+import moaon.backend.article.dto.ArticleQueryCondition;
 import moaon.backend.global.domain.SearchKeyword;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -86,20 +83,34 @@ public class ESArticleQueryBuilder {
         return this;
     }
 
-    public ESArticleQueryBuilder withPagination(int limit, @Nullable ESCursor cursor) {
-        if (cursor == null || cursor.isEmpty()) {
+    public ESArticleQueryBuilder withPagination(int limit, @Nullable ArticleCursor cursor, ArticleSortType sortType) {
+        if (cursor == null) {
             limit = Math.max(limit, 1);
             this.pageable = PageRequest.of(0, limit);
             return this;
         }
         this.pageable = PageRequest.ofSize(limit);
-        this.searchAfter = cursor.getSortValues();
+        if (ArticleSortType.CREATED_AT == sortType) {
+            this.searchAfter = List.of(cursor.getSortValueAsLong(), cursor.getLastId());
+            return this;
+        }
+
+        this.searchAfter = List.of(cursor.getSortValue(), cursor.getLastId());
         return this;
     }
 
     public ESArticleQueryBuilder withSort(ArticleSortType sortType) {
         this.sort = createSort(sortType);
         return this;
+    }
+
+    public ESArticleQueryBuilder withQueryCondition(ArticleQueryCondition condition) {
+        return this.withTextSearch(condition.search())
+                .withSector(condition.sector())
+                .withTechStacksAndMatch(condition.techStackNames())
+                .withTopicsAndMatch(condition.topics())
+                .withSort(condition.sortType())
+                .withPagination(condition.limit(), condition.cursor(), condition.sortType());
     }
 
     public NativeQuery build() {
@@ -129,10 +140,6 @@ public class ESArticleQueryBuilder {
     }
 
     private Query createTextMatchQuery(SearchKeyword searchKeyword) {
-        float titleBoost = 2f;
-        float techStackBoost = 1.5f;
-        float summaryBoost = 1.5f;
-        float contentBoost = 1.0f;
         if (!searchKeyword.hasValue()) {
             throw new IllegalArgumentException("검색어가 비어있습니다.");
         }

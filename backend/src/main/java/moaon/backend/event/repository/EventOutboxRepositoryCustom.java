@@ -1,0 +1,16 @@
+package moaon.backend.event.repository;
+
+import java.util.List;
+import moaon.backend.event.domain.EventOutbox;
+import moaon.backend.event.domain.EventStatus;
+
+public interface EventOutboxRepositoryCustom {
+
+    List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize);
+
+    void markAsProcessed(List<Long> ids);
+
+    void incrementFailCount(List<Long> ids);
+
+    void markAsFailed(List<Long> ids);
+}

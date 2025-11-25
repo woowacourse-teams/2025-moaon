@@ -27,6 +27,8 @@ public enum ErrorCode {
     ARTICLE_NOT_FOUND("ARTICLE-001", "아티클을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ARTICLE_INVALID_TECHSTACK("ARTICLE-002", "아티클의 기술 스택은 중복을 제외하고 0 ~ 3 개 입니다.", HttpStatus.BAD_REQUEST),
     ARTICLE_INVALID_TOPICS("ARTICLE-003", "아티클의 토픽은 중복을 제외하고 1 ~ 3 개 입니다.", HttpStatus.BAD_REQUEST),
+    ARTICLE_PROCESSING_FAILED("ARTICLE-004", "아티클을 처리하는 중 내부 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+
     // 권한이 필요한 url
     ARTICLE_URL_FORBIDDEN("URL-001", "접근 권한이 없는 URL 입니다.", HttpStatus.FORBIDDEN),
     // 잘못된 url

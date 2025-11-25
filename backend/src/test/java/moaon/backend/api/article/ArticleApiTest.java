@@ -21,7 +21,7 @@ import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleCreateRequest;
 import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.fixture.ProjectFixtureBuilder;
@@ -29,8 +29,8 @@ import moaon.backend.fixture.RepositoryHelper;
 import moaon.backend.global.config.QueryDslConfig;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
-import moaon.backend.member.service.JwtTokenProvider;
-import moaon.backend.member.service.OAuthService;
+import moaon.backend.member.service.JwtTokenService;
+import moaon.backend.member.service.MemberService;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,16 +51,16 @@ public class ArticleApiTest extends BaseApiTest {
     protected RepositoryHelper repositoryHelper;
 
     @MockitoBean
-    private ArticleDocumentRepository documentRepository;
+    private ArticleDocumentOperations documentOperations;
 
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenService jwtTokenService;
 
     @MockitoBean
-    private OAuthService oAuthService;
+    private MemberService memberService;
 
     private String token;
 
@@ -70,7 +70,7 @@ public class ArticleApiTest extends BaseApiTest {
     void cookieSetUp() {
         member = repositoryHelper.save(Fixture.anyMember());
 
-        token = jwtTokenProvider.createToken(member.getId());
+        token = jwtTokenService.createToken(member.getId());
     }
 
     @DisplayName("POST /articles: 아티클 저장 API")
@@ -83,8 +83,7 @@ public class ArticleApiTest extends BaseApiTest {
                         .build()
         );
 
-        Mockito.when(oAuthService.getUserByToken(token)).thenReturn(member);
-        Mockito.doNothing().when(oAuthService).validateToken(Mockito.any());
+        Mockito.when(memberService.getUserByToken(token)).thenReturn(member);
 
         repositoryHelper.save(new TechStack("react"));
 

@@ -1,7 +1,7 @@
 package moaon.backend.fixture;
 
 import moaon.backend.article.domain.Article;
-import moaon.backend.article.repository.ArticleRepository;
+import moaon.backend.article.repository.db.ArticleDBRepository;
 import moaon.backend.member.domain.Member;
 import moaon.backend.member.repository.MemberRepository;
 import moaon.backend.project.domain.Category;
@@ -29,7 +29,7 @@ public class RepositoryHelper {
     private ProjectRepository projectRepository;
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleDBRepository articleDBRepository;
 
     public Project save(Project project) {
         memberRepository.save(project.getAuthor());
@@ -43,7 +43,7 @@ public class RepositoryHelper {
         techStackRepository.saveAll(article.getTechStacks());
         save(article.getProject());
 
-        return articleRepository.save(article);
+        return articleDBRepository.save(article);
     }
 
     public Member save(Member member) {
@@ -51,7 +51,7 @@ public class RepositoryHelper {
     }
 
     public Article getById(long id) {
-        return articleRepository.findById(id)
+        return articleDBRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("테스트 실패"));
     }
 

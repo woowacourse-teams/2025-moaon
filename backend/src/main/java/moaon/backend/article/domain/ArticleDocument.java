@@ -2,7 +2,10 @@ package moaon.backend.article.domain;
 
 import static java.util.stream.Collectors.toSet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +15,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import moaon.backend.event.domain.EventOutbox;
+import moaon.backend.event.domain.EventAction;
+import moaon.backend.global.exception.custom.CustomException;
+import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.techStack.domain.TechStack;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Alias;
@@ -89,7 +96,16 @@ public class ArticleDocument {
         this.topics = new HashSet<>(article.getTopics());
         this.techStacks = setTechStacks(article.getTechStacks());
         this.clicks = article.getClicks();
-        this.createdAt = article.getCreatedAt();
+        this.createdAt = article.getCreatedAt().truncatedTo(ChronoUnit.MILLIS);
+    }
+
+    public EventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
+        return EventOutbox.builder()
+                .entityId(this.getId())
+                .eventType("articles")
+                .action(eventAction)
+                .payload(convertToJson(this, objectMapper))
+                .build();
     }
 
     private Set<String> setTechStacks(List<TechStack> techStacks) {
@@ -97,5 +113,13 @@ public class ArticleDocument {
             return new HashSet<>();
         }
         return techStacks.stream().map(TechStack::getName).collect(toSet());
+    }
+
+    private String convertToJson(Object object, ObjectMapper objectMapper) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ErrorCode.ARTICLE_PROCESSING_FAILED);
+        }
     }
 }

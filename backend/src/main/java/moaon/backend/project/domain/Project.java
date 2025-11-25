@@ -15,6 +15,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,12 +25,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import moaon.backend.article.domain.Article;
+import moaon.backend.article.domain.Sector;
 import moaon.backend.global.domain.BaseTimeEntity;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.member.domain.Member;
 import moaon.backend.techStack.domain.ProjectTechStack;
 import moaon.backend.techStack.domain.TechStack;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -75,8 +79,10 @@ public class Project extends BaseTimeEntity {
     private Member author;
 
     @ManyToMany
-    private List<Member> lovedMembers;
+    @BatchSize(size = 100)
+    private List<Member> lovedMembers = new ArrayList<>();
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTechStack> techStacks = new ArrayList<>();
 
@@ -84,7 +90,7 @@ public class Project extends BaseTimeEntity {
     private List<ProjectCategory> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 
     public Project(
             Project project,
@@ -190,5 +196,20 @@ public class Project extends BaseTimeEntity {
 
     public List<Member> getLovedMembers() {
         return List.copyOf(lovedMembers);
+    }
+
+    public List<Long> getArticleIds() {
+        return articles.stream()
+                .map(Article::getId)
+                .toList();
+    }
+
+    public Map<Sector, Long> countArticlesGroupBySector() {
+        Map<Sector, Long> articleCountBySector = getArticles().stream()
+                .collect(Collectors.groupingBy(Article::getSector, Collectors.counting()));
+        for (Sector sector : Sector.values()) {
+            articleCountBySector.computeIfAbsent(sector, k -> 0L);
+        }
+        return articleCountBySector;
     }
 }

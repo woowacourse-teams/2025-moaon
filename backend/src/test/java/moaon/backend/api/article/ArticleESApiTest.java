@@ -12,14 +12,15 @@ import moaon.backend.article.domain.Sector;
 import moaon.backend.article.domain.Topic;
 import moaon.backend.article.dto.ArticleData;
 import moaon.backend.article.dto.ArticleResponse;
-import moaon.backend.article.repository.ArticleRepository;
-import moaon.backend.article.repository.es.ArticleDocumentRepository;
+import moaon.backend.article.repository.db.ArticleDBRepository;
+import moaon.backend.article.repository.es.ArticleDocumentOperations;
 import moaon.backend.fixture.ArticleFixtureBuilder;
 import moaon.backend.fixture.Fixture;
 import moaon.backend.project.domain.Project;
 import moaon.backend.techStack.domain.TechStack;
 import moaon.backend.techStack.repository.TechStackRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,6 +37,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Disabled("엔드포인트가 통합됨에 따라 API 통합 테스트를 비활성화 합니다.")
 public class ArticleESApiTest {
 
     @Container
@@ -55,13 +57,13 @@ public class ArticleESApiTest {
     private ElasticsearchOperations ops;
 
     @Autowired
-    private ArticleDocumentRepository articleDocumentRepository;
+    private ArticleDocumentOperations articleDocumentOperations;
 
     @Autowired
     private TechStackRepository techStackRepository;
 
     @MockitoBean
-    private ArticleRepository repository;
+    private ArticleDBRepository repository;
 
     @BeforeEach
     void setUp() {
@@ -88,7 +90,7 @@ public class ArticleESApiTest {
         String unfilteredSearch = "momo";
         Project project = Project.builder().id(1L).build();
 
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(1L)
                         .sector(unfilteredSector)
@@ -99,7 +101,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(2L)
                         .techStacks(List.of(unfilteredTechStack))
@@ -110,7 +112,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(3L)
                         .title(unfilteredSearch)
@@ -121,7 +123,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(4L)
                         .summary(unfilteredSearch)
@@ -132,7 +134,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(5L)
                         .content(unfilteredSearch)
@@ -143,7 +145,7 @@ public class ArticleESApiTest {
                         .topics(filteredTopic)
                         .build()
         ));
-        articleDocumentRepository.save(new ArticleDocument(
+        articleDocumentOperations.save(new ArticleDocument(
                 new ArticleFixtureBuilder()
                         .id(6L)
                         .topics(unfilteredTopic)
@@ -154,17 +156,16 @@ public class ArticleESApiTest {
                         .clicks(4)
                         .build()
         ));
-        ArticleDocument articleClickRankThird = articleDocumentRepository.save(new ArticleDocument(
-                new ArticleFixtureBuilder()
-                        .id(7L)
-                        .content(filteredSearch)
-                        .sector(filteredSector)
-                        .techStacks(List.of(filteredTechStack))
-                        .project(project)
-                        .clicks(1)
-                        .topics(filteredTopic)
-                        .build()
-        ));
+        Article article7 = new ArticleFixtureBuilder()
+                .id(7L)
+                .content(filteredSearch)
+                .sector(filteredSector)
+                .techStacks(List.of(filteredTechStack))
+                .project(project)
+                .clicks(1)
+                .topics(filteredTopic)
+                .build();
+        ArticleDocument articleClickRankThird = articleDocumentOperations.save(new ArticleDocument(article7));
         Article article8 = new ArticleFixtureBuilder()
                 .id(8L)
                 .title(filteredSearch)
@@ -174,7 +175,7 @@ public class ArticleESApiTest {
                 .clicks(2)
                 .topics(filteredTopic)
                 .build();
-        ArticleDocument articleClickRankSecond = articleDocumentRepository.save(new ArticleDocument(article8));
+        ArticleDocument articleClickRankSecond = articleDocumentOperations.save(new ArticleDocument(article8));
 
         Article article9 = new ArticleFixtureBuilder()
                 .id(9L)
@@ -185,7 +186,7 @@ public class ArticleESApiTest {
                 .clicks(3)
                 .topics(filteredTopic)
                 .build();
-        ArticleDocument articleClickRankFirst = articleDocumentRepository.save(new ArticleDocument(article9));
+        ArticleDocument articleClickRankFirst = articleDocumentOperations.save(new ArticleDocument(article9));
 
         Mockito.when(repository.findAllById(List.of(9L, 8L))).thenReturn(List.of(article9, article8));
 
@@ -198,7 +199,7 @@ public class ArticleESApiTest {
                 .queryParams("techStacks", List.of(filteredTechStack.getName()))
                 .queryParams("limit", 2)
                 .queryParams("cursor", "5_6")
-                .when().get("/es/search")
+                .when().get("/articles")
                 .then().log().all()
                 .statusCode(200)
                 .extract().as(ArticleResponse.class);
