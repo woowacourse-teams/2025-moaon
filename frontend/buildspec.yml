@@ -16,7 +16,6 @@ phases:
     commands:
       - pnpm run build
       - aws s3 sync ./dist s3://moaon-prod/fe-build/ --delete --only-show-errors --exact-timestamps
-      
 
 cache:
   paths:
