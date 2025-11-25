@@ -1,26 +1,70 @@
-# [모아온 (moaon)](https://moaon.co.kr)
+## [📦 **모아온(moaon)**](https://moaon.co.kr/)
 
-🤬 여러 블로그와 깃허브를 오가며 프로젝트 정보 찾기가 불편하지 않나요?  
-😫 기술 스택은 알지만, 도입 이유와 해결 과정이 궁금하지 않나요?  
-😱 관심 주제와 기술 스택을 한눈에 탐색하고 싶지 않나요?
+<br/>
 
-🔦 **프로젝트 탐색:** 주제와 기술 스택으로 필터링하고, 다양한 프로젝트를 한곳에
-서 비교할 수 있습니다.  
-🔍 **아티클 탐색:** 프로젝트의 맥락이 담긴 아티클을 찾아 깊이 있는 기술적 인사이
-트를 얻을 수 있습니다.  
-🔗 **양방향 연결:** 프로젝트와 아티클을 오가며 지식을 확장하고, 더 풍부한 정보를
-탐색할 수 있습니다.
+> [!NOTE]  
+> 프로젝트의 맥락과 인사이트를 함께 탐색하는 새로운 경험, 모아온.
 
-이제 '모아온'에서 나의 성장을 위한 프로젝트를 발견하세요! 💡
+- 🔄 프로젝트와 아티클을 양방향으로 연결해 기술 선택의 이유와
+  문제 해결 과정을 자연스럽게 이해할 수 있도록 돕습니다.
 
-## 백엔드 개발(dev) 환경 구축
+- 😮 관심 있는 주제와 기술 스택으로 탐색하고, 깊이 있는 아티클을 통해
+  프로젝트의 숨은 이야기를 발견하세요.
 
-<img width="2048" height="847" alt="Image" src="https://github.com/user-attachments/assets/a4f8a00e-788d-4e42-b98f-fd5034cc2f1a" />
+- ✨ 프로젝트와 아티클이 만나는 곳, 당신의 성장을 연결하는 플랫폼
 
-## 백엔드 CI/CD
+<br/>
 
-<img width="761" height="341" alt="image" src="https://github.com/user-attachments/assets/c7c6580c-8c6a-4089-83de-d316d0c7cc19" />
+![](https://brick-william-6f5.notion.site/image/attachment%3Ad07ea022-fe48-4104-9972-e452799b5086%3A%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2025-11-25_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_6.38.26.png?table=block&id=2b64e173-3f21-80d8-a783-dbf5bf8cdbb5&spaceId=e321b4cb-8569-4a87-9b86-2845eb22f8d7&width=2000&userId=&cache=v2)
 
-# 프론트엔드 개발(dev) 환경 구축
+<br/>
 
-<img width="1536" height="1024" alt="Image" src="https://github.com/user-attachments/assets/0053c7cf-d3ec-43a5-80cb-e3d6d8552f00" />
+## 🙌  팀원 소개
+
+|                                                                  BE                                                                  |                                                                        BE                                                                         |                                                                          BE                                                                          |                                                                         BE                                                                         |
+| :----------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------: |
+| <a href="https://github.com/Minuring"><img src="https://avatars.githubusercontent.com/u/144205824?v=4" width="140" height="140"></a> | <a href="https://github.com/yesjuhee"><img src="https://avatars.githubusercontent.com/u/96484143?v=4" alt="profile" width="140" height="140"></a> | <a href="https://github.com/minjae8563"><img src="https://avatars.githubusercontent.com/u/171022147?v=4" alt="profile" width="140" height="140"></a> | <a href="https://github.com/eueo8259"><img src="https://avatars.githubusercontent.com/u/162389416?v=4" alt="profile" width="140" height="140"></a> |
+|                                                [이민우](https://github.com/Minuring)                                                 |                                                       [노주희](https://github.com/yesjuhee)                                                       |                                                       [유민재](https://github.com/minjae8563)                                                        |                                                       [이정민](https://github.com/eueo8259)                                                        |
+
+|                                                                 FE                                                                 |                                                                        FE                                                                        |                                                                         FE                                                                         |                                                                           FE                                                                           |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------: |
+| <a href="https://github.com/wo-o29"><img src="https://avatars.githubusercontent.com/u/154664697?v=4" width="140" height="140"></a> | <a href="https://github.com/mlnwns"><img src="https://avatars.githubusercontent.com/u/129190157?v=4" alt="profile" width="140" height="140"></a> | <a href="https://github.com/jin123457"><img src="https://avatars.githubusercontent.com/u/72060681?v=4" alt="profile" width="140" height="140"></a> | <a href="https://github.com/eunoia-jaxson"><img src="https://avatars.githubusercontent.com/u/62330979?v=4" alt="profile" width="140" height="140"></a> |
+|                                                [이우혁](https://github.com/wo-o29)                                                 |                                                       [곽민준](https://github.com/mlnwns)                                                        |                                                       [진 솔](https://github.com/jin123457)                                                        |                                                       [김진서](https://github.com/eunoia-jaxson)                                                       |
+
+<br/>
+
+---
+
+## BE 기술 스택 및 인프라
+
+**Core & Framework:** `Java`, `Spring Boot`
+
+**Database & Search**: `MySQL`, `Elasticsearch`, `Spring Data JPA`, `QueryDSL`, `Flyway`, `AWS RDS`
+
+**Infrastructure & Deployment (CI/CD)**: `AWS EC2`, `Docker`, `Nginx`, `GitHub Actions`, `AWS S3`
+
+**Monitoring & Logging**: `Grafana`, `Prometheus`, `Loki`, `Tempo`
+
+**Test & Documentation**: `JUnit 5`, `RESTAssured`, `Testcontainers`
+
+**Authentication & Utilities**: `JWT`
+
+![](https://brick-william-6f5.notion.site/image/attachment%3A6c645b5e-17fb-4801-8088-7460aeec8530%3AGroup_2069.png?table=block&id=29d4e173-3f21-8023-8c14-e19010cd3f70&spaceId=e321b4cb-8569-4a87-9b86-2845eb22f8d7&width=2000&userId=&cache=v2)
+
+## FE 기술 스택 및 인프라
+
+**Language:** `TypeScript`
+
+**Core Framework**: `React` , `React-Router`
+
+**Bundling/Transpiling**: `webpack` , `babel`
+
+**State Management:** `Tanstack Query`
+
+**Styling**: `Emotion`
+
+**Code Quality**: `Biome`
+
+**Analytics & Monitoring**: `Google Anlytics4`, `Sentry`
+
+![](https://brick-william-6f5.notion.site/image/attachment%3A1ef62e0f-8256-4b2c-824e-f3909cbd672e%3A%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2025-11-09_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_7.54.10.png?table=block&id=2a64e173-3f21-8002-be27-eb6f90c57434&spaceId=e321b4cb-8569-4a87-9b86-2845eb22f8d7&width=2000&userId=&cache=v2)
