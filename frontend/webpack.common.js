@@ -49,7 +49,6 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      favicon: "./public/favicon.ico",
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({ path: ".env.local", systemvars: true }),
