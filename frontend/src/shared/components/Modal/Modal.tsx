@@ -1,8 +1,10 @@
 import CloseButtonIcon from "@shared/components/CloseButtonIcon/CloseButtonIcon";
-import { useFocusTrap } from "@shared/hooks/useFocusTrap";
+import { useFocusReturn } from "@shared/hooks/useFocusReturn";
+import { useFocusTrap } from "@shared/hooks/useFocusTrap/useFocusTrap";
 import { useKeyDown } from "@shared/hooks/useKeyDown/useKeyDown";
 import { useOutsideClick } from "@shared/hooks/useOutsideClick";
-import { type PropsWithChildren, useId, useRef } from "react";
+import { mergeRefs } from "@shared/utils/mergeRefs";
+import { type PropsWithChildren, useId } from "react";
 import { createPortal } from "react-dom";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import * as S from "./Modal.styled";
@@ -27,24 +29,27 @@ function Modal({
   variant = "default",
   disableCloseOnOverlayClick = false,
 }: PropsWithChildren<ModalProps>) {
+  const returnFocus = useFocusReturn({ opened: isOpen });
+  const closeModal = () => {
+    onClose();
+    returnFocus();
+  };
+
   useKeyDown({
     Escape: () => {
       if (!disableCloseOnOverlayClick) {
-        onClose();
+        closeModal();
       }
     },
   });
-
-  usePreventScroll(isOpen);
-
-  const contentRef = useRef<HTMLDivElement>(null);
-  useFocusTrap({ ref: contentRef, active: isOpen });
-
   const setOutsideClickRef = useOutsideClick(() => {
     if (!disableCloseOnOverlayClick) {
-      onClose();
+      closeModal();
     }
   });
+
+  usePreventScroll(isOpen);
+  const modalRef = useFocusTrap(isOpen);
 
   const titleId = useId();
   const descriptionId = useId();
@@ -54,10 +59,7 @@ function Modal({
   const modalContent = (
     <S.Overlay role="presentation">
       <S.Content
-        ref={(el) => {
-          contentRef.current = el;
-          setOutsideClickRef(el);
-        }}
+        ref={mergeRefs(modalRef, setOutsideClickRef)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
@@ -66,7 +68,7 @@ function Modal({
       >
         {showCloseButton && (
           <S.CloseButtonWrapper>
-            <CloseButtonIcon onClick={onClose} iconSize={16} />
+            <CloseButtonIcon onClick={closeModal} iconSize={16} />
           </S.CloseButtonWrapper>
         )}
         {title && <S.Title id={titleId}>{title}</S.Title>}
