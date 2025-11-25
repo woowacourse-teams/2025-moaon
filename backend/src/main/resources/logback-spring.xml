@@ -30,7 +30,7 @@
         </encoder>
     </appender>
 
-    <springProfile name="local,test,new">
+    <springProfile name="local,test">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
