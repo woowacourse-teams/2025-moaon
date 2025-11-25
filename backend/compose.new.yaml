@@ -64,6 +64,11 @@ services:
       - xpack.security.enabled=false
       - xpack.security.http.ssl.enabled=false
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - es-data:/usr/share/elasticsearch/data
 
