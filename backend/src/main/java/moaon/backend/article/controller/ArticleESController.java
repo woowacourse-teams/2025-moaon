@@ -7,6 +7,7 @@ import moaon.backend.article.dto.ArticleSearchRequest;
 import moaon.backend.article.repository.ArticleSearchResult;
 import moaon.backend.article.repository.es.ArticleDocumentRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,7 @@ public class ArticleESController {
     private final ArticleDocumentRepository repository;
 
     @GetMapping("/es/search")
+    @Transactional(readOnly = true)
     public ResponseEntity<ArticleResponse> getPagedArticles(@ModelAttribute @Validated ArticleSearchRequest request) {
         ArticleQueryCondition condition = request.toCondition();
         ArticleSearchResult result = repository.search(condition);

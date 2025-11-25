@@ -1,0 +1,121 @@
+name: BE New CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push-image:
+    if: |
+      github.actor == 'yesjuhee' ||
+      github.actor == 'Minuring' ||
+      github.actor == 'eueo8259' ||
+      github.actor == 'minjae8563'
+    runs-on: ubuntu-24.04-arm
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Gradle cache for Docker
+        id: gradle_cache
+        uses: actions/cache@v4
+        with:
+          path: ./gradle-cache-dev-home
+          key: ${{ runner.os }}-gradle-cache-dev-${{ hashFiles('build.gradle', 'settings.gradle', 'gradle/wrapper/**') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-cache-dev-
+
+      - name: Restore Gradle cache mounts to BuildKit
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: ./gradle-cache-dev-home
+          dockerfile: ./backend/new.Dockerfile
+          skip-extraction: ${{ steps.gradle_cache.outputs.cache-hit }}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/new.Dockerfile
+          push: true
+          platforms: linux/arm64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/moaon-backend:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push-image
+    runs-on: new-self-hosted
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: change permission
+        run: |
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2025-moaon
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file from Secrets
+        run: |
+          echo "Creating .env file from GitHub Secrets"
+          cat <<EOF > .env
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          IMAGE_TAG=${{ github.sha }}
+          
+          MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}          
+          SPRING_DATASOURCE_URL_NEW=${{ secrets.SPRING_DATASOURCE_URL_NEW }}
+          SPRING_DATASOURCE_USERNAME_NEW=${{ secrets.SPRING_DATASOURCE_USERNAME_NEW }}
+          SPRING_DATASOURCE_PASSWORD_NEW=${{ secrets.SPRING_DATASOURCE_PASSWORD_NEW }}
+          
+          NOTION_USER_ID=${{ secrets.NOTION_USER_ID }}
+          NOTION_TOKEN_V2=${{ secrets.NOTION_TOKEN_V2 }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_PROD_REDIRECT_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          S3_BUCKET=${{ secrets.S3_BUCKET }}
+          S3_REGION=${{ secrets.S3_REGION }}
+          GPT_API_KEY=${{ secrets.GPT_PROD_API_KEY }}
+          
+          SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${{ secrets.SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE }}
+          SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=${{ secrets.SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE }}
+          SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=${{ secrets.SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT }}
+          SPRING_DATASOURCE_HIKARI_MAX_LIFETIME=${{ secrets.SPRING_DATASOURCE_HIKARI_MAX_LIFETIME }}
+          SERVER_TOMCAT_THREADS_MAX=${{ secrets.SERVER_TOMCAT_THREADS_MAX }}
+          SERVER_TOMCAT_THREADS_MAX_CONNECTIONS=${{ secrets.SERVER_TOMCAT_THREADS_MAX_CONNECTIONS }}
+          SERVER_TOMCAT_THREADS_ACCEPT_COUNT=${{ secrets.SERVER_TOMCAT_THREADS_ACCEPT_COUNT }}
+          SERVER_TOMCAT_THREADS_MIN_SPARE=${{ secrets.SERVER_TOMCAT_THREADS_MIN_SPARE }}
+          SERVER_TOMCAT_CONNECTION_TIMEOUT=${{ secrets.SERVER_TOMCAT_CONNECTION_TIMEOUT }}
+          EOF
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Pull latest image and deploy
+        run: |
+          sudo docker compose -f compose.new.yaml up -d
+          sudo docker image prune -af
