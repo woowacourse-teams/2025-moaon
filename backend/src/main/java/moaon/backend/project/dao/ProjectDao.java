@@ -10,7 +10,6 @@ import static moaon.backend.techStack.domain.QTechStack.techStack;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Arrays;
@@ -26,7 +25,6 @@ import moaon.backend.project.domain.Project;
 import moaon.backend.project.domain.ProjectCategory;
 import moaon.backend.project.domain.ProjectSortType;
 import moaon.backend.project.dto.ProjectQueryCondition;
-import moaon.backend.project.repository.FilteringIds;
 import moaon.backend.project.repository.ProjectFullTextSearchHQLFunction;
 import moaon.backend.techStack.domain.ProjectTechStack;
 import org.springframework.stereotype.Repository;
@@ -64,6 +62,57 @@ public class ProjectDao {
                 .fetch();
     }
 
+    public Set<Long> findProjectIdsByTechStacks(List<String> techStacks) {
+        if (CollectionUtils.isEmpty(techStacks)) {
+            return new HashSet<>();
+        }
+
+        return new HashSet<>(jpaQueryFactory.select(projectTechStack.project.id)
+                .from(projectTechStack)
+                .where(
+                        projectTechStack.techStack.name.in(techStacks)
+                )
+                .groupBy(projectTechStack.project.id)
+                .having(projectTechStack.techStack.name.count().eq((long) techStacks.size()))
+                .fetch());
+    }
+
+    public Set<Long> findProjectIdsByCategories(List<String> categories) {
+        if (CollectionUtils.isEmpty(categories)) {
+            return new HashSet<>();
+        }
+
+        return new HashSet<>(jpaQueryFactory.select(projectCategory.project.id)
+                .from(projectCategory)
+                .where(
+                        projectCategory.category.name.in(categories)
+                )
+                .groupBy(projectCategory.project.id)
+                .having(projectCategory.category.name.count().eq((long) categories.size()))
+                .fetch());
+    }
+
+    public Set<Long> findProjectIdsBySearchKeyword(SearchKeyword searchKeyword) {
+        if (searchKeyword == null || !searchKeyword.hasValue()) {
+            return new HashSet<>();
+        }
+
+        return new HashSet<>(jpaQueryFactory.select(project.id)
+                .from(project)
+                .where(
+                        satisfiesMatchScore(searchKeyword)
+                )
+                .fetch());
+    }
+
+    private BooleanExpression idsInCondition(Set<Long> projectIdsByFilter) {
+        if (CollectionUtils.isEmpty(projectIdsByFilter)) {
+            return null;
+        }
+
+        return project.id.in(projectIdsByFilter);
+    }
+
     public List<Project> findProjects(ProjectQueryCondition condition, Set<Long> projectIdsByFilter) {
         Cursor<?> cursor = condition.cursor();
         ProjectSortType sortBy = condition.projectSortType();
@@ -80,76 +129,10 @@ public class ProjectDao {
                 .fetch();
     }
 
-    public Set<Long> findProjectIdsByTechStacks(FilteringIds filteringIds, List<String> techStacks) {
-        if (CollectionUtils.isEmpty(techStacks)) {
-            return new HashSet<>();
-        }
-
-        return new HashSet<>(jpaQueryFactory.select(projectTechStack.project.id)
-                .from(projectTechStack)
-                .where(
-                        projectTechStack.techStack.name.in(techStacks),
-                        projectIdInFilteringIds(filteringIds, projectTechStack.project.id)
-                )
-                .groupBy(projectTechStack.project.id)
-                .having(projectTechStack.techStack.name.count().eq((long) techStacks.size()))
-                .fetch());
-    }
-
-    public Set<Long> findProjectIdsByCategories(FilteringIds filteringIds, List<String> categories) {
-        if (CollectionUtils.isEmpty(categories)) {
-            return new HashSet<>();
-        }
-
-        return new HashSet<>(jpaQueryFactory.select(projectCategory.project.id)
-                .from(projectCategory)
-                .where(
-                        projectCategory.category.name.in(categories),
-                        projectIdInFilteringIds(filteringIds, projectCategory.project.id)
-                )
-                .groupBy(projectCategory.project.id)
-                .having(projectCategory.category.name.count().eq((long) categories.size()))
-                .fetch());
-    }
-
-    public Set<Long> findProjectIdsBySearchKeyword(FilteringIds filteringIds, SearchKeyword searchKeyword) {
-        if (searchKeyword == null || !searchKeyword.hasValue()) {
-            return new HashSet<>();
-        }
-
-        return new HashSet<>(jpaQueryFactory.select(project.id)
-                .from(project)
-                .where(
-                        satisfiesMatchScore(searchKeyword),
-                        projectIdInFilteringIds(filteringIds, project.id)
-                )
-                .fetch());
-    }
-
     public long count() {
         return Optional.ofNullable(jpaQueryFactory.select(Wildcard.count)
                 .from(project)
                 .fetchOne()).orElse(0L);
-    }
-
-    private BooleanExpression projectIdInFilteringIds(
-            FilteringIds filteringIds,
-            SimpleExpression<Long> projectIdExpression
-    ) {
-        if (filteringIds.isHasResult()) {
-            return projectIdExpression.in(filteringIds.getIds());
-        }
-
-        return null;
-    }
-
-
-    private BooleanExpression idsInCondition(Set<Long> projectIdsByFilter) {
-        if (CollectionUtils.isEmpty(projectIdsByFilter)) {
-            return null;
-        }
-
-        return project.id.in(projectIdsByFilter);
     }
 
     private BooleanExpression satisfiesMatchScore(SearchKeyword searchKeyword) {
