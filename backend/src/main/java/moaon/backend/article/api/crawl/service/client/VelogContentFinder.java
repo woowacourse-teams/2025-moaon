@@ -16,10 +16,18 @@ import moaon.backend.global.exception.custom.ErrorCode;
 
 public class VelogContentFinder extends ContentFinder {
 
+    private final int connectionTimeoutSeconds;
+    private final int readTimeoutSeconds;
+
+    public VelogContentFinder(int connectionTimeoutSec, int readTimeoutSec) {
+        this.connectionTimeoutSeconds = connectionTimeoutSec;
+        this.readTimeoutSeconds = readTimeoutSec;
+    }
+
     /*
-    벨로그가 사용중인 도메인: velog.io
-    이 외 사용자 지정 도메인은 BodyFinder 가 수행한다.
-     */
+            벨로그가 사용중인 도메인: velog.io
+            이 외 사용자 지정 도메인은 BodyFinder 가 수행한다.
+             */
     @Override
     public FinderCrawlResult crawl(URL url) {
         JsonNode post = getPost(url);
@@ -57,8 +65,8 @@ public class VelogContentFinder extends ContentFinder {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
-            connection.setConnectTimeout(5_000);
-            connection.setReadTimeout(5_000);
+            connection.setConnectTimeout(connectionTimeoutSeconds * 1_000);
+            connection.setReadTimeout(readTimeoutSeconds * 1_000);
             connection.setDoOutput(true);
 
             try (OutputStream os = connection.getOutputStream()) {

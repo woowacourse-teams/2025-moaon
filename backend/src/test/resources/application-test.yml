@@ -24,6 +24,9 @@ spring:
     init:
       mode: always
 
+  elasticsearch:
+    uris: http://localhost:9200
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
