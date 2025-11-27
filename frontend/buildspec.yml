@@ -3,21 +3,21 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 22
     commands:
-      - pwd
-      - ls -al
       - cd frontend
       - npm install -g pnpm
-      - pnpm install
+      # - PNPM_STORE_PATH=$(pnpm store path); if [ -d "$PNPM_STORE_PATH" ]; then echo "Using cached pnpm store"; else mkdir -p "$PNPM_STORE_PATH"; fi
+      # - pnpm config set store-dir "$PNPM_STORE_PATH"
+      - if [ -d node_modules ]; then echo "Using cached node_modules"; else mkdir -p node_modules; fi
+      - pnpm install --frozen-lockfile --prefer-offline
 
   build:
     commands:
       - pnpm run build
-      - pwd
-      - ls -al dist
+      - aws s3 sync ./dist s3://moaon-prod/fe-build/ --delete --only-show-errors --exact-timestamps
 
-artifacts:
-  base-directory: frontend/dist
-  files:
-    - "**/*"
+cache:
+  paths:
+    - frontend/node_modules/**/*
+    # - /codebuild/output/.pnpm-store/**/*

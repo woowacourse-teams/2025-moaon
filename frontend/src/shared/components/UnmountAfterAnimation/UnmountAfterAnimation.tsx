@@ -1,4 +1,5 @@
 import {
+  type ComponentProps,
   type ElementType,
   type PropsWithChildren,
   useEffect,
@@ -6,16 +7,19 @@ import {
 } from "react";
 import Polymorphic from "../Polymorphic/Polymorphic";
 
-interface UnmountAfterAnimationProps<T extends ElementType = "div"> {
+type UnmountAfterAnimationProps<T extends ElementType = "div"> = {
   visible: boolean;
+  onExit?: () => void;
   as?: T;
-}
+} & ComponentProps<T>;
 
-function UnmountAfterAnimation({
+function UnmountAfterAnimation<T extends ElementType = "div">({
   visible,
+  onExit,
   children,
   as = "div",
-}: PropsWithChildren<UnmountAfterAnimationProps>) {
+  ...props
+}: PropsWithChildren<UnmountAfterAnimationProps<T>>) {
   const [mounted, setMounted] = useState(visible);
 
   useEffect(() => {
@@ -29,11 +33,15 @@ function UnmountAfterAnimation({
       return;
     }
 
-    const animations = element.getAnimations({ subtree: true });
+    const handleAnimationEnd = () => {
+      onExit?.();
+      setMounted(false);
+    };
 
+    const animations = element.getAnimations({ subtree: true });
     Promise.all(animations.map((animation) => animation.finished))
-      .then(() => setMounted(false))
-      .catch(() => setMounted(false));
+      .then(() => handleAnimationEnd())
+      .catch(() => handleAnimationEnd());
   };
 
   if (!mounted) {
@@ -41,7 +49,7 @@ function UnmountAfterAnimation({
   }
 
   return (
-    <Polymorphic as={as} ref={refCallback}>
+    <Polymorphic as={as} ref={refCallback} {...props}>
       {children}
     </Polymorphic>
   );

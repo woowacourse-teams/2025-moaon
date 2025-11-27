@@ -41,7 +41,7 @@ export default {
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
         type: "asset/resource",
         generator: {
-          filename: "assets/[name][hash][ext]",
+          filename: "assets/[name].[contenthash][ext]",
         },
       },
     ],
@@ -49,7 +49,6 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      favicon: "./public/favicon.ico",
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({ path: ".env.local", systemvars: true }),

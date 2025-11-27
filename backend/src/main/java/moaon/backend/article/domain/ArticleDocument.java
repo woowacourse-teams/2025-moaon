@@ -4,7 +4,10 @@ import static java.util.stream.Collectors.toSet;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
@@ -15,8 +18,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventAction;
+import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
 import moaon.backend.techStack.domain.TechStack;
@@ -99,12 +102,12 @@ public class ArticleDocument {
         this.createdAt = article.getCreatedAt().truncatedTo(ChronoUnit.MILLIS);
     }
 
-    public EventOutbox toEventOutbox(EventAction eventAction, ObjectMapper objectMapper) {
+    public EventOutbox toEventOutbox(EventAction eventAction) {
         return EventOutbox.builder()
                 .entityId(this.getId())
                 .eventType("articles")
                 .action(eventAction)
-                .payload(convertToJson(this, objectMapper))
+                .payload(convertToJson(this))
                 .build();
     }
 
@@ -115,9 +118,15 @@ public class ArticleDocument {
         return techStacks.stream().map(TechStack::getName).collect(toSet());
     }
 
-    private String convertToJson(Object object, ObjectMapper objectMapper) {
+    private String convertToJson(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);
+            ObjectMapper mapper = new ObjectMapper();
+            JavaTimeModule module = new JavaTimeModule();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
+                    DateFormat.date_hour_minute_second_fraction.getPattern());
+            module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(dateTimeFormatter));
+            mapper.registerModule(module);
+            return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.ARTICLE_PROCESSING_FAILED);
         }
