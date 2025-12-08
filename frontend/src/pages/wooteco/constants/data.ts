@@ -28,8 +28,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "retrofit",
         "firebase",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%89%E1%85%B3%E1%84%90%E1%85%A1%E1%84%8F%E1%85%A1%E1%84%90%E1%85%A9+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%89%E1%85%B3%E1%84%90%E1%85%A1%E1%84%8F%E1%85%A1%E1%84%90%E1%85%A9+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 9,
@@ -58,8 +57,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "styledComponents",
         "storybook",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%8F%E1%85%A9%E1%84%85%E1%85%A6%E1%84%8B%E1%85%A1+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%8F%E1%85%A9%E1%84%85%E1%85%A6%E1%84%8B%E1%85%A1+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 16,
@@ -86,8 +84,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "mysql",
         "mockito",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%92%E1%85%A2%E1%86%BC%E1%84%83%E1%85%A9%E1%86%BC%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A1%E1%86%BC+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%92%E1%85%A2%E1%86%BC%E1%84%83%E1%85%A9%E1%86%BC%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A1%E1%86%BC+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 14,
@@ -112,8 +109,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "lombok",
         "mysql",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8C%E1%85%A2%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8C%E1%85%A2%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -154,8 +150,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "reactRouter",
         "googleAnalytics",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%ED%8E%80%EC%9E%87-%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%ED%8E%80%EC%9E%87-%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 36,
@@ -192,8 +187,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "webpack",
         "typescript",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-morak-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-morak-1.png`,
       isLoved: false,
       loves: 0,
       views: 13,
@@ -242,8 +236,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "grafana",
         "prometheus",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-gongseek-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-gongseek-1.png`,
       isLoved: false,
       loves: 0,
       views: 24,
@@ -271,8 +264,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "restdocs",
         "restassured",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-ternoko-1.jpg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-ternoko-1.jpg`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -324,8 +316,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "sonarqube",
         "cloudfront",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang1.png`,
       isLoved: false,
       loves: 0,
       views: 26,
@@ -362,8 +353,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "gatling",
         "jacoco",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-babble-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-babble-1.png`,
       isLoved: false,
       loves: 0,
       views: 20,
@@ -406,8 +396,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-pickgit-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-pickgit-1.png`,
       isLoved: false,
       loves: 0,
       views: 28,
@@ -437,8 +426,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "nginx",
         "firebase",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-jikgorae-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-jikgorae-1.png`,
       isLoved: false,
       loves: 0,
       views: 32,
@@ -467,8 +455,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "lombok",
         "junit5",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%8F%E1%85%B3%E1%84%85%E1%85%AE%E1%84%85%E1%85%AE+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%8F%E1%85%B3%E1%84%85%E1%85%AE%E1%84%85%E1%85%AE+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 35,
@@ -490,8 +477,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "lombok",
         "mockito",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%91%E1%85%A6%E1%86%BC%E1%84%8F%E1%85%AE%E1%86%A8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%91%E1%85%A6%E1%86%BC%E1%84%8F%E1%85%AE%E1%86%A8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 11,
@@ -528,8 +514,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "docker",
         "githubAction",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%90%E1%85%AE%E1%84%85%E1%85%AE%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%90%E1%85%AE%E1%84%85%E1%85%AE%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -555,8 +540,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "cloudwatch",
         "s3",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%ED%96%89%EB%A1%9D+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%ED%96%89%EB%A1%9D+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 12,
@@ -598,8 +582,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jmeter",
         "oauth2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-dallog-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-dallog-1.png`,
       isLoved: false,
       loves: 0,
       views: 49,
@@ -636,8 +619,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "nginx",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-gongcheck-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-gongcheck-1.png`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -676,8 +658,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "githubAction",
         "docker",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-momo-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-momo-1.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -719,8 +700,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "reacttestinglibrary",
         "msw",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-naepyeon-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-naepyeon-1.png`,
       isLoved: false,
       loves: 0,
       views: 27,
@@ -761,8 +741,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "restassured",
         "h2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-moamoa-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-moamoa-1.png`,
       isLoved: false,
       loves: 0,
       views: 22,
@@ -790,8 +769,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "restdocs",
         "restassured",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-ternoko-1.jpg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-ternoko-1.jpg`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -832,8 +810,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "aws",
         "yarnberry",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-thankoo-1.svg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-thankoo-1.svg`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -868,8 +845,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "grafana",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-jujul-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-jujul-1.png`,
       isLoved: false,
       loves: 0,
       views: 10,
@@ -912,8 +888,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-pickgit-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-pickgit-1.png`,
       isLoved: false,
       loves: 0,
       views: 28,
@@ -944,8 +919,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "express",
         "nodejs",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-nolto-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-nolto-1.png`,
       isLoved: false,
       loves: 0,
       views: 13,
@@ -978,8 +952,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "logstash",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-dara-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-dara-1.png`,
       isLoved: false,
       loves: 0,
       views: 22,
@@ -1009,8 +982,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "babel",
         "reactRouter",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/nornag-see-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/nornag-see-1.png`,
       isLoved: false,
       loves: 0,
       views: 32,
@@ -1042,8 +1014,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jmeter",
         "jenkins",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/daro-%EB%95%85%EB%95%85%EB%95%85+1.jpg\n",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/daro-%EB%95%85%EB%95%85%EB%95%85+1.jpg\n"`,
       isLoved: false,
       loves: 0,
       views: 9,
@@ -1072,8 +1043,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "logstash",
         "kibana",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-gpu-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-gpu-1.png`,
       isLoved: false,
       loves: 0,
       views: 11,
@@ -1113,8 +1083,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jenkins",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-tyf-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-tyf-1.png`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -1135,8 +1104,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jenkins",
         "ec2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-saebyeok-1.svg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-saebyeok-1.svg`,
       isLoved: false,
       loves: 0,
       views: 23,
@@ -1149,8 +1117,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
       summary:
         "심심풀이 땅콩처럼 가벼운 주제로 친구들과 즐기는 단체 대화주제 제공 서비스 🥜",
       techStacks: ["java", "springboot", "typescript", "javascript"],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/malone1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/malone1.png`,
       isLoved: false,
       loves: 0,
       views: 24,
@@ -1160,8 +1127,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
       title: "데벨업",
       summary: "개발자 취업 준비생을 위한 상호 성장 플랫폼, '데벨업'",
       techStacks: ["react", "typescript"],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%83%E1%85%A6%E1%84%87%E1%85%A6%E1%86%AF%E1%84%8B%E1%85%A5%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%83%E1%85%A6%E1%84%87%E1%85%A6%E1%86%AF%E1%84%8B%E1%85%A5%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB1.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -1199,8 +1165,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jmeter",
         "jenkins",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo6.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo6.png`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -1224,8 +1189,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "docker",
         "reactRouter",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-bogo-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-bogo-1.png`,
       isLoved: false,
       loves: 0,
       views: 13,
@@ -1238,8 +1202,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
       summary:
         "심심풀이 땅콩처럼 가벼운 주제로 친구들과 즐기는 단체 대화주제 제공 서비스 🥜",
       techStacks: ["java", "springboot", "typescript", "javascript"],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/malone1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/malone1.png`,
       isLoved: false,
       loves: 0,
       views: 24,
@@ -1269,8 +1232,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "mysql",
         "nginx",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%87%E1%85%A1%E1%86%BC%E1%84%81%E1%85%B3%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%87%E1%85%A1%E1%86%BC%E1%84%81%E1%85%B3%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -1295,8 +1257,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "h2",
         "mysql",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%86%E1%85%A9%E1%84%86%E1%85%A9+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%86%E1%85%A9%E1%84%86%E1%85%A9+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 7,
@@ -1321,8 +1282,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "lombok",
         "mysql",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8C%E1%85%A2%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8C%E1%85%A2%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -1359,8 +1319,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "docker",
         "githubAction",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%90%E1%85%AE%E1%84%85%E1%85%AE%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%90%E1%85%AE%E1%84%85%E1%85%AE%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -1370,8 +1329,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
       title: "데벨업",
       summary: "개발자 취업 준비생을 위한 상호 성장 플랫폼, '데벨업'",
       techStacks: ["react", "typescript"],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%83%E1%85%A6%E1%84%87%E1%85%A6%E1%86%AF%E1%84%8B%E1%85%A5%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%83%E1%85%A6%E1%84%87%E1%85%A6%E1%86%AF%E1%84%8B%E1%85%A5%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB1.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -1404,8 +1362,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "restassured",
         "mockito",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/daro-%EB%B0%94%ED%86%A4+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/daro-%EB%B0%94%ED%86%A4+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 13,
@@ -1416,8 +1373,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
       summary:
         "📝같은 글을 한 번에 포스팅하자! 블로그 포스트 관리 툴, 동글✍️\n\n",
       techStacks: [],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/daro-%EB%8F%99%EA%B8%80+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/daro-%EB%8F%99%EA%B8%80+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 19,
@@ -1439,8 +1395,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "springboot",
         "aws",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/darto-%EC%B9%B4%ED%8E%98%EC%9D%B8+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/darto-%EC%B9%B4%ED%8E%98%EC%9D%B8+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -1471,8 +1426,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "s3",
         "jenkins",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%EC%BD%94%EB%81%BC%EB%A6%AC+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%EC%BD%94%EB%81%BC%EB%A6%AC+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 15,
@@ -1503,8 +1457,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "s3",
         "jenkins",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%EC%8A%A4%ED%83%AC%ED%94%84%ED%81%AC%EB%9F%AC%EC%8B%9C+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%EC%8A%A4%ED%83%AC%ED%94%84%ED%81%AC%EB%9F%AC%EC%8B%9C+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 6,
@@ -1530,8 +1483,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "cloudwatch",
         "s3",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%ED%96%89%EB%A1%9D+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%ED%96%89%EB%A1%9D+%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 12,
@@ -1549,8 +1501,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "kotlin",
         "firebase",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%ED%8A%B8%EB%A6%BD%EB%93%9C%EB%A1%9C%EC%9A%B0-%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%ED%8A%B8%EB%A6%BD%EB%93%9C%EB%A1%9C%EC%9A%B0-%EB%8B%A4%EB%A1%9C+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -1587,8 +1538,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "webpack",
         "typescript",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-morak-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-morak-1.png`,
       isLoved: false,
       loves: 0,
       views: 13,
@@ -1627,8 +1577,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "grafana",
         "prometheus",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-sokdak-1.svg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-sokdak-1.svg`,
       isLoved: false,
       loves: 0,
       views: 7,
@@ -1670,8 +1619,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jmeter",
         "oauth2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-dallog-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-dallog-1.png`,
       isLoved: false,
       loves: 0,
       views: 49,
@@ -1709,8 +1657,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "recoil",
         "springboot",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-reviewduck-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-reviewduck-1.png`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -1747,8 +1694,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "sonarqube",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-f12-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-f12-1.png`,
       isLoved: false,
       loves: 0,
       views: 30,
@@ -1790,8 +1736,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "reacttestinglibrary",
         "msw",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-naepyeon-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-naepyeon-1.png`,
       isLoved: false,
       loves: 0,
       views: 27,
@@ -1825,8 +1770,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "sonarcloud",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-kkogkkog-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-kkogkkog-1.png`,
       isLoved: false,
       loves: 0,
       views: 24,
@@ -1867,8 +1811,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "aws",
         "yarnberry",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-thankoo-1.svg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-thankoo-1.svg`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -1897,8 +1840,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "logstash",
         "kibana",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-gpu-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-gpu-1.png`,
       isLoved: false,
       loves: 0,
       views: 11,
@@ -1938,8 +1880,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jenkins",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-tyf-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-tyf-1.png`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -1982,8 +1923,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-pickgit-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-pickgit-1.png`,
       isLoved: false,
       loves: 0,
       views: 28,
@@ -2004,8 +1944,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "h2",
         "lombok",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%87%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A1%E1%86%B8%E1%84%80%E1%85%A2+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%87%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A1%E1%86%B8%E1%84%80%E1%85%A2+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -2026,8 +1965,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "retrofit",
         "jetpack",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%91%E1%85%A9%E1%84%8F%E1%85%A6%E1%86%BA%E1%84%86%E1%85%A9%E1%86%AB+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%91%E1%85%A9%E1%84%8F%E1%85%A6%E1%86%BA%E1%84%86%E1%85%A9%E1%86%AB+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -2054,8 +1992,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "mysql",
         "mockito",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%92%E1%85%A2%E1%86%BC%E1%84%83%E1%85%A9%E1%86%BC%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A1%E1%86%BC+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%92%E1%85%A2%E1%86%BC%E1%84%83%E1%85%A9%E1%86%BC%E1%84%83%E1%85%A2%E1%84%8C%E1%85%A1%E1%86%BC+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 14,
@@ -2087,8 +2024,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "docker",
         "grafana",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%85%E1%85%B5%E1%84%87%E1%85%B2%E1%84%86%E1%85%B5+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%85%E1%85%B5%E1%84%87%E1%85%B2%E1%84%86%E1%85%B5+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 11,
@@ -2113,8 +2049,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "lombok",
         "mysql",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8C%E1%85%A2%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%E1%84%8C%E1%85%A2%E1%86%B8+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -2151,8 +2086,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "docker",
         "githubAction",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%90%E1%85%AE%E1%84%85%E1%85%AE%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%90%E1%85%AE%E1%84%85%E1%85%AE%E1%86%BA+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB+1.png`,
       isLoved: false,
       loves: 0,
       views: 17,
@@ -2184,8 +2118,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "aws",
         "ec2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%E1%84%86%E1%85%A9%E1%84%8B%E1%85%AE%E1%84%83%E1%85%A1+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%E1%84%86%E1%85%A9%E1%84%8B%E1%85%AE%E1%84%83%E1%85%A1+%E1%84%86%E1%85%A1%E1%86%AF%E1%84%85%E1%85%A9%E1%86%AB1.png`,
       isLoved: false,
       loves: 0,
       views: 19,
@@ -2196,8 +2129,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
       summary:
         "컨퍼런스 및 행사에 함께할 팀원을 쉽게 찾고 연결하는 플랫폼, Kerdy.",
       techStacks: ["java", "springboot", "kotlin", "ec2"],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/daro+kerdy+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/daro+kerdy+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -2232,8 +2164,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jest",
         "storybook",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/daro-%EA%B4%9C%EC%B0%AE%EC%9D%84%EC%A7%80%EB%8F%84+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/daro-%EA%B4%9C%EC%B0%AE%EC%9D%84%EC%A7%80%EB%8F%84+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -2255,8 +2186,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "springboot",
         "aws",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/darto-%EC%B9%B4%ED%8E%98%EC%9D%B8+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/darto-%EC%B9%B4%ED%8E%98%EC%9D%B8+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -2284,8 +2214,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "grafana",
         "s3",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/%EC%9A%94%EC%A6%98%EC%B9%B4%ED%8E%98-+daro+%EC%8D%B8%EB%84%A4%EC%9D%BC.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/%EC%9A%94%EC%A6%98%EC%B9%B4%ED%8E%98-+daro+%EC%8D%B8%EB%84%A4%EC%9D%BC.png`,
       isLoved: false,
       loves: 0,
       views: 23,
@@ -2323,8 +2252,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jmeter",
         "jenkins",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo6.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo6.png`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -2366,8 +2294,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jmeter",
         "oauth2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-dallog-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-dallog-1.png`,
       isLoved: false,
       loves: 0,
       views: 49,
@@ -2404,8 +2331,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "nginx",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-gongcheck-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-gongcheck-1.png`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -2443,8 +2369,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "recoil",
         "springboot",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-reviewduck-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-reviewduck-1.png`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -2483,8 +2408,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "githubAction",
         "docker",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-momo-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-momo-1.png`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -2521,8 +2445,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "sonarqube",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-f12-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-f12-1.png`,
       isLoved: false,
       loves: 0,
       views: 30,
@@ -2571,8 +2494,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "grafana",
         "prometheus",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-gongseek-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-gongseek-1.png`,
       isLoved: false,
       loves: 0,
       views: 24,
@@ -2614,8 +2536,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "reacttestinglibrary",
         "msw",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-naepyeon-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-naepyeon-1.png`,
       isLoved: false,
       loves: 0,
       views: 27,
@@ -2649,8 +2570,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "sonarcloud",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-kkogkkog-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-kkogkkog-1.png`,
       isLoved: false,
       loves: 0,
       views: 24,
@@ -2691,8 +2611,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "restassured",
         "h2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-moamoa-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-moamoa-1.png`,
       isLoved: false,
       loves: 0,
       views: 22,
@@ -2726,8 +2645,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "redis",
         "h2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-teatime-1.jpg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-teatime-1.jpg`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -2766,8 +2684,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-levellog-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-levellog-1.png`,
       isLoved: false,
       loves: 0,
       views: 19,
@@ -2795,8 +2712,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "restdocs",
         "restassured",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-ternoko-1.jpg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-ternoko-1.jpg`,
       isLoved: false,
       loves: 0,
       views: 25,
@@ -2837,8 +2753,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "aws",
         "yarnberry",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-thankoo-1.svg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-thankoo-1.svg`,
       isLoved: false,
       loves: 0,
       views: 21,
@@ -2890,8 +2805,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "sonarqube",
         "cloudfront",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang1.png`,
       isLoved: false,
       loves: 0,
       views: 26,
@@ -2928,8 +2842,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "gatling",
         "jacoco",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-babble-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-babble-1.png`,
       isLoved: false,
       loves: 0,
       views: 20,
@@ -2964,8 +2877,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "grafana",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-jujul-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-jujul-1.png`,
       isLoved: false,
       loves: 0,
       views: 10,
@@ -3005,8 +2917,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jenkins",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-tyf-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-tyf-1.png`,
       isLoved: false,
       loves: 0,
       views: 18,
@@ -3049,8 +2960,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jacoco",
         "ngrinder",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-pickgit-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-pickgit-1.png`,
       isLoved: false,
       loves: 0,
       views: 28,
@@ -3092,8 +3002,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "sonarqube",
         "githubAction",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-cvi-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-cvi-1.png`,
       isLoved: false,
       loves: 0,
       views: 16,
@@ -3126,8 +3035,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "logstash",
         "sonarqube",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/norang-dara-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/norang-dara-1.png`,
       isLoved: false,
       loves: 0,
       views: 22,
@@ -3157,8 +3065,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "babel",
         "reactRouter",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/nornag-see-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/nornag-see-1.png`,
       isLoved: false,
       loves: 0,
       views: 32,
@@ -3188,8 +3095,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "nginx",
         "firebase",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-jikgorae-1.png",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-jikgorae-1.png`,
       isLoved: false,
       loves: 0,
       views: 32,
@@ -3210,8 +3116,7 @@ export const EVENT_PROJECT_DATA: Record<Company, ProjectCard[]> = {
         "jenkins",
         "ec2",
       ],
-      thumbnailUrl:
-        "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/projects/popo-saebyeok-1.svg",
+      thumbnailUrl: `${process.env.S3_BASE_URL}/projects/popo-saebyeok-1.svg`,
       isLoved: false,
       loves: 0,
       views: 23,
