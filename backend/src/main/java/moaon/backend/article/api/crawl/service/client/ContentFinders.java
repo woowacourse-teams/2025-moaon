@@ -7,13 +7,14 @@ import moaon.backend.global.util.EnvLoader;
 public class ContentFinders {
 
     private static final List<ContentFinder> FINDERS = List.of(
-            new TistoryContentFinder(),
+            new TistoryContentFinder(30),
             new NotionContentFinder(
+                    3, 5,
                     EnvLoader.getEnv("NOTION_USER_ID"),
                     EnvLoader.getEnv("NOTION_TOKEN_V2")
             ),
-            new VelogContentFinder(),
-            new BodyFinder()
+            new VelogContentFinder(3, 5),
+            new BodyFinder(30)
     );
 
     public ContentFinder getFinder(URL url) {
