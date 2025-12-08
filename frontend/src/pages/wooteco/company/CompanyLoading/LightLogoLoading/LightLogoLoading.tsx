@@ -22,13 +22,13 @@ function LightLogoLoading({
         {firstLoading ? (
           <S.ShineImage
             onAnimationEnd={firstLoadingEnd}
-            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
+            src={`${process.env.S3_BASE_URL}/wooteco-event/${company}-text.svg`}
             alt=""
           />
         ) : (
           <S.SecondImage
             onAnimationEnd={onLoadingComplete}
-            src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${company}-text.svg`}
+            src={`${process.env.S3_BASE_URL}/wooteco-event/${company}-text.svg`}
             alt=""
           />
         )}

@@ -1,6 +1,7 @@
 import ArrowDownIcon from "@assets/icons/arrow-down-event.svg";
 import HeroIcon from "@assets/icons/hero.svg";
 import BGImage from "@assets/images/background.png";
+
 import TextEffectImage from "@assets/images/text-effect.avif";
 import ArrowIcon from "@shared/components/ArrowIcon/ArrowIcon";
 import LoginModal from "@shared/components/LoginModal/LoginModal";
@@ -127,7 +128,7 @@ function EventLandingPage() {
         <S.EventBox>
           <S.Section2 id="event1" ref={attachedRef}>
             <S.EffectImage1
-              src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect6.svg"
+              src={`${process.env.S3_BASE_URL}/wooteco-event/effect6.svg`}
               alt=""
             />
             <S.Badge bgColor="#46ec8821" color="#48ec8b">
@@ -147,7 +148,7 @@ function EventLandingPage() {
                   <S.CardBox key={company}>
                     <S.CardLink to={`/wooteco/${company}`}>
                       <S.CardImage
-                        src={`https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/${imageurl}`}
+                        src={`${process.env.S3_BASE_URL}/wooteco-event/${imageurl}`}
                         alt=""
                       />
                       {COMPANY_NAME[company]}
@@ -167,7 +168,7 @@ function EventLandingPage() {
 
           <S.Section2 ref={attachedRef}>
             <S.EffectImage2
-              src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect12.svg"
+              src={`${process.env.S3_BASE_URL}/wooteco-event/effect12.svg`}
               alt=""
             />
             <S.Badge bgColor="#478bff26" color="#478bff">
@@ -182,7 +183,7 @@ function EventLandingPage() {
               <S.CoachBox>
                 <S.CoachLink to={"/project/64"}>
                   <S.CoachImage
-                    src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/kkogkkog-logo.svg"
+                    src={`${process.env.S3_BASE_URL}/wooteco-event/kkogkkog-logo.svg`}
                     alt=""
                   />
                   <S.CoachTextBox>
@@ -195,7 +196,7 @@ function EventLandingPage() {
               <S.CoachBox>
                 <S.CoachLink to={"/project/71"}>
                   <S.CoachImage
-                    src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/cvi-logo.svg"
+                    src={`${process.env.S3_BASE_URL}/wooteco-event/cvi-logo.svg`}
                     alt=""
                   />
                   <S.CoachTextBox>
@@ -209,7 +210,7 @@ function EventLandingPage() {
 
           <S.Section2 ref={attachedRef}>
             <S.EffectImage3
-              src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect9.svg"
+              src={`${process.env.S3_BASE_URL}/wooteco-event/effect9.svg`}
               alt=""
             />
             <S.Badge bgColor="#ddf4571a" color="#ddf34f">
@@ -231,7 +232,7 @@ function EventLandingPage() {
 
           {/* <S.Section2>
             <S.EffectImage2
-              src="https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/wooteco-event/effect8.svg"
+              src={`${process.env.S3_BASE_URL}/wooteco-event/effect8.svg`}
               alt=""
             />
             <S.Badge bgColor="#a855f71a" color="#a855f7">
