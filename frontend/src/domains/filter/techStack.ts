@@ -3,830 +3,667 @@ import { typeSafeObjectEntries } from "@shared/utils/typeSafeObjectEntries";
 export const FRONTEND_STACK_ICON_MAP = {
   react: {
     label: "React",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/React.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/React.svg`,
   },
   nextjs: {
     label: "Next.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Next.js.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Next.js.svg`,
   },
   vuejs: {
     label: "Vue.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Vue.js.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Vue.js.svg`,
   },
   angular: {
     label: "Angular",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Angular.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Angular.svg`,
   },
   svelte: {
     label: "Svelte",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Svelte.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Svelte.svg`,
   },
   typescript: {
     label: "TypeScript",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/TypeScript.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/TypeScript.svg`,
   },
   javascript: {
     label: "JavaScript",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JavaScript.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/JavaScript.svg`,
   },
   tailwind: {
     label: "TailwindCSS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/TailwindCSS.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/TailwindCSS.svg`,
   },
   redux: {
     label: "Redux",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Redux.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Redux.svg`,
   },
   vite: {
     label: "Vite",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Vite.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Vite.svg`,
   },
   tanstackQuery: {
     label: "Tanstack Query",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Tanstack-Query.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Tanstack-Query.svg`,
   },
   jotai: {
     label: "Jotai",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jotai.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jotai.svg`,
   },
   zustand: {
     label: "Zustand",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Zustand.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Zustand.svg`,
   },
   styledComponents: {
     label: "Styled Components",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Styled-Components.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Styled-Components.svg`,
   },
   emotion: {
     label: "Emotion",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Emotion.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Emotion.svg`,
   },
   recoil: {
     label: "Recoil",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Recoil.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Recoil.svg`,
   },
   nuxtjs: {
     label: "Nuxt.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nuxt.js.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Nuxt.js.svg`,
   },
   astro: {
     label: "Astro",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Astro.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Astro.svg`,
   },
   solidjs: {
     label: "SolidJS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SolidJS.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SolidJS.svg`,
   },
   remix: {
     label: "Remix",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Remix.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Remix.svg`,
   },
   biome: {
     label: "Biome",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Biome.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Biome.svg`,
   },
   msw: {
     label: "MSW",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MSW.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/MSW.svg`,
   },
   jest: {
     label: "Jest",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jest.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jest.svg`,
   },
   reacttestinglibrary: {
     label: "RTL",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactTestingLibrary.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ReactTestingLibrary.svg`,
   },
   storybook: {
     label: "Storybook",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Storybook.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Storybook.svg`,
   },
   babel: {
     label: "Babel",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Babel.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Babel.svg`,
   },
   cypress: {
     label: "Cypress",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Cypress.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Cypress.svg`,
   },
   pwa: {
     label: "PWA",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/PWA.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/PWA.svg`,
   },
   sass: {
     label: "Sass",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Sass.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Sass.svg`,
   },
   axios: {
     label: "Axios",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Axios.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Axios.svg`,
   },
   yarnberry: {
     label: "YarnBerry",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/YarnBerry.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/YarnBerry.svg`,
   },
   prettier: {
     label: "Prettier",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Prettier.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Prettier.svg`,
   },
   websocket: {
     label: "Websocket",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Websocket.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Websocket.svg`,
   },
   cloudfront: {
     label: "CloudFront",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CloudFront.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/CloudFront.svg`,
   },
   webpack: {
     label: "Webpack",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Webpack.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Webpack.svg`,
   },
   githubAction: {
     label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/GithubAction.svg`,
   },
   git: {
     label: "Git",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Git.svg`,
   },
   css: {
     label: "CSS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CSS.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/CSS.svg`,
   },
   lighthouse: {
     label: "light house",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/LightHouse.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/LightHouse.svg`,
   },
   reactRouter: {
     label: "react-router",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactRouter.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ReactRouter.svg`,
   },
   sentry: {
     label: "Sentry",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Sentry.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Sentry.svg`,
   },
   googleAnalytics: {
     label: "Google Analytics",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GoogleAnalytics.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/GoogleAnalytics.svg`,
   },
 } as const;
 
 export const BACKEND_STACK_ICON_MAP = {
   nodejs: {
     label: "Node.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Node.js.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Node.js.svg`,
   },
   express: {
     label: "Express.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Express.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Express.svg`,
   },
   nestjs: {
     label: "Nest.js",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nest.js.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Nest.js.svg`,
   },
   django: {
     label: "Django",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Django.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Django.svg`,
   },
   fastapi: {
     label: "FastAPI",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/FastAPI.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/FastAPI.svg`,
   },
   spring: {
     label: "Spring",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Spring.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Spring.svg`,
   },
   springboot: {
     label: "SpringBoot",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringBoot.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SpringBoot.svg`,
   },
   rubyonrails: {
     label: "Ruby on Rails",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RubyonRails.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/RubyonRails.svg`,
   },
   aws: {
     label: "AWS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/AWS.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/AWS.svg`,
   },
   mongodb: {
     label: "MongoDB",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MongoDB.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/MongoDB.svg`,
   },
   postgresql: {
     label: "PostgreSQL",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/PostgresSQL.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/PostgresSQL.svg`,
   },
   mysql: {
     label: "MySQL",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MySQL.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/MySQL.svg`,
   },
   redis: {
     label: "Redis",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Redis.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Redis.svg`,
   },
   kafka: {
     label: "Apache Kafka",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ApacheKafka.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ApacheKafka.svg`,
   },
   docker: {
     label: "Docker",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Docker.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Docker.svg`,
   },
   kubernetes: {
     label: "Kubernetes",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kubernetes.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Kubernetes.svg`,
   },
   java: {
     label: "Java",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Java.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Java.svg`,
   },
   python: {
     label: "Python",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Python.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Python.svg`,
   },
   go: {
     label: "Go",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Go.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Go.svg`,
   },
   rust: {
     label: "Rust",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Rust.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Rust.svg`,
   },
   deno: {
     label: "Deno",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Deno.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Deno.svg`,
   },
   supabase: {
     label: "Supabase",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Supabase.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Supabase.svg`,
   },
   prisma: {
     label: "Prisma",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Prisma.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Prisma.svg`,
   },
   trpc: {
     label: "tRPC",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/tRPC.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/tRPC.svg`,
   },
   grafana: {
     label: "Grafana",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Grafana.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Grafana.svg`,
   },
   jenkins: {
     label: "Jenkins",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jenkins.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jenkins.svg`,
   },
   jpa: {
     label: "JPA",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JPA.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/JPA.svg`,
   },
   querydsl: {
     label: "Querydsl",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Querydsl.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Querydsl.svg`,
   },
   oauth2: {
     label: "OAuth2",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/OAuth2.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/OAuth2.svg`,
   },
   apachezookeeper: {
     label: "Apache Zookeeper",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ApacheZookeeper.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ApacheZookeeper.svg`,
   },
   restdocs: {
     label: "Restdocs",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Restdocs.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Restdocs.svg`,
   },
   junit5: {
     label: "Junit5",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Junit5.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Junit5.svg`,
   },
   restassured: {
     label: "RestAssured",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RestAssured.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/RestAssured.svg`,
   },
   mockito: {
     label: "Mockito",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Mockito.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Mockito.svg`,
   },
   slf4j: {
     label: "Slf4j",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Slf4j.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Slf4j.svg`,
   },
   swagger: {
     label: "Swagger",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Swagger.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Swagger.svg`,
   },
   logstash: {
     label: "Logstash",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Logstash.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Logstash.svg`,
   },
   kibana: {
     label: "Kibana",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kibana.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Kibana.svg`,
   },
   flyway: {
     label: "Flyway",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flyway.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Flyway.svg`,
   },
   h2: {
     label: "H2",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/H2.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/H2.svg`,
   },
   nginx: {
     label: "Nginx",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nginx.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Nginx.svg`,
   },
   prometheus: {
     label: "Prometheus",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Prometheus.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Prometheus.svg`,
   },
   ec2: {
     label: "EC2",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/EC2.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/EC2.svg`,
   },
   s3: {
     label: "S3",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/S3.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/S3.svg`,
   },
   cloudwatch: {
     label: "CloudWatch",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CloudWatch.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/CloudWatch.svg`,
   },
   jacoco: {
     label: "Jacoco",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jacoco.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jacoco.svg`,
   },
   sonarqube: {
     label: "SonarQube",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SonarQube.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SonarQube.svg`,
   },
   gradle: {
     label: "Gradle",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Gradle.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Gradle.svg`,
   },
   jwt: {
     label: "JWT",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JWT.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/JWT.svg`,
   },
   ical4j: {
     label: "Ical4j",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Ical4j.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Ical4j.svg`,
   },
   jmeter: {
     label: "Jmeter",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jmeter.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jmeter.svg`,
   },
   jackson: {
     label: "Jackson",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jackson.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jackson.svg`,
   },
   mariadb: {
     label: "MariaDB",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/MariaDB.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/MariaDB.svg`,
   },
   sonarcloud: {
     label: "SonarCloud",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SonarCloud.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SonarCloud.svg`,
   },
   gatling: {
     label: "Gatling",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Gatling.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Gatling.svg`,
   },
   ngrinder: {
     label: "Ngrinder",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Ngrinder.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Ngrinder.svg`,
   },
   rabbitmq: {
     label: "Rabbitmq",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Rabbitmq.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Rabbitmq.svg`,
   },
   k6: {
     label: "K6",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/K6.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/K6.svg`,
   },
   lombok: {
     label: "Lombok",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Lombok.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Lombok.svg`,
   },
   githubAction: {
     label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/GithubAction.svg`,
   },
   git: {
     label: "Git",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Git.svg`,
   },
   elasticSearch: {
     label: "ElasticSearch",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ElasticSearch.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ElasticSearch.svg`,
   },
   springWebFlux: {
     label: "Spring WebFlux",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringWebFlux.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SpringWebFlux.svg`,
   },
   log4j2: {
     label: "log4j2",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Log4j2.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Log4j2.svg`,
   },
   locust: {
     label: "Locust",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Locust.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Locust.svg`,
   },
   springSecurity: {
     label: "Spring Security",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SpringSecurity.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SpringSecurity.svg`,
   },
 } as const;
 
 export const ANDROID_STACK_ICON_MAP = {
   kotlin: {
     label: "Kotlin",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Kotlin.svg`,
   },
   compose: {
     label: "Jetpack Compose",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/JetpackCompose.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/JetpackCompose.svg`,
   },
   java: {
     label: "Java",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Java.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Java.svg`,
   },
   flutter: {
     label: "Flutter",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flutter.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Flutter.svg`,
   },
   retrofit: {
     label: "Retrofit",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Retrofit.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Retrofit.svg`,
   },
   moshi: {
     label: "Moshi",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Moshi.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Moshi.svg`,
   },
   coroutines: {
     label: "Coroutines",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Coroutines.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Coroutines.svg`,
   },
   flow: {
     label: "Flow",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flow.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Flow.svg`,
   },
   room: {
     label: "Room",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Room.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Room.svg`,
   },
   dataStore: {
     label: "DataStore",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/DataStore.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/DataStore.svg`,
   },
   hilt: {
     label: "Hilt",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Hilt.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Hilt.svg`,
   },
   jetpack: {
     label: "Jetpack",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jetpack.svg`,
   },
   firebase: {
     label: "Firebase",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Firebase.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Firebase.svg`,
   },
   retrofit2: {
     label: "Retrofit2",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Retrofit2.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Retrofit2.svg`,
   },
   glide: {
     label: "Glide",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Glide.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Glide.svg`,
   },
   mockk: {
     label: "MockK",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Mockk.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Mockk.svg`,
   },
   turbine: {
     label: "Turbine",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Turbine.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Turbine.svg`,
   },
   zxing: {
     label: "Zxing",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Zxing.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Zxing.svg`,
   },
   okhttp3: {
     label: "Okhttp3",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Okhttp3.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Okhttp3.svg`,
   },
   githubAction: {
     label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/GithubAction.svg`,
   },
   git: {
     label: "Git",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Git.svg`,
   },
   fusedLocationProviderClient: {
     label: "FusedLocationProviderClient",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jetpack.svg`,
   },
   locationManager: {
     label: "locationManager",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jetpack.svg`,
   },
   serialization: {
     label: "Serialization",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kotlin.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Kotlin.svg`,
   },
   reactNative: {
     label: "React Native",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ReactNative.svg`,
   },
   recyclerView: {
     label: "RecyclerView",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jetpack.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jetpack.svg`,
   },
   coil: {
     label: "Coil",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Coil.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Coil.svg`,
   },
   timber: {
     label: "Timber",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Timber.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Timber.svg`,
   },
   lottie: {
     label: "Lottie",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Lottie.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Lottie.svg`,
   },
 } as const;
 
 export const IOS_STACK_ICON_MAP = {
   swift: {
     label: "Swift",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Swift.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Swift.svg`,
   },
   swiftui: {
     label: "SwiftUI",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SwiftUI.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SwiftUI.svg`,
   },
   rxswift: {
     label: "RxSwift",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RxSwift.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/RxSwift.svg`,
   },
   alamofire: {
     label: "Alamofire",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Alamofire.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Alamofire.svg`,
   },
   flutter: {
     label: "Flutter",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flutter.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Flutter.svg`,
   },
   restClient: {
     label: "Restclient",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/RestClient.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/RestClient.svg`,
   },
   githubAction: {
     label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/GithubAction.svg`,
   },
   git: {
     label: "Git",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Git.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Git.svg`,
   },
   reactNative: {
     label: "React Native",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/ReactNative.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/ReactNative.svg`,
   },
 } as const;
 
 export const INFRA_STACK_ICON_MAP = {
   aws: {
     label: "AWS",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/AWS.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/AWS.svg`,
   },
   ec2: {
     label: "EC2",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/EC2.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/EC2.svg`,
   },
   s3: {
     label: "S3",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/S3.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/S3.svg`,
   },
   cloudfront: {
     label: "CloudFront",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CloudFront.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/CloudFront.svg`,
   },
   cloudwatch: {
     label: "CloudWatch",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/CloudWatch.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/CloudWatch.svg`,
   },
   docker: {
     label: "Docker",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Docker.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Docker.svg`,
   },
   kubernetes: {
     label: "Kubernetes",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kubernetes.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Kubernetes.svg`,
   },
   nginx: {
     label: "Nginx",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Nginx.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Nginx.svg`,
   },
   jenkins: {
     label: "Jenkins",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Jenkins.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Jenkins.svg`,
   },
   grafana: {
     label: "Grafana",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Grafana.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Grafana.svg`,
   },
   prometheus: {
     label: "Prometheus",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Prometheus.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Prometheus.svg`,
   },
   sonarqube: {
     label: "SonarQube",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SonarQube.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SonarQube.svg`,
   },
   sonarcloud: {
     label: "SonarCloud",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/SonarCloud.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/SonarCloud.svg`,
   },
   logstash: {
     label: "Logstash",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Logstash.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Logstash.svg`,
   },
   kibana: {
     label: "Kibana",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Kibana.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Kibana.svg`,
   },
   flyway: {
     label: "Flyway",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/Flyway.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/Flyway.svg`,
   },
   githubAction: {
     label: "Github Action",
-    imgUrl:
-      "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/teckstack-icons/GithubAction.svg",
+    imgUrl: `${process.env.S3_BASE_URL}/teckstack-icons/GithubAction.svg`,
   },
 } as const;
 

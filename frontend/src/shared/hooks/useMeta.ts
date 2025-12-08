@@ -1,8 +1,7 @@
 import setMetaTags from "@shared/utils/setMetaTags";
 import { useEffect } from "react";
 
-const DEFAULT_IMAGE_URL =
-  "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/moaon/images/logo.png";
+const DEFAULT_IMAGE_URL = `${process.env.S3_BASE_URL}/images/logo.png`;
 const DEFAULT_KEYWORDS = "프로젝트, 개발자, 탐색, 학습";
 const URL = "https://moaon.co.kr/";
 
