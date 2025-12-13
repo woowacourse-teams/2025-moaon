@@ -30,13 +30,6 @@ export const CardImage = styled.img`
   }
 `;
 
-export const CardImageBoxWrapper = styled.div`
-  &.image-loaded {
-    background: transparent;
-    animation: none;
-  }
-`;
-
 export const CardTitle = styled.h2`
   font-size: 1.125rem;
   margin: 0.25rem 0;
