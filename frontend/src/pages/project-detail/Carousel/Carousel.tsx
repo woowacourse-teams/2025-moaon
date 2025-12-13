@@ -65,15 +65,21 @@ function Carousel({ imageUrls }: CarouselProps) {
         const imagePosition = getImagePosition(index);
 
         return (
-          <S.Image
+          <S.ImageWrapper
             key={image}
-            src={getOptimizedImageUrl(image, slideImageWidth)}
-            alt={`슬라이드 ${index + 1}`}
             position={imagePosition}
-            noTransition={imagePosition === "hidden"}
             isSingleImage={imageUrls.length === 1}
+            noTransition={imagePosition === "hidden"}
             onClick={() => handleImageClick(index)}
-          />
+          >
+            <picture>
+              <source
+                srcSet={getOptimizedImageUrl(image, slideImageWidth)}
+                type="image/webp"
+              />
+              <S.Image src={image} alt={`슬라이드 ${index + 1}`} />
+            </picture>
+          </S.ImageWrapper>
         );
       })}
 
@@ -112,10 +118,13 @@ function Carousel({ imageUrls }: CarouselProps) {
         variant="image"
       >
         {selectedImageIndex !== null && (
-          <S.ModalImage
-            src={getOptimizedImageUrl(imageUrls[selectedImageIndex], 900)}
-            alt=""
-          />
+          <picture>
+            <source
+              srcSet={getOptimizedImageUrl(imageUrls[selectedImageIndex], 900)}
+              type="image/webp"
+            />
+            <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
+          </picture>
         )}
       </Modal>
     </S.CarouselContainer>
