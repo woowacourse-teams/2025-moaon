@@ -1,9 +1,10 @@
 import eyeIcon from "@assets/icons/eye.svg";
-// import grayHeartIcon from "@assets/icons/gray-heart.svg";
-// import redHeartIcon from "@assets/icons/pink-heart.svg";
 import cardDefaultImage from "@assets/images/default-image.png";
 import notFoundImage from "@assets/images/image-not-found.png";
+import { getOptimizedImageUrl } from "@shared/utils/getOptimizedImageUrl";
 import { memo, type SyntheticEvent } from "react";
+// import grayHeartIcon from "@assets/icons/gray-heart.svg";
+// import redHeartIcon from "@assets/icons/pink-heart.svg";
 import type { ProjectCard } from "@/apis/projects/projects.type";
 import * as S from "./Card.styled";
 import StatBox from "./StatBox/StatBox";
@@ -29,27 +30,35 @@ function Card({ project, isEyeIcon = true }: CardProps) {
   const imageLoadError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
     target.src = notFoundImage;
-    // 에러 발생 시에도 로드된 것으로 처리
     target.classList.add("loaded");
-    target.parentElement?.classList.add("image-loaded");
+    target.parentElement?.parentElement?.classList.add("image-loaded");
   };
 
   const imageLoadSuccess = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
     target.classList.add("loaded");
-    target.parentElement?.classList.add("image-loaded");
+    target.parentElement?.parentElement?.classList.add("image-loaded");
   };
 
   return (
     <S.Card>
       <S.CardLink to={`/project/${id}`}>
         <S.CardImageBox aria-hidden="true">
-          <S.CardImage
-            src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
-            onError={imageLoadError}
-            onLoad={imageLoadSuccess}
-            alt={`${title} 프로젝트 썸네일`}
-          />
+          <picture>
+            {thumbnailUrl && (
+              <source
+                srcSet={getOptimizedImageUrl(thumbnailUrl, 300)}
+                type="image/webp"
+              />
+            )}
+
+            <S.CardImage
+              src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
+              onError={imageLoadError}
+              onLoad={imageLoadSuccess}
+              alt={`${title} 프로젝트 썸네일`}
+            />
+          </picture>
         </S.CardImageBox>
         <S.CardInfo>
           <S.CardTitle>{title}</S.CardTitle>
