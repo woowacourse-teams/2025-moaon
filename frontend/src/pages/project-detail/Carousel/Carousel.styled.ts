@@ -28,11 +28,12 @@ export const CarouselContainer = styled.div`
 `;
 
 const CarouselImage = styled.img`
+  width: 100%;
+  height: 100%;
   border-radius: 25px;
   border: 2px solid #ddd;
   background-color: #fff;
   object-fit: contain;
-  cursor: pointer;
 
   -webkit-user-drag: none;
   -khtml-user-drag: none;
@@ -40,12 +41,15 @@ const CarouselImage = styled.img`
   -o-user-drag: none;
 `;
 
-export const Image = styled(CarouselImage)<{
+export const Image = styled(CarouselImage)``;
+
+export const ImageWrapper = styled.div<{
   position: "current" | "next" | "prev" | "hidden";
   isSingleImage: boolean;
   noTransition?: boolean;
 }>`
   position: absolute;
+  cursor: pointer;
   transition: ${({ noTransition }) =>
     noTransition ? "none" : "all 0.5s ease-in-out"};
 

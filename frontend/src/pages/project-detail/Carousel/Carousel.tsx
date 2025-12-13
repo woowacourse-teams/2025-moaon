@@ -4,18 +4,26 @@ import { DESKTOP_BREAKPOINT } from "@shared/constants/breakPoints";
 import { useOverlay } from "@shared/hooks/useOverlay";
 import { useSwipe } from "@shared/hooks/useSwipe";
 import { useWindowSize } from "@shared/hooks/useWindowSize";
+import { getOptimizedImageUrl } from "@shared/utils/getOptimizedImageUrl";
 import { useState } from "react";
 import * as S from "./Carousel.styled";
 import { useArrowKey } from "./hooks/useArrowKey";
 import { useSlide } from "./hooks/useSlide";
 
-function Carousel({ imageUrls }: { imageUrls: string[] }) {
+interface CarouselProps {
+  imageUrls: string[];
+}
+
+function Carousel({ imageUrls }: CarouselProps) {
   const responseSize = useWindowSize();
+
   const { currentImageIndex, handleSlidePrev, handleSlideNext, goToIndex } =
-    useSlide({
-      imageUrls,
-    });
-  useArrowKey({ handlePrev: handleSlidePrev, handleNext: handleSlideNext });
+    useSlide({ imageUrls });
+
+  useArrowKey({
+    handlePrev: handleSlidePrev,
+    handleNext: handleSlideNext,
+  });
 
   const swipeHandlers = useSwipe({
     onSwipedLeft: handleSlideNext,
@@ -23,7 +31,6 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
   });
 
   const imageModal = useOverlay();
-
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
@@ -49,23 +56,33 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
     return "hidden";
   };
 
+  const isMobile = responseSize.width < DESKTOP_BREAKPOINT;
+  const slideImageWidth = isMobile ? 300 : 900;
+
   return (
     <S.CarouselContainer {...swipeHandlers}>
       {imageUrls.map((image, index) => {
         const imagePosition = getImagePosition(index);
 
         return (
-          <S.Image
+          <S.ImageWrapper
             key={image}
-            src={image}
-            alt={`슬라이드 ${index + 1}`}
             position={imagePosition}
-            noTransition={imagePosition === "hidden"}
             isSingleImage={imageUrls.length === 1}
+            noTransition={imagePosition === "hidden"}
             onClick={() => handleImageClick(index)}
-          />
+          >
+            <picture>
+              <source
+                srcSet={getOptimizedImageUrl(image, slideImageWidth)}
+                type="image/webp"
+              />
+              <S.Image src={image} alt={`슬라이드 ${index + 1}`} />
+            </picture>
+          </S.ImageWrapper>
         );
       })}
+
       {imageUrls.length > 1 && (
         <>
           <S.PrevButton
@@ -82,7 +99,7 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
           </S.NextButton>
         </>
       )}
-      {imageUrls.length > 1 && responseSize.width < DESKTOP_BREAKPOINT && (
+      {imageUrls.length > 1 && isMobile && (
         <S.Indicators>
           {imageUrls.map((url, index) => (
             <S.Indicator
@@ -101,7 +118,13 @@ function Carousel({ imageUrls }: { imageUrls: string[] }) {
         variant="image"
       >
         {selectedImageIndex !== null && (
-          <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
+          <picture>
+            <source
+              srcSet={getOptimizedImageUrl(imageUrls[selectedImageIndex], 900)}
+              type="image/webp"
+            />
+            <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
+          </picture>
         )}
       </Modal>
     </S.CarouselContainer>
