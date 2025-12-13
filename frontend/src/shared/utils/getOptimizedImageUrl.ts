@@ -1,7 +1,10 @@
 export const getOptimizedImageUrl = (originalUrl: string, width: number) => {
   if (!originalUrl) return "";
+  if (!Number.isInteger(width) || width <= 0) return originalUrl;
 
   const base = process.env.S3_BASE_URL;
+  if (!base) return originalUrl;
+
   const filename = originalUrl.split("/").pop() || "";
 
   const dotIndex = filename.lastIndexOf(".");
