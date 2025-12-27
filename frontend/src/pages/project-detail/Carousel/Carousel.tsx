@@ -120,7 +120,10 @@ function Carousel({ imageUrls }: CarouselProps) {
         {selectedImageIndex !== null && (
           <picture>
             <source
-              srcSet={getOptimizedImageUrl(imageUrls[selectedImageIndex], 900)}
+              srcSet={getOptimizedImageUrl(
+                imageUrls[selectedImageIndex],
+                isMobile ? 300 : 900,
+              )}
               type="image/webp"
             />
             <S.ModalImage src={imageUrls[selectedImageIndex]} alt="" />
