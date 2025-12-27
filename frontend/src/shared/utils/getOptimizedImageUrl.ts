@@ -1,5 +1,5 @@
 export const getOptimizedImageUrl = (originalUrl: string, width: number) => {
-  if (!originalUrl) return "";
+  if (originalUrl === "") return "";
   if (!Number.isInteger(width) || width <= 0) return originalUrl;
 
   const filename = originalUrl.split("/").pop() || "";
@@ -10,7 +10,7 @@ export const getOptimizedImageUrl = (originalUrl: string, width: number) => {
   const ext = filename.substring(dotIndex).toLowerCase();
 
   const isOptimizable = [".png", ".jpg", ".jpeg"].includes(ext);
-  if (!isOptimizable) {
+  if (isOptimizable === false) {
     return originalUrl;
   }
 
@@ -18,7 +18,7 @@ export const getOptimizedImageUrl = (originalUrl: string, width: number) => {
   const optimizedFile = `${basename}.webp`;
 
   const base = process.env.S3_BASE_URL;
-  if (!base) return originalUrl;
+  if (base === undefined) return originalUrl;
 
   return `${base}/variants/${width}/${optimizedFile}`;
 };
