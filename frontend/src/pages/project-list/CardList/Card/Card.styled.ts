@@ -10,20 +10,13 @@ import {
   textOverflowEllipsis,
 } from "@/styles/global.styled";
 
-export const CardImage = styled.img`
+export const CardImage = styled.img<{ $isLoaded: boolean }>`
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
-
-  /* 처음에는 투명하게 시작 */
-  opacity: 0;
+  opacity: ${({ $isLoaded }) => ($isLoaded ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
-
-  /* 로드 완료 시 나타나기 */
-  &.loaded {
-    opacity: 1;
-  }
 
   ${BP_768} {
     object-fit: cover;
@@ -75,7 +68,7 @@ export const Card = styled.li`
 
 export const CardLink = styled(Link)``;
 
-export const CardImageBox = styled.div`
+export const CardImageBox = styled.div<{ $isLoaded: boolean }>`
   width: 100%;
   aspect-ratio: 14/8;
   overflow: hidden;
@@ -83,14 +76,8 @@ export const CardImageBox = styled.div`
   border: 1px solid #b8b8b8;
   border-radius: 10px 10px 0 0;
 
-  /* 기본 스켈레톤 배경 */
-  ${shimmerGradient}
-
-  /* 이미지가 완전히 로드되면 배경 애니메이션 중지 */
-  &.image-loaded {
-    background: none;
-    animation: none;
-  }
+  ${({ $isLoaded }) =>
+    $isLoaded ? "background: none; animation: none;" : shimmerGradient}
 
   ${BP_1280} {
     aspect-ratio: 16/9;
