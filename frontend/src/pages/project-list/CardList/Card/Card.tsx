@@ -2,7 +2,7 @@ import eyeIcon from "@assets/icons/eye.svg";
 import cardDefaultImage from "@assets/images/default-image.png";
 import notFoundImage from "@assets/images/image-not-found.png";
 import { getOptimizedImageUrl } from "@shared/utils/getOptimizedImageUrl";
-import { memo, type SyntheticEvent } from "react";
+import { memo, useState } from "react";
 // import grayHeartIcon from "@assets/icons/gray-heart.svg";
 // import redHeartIcon from "@assets/icons/pink-heart.svg";
 import type { ProjectCard } from "@/apis/projects/projects.type";
@@ -27,25 +27,28 @@ function Card({ project, isEyeIcon = true }: CardProps) {
     views,
   } = project;
 
-  const imageLoadError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.currentTarget;
-    target.src = notFoundImage;
-    target.classList.add("loaded");
-    target.parentElement?.parentElement?.classList.add("image-loaded");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  const handleImageError = () => {
+    setHasError(true);
+    setIsImageLoaded(true);
   };
 
-  const imageLoadSuccess = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.currentTarget;
-    target.classList.add("loaded");
-    target.parentElement?.parentElement?.classList.add("image-loaded");
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
   };
+
+  const imageSrc = hasError
+    ? notFoundImage
+    : thumbnailUrl || cardDefaultImage;
 
   return (
     <S.Card>
       <S.CardLink to={`/project/${id}`}>
-        <S.CardImageBox aria-hidden="true">
+        <S.CardImageBox aria-hidden="true" $isLoaded={isImageLoaded}>
           <picture>
-            {thumbnailUrl && (
+            {thumbnailUrl && !hasError && (
               <source
                 srcSet={getOptimizedImageUrl(thumbnailUrl, 300)}
                 type="image/webp"
@@ -53,10 +56,11 @@ function Card({ project, isEyeIcon = true }: CardProps) {
             )}
 
             <S.CardImage
-              src={thumbnailUrl ? thumbnailUrl : cardDefaultImage}
-              onError={imageLoadError}
-              onLoad={imageLoadSuccess}
+              src={imageSrc}
+              onError={handleImageError}
+              onLoad={handleImageLoad}
               alt={`${title} 프로젝트 썸네일`}
+              $isLoaded={isImageLoaded}
             />
           </picture>
         </S.CardImageBox>
