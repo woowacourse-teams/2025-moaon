@@ -1,6 +1,7 @@
 package moaon.backend.article.sync;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.VersionType;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkRequest.Builder;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
@@ -42,6 +43,8 @@ public class ArticleEsSender {
                 .update(u -> u
                         .index(event.getEventType())
                         .id(String.valueOf(event.getEntityId()))
+                        .version(event.getId())
+                        .versionType(VersionType.External)
                         .action(a -> a
                                 .doc(event.getPayload(objectMapper))
                                 .docAsUpsert(true)
@@ -55,6 +58,8 @@ public class ArticleEsSender {
                 .delete(d -> d
                         .index(event.getEventType())
                         .id(String.valueOf(event.getEntityId()))
+                        .version(event.getId())
+                        .versionType(VersionType.External)
                 )
         );
     }

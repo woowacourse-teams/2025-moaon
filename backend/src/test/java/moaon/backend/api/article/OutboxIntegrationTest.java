@@ -127,7 +127,7 @@ class OutboxIntegrationTest {
         assertThat(pendingEvent.getStatus()).isEqualTo(EventStatus.PENDING);
         assertThat(pendingEvent.getFailCount()).isZero();
 
-        //when
+        // when
         eventPoller.pollAndProcessEvents();
 
         // then

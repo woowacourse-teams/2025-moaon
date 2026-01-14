@@ -30,7 +30,6 @@ public class ArticleSyncScheduler {
     private static final int MAX_RETRIES = 5;
 
     @Scheduled(fixedDelay = 2000)
-    @Transactional
     public void pollAndProcessEvents() {
         try {
             List<EventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING, BATCH_SIZE);
@@ -46,7 +45,7 @@ public class ArticleSyncScheduler {
         }
     }
 
-    private ProcessingResult processEvents(List<EventOutbox> events) throws IOException {
+    private ProcessingResult processEvents(List<EventOutbox> events) {
         ProcessingResult result = new ProcessingResult();
 
         List<EventOutbox> validEvents = validateEvents(events, result);
@@ -54,6 +53,7 @@ public class ArticleSyncScheduler {
             return result;
         }
         try {
+            // 예외 발생
             BulkResponse response = articleEsSender.processEvents(validEvents);
             handleBulkResponse(response, validEvents, result);
 

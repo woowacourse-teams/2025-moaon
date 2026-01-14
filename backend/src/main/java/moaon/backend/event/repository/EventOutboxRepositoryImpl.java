@@ -3,6 +3,7 @@ package moaon.backend.event.repository;
 import static moaon.backend.event.domain.QEventOutbox.eventOutbox;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +20,26 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
-        return queryFactory
+        List<EventOutbox> eventOutboxes = queryFactory
                 .selectFrom(eventOutbox)
                 .where(eventOutbox.status.eq(status))
                 .orderBy(eventOutbox.createdAt.asc())
                 .limit(batchSize)
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .fetch();
+
+        queryFactory.update(eventOutbox)
+                .set(eventOutbox.status, EventStatus.PROCESSING)
+                .where(eventOutbox.id.in(eventOutboxes.stream().map(EventOutbox::getId).toList()))
+                .execute();
+
+        return eventOutboxes;
     }
 
     @Override
+    @Transactional
     public void markAsProcessed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
@@ -40,15 +50,18 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     }
 
     @Override
+    @Transactional
     public void incrementFailCount(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
                 .set(eventOutbox.failCount, eventOutbox.failCount.add(1))
+                .set(eventOutbox.status, EventStatus.PENDING)
                 .where(eventOutbox.id.in(ids))
                 .execute();
     }
 
     @Override
+    @Transactional
     public void markAsFailed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)

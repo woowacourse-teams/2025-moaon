@@ -61,6 +61,10 @@ public class EventOutbox {
     @Column
     private LocalDateTime processedAt;
 
+    public void updateStatus(EventStatus status) {
+        this.status = status;
+    }
+
     public boolean isUpsert(){
         return action == EventAction.INSERT || action == EventAction.UPDATED;
     }
