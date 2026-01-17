@@ -20,7 +20,6 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    @Transactional
     public List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
         List<EventOutbox> eventOutboxes = queryFactory
                 .selectFrom(eventOutbox)
@@ -39,7 +38,6 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public void markAsProcessed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
@@ -50,7 +48,6 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public void incrementFailCount(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
@@ -61,7 +58,6 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public void markAsFailed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)
