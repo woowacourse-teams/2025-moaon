@@ -3,10 +3,10 @@ package moaon.backend.event.repository;
 import java.util.List;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface EventOutboxRepositoryCustom {
-
-    List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize);
 
     void markAsProcessed(List<Long> ids);
 

@@ -32,7 +32,7 @@ public class ArticleSyncScheduler {
     @Scheduled(fixedDelay = 2000)
     public void pollAndProcessEvents() {
         try {
-            List<EventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING, BATCH_SIZE);
+            List<EventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING.getStatus(), BATCH_SIZE);
             if (events.isEmpty()) {
                 return;
             }

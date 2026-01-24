@@ -48,7 +48,7 @@ class EventOutboxRepositoryImplTest {
                 .build());
 
         // when
-        List<EventOutbox> foundEvents = eventOutboxRepository.findEventsByStatus(EventStatus.PENDING, 5);
+        List<EventOutbox> foundEvents = eventOutboxRepository.findEventsByStatus(EventStatus.PENDING.getStatus(), 5);
 
         // then
         assertThat(foundEvents).hasSize(2);
@@ -79,7 +79,7 @@ class EventOutboxRepositoryImplTest {
 
         // when
         eventOutboxRepository.markAsProcessed(List.of(event1.getId(), event2.getId()));
-        List<EventOutbox> processedEvents = eventOutboxRepository.findEventsByStatus(EventStatus.PROCESSED, 5);
+        List<EventOutbox> processedEvents = eventOutboxRepository.findEventsByStatus(EventStatus.PROCESSED.getStatus(), 5);
 
         // then
         assertThat(processedEvents).hasSize(2);

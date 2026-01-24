@@ -9,6 +9,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,24 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    @Override
-    public List<EventOutbox> findEventsByStatus(EventStatus status, int batchSize) {
-        List<EventOutbox> eventOutboxes = queryFactory
-                .selectFrom(eventOutbox)
-                .where(eventOutbox.status.eq(status))
-                .orderBy(eventOutbox.createdAt.asc())
-                .limit(batchSize)
-                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                .fetch();
-
-        queryFactory.update(eventOutbox)
-                .set(eventOutbox.status, EventStatus.PROCESSING)
-                .where(eventOutbox.id.in(eventOutboxes.stream().map(EventOutbox::getId).toList()))
-                .execute();
-
-        return eventOutboxes;
-    }
 
     @Override
     public void markAsProcessed(List<Long> ids) {
