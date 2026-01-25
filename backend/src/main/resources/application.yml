@@ -65,3 +65,28 @@ s3:
 
 gpt:
   api-key: ${GPT_API_KEY}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      articleSearchEs:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+
+        failure-rate-threshold: 50
+
+        slow-call-duration-threshold: 500ms
+        slow-call-rate-threshold: 50
+
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+
+        record-exceptions:
+          - java.util.concurrent.TimeoutException
+          - java.net.SocketTimeoutException
+          - java.net.ConnectException
+          - java.io.IOException
+          - co.elastic.clients.transport.TransportException
+          - co.elastic.clients.elasticsearch._types.ElasticsearchException
+          - org.springframework.data.elasticsearch.UncategorizedElasticsearchException
