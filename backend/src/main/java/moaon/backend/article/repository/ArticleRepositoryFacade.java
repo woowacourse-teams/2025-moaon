@@ -1,5 +1,6 @@
 package moaon.backend.article.repository;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +25,14 @@ public class ArticleRepositoryFacade {
     private final ArticleDocumentRepository elasticSearch;
     private final EventOutboxRepository outboxRepository;
 
+    @CircuitBreaker(name = "articleSearchEs", fallbackMethod = "searchFromMySQL")
     public ArticleSearchResult search(ArticleQueryCondition condition) {
-        try {
-            return elasticSearch.search(condition);
+        return elasticSearch.search(condition);
+    }
 
-        } catch (Exception e) {
-            log.error("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
-            return database.findWithSearchConditions(condition);
-        }
+    private ArticleSearchResult searchFromMySQL(ArticleQueryCondition condition, Throwable e) {
+        log.error("검색엔진이 실패하였습니다. 데이터베이스로 검색을 시도합니다.", e);
+        return database.findWithSearchConditions(condition);
     }
 
     public ArticleSearchResult searchInProject(Project project, ProjectArticleQueryCondition condition) {

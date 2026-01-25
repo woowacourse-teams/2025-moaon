@@ -90,6 +90,10 @@ dependencies {
 
     // aws s3
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.792'
+
+    // circuit breaker
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+    implementation 'org.springframework.cloud:spring-cloud-starter'
 }
 
 clean {
@@ -136,4 +140,10 @@ bootJar {
 
 tasks.named('build') {
     dependsOn asciidoctor
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
+    }
 }
