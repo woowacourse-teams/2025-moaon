@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface EventOutboxRepositoryCustom {
 
+    void markAsProcessing(List<Long> ids);
+
     void markAsProcessed(List<Long> ids);
 
     void incrementFailCount(List<Long> ids);

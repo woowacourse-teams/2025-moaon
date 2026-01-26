@@ -7,6 +7,7 @@ import moaon.backend.event.domain.EventStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface EventOutboxRepository extends JpaRepository<EventOutbox, Long>, EventOutboxRepositoryCustom {
 
@@ -21,6 +22,7 @@ public interface EventOutboxRepository extends JpaRepository<EventOutbox, Long>,
                     """,
             nativeQuery = true
     )
+    @Transactional
     List<EventOutbox> findEventsByStatus(
             @Param("status") String status,
             @Param("batchSize") int batchSize

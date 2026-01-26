@@ -22,6 +22,16 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
+    public void markAsProcessing(List<Long> ids) {
+        queryFactory
+                .update(eventOutbox)
+                .set(eventOutbox.processedAt, LocalDateTime.now())
+                .set(eventOutbox.status, EventStatus.PROCESSING)
+                .where(eventOutbox.id.in(ids))
+                .execute();
+    }
+
+    @Override
     public void markAsProcessed(List<Long> ids) {
         queryFactory
                 .update(eventOutbox)

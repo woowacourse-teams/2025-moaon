@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import moaon.backend.event.domain.EventOutbox;
 import moaon.backend.event.domain.EventStatus;
 import moaon.backend.event.repository.EventOutboxRepository;
+import moaon.backend.event.repository.OutboxService;
 import moaon.backend.global.exception.custom.CustomException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -25,6 +25,7 @@ public class ArticleSyncScheduler {
     private final EventOutboxRepository outboxRepository;
     private final ArticleEsSender articleEsSender;
     private final ObjectMapper objectMapper;
+    private final OutboxService outboxService;
 
     private static final int BATCH_SIZE = 100;
     private static final int MAX_RETRIES = 5;
@@ -32,7 +33,7 @@ public class ArticleSyncScheduler {
     @Scheduled(fixedDelay = 2000)
     public void pollAndProcessEvents() {
         try {
-            List<EventOutbox> events = outboxRepository.findEventsByStatus(EventStatus.PENDING.getStatus(), BATCH_SIZE);
+            List<EventOutbox> events = outboxService.getEventsForIndexing(EventStatus.PENDING, BATCH_SIZE);
             if (events.isEmpty()) {
                 return;
             }
