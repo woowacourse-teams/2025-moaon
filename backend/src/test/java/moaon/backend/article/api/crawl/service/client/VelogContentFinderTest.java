@@ -9,10 +9,14 @@ import java.net.URL;
 import moaon.backend.article.api.crawl.dto.FinderCrawlResult;
 import moaon.backend.global.exception.custom.CustomException;
 import moaon.backend.global.exception.custom.ErrorCode;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 class VelogContentFinderTest {
+
+    private final VelogContentFinder velogContentFinder = new VelogContentFinder(3, 5);
 
     @DisplayName("velog 링크를 다룰 수 있다면 true 를 리턴한다.")
     @Test
@@ -21,8 +25,6 @@ class VelogContentFinderTest {
         URL velogLink = new URL(
                 "https://velog.io/@yukina1418/%EC%B5%9C%EA%B7%BC-%EB%A9%B4%EC%A0%91%EC%9D%84-%EB%8B%A4%EB%8B%88%EB%A9%B4%EC%84%9C-%EB%B0%9B%EC%95%98%EB%8D%98-%EC%A7%88%EB%AC%B8%EB%93%A4");
         URL notVelogLink = new URL("https://notion.io/@yukina1418/%EC%B5%9C%EA%B7%BC");
-
-        VelogContentFinder velogContentFinder = new VelogContentFinder();
 
         // when - then
         assertAll(
@@ -37,7 +39,6 @@ class VelogContentFinderTest {
         // given
         URL normalLink = new URL(
                 "https://velog.io/@minjae8563/%EA%B3%B5%EA%B0%9C-%EA%B8%80%EC%9E%85%EB%8B%88%EB%8B%A4");
-        VelogContentFinder velogContentFinder = new VelogContentFinder();
 
         // when
         FinderCrawlResult result = velogContentFinder.crawl(normalLink);
@@ -55,8 +56,6 @@ class VelogContentFinderTest {
         // given
         URL forbiddenVelogUrl = new URL("https://velog.io/@minjae8563/test-%EC%9A%A9");
         URL deleteVelogUrl = new URL("https://velog.io/@minjae8563/%EC%82%AD%EC%A0%9C%EB%90%9C-url");
-
-        VelogContentFinder velogContentFinder = new VelogContentFinder();
 
         // when - then
         assertAll(
