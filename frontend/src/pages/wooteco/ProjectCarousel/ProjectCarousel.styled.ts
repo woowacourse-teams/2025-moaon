@@ -11,9 +11,7 @@ export const CarouselContainer = styled.div`
   overflow: hidden;
 `;
 
-export const CarouselBox = styled.div`
-  padding: 0 1.25rem;
-`;
+export const CarouselBox = styled.div``;
 
 export const Carousel = styled.ul<{ translateX: number }>`
   padding: 1rem 0 1.5rem;
@@ -49,8 +47,8 @@ export const NavButton = styled.button<{ direction: "left" | "right" }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: ${({ direction }) => (direction === "left" ? "-1.5rem" : "auto")};
-  right: ${({ direction }) => (direction === "right" ? "-1.5rem" : "auto")};
+  left: ${({ direction }) => (direction === "left" ? "-4.5rem" : "auto")};
+  right: ${({ direction }) => (direction === "right" ? "-3.5rem" : "auto")};
   animation: ${fadeIn} 0.5s ease-in-out;
 
   ${BP_768} {
