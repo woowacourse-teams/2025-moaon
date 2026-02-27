@@ -16,21 +16,12 @@ export const Section = styled.section`
 
 export const SubTitle = styled.h2`
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   font-size: 1.25rem;
 
-  @font-face {
-    font-family: "GMarketSans";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
-      format("woff");
-    font-weight: 500;
-    font-display: swap;
-  }
-
-  font-family: "GMarketSans", sans-serif;
   word-break: keep-all;
   line-height: 1.3;
 
@@ -50,7 +41,6 @@ export const Box = styled.div`
 export const MoreLink = styled(Link)`
   font-size: 1.125rem;
   color: #6e6e6e;
-  font-family: "GMarketSans", sans-serif;
   ${hoverUnderline("#6e6e6e")}
   min-width: 5.125rem;
 
