@@ -164,7 +164,7 @@ export const resetStyle = css`
   }
 
   body {
-    font-family: "Noto Sans", sans-serif;
+    font-family: "Pretendard", "Noto Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     overflow-x: hidden;
   }
 `;
