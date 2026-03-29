@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router";
+import { BP_480, BP_768, BP_1024 } from "@/styles/global.styled";
 
 export const Header = styled.header`
   position: sticky;
@@ -10,10 +11,21 @@ export const Header = styled.header`
 `;
 
 export const TopBar = styled.div`
-  padding: 1.125rem 1rem;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1.125rem 5rem;
+
+  ${BP_1024} {
+    padding: 1.125rem 4rem;
+  }
+  ${BP_768} {
+    padding: 1.125rem 3rem;
+  }
+  ${BP_480} {
+    padding: 1.125rem 1.5rem;
+  }
 `;
 
 export const LogoLink = styled(Link)`
@@ -40,7 +52,9 @@ export const HamburgerButtonLine = styled.hr`
   background: #111;
   border: none;
   border-radius: 1px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
   margin: 0.1875rem 0;
 `;
 

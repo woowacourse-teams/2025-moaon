@@ -17,7 +17,7 @@ export const Main = styled.main`
   }
   ${BP_1024} {
     margin-top: 4rem;
-    padding: 0 1rem;
+    padding: 0 3rem;
   }
   ${BP_768} {
     margin-top: 3.5rem;
