@@ -1,11 +1,13 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router";
 import { projectQueries } from "@/apis/projects/project.queries";
 import useDelayedVisibility from "@/shared/hooks/useDelayedVisibility";
 
 const useProjectList = () => {
+  const { search } = useLocation();
   const queryClient = useQueryClient();
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(projectQueries.fetchList());
+    useInfiniteQuery(projectQueries.fetchList(search));
 
   const projects = data?.pages.flatMap((page) => page.contents);
 
@@ -15,7 +17,7 @@ const useProjectList = () => {
   const nextCursor = data?.pages[data.pages.length - 1]?.nextCursor ?? "";
 
   const refetch = async () => {
-    await queryClient.resetQueries({
+    await queryClient.invalidateQueries({
       queryKey: projectQueries.all,
     });
   };

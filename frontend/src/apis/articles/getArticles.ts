@@ -3,8 +3,11 @@ import type { ArticleListResponse } from "./articles.type";
 
 const ARTICLE_PAGE_SIZE = 20;
 
-const getArticles = async (cursor: string): Promise<ArticleListResponse> => {
-  const searchParams = new URLSearchParams(window.location.search);
+const getArticles = async (
+  search: string,
+  cursor: string,
+): Promise<ArticleListResponse> => {
+  const searchParams = new URLSearchParams(search);
   searchParams.set("limit", ARTICLE_PAGE_SIZE.toString());
   if (cursor) {
     searchParams.set("cursor", cursor);

@@ -1,11 +1,13 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router";
 import { articlesQueries } from "@/apis/articles/articles.queries";
 import useDelayedVisibility from "@/shared/hooks/useDelayedVisibility";
 
 const useArticleList = () => {
+  const { search } = useLocation();
   const queryClient = useQueryClient();
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(articlesQueries.fetchList());
+    useInfiniteQuery(articlesQueries.fetchList(search));
 
   const articles = data?.pages.flatMap((page) => page.contents);
 
@@ -21,7 +23,7 @@ const useArticleList = () => {
   const showSkeleton = showInitialSkeleton || showNextSkeleton;
 
   const refetch = async () => {
-    await queryClient.resetQueries({
+    await queryClient.invalidateQueries({
       queryKey: articlesQueries.all,
     });
   };

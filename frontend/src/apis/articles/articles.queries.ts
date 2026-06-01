@@ -1,5 +1,6 @@
 import {
   infiniteQueryOptions,
+  keepPreviousData,
   mutationOptions,
   queryOptions,
 } from "@tanstack/react-query";
@@ -11,13 +12,14 @@ import postArticleView from "./postArticleView";
 
 export const articlesQueries = {
   all: ["articles"] as const,
-  fetchList: () =>
+  fetchList: (search: string) =>
     infiniteQueryOptions({
-      queryKey: articlesQueries.all,
-      queryFn: ({ pageParam }) => getArticles(pageParam),
+      queryKey: [...articlesQueries.all, search],
+      queryFn: ({ pageParam }) => getArticles(search, pageParam),
       getNextPageParam: (lastPage) =>
         lastPage.hasNext ? lastPage.nextCursor : "",
       initialPageParam: "",
+      placeholderData: keepPreviousData,
     }),
   postArticleClick: () =>
     mutationOptions({

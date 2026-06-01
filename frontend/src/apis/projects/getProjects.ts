@@ -3,8 +3,11 @@ import type { ProjectsResponse } from "./projects.type";
 
 const PAGE_SIZE = 20;
 
-const getProjects = async (cursor: string): Promise<ProjectsResponse> => {
-  const queryString = new URLSearchParams(window.location.search);
+const getProjects = async (
+  search: string,
+  cursor: string,
+): Promise<ProjectsResponse> => {
+  const queryString = new URLSearchParams(search);
   queryString.set("limit", PAGE_SIZE.toString());
   if (cursor) {
     queryString.set("cursor", cursor);
