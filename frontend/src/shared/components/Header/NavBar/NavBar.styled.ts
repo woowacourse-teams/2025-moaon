@@ -31,7 +31,7 @@ export const NavLinkItem = styled.li`
 
 export const Link = styled.button<{ isSelected: boolean }>`
   color: ${({ isSelected }) => (isSelected ? "#007bff" : "#000")};
-  font-weight: ${({ isSelected }) => (isSelected ? 700 : 400)};
+  font-weight: ${({ isSelected }) => (isSelected ? 600 : 400)};
   padding: 1.75rem 0;
   display: inline-block;
   font-size: 1rem;

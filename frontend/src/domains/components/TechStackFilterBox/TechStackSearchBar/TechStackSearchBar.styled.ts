@@ -12,10 +12,19 @@ export const SearchLabel = styled.label`
   border: 1px solid #d1d6dd;
   background-color: #fff;
   padding: 0.9375rem;
+  
+  &:focus-within {
+    outline: none;
+    border-color: #d1d6dd;
+  }
 `;
 
 export const SearchIcon = styled.img``;
 
 export const SearchInput = styled.input`
   width: 100%;
+  
+  &:focus {
+    outline: none;
+  }
 `;
